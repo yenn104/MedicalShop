@@ -1,0 +1,40 @@
+﻿.footter {
+  /*max-width: 100%;*/
+  /* width: 100%; */
+/*  position: absolute;
+  bottom: 0;
+  white-space: nowrap;*/
+  display: flex;
+  padding-bottom: 20px;
+  align-items: stretch;
+  align-content: center;
+  flex-direction: row;
+  margin: 10px 40px;
+}
+
+.linked {
+  /*text-align: center;*/
+  width: 15%;
+  margin: 0px 40px;
+  /*width: 50%;*/
+  /*border: 3px solid green;*/
+  /*padding: 10px;*/
+}
+
+.contact {
+  width: auto;
+  margin: 0px 20px;
+}
+
+.logo {
+  width: 30%;
+  margin: 0px 40px;
+}
+
+.logo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  align-content: flex-start;
+}
