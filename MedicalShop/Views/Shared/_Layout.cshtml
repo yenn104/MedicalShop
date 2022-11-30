@@ -7,17 +7,50 @@
   <link rel="shortcut icon " href="~/medical.ico">
   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="~/css/site.css" />
+  <link href="~/css/content.css" rel="stylesheet" />
   <link href="~/css/style.css" rel="stylesheet" />
   <link href="~/css/_footer.css" rel="stylesheet" />
+  <link href="~/css/ytb.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/921d18f229.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
       <div class="container">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-          @*MedicalShop*@
-          <img src="~/lib/images/logo2.png" style="width:212px; height: 35px" />
+          <img src="~/lib/images/logo2.png" alt="medicalshop" style="width:240px; height: 38px" />
         </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+          <div class="search">
+            @using (Html.BeginForm("Find", "Home", FormMethod.Post))
+            {
+              <input type="text" placeholder="Sản phẩm tìm kiếm.." name="key" class="input-search">
+              <button type="submit" style="border: none;"><i class="fa fa-magnifying-glass" style="font-size:16px; color:black"></i></button>
+            }
+          </div>
+         
+
+        </div>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+          
+          <div class="user-cart">
+            @*@Html.ActionLink("", "About", "Home")
+            @Html.ActionLink(" ", "About", new { @class = "fa-solid fa-user" })*@
+            <i class="fa fa-shopping-cart" style="font-size:18px; color:black"></i>         
+            <i class="fa-solid fa-user"style="font-size:18px; color:black"></i>     
+          </div>
+
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+      <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -25,14 +58,14 @@
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
           <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
             </li>
             <li class="dropdown">
               <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Home" asp-action="Index">Sản phẩm</a>
               <ul class="dropdown-menu">
                 @* DANH MỤC SẢN PHẨM
-                  vòng foreach category or cho sẵn!
-                  bỏ action hàng hóa truyền string key "danh mục" vô chổ này*@
+                vòng foreach category or cho sẵn!
+                bỏ action hàng hóa truyền string key "danh mục" vô chổ này*@
                 <li>
                   <a asp-area="" asp-controller="Category" asp-action="Product">Dược phẩm</a>
                 </li>
@@ -68,8 +101,8 @@
     <div class="container">
       <div class="footter">
         <div class="logo">
-          <img src="~/lib/images/medical.ico" style="width:100px; height:100px" />
-          <img class="imgtitle" src="~/lib/images/logo2.png" style="width:212px; height:35px" />
+          <img src="~/lib/images/medical.ico" alt="medical" style="width:100px; height:100px" />
+          <img class="imgtitle" src="~/lib/images/logo2.png" alt="medical shop" style="width:212px; height:35px" />
         </div>
         <div class="linked">
 
