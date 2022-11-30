@@ -42,9 +42,32 @@
           <div class="user-cart">
             @*@Html.ActionLink("", "About", "Home")
             @Html.ActionLink(" ", "About", new { @class = "fa-solid fa-user" })*@
-            <i class="fa fa-shopping-cart" style="font-size:18px; color:black"></i>         
-            <i class="fa-solid fa-user"style="font-size:18px; color:black"></i>     
-          </div>
+            <ul class="navbar-nav flex-grow-1">
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                  <i class="fa fa-shopping-cart" style="font-size:18px; color:black"></i>
+                </a>
+              </li>
+              @*<li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                  <i class="fa-solid fa-user" style="font-size:18px; color:black"></i>
+                </a>
+              </li>*@
+              <li class="dropdown">
+                <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Home" asp-action="Index">
+                  <i class="fa-solid fa-user" style="font-size:18px; color:black"></i>
+                </a>
+                <ul class="dropdown-menu">              
+                  <li>
+                    <a asp-area="" asp-controller="Category" asp-action="Product">Đăng nhập</a>
+                  </li>
+                  <li>
+                    <a asp-area="" asp-controller="Category" asp-action="Product">Đăng ký</a>
+                  </li>
+                </ul>
+
+
+</div>
 
         </div>
       </div>
