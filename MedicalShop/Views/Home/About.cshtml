@@ -1,8 +1,46 @@
 ﻿
 @{
-    ViewData["Title"] = "About";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  ViewData["Title"] = "About";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>About</h1>
+<div class="img-content">
+  <img src="~/lib/images/about1.jpg" style="width:100% ; height:auto; text-align:center" />
+</div>
+
+<div>
+  <hr />
+  <ul class="breadcrumb">
+    <li><a href="/Home/Index"> Trang chủ</a></li>
+    <li><a href="#">@ViewData["Title"]</a></li>
+  </ul>
+  <hr />
+</div>
+
+<div>
+  <h4>About</h4>
+
+  <p>
+    Though above will count the margin outside but will consider the padding and border inside the element.
+
+    Also, if you are looking to align only a single word, than better use text-indent property which will indent your text to a specific px you define.
+
+    Demo
+
+    But this will just indent 1st line so if you have a single word than this will suffice your needs, but if you want to align multiple elements, than the best thing to do here is to use span for each word and than indent it using padding
+  </p>
+
+</div>
+
+@*<div>
+  <hr />
+  <ul class="breadcrumb">
+    <li><a href="#"> Trang chủ</a></li>
+    <li><a href="#">Vans</a></li>
+    <li><a href="#">@ViewData["Title"]</a></li>
+    <li><a href="#">Camper Vans</a></li>
+  </ul>
+  <hr />
+</div>*@
+
 

@@ -17,11 +17,11 @@
 </head>
 <body>
   <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 background-linear">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow background-linear">
       <div class="container">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
           @*<img src="~/lib/images/logo2.png" alt="medicalshop" style="width:240px; height: 38px" />*@
-          <img src="~/lib/images/MedicalShop.png" alt="medicalshop" style="width:200px; height: 50px"/>
+          <img src="~/lib/images/MedicalShop.png" alt="medicalshop" style="width:200px; height: 50px" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -35,14 +35,14 @@
               <button type="submit" class="button-search"><i class="fa fa-magnifying-glass" style="font-size:16px; color:black"></i></button>
             }
           </div>
-         
+
 
         </div>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-          
+
           <div class="user-cart">
             @*@Html.ActionLink("", "About", "Home")
-            @Html.ActionLink(" ", "About", new { @class = "fa-solid fa-user" })*@
+              @Html.ActionLink(" ", "About", new { @class = "fa-solid fa-user" })*@
             <ul class="navbar-nav flex-grow-1">
               <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
@@ -50,45 +50,31 @@
                 </a>
               </li>
               @*<li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
-                  <i class="fa-solid fa-user" style="font-size:18px; color:black"></i>
+                  <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-user" style="font-size:18px; color:black"></i>
+                  </a>
+                </li>*@
+              <li class="dropdown">
+                <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Home" asp-action="Index">
+                  <i class="fa-solid fa-user" style="font-size:18px; padding-left: 10px; color: black"></i>
                 </a>
-              </li>*@
-            <li class="dropdown">
-              <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Home" asp-action="Index">
-                <i class="fa-solid fa-user" style="font-size:18px; padding-left: 10px; color: black"></i>
-              </a>
-              <ul class="dropdown-menu menu-item">
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Đăng nhập</a>
-                </li>
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Đăng ký</a>
-                </li>
-              </ul>
-              @*<ul class="dropdown-menu">
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Thông tin người dùng</a>
-                </li>
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Đăng xuất</a>
-                </li>
-              </ul>
-              <ul class="dropdown-menu">
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Thông tin người dùng</a>
-                </li>
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Quản lý</a>
-                </li>
-                <li>
-                  <a asp-area="" asp-controller="Category" asp-action="Product">Đăng xuất</a>
-                </li>
-              </ul>*@
-            </li>
+                <ul class="dropdown-menu menu-item">
+                  <li>
+                    <a asp-area="" asp-controller="Category" asp-action="Product">Đăng nhập</a>
+                  </li>
+                  <li>
+                    <a asp-area="" asp-controller="Category" asp-action="Product">Đăng ký</a>
+                  </li>
+                </ul>
+                @*  1.Thông tin người dùng
+                      Đăng xuất
+                    2.Thông tin người dùng
+                      Quản lý
+                      Đăng xuất
+                  *@
+              </li>
             </ul>
-
-</div>
+          </div>
 
         </div>
       </div>
@@ -97,7 +83,7 @@
       <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          @*<span class="navbar-toggler-icon"></span>*@
         </button>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
           <ul class="navbar-nav flex-grow-1 menu-justify">
@@ -108,8 +94,8 @@
               <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Home" asp-action="Index">Sản phẩm</a>
               <ul class="dropdown-menu menu-item">
                 @* DANH MỤC SẢN PHẨM
-                vòng foreach category or cho sẵn!
-                bỏ action hàng hóa truyền string key "danh mục" vô chổ này*@
+                  vòng foreach category or cho sẵn!
+                  bỏ action hàng hóa truyền string key "danh mục" vô chổ này*@
                 <li>
                   <a asp-area="" asp-controller="Category" asp-action="Product">Dược phẩm</a>
                 </li>
@@ -158,7 +144,7 @@
               <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Vật tư y tế</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">News</a>
+              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Tin tức</a>
             </li>
           </ul>
         </div>
@@ -183,7 +169,7 @@
           </ul>
         </div>
       </div>
-      <p style="font-size:13px;text-align: center">
+      <p style="font-size:12px;text-align: center">
         &copy; 2022 - Công ty Cổ Phần Dược Phẩm Vũ Phong Số ĐKKD 0315275368 cấp ngày 01/01/2022 tại Sở Kế hoạch Đầu tư TPHCM - <a asp-area="" asp-controller="Home" asp-action="Privacy"> User Policy </a>
       </p>
     </div>

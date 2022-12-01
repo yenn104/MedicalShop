@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies; /**/
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +25,19 @@ namespace MedicalShop
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllersWithViews();
+      services.AddRazorPages();
+      services.AddSignalR();
+      services.AddSession(options =>
+      {
+        options.IdleTimeout = TimeSpan.FromMinutes(30);
+      });
+      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+              .AddCookie(options =>
+              {
+                options.LoginPath = "/login";
+                options.Cookie.Name = "my_app_auth_cookie";
+                options.AccessDeniedPath = "/login";
+              });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +55,10 @@ namespace MedicalShop
       }
       app.UseHttpsRedirection();
       app.UseStaticFiles();
+      
+      //2
+      app.UseStatusCodePages();
+      app.UseSession();
 
       app.UseRouting();
 
