@@ -1,14 +1,16 @@
 ﻿.footter {
   /*max-width: 100%;*/
   /* width: 100%; */
-/*  position: absolute;
+  /*  position: absolute;
   bottom: 0;
   white-space: nowrap;*/
+  font-size: 13px;
   display: flex;
   padding-bottom: 20px;
   align-items: stretch;
   align-content: center;
   flex-direction: row;
+  justify-content: space-evenly;
   margin: 10px 40px;
 }
 
@@ -27,14 +29,23 @@
 }
 
 .logo {
-  width: 30%;
   margin: 0px 40px;
 }
 
-.logo {
+/*.logo {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: center;
   align-content: flex-start;
+}*/
+
+
+.logo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: flex-start;
+  flex-direction: column;
 }
