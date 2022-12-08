@@ -1,8 +1,56 @@
 ﻿
 @{
-    ViewData["Title"] = "Contact";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  ViewData["Title"] = "Liên hệ";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Contact</h1>
+<style>
+  
+</style>
 
+<body>
+  <div>
+    <hr/>
+    <ul class="breadcrumb">
+      <li><a href="/Home/Index"> Trang chủ</a></li>
+      <li><a href="#">@ViewData["Title"]</a></li>
+    </ul>
+    <hr />
+  </div>
+
+  <h1>@ViewData["Title"]</h1>
+  <div class="contact-list">
+    <div class="contact">
+      <ul class="navbar-nav flex-grow-1">
+        <li class="nav-list">Hotline</li>
+        <li class="nav-item">
+          <a href="tel:0393352523">0393352523</a>
+        </li>
+        <li class="nav-item">
+          <a href="tel:0393352523">0393352523</a>
+        </li>
+        <li class="nav-list">
+          <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Chi nhánh</a>
+        </li>
+        <li class="nav-item">
+          50 Văn Cao, Phú Thọ Hoà, Tân Phú, TP Hồ Chí Minh
+        </li>
+        <li class="nav-item">
+          50 Văn Cao, Phú Thọ Hoà, Tân Phú, TP Hồ Chí Minh
+        </li>
+
+      </ul>
+    </div>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d244.95814570842575!2d106.62215837369008!3d10.7859921619166!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752c0466114a1f%3A0x41184cd68110e995!2zNTAgVsSDbiBDYW8sIFBow7ogVGjhu40gSG_DoCwgVMOibiBQaMO6LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmg!5e0!3m2!1svi!2s!4v1670488585010!5m2!1svi!2s" width="400" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+
+  @* SỬA LINK TRONG DTB *@
+  <div class="contact-item">
+    @*<a href="@ViewData["Title"]"><span>Facebook</span></a>*@
+    <a href="tel:0393352523" title="Contact"><i class="fa-thin fa-phone-flip"></i></a>
+    <a href="#" title="Maps"><i class="fa-thin fa-map-location"></i></a>
+    <a href="#" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+    <a href="#" title="Messenger"><i class="fa-brands fa-facebook-messenger"></i></a>
+    <a href="#" title="Google"><i class="fa-thin fa-envelope"></i></a>
+  </div>
+</body>

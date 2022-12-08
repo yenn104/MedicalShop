@@ -68,7 +68,6 @@ input[class="form-input"] {
   height: 50px;
   padding: 15px;
   font-size: 16px;
-  /* font-family: 'Abel', sans-serif;*/
   color: #5E6472;
   outline: none;
   border: none;
@@ -88,11 +87,11 @@ input:focus {
 
 .field-set button {
   display: inline-block;
-  color: #252537;
+  color: #fff;
   width: 280px;
   height: 50px;
   padding: 0 20px;
-  background: #fff;
+  /*background: #fff;*/
   border-radius: 5px;
   outline: none;
   border: none;
@@ -101,7 +100,7 @@ input:focus {
   transition: all 0.2s linear;
   margin: 7% auto;
   letter-spacing: 0.05em;
-  background: #b8f2e6d9;
+  background: #1abc9cbf;
 }
 
 .submits {
@@ -139,16 +138,16 @@ button:hover {
   transition: all 0.3s ease;
   position: relative;
   display: inline-block;
-  box-shadow: inset 2px 2px 2px 0px #b8f2e6, 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
+  box-shadow: inset 2px 2px 2px 0px #1abc9c, 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
 }
 
 .btn-1 {
-  background: linear-gradient(0deg, #b8f2e6 0%, #b8f2e6d9 100%);
+  background: linear-gradient(0deg, #1abc9c 0%, #1abc9cbf 100%);
   border: none;
 }
 
 .btn-1:hover {
-  background: #9febdb;
+  background: #1abc9c;
   border: 0.1px solid #00000040;
 }

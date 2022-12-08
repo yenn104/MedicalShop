@@ -1,0 +1,98 @@
+﻿
+@{
+  ViewData["Title"] = "Tin tức";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+  @@import url(https://fonts.googleapis.com/css?family=Raleway:400,600,700,800);
+  @@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+</style>
+<body>
+  <div>
+    <hr />
+    <ul class="breadcrumb">
+      <li><a href="/Home/Index"> Trang chủ</a></li>
+      <li><a href="#">@ViewData["Title"]</a></li>
+    </ul>
+    <hr />
+  </div>
+
+  <h1>@ViewData["Title"]</h1>
+
+  @* SỬA ICO, SỬA LẠI LẤY TỪ DATABASE, SỬA ẢNH *@
+  <div class="news-list">
+    <figure class="news-item">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample66.jpg" alt="sample66" />
+      <div class="date"><span class="day">28</span><span class="month">Oct</span></div><i class="ion-film-marker"></i>
+      <figcaption>
+        <h3>The World Ended Yesterday</h3>
+        <p>
+          I don't need to compromise my principles, because they don't have the slightest bearing on what happens to me anyway.
+        </p>
+        <button>Read More</button>
+      </figcaption><a href="#"></a>
+    </figure>
+    <figure class="news-item">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample9.jpg" alt="sample9" />
+      <div class="date"><span class="day">17</span><span class="month">Nov</span></div><i class="ion-headphone"> </i>
+      <figcaption>
+        <h3>An Abstract Post Heading</h3>
+        <p>
+          Sometimes the surest sign that intelligent life exists elsewhere in the universe is that none of it has tried to contact us.
+        </p>
+        <button>Read More</button>
+      </figcaption><a href="#"></a>
+    </figure>
+    <figure class="news-item">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample6.jpg" alt="sample6" />
+      <div class="date"><span class="day">01</span><span class="month">Dec</span></div><i class="ion-checkmark"> </i>
+      <figcaption>
+        <h3>Down with this sort of thing</h3>
+        <p>
+          I don't need to compromise my principles, because they don't have the slightest bearing on what happens to me anyway.
+        </p>
+        <button>Read More</button>
+      </figcaption><a href="#"></a>
+    </figure>
+    <figure class="news-item">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample66.jpg" alt="sample66" />
+      <div class="date"><span class="day">28</span><span class="month">Oct</span></div><i class="ion-film-marker"></i>
+      <figcaption>
+        <h3>The World Ended Yesterday</h3>
+        <p>
+          I don't need to compromise my principles, because they don't have the slightest bearing on what happens to me anyway.
+        </p>
+        <button>Read More</button>
+      </figcaption><a href="#"></a>
+    </figure>
+    <figure class="news-item">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample9.jpg" alt="sample9" />
+      <div class="date"><span class="day">17</span><span class="month">Nov</span></div><i class="ion-headphone"> </i>
+      <figcaption>
+        <h3>An Abstract Post Heading</h3>
+        <p>
+          Sometimes the surest sign that intelligent life exists elsewhere in the universe is that none of it has tried to contact us.
+        </p>
+        <button>Read More</button>
+      </figcaption><a href="#"></a>
+    </figure>
+    <figure class="news-item">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample6.jpg" alt="sample6" />
+      <div class="date"><span class="day">01</span><span class="month">Dec</span></div><i class="ion-checkmark"> </i>
+      <figcaption>
+        <h3>Down with this sort of thing</h3>
+        <p>
+          I don't need to compromise my principles, because they don't have the slightest bearing on what happens to me anyway.
+        </p>
+        <button>Read More</button>
+      </figcaption><a href="#"></a>
+    </figure>
+  </div>
+</body>
+<script>
+  $(".hover").mouseleave(
+    function () {
+      $(this).removeClass("hover");
+    }
+  );
+</script>

@@ -1,12 +1,8 @@
 ﻿
 @{
-  ViewData["Title"] = "About";
+  ViewData["Title"] = "Về chúng tôi";
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="img-content">
-  <img src="~/lib/images/about1.jpg" style="width:100% ; height:auto; text-align:center" />
-</div>
 
 <div>
   <hr />
@@ -17,8 +13,14 @@
   <hr />
 </div>
 
+<h1>@ViewData["Title"]</h1>
+
+<div class="img-content">
+  <img src="~/lib/images/about1.jpg" style="width:100% ; height:auto; text-align:center" />
+</div>
+
 <div>
-  <h4>About</h4>
+
 
   <p>
     Though above will count the margin outside but will consider the padding and border inside the element.
@@ -33,14 +35,14 @@
 </div>
 
 @*<div>
-  <hr />
-  <ul class="breadcrumb">
-    <li><a href="#"> Trang chủ</a></li>
-    <li><a href="#">Vans</a></li>
-    <li><a href="#">@ViewData["Title"]</a></li>
-    <li><a href="#">Camper Vans</a></li>
-  </ul>
-  <hr />
-</div>*@
+    <hr />
+    <ul class="breadcrumb">
+      <li><a href="#"> Trang chủ</a></li>
+      <li><a href="#">Vans</a></li>
+      <li><a href="#">@ViewData["Title"]</a></li>
+      <li><a href="#">Camper Vans</a></li>
+    </ul>
+    <hr />
+  </div>*@
 
 
