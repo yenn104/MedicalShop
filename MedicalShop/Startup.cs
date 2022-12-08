@@ -34,7 +34,7 @@ namespace MedicalShop
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie(options =>
               {
-                options.LoginPath = "/login";
+                options.LoginPath = "/Home/Login";
                 options.Cookie.Name = "my_app_auth_cookie";
                 options.AccessDeniedPath = "/login";
               });
