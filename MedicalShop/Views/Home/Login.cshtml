@@ -1,4 +1,5 @@
-﻿
+﻿@model MedicalShop.Models.Entities.TaiKhoan
+
 @{
   ViewData["Title"] = "Login";
   Layout = "~/Views/Shared/_Layout.cshtml";
@@ -54,13 +55,14 @@
 
 
 
-
+@*Chưa lưu tài khoản*@
 
 
 
 <body>
   <div class="overlay">
     <form method="post" action="Login" class="login-form">
+      @Html.ValidationSummary(true, "", new { @class = "text-danger" })
       <div class="con">
         <header class="head-form">
           <h1>Đăng nhập</h1>
@@ -84,7 +86,7 @@
             </span>
           </div>
           <br>
-          <button class="custom-btn btn-1">Đăng nhập</button>
+          <button class="custom-btn btn-1" type="submit">Đăng nhập</button>
         </div>
         <div class="other">
           <button class="btn submits frgt-pass">Quên mật khẩu</button>
