@@ -1,0 +1,83 @@
+﻿
+@{
+  ViewData["Title"] = "Login";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+  <style>
+    @@import url('https://fonts.googleapis.com/css?family=Abel|Abril+Fatface|Alegreya|Arima+Madurai|Dancing+Script|Dosis|Merriweather|Oleo+Script|Overlock|PT+Serif|Pacifico|Playball|Playfair+Display|Share|Unica+One|Vibur');
+    @@keyframes ani9 {
+      0% {
+        transform: translateY(3px);
+      }
+
+      100% {
+        transform: translateY(5px);
+      }
+    }
+  </style>
+  <body> 
+      <div class="overlay">
+        <form method="post" action="Login" class="login-form">
+          <div class="con">
+            <header class="head-form">
+              <h1>Đăng nhập</h1>
+            </header>
+            <br>
+            <div class="field-set">
+              <div class="input-list">
+                <span class="input-item">
+                  <i class="fa fa-user-circle"></i>
+                </span>
+                <input class="form-input" id="txt-input" type="text" placeholder="Tên tài khoản" required>
+              </div>
+              <br>
+              <div class="input-list">
+                <span class="input-item">
+                  <i class="fa fa-key"></i>
+                </span>
+                <input class="form-input" type="password" placeholder="Mật khẩu" id="pwd" name="password" required>
+                <span>
+                  <i class="fa fa-eye" aria-hidden="true" type="button" id="eye"></i>
+                </span>
+               </div>
+                <br>
+                <button class="custom-btn btn-1">Đăng nhập</button>
+              </div>
+              <div class="other">
+                <button class="btn submits frgt-pass">Quên mật khẩu</button>
+                <button class="btn submits sign-up">
+                  Đăng ký<i class="fa fa-user-plus" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+        </form>
+      </div> 
+  </body>
+
+  <script>
+    function show() {
+      var p = document.getElementById('pwd');
+      p.setAttribute('type', 'text');
+    }
+
+    function hide() {
+      var p = document.getElementById('pwd');
+      p.setAttribute('type', 'password');
+    }
+
+    var pwShown = 0;
+
+    document.getElementById("eye").addEventListener("click", function () {
+      if (pwShown == 0) {
+        pwShown = 1;
+        show();
+      } else {
+        pwShown = 0;
+        hide();
+      }
+    }, false);
+
+  </script>
+
+
