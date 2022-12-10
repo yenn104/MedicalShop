@@ -37,7 +37,7 @@ namespace MedicalShop
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie(options =>
               {
-                options.LoginPath = "/TaiKhoan/Login";
+                options.LoginPath = "/TaiKhoan/LogIn";
                 options.Cookie.Name = "medicalshop_cookie";
                 options.AccessDeniedPath = "/Login";
               });

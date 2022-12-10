@@ -84,19 +84,19 @@
                 <ul class="dropdown-menu menu-item">
                   @if (active == 0)
                   {
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="Login">Đăng nhập</a></li>
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="Logout">Đăng ký</a></li>
+                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogIn">Đăng nhập</a></li>
+                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng ký</a></li>
                   }
                   @if (active == 1)
                   {
                     <li><a asp-area="" asp-controller="TaiKhoan" asp-action="ThongTin" asp-route-username="@username">@name</a></li>
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="Logout">Đăng xuất</a></li>
+                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li>
                   }
                   @if (active == 2)
                   {
                     <li><a asp-area="" asp-controller="TaiKhoan" asp-action="ThongTin" asp-route-username="@username">@name</a></li>
                     <li><a asp-area="" asp-controller="QuanLy" asp-action="Index">Quản lý</a></li>
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="Logout">Đăng xuất</a></li> 
+                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li> 
                   }
                 </ul>
               </li>

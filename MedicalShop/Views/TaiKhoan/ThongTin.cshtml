@@ -1,7 +1,7 @@
 ﻿@model MedicalShop.Models.Entities.TaiKhoan
 
 @{
-  ViewData["Title"] = "ThongTin";
+  ViewData["Title"] = "Thông tin";
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -40,17 +40,33 @@
     <dd class="col-sm-10">
       @Html.DisplayFor(model => model.Idvt)
     </dd>*@
+    @{
+      var us = @ViewBag.User;
+    }
+
+    <dt class="col-sm-2">
+      <label>Họ và tên</label>
+    </dt>
+    <dd class="col-sm-10">
+      <input type="text" name="tennv" value="@us.TenNv" />
+    </dd>
+    <dt class="col-sm-2">
+      <label>Địa chỉ</label>
+    </dt>
+    <dd class="col-sm-10">
+      <input type="text" name="address" value="@us.Address" />
+    </dd>
     <dt class="col-sm-2">
       @Html.DisplayNameFor(model => model.UserName)
     </dt>
     <dd class="col-sm-10">
-      @Html.DisplayFor(model => model.UserName)
+      <input type="text" name="username" value="@Model.UserName" readonly />
     </dd>
     <dt class="col-sm-2">
       @Html.DisplayNameFor(model => model.Password)
     </dt>
     <dd class="col-sm-10">
-      @Html.DisplayFor(model => model.Password)
+      <input type="password" name="password" value="@Model.Password" />
     </dd>
     @*<dt class="col-sm-2">
       @Html.DisplayNameFor(model => model.Roles)

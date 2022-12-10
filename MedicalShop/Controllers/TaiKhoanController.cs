@@ -21,7 +21,7 @@ namespace MedicalShop.Controllers
       return View();
     }
 
-    public IActionResult Login(string returnUrl)
+    public IActionResult LogIn(string returnUrl)
     {
       TempData["returnUrl"] = returnUrl;
       return View();
@@ -29,8 +29,8 @@ namespace MedicalShop.Controllers
 
     [HttpPost]
     //[Route("/Login")]
-    public ActionResult Login(TaiKhoan account, string returnUrl)
-    {     
+    public ActionResult LogIn(TaiKhoan account, string returnUrl)
+    {
       if (ModelState.IsValid)
       {
         returnUrl = (string)TempData["returnUrl"];
@@ -96,7 +96,7 @@ namespace MedicalShop.Controllers
 
 
     [Authorize]
-    public ActionResult Logout()
+    public ActionResult LogOut()
     {
       HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       return RedirectToAction("Login");
@@ -104,15 +104,15 @@ namespace MedicalShop.Controllers
 
     [Authorize]
     [Route("/User")]
-    public ActionResult ThongTin(string username)
-    {
+    public IActionResult ThongTin(string username)
+    {    
       TaiKhoan acc = context.TaiKhoan.FirstOrDefault(s => s.UserName.Equals(username));
-      if(acc.Idkh != null && acc.Idkh != 0)
+      if (acc.Idkh != null && acc.Idkh != 0)
       {
         KhachHang kh = context.KhachHang.FirstOrDefault(s => s.Id.Equals(acc.Idkh));
         ViewBag.User = kh;
       }
-      if (acc.Idkh != null && acc.Idkh != 0)
+      if (acc.Idnv != null && acc.Idnv != 0)
       {
         NhanVien nv = context.NhanVien.FirstOrDefault(n => n.Id.Equals(acc.Idnv));
         ViewBag.User = nv;
@@ -121,7 +121,14 @@ namespace MedicalShop.Controllers
     }
 
 
+    [HttpPost]
+    public ActionResult SignUp(TaiKhoan account)
+    {
+      if (ModelState.IsValid)
+      {
 
-
+      }
+      return View();
+    }
   }
 }
