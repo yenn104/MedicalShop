@@ -1,0 +1,96 @@
+﻿@model MedicalShop.Models.Entities.TaiKhoan
+
+@{
+  ViewData["Title"] = "ThongTin";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+  <div>
+    <hr />
+    <ul class="breadcrumb">
+      <li><a href="/Home/Index"> Trang chủ</a></li>
+      <li><a href="#">@ViewData["Title"]</a></li>
+    </ul>
+    <hr />
+  </div>
+
+  <dl class="row">
+    @*<dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Id)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Id)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Idnv)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Idnv)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Idkh)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Idkh)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Idvt)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Idvt)
+    </dd>*@
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.UserName)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.UserName)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Password)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Password)
+    </dd>
+    @*<dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Roles)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Roles)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.CreatedDate)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.CreatedDate)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.CreatedBy)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.CreatedBy)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.ModifiedDate)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.ModifiedDate)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.ModifiedBy)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.ModifiedBy)
+    </dd>
+    <dt class="col-sm-2">
+      @Html.DisplayNameFor(model => model.Active)
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Active)
+    </dd>*@
+  </dl>
+</div>
+<div>
+  @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+  <a asp-action="Index">Back to List</a>
+</div>

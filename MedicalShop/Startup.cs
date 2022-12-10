@@ -39,7 +39,7 @@ namespace MedicalShop
               {
                 options.LoginPath = "/TaiKhoan/Login";
                 options.Cookie.Name = "medicalshop_cookie";
-                options.AccessDeniedPath = "/login";
+                options.AccessDeniedPath = "/Login";
               });
     }
 
