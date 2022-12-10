@@ -21,6 +21,9 @@ namespace MedicalShop
 
     public IConfiguration Configuration { get; }
 
+    //
+    public static string ContentRootPath { get; set; }
+
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
@@ -35,7 +38,7 @@ namespace MedicalShop
               .AddCookie(options =>
               {
                 options.LoginPath = "/TaiKhoan/Login";
-                options.Cookie.Name = "my_app_auth_cookie";
+                options.Cookie.Name = "medicalshop_cookie";
                 options.AccessDeniedPath = "/login";
               });
     }
@@ -61,7 +64,9 @@ namespace MedicalShop
       app.UseSession();
 
       app.UseRouting();
-
+      
+      //1
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
