@@ -12,7 +12,7 @@ namespace MedicalShop.Models.Entities
         public KhachHang()
         {
             NganHangKh = new HashSet<NganHangKh>();
-            TaiKhoan = new HashSet<TaiKhoan>();
+            PhieuXuat = new HashSet<PhieuXuat>();
         }
 
         public int Id { get; set; }
@@ -23,6 +23,7 @@ namespace MedicalShop.Models.Entities
         public string Phone { get; set; }
         public string Mail { get; set; }
         public string Note { get; set; }
+        public string UserName { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
@@ -30,7 +31,8 @@ namespace MedicalShop.Models.Entities
         public int? Idcn { get; set; }
         public bool? Active { get; set; }
 
+        public virtual TaiKhoan UserNameNavigation { get; set; }
         public virtual ICollection<NganHangKh> NganHangKh { get; set; }
-        public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
+        public virtual ICollection<PhieuXuat> PhieuXuat { get; set; }
     }
 }

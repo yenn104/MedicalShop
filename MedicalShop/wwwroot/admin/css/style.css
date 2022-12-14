@@ -1,0 +1,36 @@
+﻿.sidebar {
+  /*width: 6.5rem;
+  min-height: 100vh;*/
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  transition: all 0.3s;
+  overflow-y: auto;
+}
+
+/*.dashboard {
+  width: 6.5rem;
+  min-height: 100vh;
+}*/
+
+.bg-xx {
+  background-color: #f6f9ff !important;
+}
+
+.medical-title {
+  display: inline;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .05rem;
+
+}
+
+a:hover {
+  color: #224abe;
+  text-decoration: none;
+}
+
+

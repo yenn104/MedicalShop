@@ -21,6 +21,7 @@ namespace MedicalShop.Models.Entities
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
+        public int? Idcn { get; set; }
         public bool? Active { get; set; }
 
         public virtual ICollection<HhDvt> HhDvt { get; set; }

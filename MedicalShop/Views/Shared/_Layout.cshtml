@@ -60,25 +60,23 @@
               </a>
 
               @{
-                var acc = User.FindFirst("KH");
-                var acc1 = User.FindFirst("NV");
-                string name = null;
-                string roles = null;
-                string username = null;
+                var acc = User.FindFirst("UserID");
+                string name = null, staff = null, id = null, username = null;
                 int active = 0;
                 if (acc != null)
                 {
-                  name = acc.Value;
-                  roles = acc.Type;
+                  id = acc.Value;
                   username = acc.Subject.Name;
-                  active = 1;
-                }
-                if (acc1 != null)
-                {
-                  name = acc1.Value;
-                  roles = acc1.Type;
-                  username = acc1.Subject.Name;
-                  active = 2;
+                  staff = User.Claims.ElementAt(3).Value;
+                  name = User.Claims.ElementAt(4).Value;
+                  if (staff != null && (staff == "True" || staff == "true" ))
+                  {
+                    active = 2;
+                  }
+                  if (staff != null && (staff == "False" || staff == "false"))
+                  {
+                    active = 1;
+                  }
                 }
               }
                 <ul class="dropdown-menu menu-item">

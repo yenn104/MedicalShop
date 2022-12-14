@@ -18,11 +18,12 @@ namespace MedicalShop.Models.Entities
         public string MaTg { get; set; }
         public string LoaiTg { get; set; }
         public int? Slqd { get; set; }
-        public string Dvqd { get; set; }
+        public bool? Dvqd { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
+        public int? Idcn { get; set; }
         public bool? Active { get; set; }
 
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhap { get; set; }

@@ -9,11 +9,6 @@ namespace MedicalShop.Models.Entities
 {
     public partial class NhanVien
     {
-        public NhanVien()
-        {
-            TaiKhoan = new HashSet<TaiKhoan>();
-        }
-
         public int Id { get; set; }
         public int? Idnnv { get; set; }
         public string MaNv { get; set; }
@@ -26,6 +21,7 @@ namespace MedicalShop.Models.Entities
         public string Mail { get; set; }
         public string Cccd { get; set; }
         public string Image { get; set; }
+        public string UserName { get; set; }
         public string MoreImages { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
@@ -35,6 +31,6 @@ namespace MedicalShop.Models.Entities
         public bool? Active { get; set; }
 
         public virtual NhomNhanVien IdnnvNavigation { get; set; }
-        public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
+        public virtual TaiKhoan UserNameNavigation { get; set; }
     }
 }

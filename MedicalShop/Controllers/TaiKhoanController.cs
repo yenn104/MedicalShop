@@ -21,6 +21,7 @@ namespace MedicalShop.Controllers
       return View();
     }
 
+    //[Route("/Login")]
     public IActionResult LogIn(string returnUrl)
     {
       TempData["returnUrl"] = returnUrl;
@@ -28,7 +29,7 @@ namespace MedicalShop.Controllers
     }
 
     [HttpPost]
-    //[Route("/Login")]
+    
     public ActionResult LogIn(TaiKhoan account, string returnUrl)
     {
       if (ModelState.IsValid)
@@ -39,15 +40,16 @@ namespace MedicalShop.Controllers
         var acc = context.TaiKhoan.FirstOrDefault(s => s.UserName.Equals(user) && s.Password.Equals(pass));
         if (acc != null)
         {
-          if (acc.Roles == true)
+          if (acc.Staff == true)
           {
-            NhanVien nv = context.NhanVien.FirstOrDefault(n => n.Id.Equals(acc.Idnv));
+            NhanVien nv = context.NhanVien.FirstOrDefault(n => n.UserName.Equals(acc.UserName));
             var claims = new List<Claim>
               {
                   new Claim(ClaimTypes.Name, account.UserName),
                   new Claim(ClaimTypes.Role, "NV"),
-                  new Claim("IDNV", account.Idnv.ToString()),
-                  new Claim("NV", nv.TenNv),
+                  new Claim("UserID", nv.Id.ToString()),
+                  new Claim("Staff", acc.Staff.ToString()),
+                  new Claim("NVV", nv.TenNv),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -64,13 +66,14 @@ namespace MedicalShop.Controllers
           }
           else
           {
-            KhachHang kh = context.KhachHang.FirstOrDefault(s => s.Id.Equals(acc.Idkh));
+            KhachHang kh = context.KhachHang.FirstOrDefault(s => s.UserName.Equals(acc.UserName));
             var claims = new List<Claim>
               {
                   new Claim(ClaimTypes.Name, account.UserName),
                   new Claim(ClaimTypes.Role, "KH"),
-                  new Claim("IDKH", account.Idkh.ToString()),
-                  new Claim("KH", kh.TenKh),
+                  new Claim("UserID", kh.Id.ToString()),
+                  new Claim("Staff", acc.Staff.ToString()),
+                  new Claim("KHH", kh.TenKh),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -107,16 +110,19 @@ namespace MedicalShop.Controllers
     public IActionResult ThongTin(string username)
     {    
       TaiKhoan acc = context.TaiKhoan.FirstOrDefault(s => s.UserName.Equals(username));
-      if (acc.Idkh != null && acc.Idkh != 0)
+      if (acc.Iduser != null && acc.Iduser != 0)
       {
-        KhachHang kh = context.KhachHang.FirstOrDefault(s => s.Id.Equals(acc.Idkh));
-        ViewBag.User = kh;
-      }
-      if (acc.Idnv != null && acc.Idnv != 0)
-      {
-        NhanVien nv = context.NhanVien.FirstOrDefault(n => n.Id.Equals(acc.Idnv));
-        ViewBag.User = nv;
-      }
+        if (acc.Staff == true)
+        {
+          NhanVien nv = context.NhanVien.FirstOrDefault(n => n.Id.Equals(acc.Iduser));
+          ViewBag.User = nv;
+        }
+        else
+        {
+          KhachHang kh = context.KhachHang.FirstOrDefault(s => s.Id.Equals(acc.Iduser));
+          ViewBag.User = kh;
+        }
+      }    
       return View(acc);
     }
 

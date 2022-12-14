@@ -1,4 +1,4 @@
-﻿@model MedicalShop.Models.Entities.TaiKhoan
+﻿@*@model MedicalShop.Models.Entities.TaiKhoan*@
 
 @{
   ViewData["Title"] = "Thông tin";
@@ -57,13 +57,13 @@
       <input type="text" name="address" value="@us.Address" />
     </dd>
     <dt class="col-sm-2">
-      @Html.DisplayNameFor(model => model.UserName)
+      @*@Html.DisplayNameFor(model => model.UserName)*@
     </dt>
     <dd class="col-sm-10">
       <input type="text" name="username" value="@Model.UserName" readonly />
     </dd>
     <dt class="col-sm-2">
-      @Html.DisplayNameFor(model => model.Password)
+      @*@Html.DisplayNameFor(model => model.Password)*@
     </dt>
     <dd class="col-sm-10">
       <input type="password" name="password" value="@Model.Password" />

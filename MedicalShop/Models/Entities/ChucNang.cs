@@ -15,6 +15,7 @@ namespace MedicalShop.Models.Entities
         }
 
         public int Id { get; set; }
+        public int? Idmenu { get; set; }
         public string MaCnang { get; set; }
         public string TenCnang { get; set; }
         public bool? Import { get; set; }
@@ -22,12 +23,14 @@ namespace MedicalShop.Models.Entities
         public bool? Delete { get; set; }
         public bool? Print { get; set; }
         public bool? Export { get; set; }
+        public bool? Person { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
         public bool? Active { get; set; }
 
+        public virtual Menu IdmenuNavigation { get; set; }
         public virtual ICollection<VaiTro> VaiTro { get; set; }
     }
 }
