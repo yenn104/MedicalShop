@@ -1,19 +1,62 @@
 ﻿.sidebar {
   /*width: 6.5rem;
   min-height: 100vh;*/
-  position: fixed;
+  /*position: fixed;*/
   top: 60px;
   left: 0;
   bottom: 0;
   transition: all 0.3s;
-  overflow-y: auto;
+  /*overflow-y: auto;*/
 }
+
+.sidebar {
+  /* width: 6.5rem;*/
+  min-height: 100vh;
+}
+
+.header-medical {
+  /*width: -webkit-fill-available;
+  position: fixed;*/
+}
+
+.dashboard ul {
+  display: flex;
+  padding-top: 50px;
+  justify-content: center;
+  border: 0.1px solid #0068f82e;
+}
+
+.content-medical {
+  display: flex;
+}
+
+.main {
+  margin-top: 70px;
+  padding-top: 25px;
+}
+
+.main-content {
+  
+}
+
+.content {
+  width: 100%;
+  background-color: #f6f9ff;
+}
+
+.footer {
+  position: absolute;
+  width: -webkit-fill-available;
+  bottom: 0;
+}
+
+
+
 
 /*.dashboard {
   width: 6.5rem;
   min-height: 100vh;
 }*/
-
 .bg-xx {
   background-color: #f6f9ff !important;
 }
