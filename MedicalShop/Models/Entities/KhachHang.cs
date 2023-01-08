@@ -31,6 +31,7 @@ namespace MedicalShop.Models.Entities
         public int? Idcn { get; set; }
         public bool? Active { get; set; }
 
+        public virtual NhanVien IdnvNavigation { get; set; }
         public virtual TaiKhoan UserNameNavigation { get; set; }
         public virtual ICollection<NganHangKh> NganHangKh { get; set; }
         public virtual ICollection<PhieuXuat> PhieuXuat { get; set; }

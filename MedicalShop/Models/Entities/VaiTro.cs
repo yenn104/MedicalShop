@@ -9,14 +9,7 @@ namespace MedicalShop.Models.Entities
 {
     public partial class VaiTro
     {
-        public VaiTro()
-        {
-            VaiTroTk = new HashSet<VaiTroTk>();
-        }
-
         public int Id { get; set; }
-        public int? Idcn { get; set; }
-        public int? Idcnang { get; set; }
         public string MaVt { get; set; }
         public string TenVt { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -24,9 +17,5 @@ namespace MedicalShop.Models.Entities
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
         public bool? Active { get; set; }
-
-        public virtual ChiNhanh IdcnNavigation { get; set; }
-        public virtual ChucNang IdcnangNavigation { get; set; }
-        public virtual ICollection<VaiTroTk> VaiTroTk { get; set; }
     }
 }

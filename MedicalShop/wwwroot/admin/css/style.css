@@ -9,6 +9,16 @@
   /*overflow-y: auto;*/
 }
 
+.mg-r {
+  padding: 0px 20px;
+}
+
+.center {
+  width: 50%;
+  text-align: center;
+  padding-left: 21%;
+}
+
 .sidebar {
   /* width: 6.5rem;*/
   min-height: 100vh;
@@ -21,9 +31,13 @@
 
 .dashboard ul {
   display: flex;
-  padding-top: 50px;
+  padding-top: 90px;
   justify-content: center;
   border: 0.1px solid #0068f82e;
+  /*scoll*/
+  /*overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 750px;*/
 }
 
 .content-medical {
@@ -63,7 +77,7 @@
 
 .medical-title {
   display: inline;
-  font-size: 18px;
+  font-size: 1.6rem;
   font-weight: 800;
   text-align: center;
   text-transform: uppercase;
@@ -77,3 +91,34 @@ a:hover {
 }
 
 
+.table th{
+  color: darkblue;
+}
+
+.table {
+  color: black;
+}
+
+.table {
+  font-size: 16px;
+}
+
+.text-left span{
+  text-align: left !important;
+}
+
+
+/*title*/
+.pagetitle {
+  margin-bottom: 10px;
+}
+
+.pagetitle h1 {
+  font-size: 24px;
+  margin-bottom: 0;
+  font-weight: 600;
+  color: #022ca9;
+}
+
+
+/*.dashboard ul{ display: flex;padding-top: 90px;justify-content: center;border: 0.1px solid #0068f82e; overflow-y: auto;overflow-x: hidden;max-height: 750px;}*/

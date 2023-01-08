@@ -18,7 +18,7 @@ namespace MedicalShop.Models.Entities
         public int? Idhttt { get; set; }
         public string SoPhieu { get; set; }
         public DateTime? DateOfPayment { get; set; }
-        public decimal? TotalMoney { get; set; }
+        public double? TotalMoney { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

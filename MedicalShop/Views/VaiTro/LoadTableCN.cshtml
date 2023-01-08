@@ -1,0 +1,117 @@
+﻿@model IList<MedicalShop.Models.Entities.ChucNang>
+
+@{
+  MedicalShopContext context = new MedicalShopContext();
+  List<Menu> listmenu()
+  {
+    return context.Menu.Where(x => x.Active == true).ToList();
+  }
+}
+
+
+<tbody id="chucnang">
+
+  @if (Enumerable.Count(ViewBag.ListCN) > 0)
+  {
+    @foreach (var menu in listmenu())
+    {
+      int i = 0;
+      @foreach (var item in ViewBag.ListCN)
+      {
+        if (item.Idmenu == menu.Id)
+        {
+          <tr class="wh-input" onchange="addListCN(@menu.Id)">
+            <td class="text-left">
+              <span>@menu.TenMenu</span>
+              <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
+            </td>
+            <td>
+              @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
+              @Html.CheckBox("Import", item.Import == true ? true : false)
+            </td>
+            <td>
+              @Html.CheckBox("Update", item.Update == true ? true : false)
+            </td>
+            <td>
+              @Html.CheckBox("Delete", item.Delete == true ? true : false)
+            </td>
+            <td>
+              @Html.CheckBox("Print", item.Print == true ? true : false)
+            </td>
+            <td>
+              @Html.CheckBox("Export", item.Export == true ? true : false)
+            </td>
+            <td>
+
+              @Html.CheckBox("Person", item.Person == true ? true : false)
+            </td>
+            @*<td>
+                  <button value="@item.Id" class="edit btn btn-primary" style="margin-right: 5px" id="edit">Sửa</button>
+                  <button value="@item.Id" class="remove btn btn-danger">Xóa</button>
+              </td>*@
+          </tr>
+          i++;
+        }
+      }
+      if (i == 0)
+      {
+        <tr class="wh-input" onchange="addListCN(@menu.Id)">
+          <td class="text-left">
+            <span>@menu.TenMenu</span>
+            <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
+            @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
+          </td>
+          <td>
+            @Html.CheckBox("Import")
+          </td>
+          <td>
+            @Html.CheckBox("Update")
+          </td>
+          <td>
+            @Html.CheckBox("Delete")
+          </td>
+          <td>
+            @Html.CheckBox("Print")
+          </td>
+          <td>
+            @Html.CheckBox("Export")
+          </td>
+          <td>
+            @Html.CheckBox("Person")
+          </td>
+        </tr>
+      }
+    }
+  }
+  else
+  {
+    @foreach (var menu in listmenu())
+    {
+      <tr class="wh-input" onchange="addListCN(@menu.Id)">
+        <td class="text-left">
+          <span>@menu.TenMenu</span>
+          <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
+          @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
+        </td>
+        <td>
+          @Html.CheckBox("Import")
+        </td>
+        <td>
+          @Html.CheckBox("Update")
+        </td>
+        <td>
+          @Html.CheckBox("Delete")
+        </td>
+        <td>
+          @Html.CheckBox("Print")
+        </td>
+        <td>
+          @Html.CheckBox("Export")
+        </td>
+        <td>
+          @Html.CheckBox("Person")
+        </td>
+      </tr>
+    }
+  }
+</tbody>

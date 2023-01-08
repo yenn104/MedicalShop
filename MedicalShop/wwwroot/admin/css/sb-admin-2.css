@@ -10185,7 +10185,7 @@ a:focus {
 }
 
 .topbar .navbar-search {
-  width: 25rem;
+  width: 22rem;
 }
 
 .topbar .navbar-search input {
@@ -10392,6 +10392,7 @@ a:focus {
   text-decoration: none;
   border-radius: 0.35rem;
   white-space: nowrap;
+  //border-bottom: 0.1px solid #00000045;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:hover,

@@ -7,18 +7,12 @@ using System.Collections.Generic;
 
 namespace MedicalShop.Models.Entities
 {
-    public partial class PhieuXuat
+    public partial class HhImage
     {
-        public PhieuXuat()
-        {
-            ChiTietPhieuXuat = new HashSet<ChiTietPhieuXuat>();
-            TrangThai = new HashSet<TrangThai>();
-        }
-
         public int Id { get; set; }
-        public int? Idkh { get; set; }
-        public int? Idnv { get; set; }
-        public string SoPx { get; set; }
+        public int? Idhh { get; set; }
+        public string Type { get; set; }
+        public string Name { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
@@ -26,9 +20,6 @@ namespace MedicalShop.Models.Entities
         public int? Idcn { get; set; }
         public bool? Active { get; set; }
 
-        public virtual KhachHang IdkhNavigation { get; set; }
-        public virtual NhanVien IdnvNavigation { get; set; }
-        public virtual ICollection<ChiTietPhieuXuat> ChiTietPhieuXuat { get; set; }
-        public virtual ICollection<TrangThai> TrangThai { get; set; }
+        public virtual HangHoa IdhhNavigation { get; set; }
     }
 }

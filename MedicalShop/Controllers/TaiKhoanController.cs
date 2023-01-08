@@ -14,7 +14,7 @@ namespace MedicalShop.Controllers
 {
   public class TaiKhoanController : Controller
   {
-    private MedicalShopContext context = new MedicalShopContext();
+    
 
     public IActionResult Index()
     {
@@ -34,28 +34,30 @@ namespace MedicalShop.Controllers
     {
       if (ModelState.IsValid)
       {
+        MedicalShopContext context = new MedicalShopContext();
         returnUrl = (string)TempData["returnUrl"];
         string user = account.UserName;
         string pass = account.Password;
         var acc = context.TaiKhoan.FirstOrDefault(s => s.UserName.Equals(user) && s.Password.Equals(pass));
         if (acc != null)
         {
+          PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
           if (acc.Staff == true)
           {
             NhanVien nv = context.NhanVien.FirstOrDefault(n => n.UserName.Equals(acc.UserName));
             var claims = new List<Claim>
               {
-                  new Claim(ClaimTypes.Name, account.UserName),
-                  new Claim(ClaimTypes.Role, "NV"),
-                  new Claim("UserID", nv.Id.ToString()),
-                  new Claim("Staff", acc.Staff.ToString()),
-                  new Claim("NVV", nv.TenNv),
+                new Claim(ClaimTypes.Name, account.UserName),
+                new Claim(ClaimTypes.Role, "NV"),
+                new Claim("VaiTro", vaitro.Idvt.ToString()),
+                new Claim(nv.Id.ToString(), nv.TenNv),
+                new Claim(acc.Staff.ToString(), "Nhân viên"),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
             if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                              && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                                && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
             {
               return Redirect(returnUrl);
             }
@@ -71,9 +73,8 @@ namespace MedicalShop.Controllers
               {
                   new Claim(ClaimTypes.Name, account.UserName),
                   new Claim(ClaimTypes.Role, "KH"),
-                  new Claim("UserID", kh.Id.ToString()),
-                  new Claim("Staff", acc.Staff.ToString()),
-                  new Claim("KHH", kh.TenKh),
+                  new Claim("VaiTro", vaitro.Idvt.ToString()),
+                  new Claim(kh.Id.ToString(), kh.TenKh),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -107,21 +108,19 @@ namespace MedicalShop.Controllers
 
     [Authorize]
     [Route("/User")]
-    public IActionResult ThongTin(string username)
-    {    
-      TaiKhoan acc = context.TaiKhoan.FirstOrDefault(s => s.UserName.Equals(username));
-      if (acc.Iduser != null && acc.Iduser != 0)
+    public IActionResult ThongTin(int id)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      TaiKhoan acc = context.TaiKhoan.FirstOrDefault(s => s.Id.Equals(id));
+      if (acc.Staff != null || acc.Staff == true)
       {
-        if (acc.Staff == true)
-        {
-          NhanVien nv = context.NhanVien.FirstOrDefault(n => n.Id.Equals(acc.Iduser));
-          ViewBag.User = nv;
-        }
-        else
-        {
-          KhachHang kh = context.KhachHang.FirstOrDefault(s => s.Id.Equals(acc.Iduser));
-          ViewBag.User = kh;
-        }
+        NhanVien nv = context.NhanVien.FirstOrDefault(a => a.Id.Equals(id));
+        ViewBag.User = nv;
+      }
+      else
+      {
+        KhachHang kh = context.KhachHang.FirstOrDefault(b => b.Id.Equals(id));
+        ViewBag.User = kh;
       }    
       return View(acc);
     }
@@ -130,11 +129,36 @@ namespace MedicalShop.Controllers
     [HttpPost]
     public ActionResult SignUp(TaiKhoan account)
     {
+      MedicalShopContext context = new MedicalShopContext();
       if (ModelState.IsValid)
       {
 
       }
       return View();
     }
+
+
+
+    [HttpPost("/change-pass")]
+    public string ChangePassword(string passWord, string newPassWord)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      TaiKhoan tk = context.TaiKhoan.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+      if (tk.Password != passWord)
+      {
+        return "<div class='invalid-feedback trangThai' style='display:block;'>Mật khẩu không đúng</div>";
+      }
+      else
+      {
+        tk.Password = newPassWord;
+        context.TaiKhoan.Update(tk);
+        context.SaveChanges();
+        return "<div class='valid-feedback trangThai' style='display:block;'>Đổi mật khẩu thành công</div>";
+      }
+    }
+
+
+
+
   }
 }

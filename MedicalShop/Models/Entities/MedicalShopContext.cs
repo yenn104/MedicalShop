@@ -29,6 +29,7 @@ namespace MedicalShop.Models.Entities
         public virtual DbSet<Dvvc> Dvvc { get; set; }
         public virtual DbSet<HangHoa> HangHoa { get; set; }
         public virtual DbSet<HhDvt> HhDvt { get; set; }
+        public virtual DbSet<HhImage> HhImage { get; set; }
         public virtual DbSet<Hsx> Hsx { get; set; }
         public virtual DbSet<Httt> Httt { get; set; }
         public virtual DbSet<KhachHang> KhachHang { get; set; }
@@ -41,13 +42,14 @@ namespace MedicalShop.Models.Entities
         public virtual DbSet<NhomHangHoa> NhomHangHoa { get; set; }
         public virtual DbSet<NhomNhanVien> NhomNhanVien { get; set; }
         public virtual DbSet<Nsx> Nsx { get; set; }
+        public virtual DbSet<NvImage> NvImage { get; set; }
+        public virtual DbSet<PhanQuyen> PhanQuyen { get; set; }
         public virtual DbSet<PhieuNhap> PhieuNhap { get; set; }
         public virtual DbSet<PhieuTraNo> PhieuTraNo { get; set; }
         public virtual DbSet<PhieuXuat> PhieuXuat { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoan { get; set; }
         public virtual DbSet<TrangThai> TrangThai { get; set; }
         public virtual DbSet<VaiTro> VaiTro { get; set; }
-        public virtual DbSet<VaiTroTk> VaiTroTk { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -78,7 +80,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Mail).HasMaxLength(100);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
@@ -109,7 +113,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idpn).HasColumnName("IDPN");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Nsx)
                     .HasColumnName("NSX")
@@ -166,15 +172,15 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idpx).HasColumnName("IDPX");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Nsx)
                     .HasColumnName("NSX")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Price)
-                    .HasColumnType("decimal(18, 0)")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.Price).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
 
@@ -205,9 +211,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idptn).HasColumnName("IDPTN");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Money).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.IdpnNavigation)
                     .WithMany(p => p.ChiTietTraNo)
@@ -234,11 +240,15 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idmenu).HasColumnName("IDMenu");
 
+                entity.Property(e => e.Idvt).HasColumnName("IDVT");
+
                 entity.Property(e => e.MaCnang)
                     .HasColumnName("MaCNang")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenCnang)
                     .HasColumnName("TenCNang")
@@ -273,7 +283,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaTG")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Slqd).HasColumnName("SLQD");
             });
@@ -296,7 +308,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaDVT")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenDvt)
                     .HasColumnName("TenDVT")
@@ -321,7 +335,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaDVVC")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
@@ -346,6 +362,8 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idcn).HasColumnName("IDCN");
 
+                entity.Property(e => e.Iddvtc).HasColumnName("IDDVTC");
+
                 entity.Property(e => e.Idhsx).HasColumnName("IDHSX");
 
                 entity.Property(e => e.Idnhh).HasColumnName("IDNHH");
@@ -358,9 +376,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaHH")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.MoreImages).HasColumnType("xml");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
 
@@ -407,7 +425,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idhh).HasColumnName("IDHH");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Slqd).HasColumnName("SLQD");
 
@@ -422,6 +442,39 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idhh)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_HH_DVT_HangHoa");
+            });
+
+            modelBuilder.Entity<HhImage>(entity =>
+            {
+                entity.ToTable("HH_Image");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
+
+                entity.Property(e => e.Idhh).HasColumnName("IDHH");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Name).HasMaxLength(500);
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+
+                entity.HasOne(d => d.IdhhNavigation)
+                    .WithMany(p => p.HhImage)
+                    .HasForeignKey(d => d.Idhh)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_HH_Image_HangHoa");
             });
 
             modelBuilder.Entity<Hsx>(entity =>
@@ -444,7 +497,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Mail).HasMaxLength(100);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
@@ -471,7 +526,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaHTTT")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
@@ -504,7 +561,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Mail).HasMaxLength(100);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
@@ -515,6 +574,11 @@ namespace MedicalShop.Models.Entities
                     .HasMaxLength(500);
 
                 entity.Property(e => e.UserName).HasMaxLength(50);
+
+                entity.HasOne(d => d.IdnvNavigation)
+                    .WithMany(p => p.KhachHang)
+                    .HasForeignKey(d => d.Idnv)
+                    .HasConstraintName("FK_KhachHang_NhanVien");
 
                 entity.HasOne(d => d.UserNameNavigation)
                     .WithMany(p => p.KhachHang)
@@ -536,7 +600,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.MaMenu).HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenMenu).HasMaxLength(500);
             });
@@ -559,7 +625,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaNH")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
@@ -590,7 +658,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idnh).HasColumnName("IDNH");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Stk)
                     .HasColumnName("STK")
@@ -625,7 +695,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idnh).HasColumnName("IDNH");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Stk)
                     .HasColumnName("STK")
@@ -664,7 +736,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Mail).HasMaxLength(100);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
@@ -707,7 +781,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Mail).HasMaxLength(100);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.MoreImages).HasColumnType("xml");
 
@@ -749,7 +825,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaNHH")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenNhh)
                     .HasColumnName("TenNHH")
@@ -770,7 +848,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaNNV")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenNnv)
                     .HasColumnName("TenNNV")
@@ -793,11 +873,73 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaNSX")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenNsx)
                     .HasColumnName("TenNSX")
                     .HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<NvImage>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("NV_Image");
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
+
+                entity.Property(e => e.Idnv).HasColumnName("IDNV");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Name).HasMaxLength(500);
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+
+                entity.HasOne(d => d.IdnvNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.Idnv)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_NV_Image_NhanVien");
+            });
+
+            modelBuilder.Entity<PhanQuyen>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
+
+                entity.Property(e => e.Idtk).HasColumnName("IDTK");
+
+                entity.Property(e => e.Idvt).HasColumnName("IDVT");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.IdtkNavigation)
+                    .WithMany(p => p.PhanQuyen)
+                    .HasForeignKey(d => d.Idtk)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_VaiTro_TK_TaiKhoan");
             });
 
             modelBuilder.Entity<PhieuNhap>(entity =>
@@ -812,7 +954,11 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idncc).HasColumnName("IDNCC");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.Idnv).HasColumnName("IDNV");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.SoPn)
                     .HasColumnName("SoPN")
@@ -827,6 +973,11 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idncc)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PhieuNhap_NhaCungCap");
+
+                entity.HasOne(d => d.IdnvNavigation)
+                    .WithMany(p => p.PhieuNhap)
+                    .HasForeignKey(d => d.Idnv)
+                    .HasConstraintName("FK_PhieuNhap_NhanVien");
             });
 
             modelBuilder.Entity<PhieuTraNo>(entity =>
@@ -845,11 +996,11 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idhttt).HasColumnName("IDHTTT");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.SoPhieu).HasMaxLength(50);
-
-                entity.Property(e => e.TotalMoney).HasColumnType("decimal(18, 0)");
 
                 entity.HasOne(d => d.IdhtttNavigation)
                     .WithMany(p => p.PhieuTraNo)
@@ -872,7 +1023,11 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idkh).HasColumnName("IDKH");
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.Idnv).HasColumnName("IDNV");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.SoPx)
                     .HasColumnName("SoPX")
@@ -883,6 +1038,11 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idkh)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PhieuXuat_KhachHang");
+
+                entity.HasOne(d => d.IdnvNavigation)
+                    .WithMany(p => p.PhieuXuat)
+                    .HasForeignKey(d => d.Idnv)
+                    .HasConstraintName("FK_PhieuXuat_NhanVien");
             });
 
             modelBuilder.Entity<TaiKhoan>(entity =>
@@ -899,11 +1059,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Iduser).HasColumnName("IDUser");
-
-                entity.Property(e => e.Idvt).HasColumnName("IDVT");
-
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Password).HasMaxLength(50);
 
@@ -934,7 +1092,9 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("MaTT")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.NameOfShipper).HasMaxLength(500);
 
@@ -973,62 +1133,17 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Idcn).HasColumnName("IDCN");
-
-                entity.Property(e => e.Idcnang).HasColumnName("IDCNang");
-
                 entity.Property(e => e.MaVt)
                     .HasColumnName("MaVT")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TenVt)
                     .HasColumnName("TenVT")
                     .HasMaxLength(500);
-
-                entity.HasOne(d => d.IdcnNavigation)
-                    .WithMany(p => p.VaiTro)
-                    .HasForeignKey(d => d.Idcn)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_VaiTro_ChiNhanh");
-
-                entity.HasOne(d => d.IdcnangNavigation)
-                    .WithMany(p => p.VaiTro)
-                    .HasForeignKey(d => d.Idcnang)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_VaiTro_ChucNang");
-            });
-
-            modelBuilder.Entity<VaiTroTk>(entity =>
-            {
-                entity.ToTable("VaiTro_TK");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Idtk).HasColumnName("IDTK");
-
-                entity.Property(e => e.Idvt).HasColumnName("IDVT");
-
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.IdtkNavigation)
-                    .WithMany(p => p.VaiTroTk)
-                    .HasForeignKey(d => d.Idtk)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_VaiTro_TK_TaiKhoan");
-
-                entity.HasOne(d => d.IdvtNavigation)
-                    .WithMany(p => p.VaiTroTk)
-                    .HasForeignKey(d => d.Idvt)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_VaiTro_TK_VaiTro");
             });
 
             OnModelCreatingPartial(modelBuilder);

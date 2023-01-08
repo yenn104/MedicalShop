@@ -1,0 +1,67 @@
+﻿@model MedicalShop.Models.Entities.HangHoa
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+}
+
+
+<div class="form-group p-2 mb-2" id="groupTTChiTiet" style="border-radius: 5px; border: 1px solid black;">
+  <div class="row">
+    <label class="col-sm-1 col-lg-1 col-form-label">Mã hàng hóa</label>
+    <div class="col-md-5 mb-2 col-lg-5">
+      <p>hh</p>
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">Số lô</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <p>hh</p>
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">ĐV tính</label>
+    <div class="col-sm-2 col-lg-2">
+      <input type="text" class="form-control" id="DVT" readonly placeholder="Đơn vị tính">
+    </div>
+
+  </div>
+  <div class="row">
+    <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <select id="ThueXuat">
+        <option selected value="0">0</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+      </select>
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">Số lượng</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" class="form-control" data-toggle="popover" data-content="Không được để trống" oninput="inputSLHH()" id="SLHH" placeholder="Số lượng">
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">Đơn giá</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" class="form-control" oninput="inputDoGia()" id="DonGia" placeholder="Đơn giá">
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">Th.Tiền</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" class="form-control" oninput="inputThanhTien()" id="ThanhTien" placeholder="Thành tiền">
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-sm-1 col-lg-1 col-form-label">%CKTM</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" class="form-control" id="ChietKhau" placeholder="Chiếc khấu">
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">Hạn SD</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="HanDung">
+    </div>
+    <label class="col-sm-1 col-lg-1 col-form-label">Ngày SX</label>
+    <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="NgaySX">
+    </div>
+    <div class="col-md-3 mb-2 col-lg-3 d-flex justify-content-end">
+      <button class="btn btn-primary" onclick="addChiTietPhieu()" type="button">Thêm </button>
+    </div>
+  </div>
+</div>

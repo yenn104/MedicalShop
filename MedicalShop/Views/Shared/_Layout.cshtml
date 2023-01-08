@@ -60,16 +60,20 @@
               </a>
 
               @{
-                var acc = User.FindFirst("UserID");
-                string name = null, staff = null, id = null, username = null;
+                var acc = User.FindFirst("VaiTro");
+                string name = null, staff = null, username = null;
+                int idUser = 0;
                 int active = 0;
+                //string id = null;
                 if (acc != null)
                 {
-                  id = acc.Value;
+                  //id = acc.Value;
                   username = acc.Subject.Name;
-                  staff = User.Claims.ElementAt(3).Value;
-                  name = User.Claims.ElementAt(4).Value;
-                  if (staff != null && (staff == "True" || staff == "true" ))
+                  name = User.Claims.ElementAt(3).Value;
+                  idUser = int.Parse(User.Claims.ElementAt(3).Type);
+                  staff = User.Claims.ElementAt(4).Type;
+
+                  if (staff != null && (staff == "True" || staff == "true"))
                   {
                     active = 2;
                   }
@@ -79,25 +83,26 @@
                   }
                 }
               }
-                <ul class="dropdown-menu menu-item">
-                  @if (active == 0)
-                  {
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogIn">Đăng nhập</a></li>
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng ký</a></li>
-                  }
-                  @if (active == 1)
-                  {
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="ThongTin" asp-route-username="@username">@name</a></li>
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li>
-                  }
-                  @if (active == 2)
-                  {
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="ThongTin" asp-route-username="@username">@name</a></li>
-                    <li><a asp-area="" asp-controller="QuanLy" asp-action="Index">Quản lý</a></li>
-                    <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li> 
-                  }
-                </ul>
-              </li>
+
+              <ul class="dropdown-menu menu-item">
+                @if (active == 0)
+                {
+                  <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogIn">Đăng nhập</a></li>
+                  <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng ký</a></li>
+                }
+                @if (active == 1)
+                {
+                  <li><a asp-area="" asp-controller="TaiKhoan" asp-action="ThongTin" asp-route-username="@username">@name</a></li>
+                  <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li>
+                }
+                @if (active == 2)
+                {
+                  <li><a asp-area="" asp-controller="QuanLy" asp-action="QuanLy">Quản lý</a></li>
+                  <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li>
+
+                }
+              </ul>
+            </li>
             </ul>
           </div>
 

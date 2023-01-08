@@ -17,6 +17,7 @@ namespace MedicalShop.Models.Entities
 
         public int Id { get; set; }
         public int? Idncc { get; set; }
+        public int? Idnv { get; set; }
         public string SoPn { get; set; }
         public string TenPn { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -27,6 +28,7 @@ namespace MedicalShop.Models.Entities
         public bool? Active { get; set; }
 
         public virtual NhaCungCap IdnccNavigation { get; set; }
+        public virtual NhanVien IdnvNavigation { get; set; }
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhap { get; set; }
         public virtual ICollection<ChiTietTraNo> ChiTietTraNo { get; set; }
     }

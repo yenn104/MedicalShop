@@ -12,7 +12,7 @@ namespace MedicalShop.Models.Entities
         public int Id { get; set; }
         public int? Idpn { get; set; }
         public int? Idptn { get; set; }
-        public decimal? Money { get; set; }
+        public double? Money { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

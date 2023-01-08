@@ -7,27 +7,18 @@ using System.Collections.Generic;
 
 namespace MedicalShop.Models.Entities
 {
-    public partial class TaiKhoan
+    public partial class PhanQuyen
     {
-        public TaiKhoan()
-        {
-            KhachHang = new HashSet<KhachHang>();
-            NhanVien = new HashSet<NhanVien>();
-            PhanQuyen = new HashSet<PhanQuyen>();
-        }
-
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public bool? Staff { get; set; }
+        public int? Idtk { get; set; }
+        public int? Idvt { get; set; }
+        public int? Idcn { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
         public bool? Active { get; set; }
 
-        public virtual ICollection<KhachHang> KhachHang { get; set; }
-        public virtual ICollection<NhanVien> NhanVien { get; set; }
-        public virtual ICollection<PhanQuyen> PhanQuyen { get; set; }
+        public virtual TaiKhoan IdtkNavigation { get; set; }
     }
 }

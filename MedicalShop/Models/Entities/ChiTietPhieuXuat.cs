@@ -15,7 +15,7 @@ namespace MedicalShop.Models.Entities
         public int? Idhh { get; set; }
         public int? Iddvt { get; set; }
         public int? Quantity { get; set; }
-        public decimal? Price { get; set; }
+        public double? Price { get; set; }
         public DateTime? Nsx { get; set; }
         public DateTime? Hsd { get; set; }
         public DateTime? CreatedDate { get; set; }

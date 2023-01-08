@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,17 +8,23 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles ="NV")]
   public class QuanLyController : Controller
   {
-    public IActionResult Index()
+    private MedicalShopContext context = new MedicalShopContext();
+
+    [Route("/QuanLy")]
+    public IActionResult QuanLy()
     {
+      
       return View();
     }
 
-    //[Authorize(Roles ="NV")]
-    public IActionResult QuanLy()
+    public IActionResult HoSo(int id)
     {
-      return View();
+      ViewBag.idUser = id;
+      NhanVien nv = context.NhanVien.FirstOrDefault(a => a.Id.Equals(id));
+      return View(nv);
     }
 
 

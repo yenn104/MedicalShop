@@ -9,13 +9,9 @@ namespace MedicalShop.Models.Entities
 {
     public partial class ChucNang
     {
-        public ChucNang()
-        {
-            VaiTro = new HashSet<VaiTro>();
-        }
-
         public int Id { get; set; }
         public int? Idmenu { get; set; }
+        public int? Idvt { get; set; }
         public string MaCnang { get; set; }
         public string TenCnang { get; set; }
         public bool? Import { get; set; }
@@ -31,6 +27,5 @@ namespace MedicalShop.Models.Entities
         public bool? Active { get; set; }
 
         public virtual Menu IdmenuNavigation { get; set; }
-        public virtual ICollection<VaiTro> VaiTro { get; set; }
     }
 }

@@ -9,6 +9,13 @@ namespace MedicalShop.Models.Entities
 {
     public partial class NhanVien
     {
+        public NhanVien()
+        {
+            KhachHang = new HashSet<KhachHang>();
+            PhieuNhap = new HashSet<PhieuNhap>();
+            PhieuXuat = new HashSet<PhieuXuat>();
+        }
+
         public int Id { get; set; }
         public int? Idnnv { get; set; }
         public string MaNv { get; set; }
@@ -32,5 +39,8 @@ namespace MedicalShop.Models.Entities
 
         public virtual NhomNhanVien IdnnvNavigation { get; set; }
         public virtual TaiKhoan UserNameNavigation { get; set; }
+        public virtual ICollection<KhachHang> KhachHang { get; set; }
+        public virtual ICollection<PhieuNhap> PhieuNhap { get; set; }
+        public virtual ICollection<PhieuXuat> PhieuXuat { get; set; }
     }
 }
