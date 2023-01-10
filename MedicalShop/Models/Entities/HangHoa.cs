@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -18,10 +19,19 @@ namespace MedicalShop.Models.Entities
       HhImage = new HashSet<HhImage>();
     }
 
+
     public int Id { get; set; }
+
+    [DisplayName("Nhóm HH")]
     public int? Idnhh { get; set; }
+
+    [DisplayName("HSX")]
     public int? Idhsx { get; set; }
+
+    [DisplayName("NSX")]
     public int? Idnsx { get; set; }
+
+    [DisplayName("ĐVT")]
     public int? Iddvtc { get; set; }
 
     [DisplayName("Mã HH")]
@@ -30,30 +40,34 @@ namespace MedicalShop.Models.Entities
     [DisplayName("Tên HH")]
     public string TenHh { get; set; }
 
+    [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-----")]
     public string BarCode { get; set; }
 
     [DisplayName("Hình ảnh")]
     public string Image { get; set; }
 
-    [DisplayName("Số lượng")]
+    [DisplayName("SL")]
     public int? Quantity { get; set; }
 
     [DisplayName("Chi tiết")]
+    [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-----")]
     public string Detail { get; set; }
 
     [DisplayName("Ngày tạo")]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy HH:mm:ss}")]
     public DateTime? CreatedDate { get; set; }
 
     [DisplayName("NV tạo")]
     public int? CreatedBy { get; set; }
 
     [DisplayName("Ngày sửa")]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy HH:mm:ss}")]
     public DateTime? ModifiedDate { get; set; }
 
     [DisplayName("NV sửa")]
     public int? ModifiedBy { get; set; }
 
-    [DisplayName("Mã CN")]
+    [DisplayName("Chi Nhánh")]
     public int? Idcn { get; set; }
 
     [DisplayName("Trạng thái")]

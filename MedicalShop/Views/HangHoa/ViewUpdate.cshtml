@@ -1,0 +1,148 @@
+﻿@model MedicalShop.Models.Entities.HangHoa
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  List<Hsx> getListHSX()
+  {
+    return context.Hsx.ToList();
+  }
+  List<NhomHangHoa> getListNHH()
+  {
+    return context.NhomHangHoa.ToList();
+  }
+  List<Nsx> getListNSX()
+  {
+    return context.Nsx.ToList();
+  }
+  List<Dvt> getListDVT()
+  {
+    return context.Dvt.ToList();
+  }
+}
+
+<div class="card" style=" margin-bottom: 70px;">
+  <div class="card-body">
+    <form enctype="multipart/form-data" action="/HangHoa/updateHangHoa" method="post">
+      <div class="forms-body">
+        <div class="form-group" style="display: flex; ">
+          <div>
+            <label style="margin-bottom: 70px;">Hình ảnh</label>
+            <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
+          </div>
+          <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
+            @if (Model.Image != null)
+            {
+              <img alt="" src="~/lib/imagesHH/@Model.Image" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+            }
+            else
+            {
+              <img alt="" src="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+            }
+          </div>
+        </div>
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">Mã HH</label>
+            <input asp-for="@Model.MaHh" type="text" class="form-control" required>
+            <input asp-for="@Model.Id" type="hidden" />
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Tên HH</label>
+            <input asp-for="@Model.TenHh" type="text" class="form-control" required>
+          </div>
+
+        </div>
+
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">DVT</label>
+            <select required class="custom-select" asp-for="@Model.Iddvtc">
+              @foreach (Dvt hh in getListDVT())
+              {
+                <option value="@hh.Id">
+                  @hh.TenDvt
+                </option>
+              }
+            </select>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Nhóm HH</label>
+            <select required class="custom-select" asp-for="@Model.Idnhh">
+              @foreach (NhomHangHoa hh in getListNHH())
+              {
+                <option value="@hh.Id">
+                  @hh.TenNhh
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex">
+
+          <div class="group-left">
+            <label style="margin:7px 0;">NSX</label>
+            <select required class="custom-select" asp-for="@Model.Idnsx">
+              @foreach (Nsx hh in getListNSX())
+              {
+                <option value="@hh.Id">
+                  @hh.TenNsx
+                </option>
+              }
+            </select>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">HSX</label>
+            <select required class="custom-select" asp-for="@Model.Idhsx">
+              @foreach (Hsx hh in getListHSX())
+              {
+                <option value="@hh.Id">
+                  @hh.TenHsx
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">Barcode</label>
+            <input asp-for="@Model.BarCode" type="text" class="form-control" required>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Chi tiết</label>
+            <input asp-for="@Model.Detail" type="text" class="form-control" required>
+          </div>
+        </div>
+
+      </div>
+      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 20px 0px 10px 0px; ">
+        <input type="submit" class="btn btn-primary" value="Lưu">
+        <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+      </div>
+
+
+    </form>
+
+  </div>
+</div>
+<script>
+           function readURL(input, previewId) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $(previewId).attr('src', e.target.result);
+                        $(previewId).hide();
+                        $(previewId).fadeIn(650);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#Fileimage").change(function() {
+                readURL(this, '#image1');
+            });
+
+</script>

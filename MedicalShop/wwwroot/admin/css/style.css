@@ -120,5 +120,45 @@ a:hover {
   color: #022ca9;
 }
 
+.nullable {
+  color: red;
+  font-style: italic;
+}
+
+.slide-image img {
+  border: 0.1px solid #9496a352;
+  border-radius: 13px;
+  padding: 0px 2px;
+  margin: 5px 2px;
+}
+
+
+.group-left {
+  width: 35%;
+}
+
+
+.group-right {
+  margin-left: 5%;
+  width: 60%;
+}
+
+.lighter{
+  font-weight: lighter;
+}
+
+.color-black, .lighter{
+  color: black;
+}
+
+/*.inputCT {
+  width: 50%;
+  height: auto;
+}
+
+.inputCT:hover {
+  width: 100%;
+  
+}*/
 
 /*.dashboard ul{ display: flex;padding-top: 90px;justify-content: center;border: 0.1px solid #0068f82e; overflow-y: auto;overflow-x: hidden;max-height: 750px;}*/

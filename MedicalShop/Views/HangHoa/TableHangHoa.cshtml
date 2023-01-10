@@ -1,0 +1,159 @@
+﻿@model IEnumerable<MedicalShop.Models.Entities.HangHoa>
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+  MedicalShopContext context = new MedicalShopContext();
+
+  List<HangHoa> listHH()
+  {
+    return context.HangHoa.Where(a => a.Active == true).ToList();
+  }
+
+  List<NhomHangHoa> getListNHH()
+  {
+    return context.NhomHangHoa.ToList();
+  }
+
+}
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+                        window.onload = function () {
+                            alert("@Html.Raw(@TempData["ThongBao"])");
+                    };
+  </script>
+}
+
+
+<div style="margin-bottom: 20px; display: flex; justify-content: space-between">
+  <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+  <div style="display:flex;justify-content:space-around;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" onchange="changeHH()" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
+      </div>
+      <div class="dropdown">
+        <select id="nhomHH" onchange="changeHH()"
+                class="custom-select" aria-label="Default select example">
+          <option selected disabled value="0">Nhóm hàng hoá</option>
+          @foreach (NhomHangHoa n in getListNHH())
+          {
+            <option value="@n.Id">@n.TenNhh</option>
+          }
+        </select>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="tableHH">
+  <input type="hidden" id="SL" value="9" />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          @Html.DisplayNameFor(model => model.MaHh)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.TenHh)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.BarCode)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Detail)
+        </th>
+        <th>Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in listHH())
+      {
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.MaHh)
+          </td>
+          <td style="max-width: 250px;">
+            @Html.DisplayFor(modelItem => item.TenHh)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.BarCode)
+          </td>
+          <td>
+            <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;">
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+          </td>
+          <td style="max-width: 250px;">
+            @Html.DisplayFor(modelItem => item.Detail)
+          </td>
+          <td>
+            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
+            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
+            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<script>
+  function changeHH() {
+    var active = $('#active').val();
+    var nhomHH = $('#nhomHH').val();
+    var sl = $('#tableHH ul').length;
+    $.ajax({
+      type: "post",
+      url: "/loadTableHH",
+      data: "active=" + active + "&nhomHH=" + nhomHH + "&SL=" + sl,
+      success: function (result) {
+        $('#tableHH').replaceWith(result);
+      },
+      error: function () {
+        alert("Fail to delete");
+      }
+    });
+  }
+  //function loadMore() {
+  //  var active = $('#active').val();
+  //  var nhomHH = $('#nhomHH').val();
+  //  var sl = $('#tableHH tr').length;
+  //  $.ajax({
+  //    type: "post",
+  //    url: "/loadMoreTableHH",
+  //    data: "active=" + active + "&nhomHH=" + nhomHH + "&SL=" + sl,
+  //    success: function (result) {
+  //      $('#tableHH').replaceWith(result);
+  //    },
+  //    error: function () {
+  //      alert("Fail to delete");
+  //    }
+  //  });
+  //}
+  //$('#search').keyup(function (e) {
+  //  var key = $(this).val();
+  //  $.ajax({
+  //    type: "post",
+  //    url: "/searchHH",
+  //    data: "key=" + key,
+  //    success: function (result) {
+  //      $('#tableHH').replaceWith(result);
+  //    },
+  //    error: function () {
+  //      alert("Fail");
+  //    }
+  //  });
+  //});
+
+</script>

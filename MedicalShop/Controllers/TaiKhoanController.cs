@@ -52,6 +52,7 @@ namespace MedicalShop.Controllers
                 new Claim("VaiTro", vaitro.Idvt.ToString()),
                 new Claim(nv.Id.ToString(), nv.TenNv),
                 new Claim(acc.Staff.ToString(), "Nhân viên"),
+                new Claim("ChiNhanh", vaitro.Idcn.ToString()),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
