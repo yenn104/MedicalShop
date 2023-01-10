@@ -37,12 +37,12 @@
 <body id="page-top">
   <div class="layout-medical">
     @* HEADER IN HERE *@
-    <div class="header-medical flex-column d-flex fixed-top ">
+    <div class="header-medical flex-column d-flex fixed-top header">
       <!-- Topbar -->
-      <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r" >
+      <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r fixed-top" >
         @* mb-4 *@
         <a class="sidebar-brand d-flex align-items-center justify-content-center medical-title" href="index.html">
-          <div class="sidebar-brand-text mx-3"><span>Medical Admin</span></div>
+          <div class="sidebar-brand-text mx-3 d-none d-lg-block"><span>Medical Admin</span></div>
         </a>
 
         <!-- Sidebar Toggle (Topbar) -->
@@ -279,16 +279,18 @@
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                <a class="collapse-item" href="cards.html">Dịch vụ vận chuyển</a>
+                <a class="collapse-item" href="/DVVC/Table">Dịch vụ vận chuyển</a>
                 <a class="collapse-item" href="/DVT/Table">Đơn vị tính</a>
                 <a class="collapse-item" href="/HangHoa/Table">Hàng hóa</a>
-                <a class="collapse-item" href="/HangHoa/DSHH">Hàng hóa - Đơn vị tính</a>
-                <a class="collapse-item" href="cards.html">Khách hàng</a>
-                <a class="collapse-item" href="cards.html">Nhà cung cấp</a>
-                <a class="collapse-item" href="/HangHoa/DSHH">Nhóm hàng hóa</a>
-                <a class="collapse-item" href="/HangHoa/DSHH">Nhóm nhân viên</a>
-                <a class="collapse-item" href="cards.html">Nước sản xuất</a>
-                
+                <a class="collapse-item" href="/HHDVT/Table">Hàng hóa - Đơn vị tính</a>
+                <a class="collapse-item" href="/HSX/Table">Hãng sản xuất</a>
+                <a class="collapse-item" href="/KhachHang/Table">Khách hàng</a>
+                <a class="collapse-item" href="/NhaCungCap/Table">Nhà cung cấp</a>
+                <a class="collapse-item" href="/NhanVien/Table">Nhân viên</a>
+                <a class="collapse-item" href="/NhomHH/Table">Nhóm hàng hóa</a>
+                <a class="collapse-item" href="/NhomNV/Table">Nhóm nhân viên</a>
+                <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>
+
               </div>             
             </div>
           </li>

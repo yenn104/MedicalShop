@@ -1,0 +1,29 @@
+﻿@model MedicalShop.Models.Entities.Nsx
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+}
+
+<div class="card" style=" margin-bottom: 70px;">
+  <div class="card-body">
+    <form action="/NSX/Insert" method="post">
+      <div class="forms-body">
+        <div class="form-group">
+          <label style="margin:7px 0;">Mã NSX</label>
+          <input asp-for="@Model.MaNsx" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label style="margin:7px 0;">Tên NSX</label>
+          <input asp-for="@Model.TenNsx" type="text" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
+        <input type="submit" class="btn btn-primary" value="Thêm">
+        <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+      </div>
+
+    </form>
+
+  </div>
+</div>

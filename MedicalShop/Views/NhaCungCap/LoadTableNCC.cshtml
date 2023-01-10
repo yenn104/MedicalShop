@@ -1,0 +1,80 @@
+﻿@model MedicalShop.Models.Entities.NhaCungCap
+
+<div id="tableNCC" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          @Html.DisplayNameFor(model => model.MaNcc)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.TenNcc)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Mail)
+        </th>
+        <th>Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (NhaCungCap item in ViewBag.NCC)
+      {
+        @if (item.Active == false)
+        {
+          <tr style="background-color: #0000000a;">
+            <td>
+              @Html.DisplayFor(modelItem => item.MaNcc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.TenNcc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Mail)
+            </td>
+            <td>
+              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
+              @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục hãng sản xuất này?')" })
+            </td>
+          </tr>
+        }
+        else
+        {
+          <tr>
+            <td>
+              @Html.DisplayFor(modelItem => item.MaNcc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.TenNcc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Mail)
+            </td>
+            <td>
+              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
+              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
+              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

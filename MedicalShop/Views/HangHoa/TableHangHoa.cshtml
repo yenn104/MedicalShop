@@ -26,9 +26,11 @@
 }
 
 
-<div style="margin-bottom: 20px; display: flex; justify-content: space-between">
-  <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
-  <div style="display:flex;justify-content:space-around;">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div style="margin-bottom: 20px">
+    <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+  </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
     <div style="display: flex">
       <div class="dropdown" style="margin-right:10px">
         <select id="active" onchange="changeHH()" class="custom-select">
@@ -37,8 +39,7 @@
         </select>
       </div>
       <div class="dropdown">
-        <select id="nhomHH" onchange="changeHH()"
-                class="custom-select" aria-label="Default select example">
+        <select id="nhomHH" onchange="changeHH()" class="custom-select" aria-label="Default select example">
           <option selected disabled value="0">Nhóm hàng hoá</option>
           @foreach (NhomHangHoa n in getListNHH())
           {
@@ -50,7 +51,7 @@
     </div>
   </div>
 </div>
-<div id="tableHH">
+<div id="tableHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
   <input type="hidden" id="SL" value="9" />
   <table class="table">
     <thead>
@@ -121,7 +122,7 @@
         $('#tableHH').replaceWith(result);
       },
       error: function () {
-        alert("Fail to delete");
+        alert("Failed");
       }
     });
   }

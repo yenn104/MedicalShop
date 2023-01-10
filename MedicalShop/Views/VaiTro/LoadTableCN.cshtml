@@ -4,7 +4,7 @@
   MedicalShopContext context = new MedicalShopContext();
   List<Menu> listmenu()
   {
-    return context.Menu.Where(x => x.Active == true).ToList();
+    return context.Menu.Where(x => x.Active == true).OrderBy(x=>x.TenMenu).ToList();
   }
 }
 

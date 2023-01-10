@@ -1,4 +1,4 @@
-﻿@model MedicalShop.Models.Entities.Dvt
+﻿@model MedicalShop.Models.Entities.Nsx
 
 @{
   MedicalShopContext context = new MedicalShopContext();
@@ -21,15 +21,15 @@
 }
 
 
-<div id="tableDVT" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+<div id="tableNSX" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
   <table class="table">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaDvt)
+          @Html.DisplayNameFor(model => model.MaNsx)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenDvt)
+          @Html.DisplayNameFor(model => model.TenNsx)
         </th>
         <th>
           @Html.DisplayNameFor(model => model.CreatedDate)
@@ -50,16 +50,16 @@
       </tr>
     </thead>
     <tbody>
-      @foreach (Dvt item in ViewBag.DVT)
+      @foreach (Nsx item in ViewBag.NSX)
       {
         @if (item.Active == false)
         {
           <tr style="background-color: #0000000a;">
             <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
+              @Html.DisplayFor(modelItem => item.MaNsx)
             </td>
             <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
+              @Html.DisplayFor(modelItem => item.TenNsx)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.CreatedDate)
@@ -86,10 +86,10 @@
         {
           <tr>
             <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
+              @Html.DisplayFor(modelItem => item.MaNsx)
             </td>
             <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
+              @Html.DisplayFor(modelItem => item.TenNsx)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.CreatedDate)

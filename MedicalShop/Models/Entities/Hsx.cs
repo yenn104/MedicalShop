@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -7,26 +9,49 @@ using System.Collections.Generic;
 
 namespace MedicalShop.Models.Entities
 {
-    public partial class Hsx
+  public partial class Hsx
+  {
+    public Hsx()
     {
-        public Hsx()
-        {
-            HangHoa = new HashSet<HangHoa>();
-        }
-
-        public int Id { get; set; }
-        public string MaHsx { get; set; }
-        public string TenHsx { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Mail { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-        public int? ModifiedBy { get; set; }
-        public int? Idcn { get; set; }
-        public bool? Active { get; set; }
-
-        public virtual ICollection<HangHoa> HangHoa { get; set; }
+      HangHoa = new HashSet<HangHoa>();
     }
+
+    public int Id { get; set; }
+
+    [DisplayName("Mã HSX")]
+    public string MaHsx { get; set; }
+
+    [DisplayName("Tên HSX")]
+    public string TenHsx { get; set; }
+
+    [DisplayName("Địa chỉ")]
+    public string Address { get; set; }
+
+    [DisplayName("SĐT")]
+    public string Phone { get; set; }
+
+    public string Mail { get; set; }
+
+    [DisplayName("Ngày tạo")]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy HH:mm:ss}")]
+    public DateTime? CreatedDate { get; set; }
+
+    [DisplayName("NV tạo")]
+    public int? CreatedBy { get; set; }
+
+    [DisplayName("Ngày sửa")]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy HH:mm:ss}")]
+    public DateTime? ModifiedDate { get; set; }
+
+    [DisplayName("NV sửa")]
+    public int? ModifiedBy { get; set; }
+
+    [DisplayName("Chi Nhánh")]
+    public int? Idcn { get; set; }
+
+    [DisplayName("Trạng thái")]
+    public bool? Active { get; set; }
+
+    public virtual ICollection<HangHoa> HangHoa { get; set; }
+  }
 }

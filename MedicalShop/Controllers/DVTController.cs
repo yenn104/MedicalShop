@@ -107,7 +107,7 @@ namespace MedicalShop.Controllers
       dvt.Active = true;
       context.Dvt.Update(dvt);
       context.SaveChanges();
-      TempData["ThongBao"] = "Khôi phục thành công!";
+      //TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
     }
 

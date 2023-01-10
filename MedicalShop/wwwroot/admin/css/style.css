@@ -161,4 +161,9 @@ a:hover {
   
 }*/
 
+
+.slgit dt, .slgit dd{
+  padding: 5px;
+}
+
 /*.dashboard ul{ display: flex;padding-top: 90px;justify-content: center;border: 0.1px solid #0068f82e; overflow-y: auto;overflow-x: hidden;max-height: 750px;}*/

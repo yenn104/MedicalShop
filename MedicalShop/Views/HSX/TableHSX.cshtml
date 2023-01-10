@@ -1,0 +1,110 @@
+﻿@model MedicalShop.Models.Entities.Hsx
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  List<Hsx> listHSX()
+  {
+    return context.Hsx.Where(x => x.Active == true).ToList();
+  }
+
+}
+
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+                            window.onload = function () {
+                                alert("@Html.Raw(@TempData["ThongBao"])");
+                        };
+  </script>
+}
+
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div style="margin-bottom: 20px">
+    <a href="/HSX/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+  </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" onchange="changeHH()" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tableHSX" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          @Html.DisplayNameFor(model => model.MaHsx)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.TenHsx)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Mail)
+        </th>
+        <th>Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (Hsx item in listHSX())
+      {
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.MaHsx)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.TenHsx)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Address)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Mail)
+          </td>
+          <td>
+            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
+            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
+            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+  $('#active').on('change', function () {
+    var a = $(this).val();
+    $.ajax({
+      type: "post",
+      url: "/loadTableHSX",
+      data: "active=" + a,
+      success: function (result) {
+        $('#tableHSX').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
+    });
+  });
+</script>
+
