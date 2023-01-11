@@ -54,26 +54,34 @@
 <div class="row" style=" margin-bottom: 70px;">
   <div class="col-xl-4">
 
-    <div class="card zoomContainer">
-      <div class=" profile-card d-flex flex-column align-items-center  zoomLens">
-        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400" width="400" style=" width: 85%;" id="zoom_01">
+    <div class="card zoomContainer" style="width: 100%">
+      <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 20px; margin-bottom: 20px;">
+        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400" width="400" @*style=" width: 85%;"*@ id="zoom_01">
       </div>
       @* MOOIX ANH MOT DIV *@
-      <div class="d-flex align-items-center slide-image">
+    <div class="d-flex align-items-center slide-image">
 
-        <div class="side-picture active" role="button" data-target="side-1">
-          <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" class="img-fluid">
-        </div>
-        <div class="side-picture" role="button" data-target="side-2">
-          <img src="/lib/imagesHH/Stilux60.png" alt="Stilux60.png"  max-height="100" width="100" class="img-fluid">
-        </div>
-        <div class="side-picture" role="button" data-target="side-3">
-          <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" class="img-fluid">
-        </div>
-        @*<img src="~/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" style=" width: 33%;">*@
-
-
+      <div class="side-picture active" role="button" data-target="side-1">
+        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" class="img-fluid">
       </div>
+      <div class="side-picture" role="button" data-target="side-2">
+        <img src="/lib/imagesHH/Stilux60.png" alt="Stilux60.png" max-height="100" width="100" class="img-fluid" id="zoom_02">
+      </div>
+      <div class="side-picture" role="button" data-target="side-3">
+        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" class="img-fluid" id="zoom_03">
+      </div>
+      @*<img src="~/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" style=" width: 33%;">*@
+      <div class="side-picture" role="button" data-target="side-4">
+        <img src="/lib/imagesHH/Stilux60.png" alt="Stilux60.png" max-height="100" width="100" class="img-fluid" id="zoom_04">
+      </div>
+      <div class="side-picture" role="button" data-target="side-5">
+        <img src="/lib/imagesHH/Stilux60.png" alt="Stilux60.png" max-height="100" width="100" class="img-fluid" id="zoom_05">
+      </div>
+      <div class="side-picture" role="button" data-target="side-6">
+        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" max-height="100" width="100" class="img-fluid" id="zoom_06">
+      </div>
+
+    </div>
     </div>
 
   </div>
@@ -209,12 +217,6 @@
 
 <script>
 
-  //window.addEventListener('load', function () {
-  //  $("#zoom_01").elevateZoom({
-  //    scrollZoom: true
-  //  });
-  //})
-
 
   window.addEventListener('load', function () {
 
@@ -225,60 +227,23 @@
     $('.side-picture').click(function () {
       var showing = $(this).find("img").attr("src");
       $('.side-picture').removeClass('active');
+      $('.side-picture').removeData();
       $(this).addClass('active');
+
       $('#zoom_01').fadeOut(function () {
-        $(this).attr('src', showing);
+        $(this).attr('src', showing);       
         $(this).fadeIn();
-        $(this).elevateZoom({
-          scrollZoom: true
+        $("#zoom_01").data('zoom-image', showing).elevateZoom({
+          scrollZoom: true,
         });
       });
     });
   });
-
-
-  //$(function () {
-  //  $("#zoom_01").hover(function () {
-  //    $.ajax({
-  //      type: "post",
-  //      url: "/loadChoi",
-  //      success: function (result) {
-  //        scrollZoom: true
-  //        alert(result);
-  //      },
-  //      error: function () {
-  //        alert("Failllllll");
-  //      }
-  //    });
-  //  });
-  //})
-
-
-  //$(document).ready(function () {
-
-  //  $("#main-image").elevateZoom({
-  //    scrollZoom: true
-  //  });
-
-  //  $('.side-picture').click(function () {
-  //    var showing = $(this).find("img").attr("src");
-  //    $('.side-picture').removeClass('active');
-  //    $(this).addClass('active');
-  //    $('#main-image').fadeOut(function () {
-  //      $(this).attr('src', showing);
-  //      $(this).fadeIn();
-  //      $(this).elevateZoom({
-  //        scrollZoom: true
-  //      });
-  //    });
-  //  });
-  //});
-
-
 
 </script>
 
 @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>*@
 @*<script src="js/jquery.elevatezoom.js"></script>*@
 
-<script async='async' src='https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js'></script>
+@*<script async='async' src='https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js'></script>*@
+@*<script src="~/admin/js/jquery.elevatezoom.min.js"></script>*@
