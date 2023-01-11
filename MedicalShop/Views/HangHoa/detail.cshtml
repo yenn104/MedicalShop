@@ -48,6 +48,13 @@
     else return new NhanVien();
   }
 
+
+  List<HhImage> listIMG(int? id)
+  {
+    return context.HhImage.Where(y => y.Idhh == id && y.Active == true).ToList();
+  }
+
+
 }
 
 <div class="row" style=" margin-bottom: 70px;">

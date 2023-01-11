@@ -79,6 +79,13 @@ namespace MedicalShop.Controllers
       return View(hh);
     }
 
+    public IActionResult testmodel(int id)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
+      return View(hh);
+    }
+
 
     //[Route("/HangHoa/xoa/{id}")]
     public IActionResult Delete(int id)
