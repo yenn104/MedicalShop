@@ -166,4 +166,11 @@ a:hover {
   padding: 5px;
 }
 
+
+.center-imgdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /*.dashboard ul{ display: flex;padding-top: 90px;justify-content: center;border: 0.1px solid #0068f82e; overflow-y: auto;overflow-x: hidden;max-height: 750px;}*/
