@@ -1,0 +1,176 @@
+﻿@model MedicalShop.Models.Entities.Menu
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+  List<Menu> listmenu()
+  {
+    return context.Menu.Where(x => x.Active == true).OrderBy(x => x.TenMenu).ToList();
+  }
+
+
+}
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+        window.onload = function () {
+            alert("@Html.Raw(@TempData["ThongBao"])");
+    };
+  </script>
+}
+
+<div class="card" style=" margin-bottom: 70px;">
+  <div class="card-body">
+    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+      <li class="nav-item flex-fill" role="presentation">
+        <button class="nav-link w-100 active" id="home-tab" onclick="offTabXuat()" data-bs-toggle="tab" data-bs-target="#borderedTabJustifiedContent" type="button" role="tab" aria-controls="home" aria-selected="true">Nhập dữ liệu</button>
+      </li>
+      <li class="nav-item flex-fill" role="presentation">
+        <button class="nav-link w-100" id="profile-tab" onclick="offTabNhap()" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Xuất dữ liệu</button>
+      </li>
+    </ul>
+    <!-- Tab control 1 -->
+    <div class="tab-content pt-2">
+      <div class="tab-pane fade active show" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="forms-body">
+          <div class="form-group" style="display: flex; padding-top:1rem">
+            <div id="quick_or_custom">
+              <h6>Phương thức nhập:</h6>
+              <ul class="navbar-nav ml-auto" style="padding:1rem;" id="select-import">
+                <li class="w-h1">
+                  <input type="radio" name="quick_or_custom_import" value="quick" id="radio_quick_import" checked="">
+                  <label for="radio_quick_import">
+                    Nhanh - Nhập tất cả danh mục
+                  </label>
+                </li>
+                <li class="w-h1" id="custom-export">
+                  <input type="radio" name="quick_or_custom_import" value="custom" id="radio_custom_import">
+                  <label for="radio_custom_import">
+                    Tùy chỉnh - Hiển thị toàn bộ các danh mục
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group p-3" id="menu-customer-import" style=" padding-top: 0 !important;">
+            <label>Danh mục tùy chỉnh</label>
+            <hr />
+            <select required class="custom-select" asp-for="@Model.Id">
+              <option selected disabled>--- Chọn danh mục ---</option>
+              @foreach (Menu menu in listmenu())
+              {
+                <option value="@menu.Id"> @menu.TenMenu </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="forms-footer p-3" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
+          <input type="button" class="btn btn-primary" value="Nhập">
+          <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab control 2 -->
+    <div class="tab-content">
+      <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="forms-body">
+            <div class="form-group" style="display: flex; padding-top: 1rem">
+              <div id="quick_or_custom">
+                <h6>Phương thức xuất:</h6>
+                <ul class="navbar-nav ml-auto" style="padding:1rem;" id="select-export">
+                  <li class="w-h1">
+                    <input type="radio" name="quick_or_custom" value="quick" id="radio_quick_export" checked="">
+                    <label for="radio_quick_export">
+                      Nhanh - Xuất tất cả danh mục
+                    </label>
+                  </li>
+                  <li class="w-h1" id="custom-export">
+                    <input type="radio" name="quick_or_custom" value="custom" id="radio_custom_export">
+                    <label for="radio_custom_export">
+                      Tùy chỉnh - Hiển thị toàn bộ các danh mục
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="form-group p-3" id="menu-customer" style=" padding-top: 0 !important;">
+              <label>Danh mục tùy chỉnh</label>
+              <hr />
+              <div class="form-check group-check-custom">
+                @foreach (Menu menu in listmenu())
+                {
+                  <input type="checkbox" value="@menu.Id" id="@menu.Id" name="danhmuc">
+                  <label for="@menu.Id">@menu.TenMenu</label>
+                  <br />
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="forms-footer p-3" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
+            <input type="button" class="btn btn-primary" value="Xuất">
+            <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+          </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  function offTabNhap() {
+    var element1 = document.getElementById('bordered-justified-home');
+    element1.setAttribute('class', 'tab-pane fade');
+    var element2 = document.getElementById('bordered-justified-profile');
+    element2.setAttribute('class', 'tab-pane fade active show');
+  }
+
+  function offTabXuat() {
+    var element1 = document.getElementById('bordered-justified-home');
+    element1.setAttribute('class', 'tab-pane fade active show');
+    var element2 = document.getElementById('bordered-justified-profile');
+    element2.setAttribute('class', 'tab-pane fade');
+  }
+
+
+  $(document).ready(function () {
+
+    $("#menu-customer-import").hide();
+
+    //$("#radio_custom_export").on(function () {
+    //  $("#menu-customer").toggle();
+    //});
+
+    $("#select-import").click(function (event) {
+      if ($("#radio_custom_import").is(":checked"))
+        $("#menu-customer-import").show();
+      else
+        $("#menu-customer-import").hide();
+    });
+
+
+
+    $("#menu-customer").hide();
+
+    //$("#radio_custom_export").on(function () {
+    //  $("#menu-customer").toggle();
+    //});
+
+    $("#select-export").click(function (event) {
+      if ($("#radio_custom_export").is(":checked"))
+        $("#menu-customer").show();
+      else
+        $("#menu-customer").hide();
+    });
+  });
+
+</script>

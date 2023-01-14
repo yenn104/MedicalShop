@@ -28,6 +28,16 @@ namespace MedicalShop.Controllers
       return View();
     }
 
+
+    //[Authorize(Roles = "NV")]
+    //public IActionResult ViewSelector()
+    //{
+    //  ViewBag.TaiKhoan = TempData["TaiKhoan"];
+    //  ViewBag.ChiNhanh = TempData["ChiNhanh"];
+    //  return View();
+    //}
+
+
     [HttpPost]
     
     public ActionResult LogIn(TaiKhoan account, string returnUrl)

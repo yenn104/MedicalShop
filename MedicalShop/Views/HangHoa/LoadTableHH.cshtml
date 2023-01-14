@@ -2,7 +2,7 @@
 
 <div id="tableHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
   <input type="hidden" id="SL" value="9" />
-  <table class="table">
+  <table class="table" id="example">
     <thead>
       <tr>
         <th>
@@ -35,19 +35,19 @@
             <td>
               @Html.DisplayFor(modelItem => item.MaHh)
             </td>
-            <td style="max-width: 250px;">
+            <td style="max-width: 14rem;">
               @Html.DisplayFor(modelItem => item.TenHh)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.BarCode)
             </td>
-            <td>
-              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60">
+            <td class="side-picture">
+              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.Quantity)
             </td>
-            <td style="max-width: 250px;">
+            <td style="max-width: 14rem;">
               @Html.DisplayFor(modelItem => item.Detail)
             </td>
             <td>
@@ -62,19 +62,19 @@
             <td>
               @Html.DisplayFor(modelItem => item.MaHh)
             </td>
-            <td style="max-width: 250px;">
+            <td style="max-width: 14rem;">
               @Html.DisplayFor(modelItem => item.TenHh)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.BarCode)
             </td>
-            <td>
-              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60">
+            <td class="side-picture">
+              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.Quantity)
             </td>
-            <td style="max-width: 250px;">
+            <td style="max-width: 14rem;">
               @Html.DisplayFor(modelItem => item.Detail)
             </td>
             <td>
@@ -88,3 +88,16 @@
     </tbody>
   </table>
 </div>
+
+<script>
+
+  $('.side-picture').hover(function () {
+    var showing = $(this).find("img").attr("src");
+    $('.side-picture').find("img").removeAttr('id');
+    $(this).find("img").attr('id', 'zoom_01');
+    $("#zoom_01").data('zoom-image', showing).elevateZoom({
+      scrollZoom: true,
+    });
+  });
+
+</script>

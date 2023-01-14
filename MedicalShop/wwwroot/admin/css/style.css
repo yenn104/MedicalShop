@@ -173,4 +173,61 @@ a:hover {
   align-items: center;
 }
 
+
 /*.dashboard ul{ display: flex;padding-top: 90px;justify-content: center;border: 0.1px solid #0068f82e; overflow-y: auto;overflow-x: hidden;max-height: 750px;}*/
+
+
+.w-h1 input{
+  height: 1rem;
+  width: 1rem;
+}
+
+
+.group-check-custom {
+  background-color: #6e7e932b;
+  padding: 1rem 3rem 1rem 2rem;
+  width: fit-content;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 13rem;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: .1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+  background-color: rgba(0, 0, 0, .2);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+
+
+/* Bordered Tabs */
+.nav-tabs-bordered {
+  border-bottom: 2px solid #ebeef4;
+}
+
+.nav-tabs-bordered .nav-link {
+  margin-bottom: -2px;
+  border: none;
+  color: #2c384e;
+}
+
+.nav-tabs-bordered .nav-link:hover,
+.nav-tabs-bordered .nav-link:focus {
+  color: #4154f1;
+}
+
+.nav-tabs-bordered .nav-link.active {
+  background-color: #fff;
+  color: #4154f1;
+  border-bottom: 2px solid #4154f1;
+}
+
+
+.btn.focus, .btn:focus {
+  box-shadow: none;
+}

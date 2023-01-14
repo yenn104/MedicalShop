@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,12 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục nhà cung cấp";
+      int abc = context.Menu.FirstOrDefault(menu => EF.Functions.Like(menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Id;
+
+      TempData["Menu"] = abc;
+
+      //TempData["Menu"] = context.Menu.Where( menu => EF.Functions.Like( menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Select(menu => menu.Id);
+      // EF.Functions.Like(c.Name, "a%")     menu.TenMenu.Contains("/Nhà cung cấp/")
       return View("TableNCC");
     }
 
@@ -98,6 +105,8 @@ namespace MedicalShop.Controllers
       {
         ViewBag.NCC = context.NhaCungCap.ToList();
       }
+
+      //TempData["Menu"] = context.Menu.FirstOrDefault(menu => EF.Functions.Like(menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Id;
       return PartialView();
     }
 

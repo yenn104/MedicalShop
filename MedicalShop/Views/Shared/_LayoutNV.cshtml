@@ -1,13 +1,13 @@
 ﻿@{
-  var acc = User.FindFirst("UserID");
+  var acc = User.FindFirst("VaiTro");
   string name = null, staff = null, id = null, username = null;
-  int active = 0;
+  //int active = 0;
   if (acc != null)
   {
     id = acc.Value;
     username = acc.Subject.Name;
-    staff = User.Claims.ElementAt(3).Value;
-    name = User.Claims.ElementAt(4).Value;
+    staff = User.Claims.ElementAt(3).Type;
+    name = User.Claims.ElementAt(3).Value;
   }
 }
 
@@ -33,6 +33,17 @@
   <link href="~/admin/css/hh.css" rel="stylesheet" />
   <link href="~/admin/css/slideimg.css" rel="stylesheet" />
   <script src="~/jquery-3.6.1.min.js"></script>
+
+
+  <script src="~/admin/umd/popper.min.js"></script>
+  <script src="~/admin/moment.js/moment.min.js"></script>
+  <script src="~/admin/select/js/selectize.min.js"></script>
+  <script src="~/admin/select/js/selectize.js"></script>
+  <!--table-->
+  @*<link href="~/admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
+
+  <link rel="stylesheet" href="~/admin/select/css/selectize.bootstrap4.min.css" />
+
 </head>
 
 <body id="page-top">
@@ -42,7 +53,7 @@
       <!-- Topbar -->
       <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r fixed-top" >
         @* mb-4 *@
-        <a class="sidebar-brand d-flex align-items-center justify-content-center medical-title" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center medical-title" href="/QuanLy">
           <div class="sidebar-brand-text mx-3 d-none d-lg-block"><span>Medical Admin</span></div>
         </a>
 
@@ -232,20 +243,16 @@
                  aria-labelledby="userDropdown">
               <a class="dropdown-item" href="#">
                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                Profile
-              </a>
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                Settings
+                Thông tin cá nhân
               </a>
               <a class="dropdown-item" href="#">
                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                Activity Log
+                Lịch sử
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                Logout
+                Đăng xuất
               </a>
             </div>
           </li>
@@ -306,10 +313,10 @@
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Nhập kho</h6>
+                @*<h6 class="collapse-header">Nhập kho</h6>*@
                 <a class="collapse-item" href="buttons.html">Phiếu nhập kho</a>
                 <a class="collapse-item" href="buttons.html">Phiếu xuất kho</a>
-                <a class="collapse-item" href="cards.html">Phiếu trả nợ</a>
+                @*<a class="collapse-item" href="cards.html">Phiếu trả nợ</a>*@
               </div>
             </div>
           </li>
@@ -329,7 +336,7 @@
                 <a class="collapse-item" href="utilities-border.html">Thống kê đơn hàng</a>
                 <a class="collapse-item" href="utilities-border.html">Thống kê nhập-xuất</a>
                 <a class="collapse-item" href="utilities-animation.html">Thống kê doanh thu</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
+                @*<a class="collapse-item" href="utilities-other.html">Other</a>*@
               </div>
             </div>
 
@@ -345,10 +352,10 @@
               <div class="bg-xx py-2 collapse-inner rounded">
                 <a class="collapse-item" href="utilities-color.html">Cấp tài khoản</a>
                 <a class="collapse-item" href="utilities-color.html">Khách hàng cá nhân</a>
-                <a class="collapse-item" href="utilities-color.html">Nhập dữ liệu</a>
+                <a class="collapse-item" href="/NhapXuat/Table">Nhập - Xuất dữ liệu</a>
                 <a class="collapse-item" href="/PhanQuyen/Table">Phân quyền</a>
                 <a class="collapse-item" href="/VaiTro/Table">Vai trò</a>
-                <a class="collapse-item" href="utilities-color.html">Xuất dữ liệu</a>
+                @*<a class="collapse-item" href="utilities-color.html">Xuất dữ liệu</a>*@
               </div>
             </div>
 
@@ -366,7 +373,7 @@
 
 
           <!-- Nav Item - Pages Collapse Menu -->
-          <li class="nav-item">
+          @*<li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
               <i class="fas fa-fw fa-folder"></i>
@@ -383,7 +390,7 @@
                 <a class="collapse-item" href="blank.html">Blank Page</a>
               </div>
             </div>
-          </li>
+          </li>*@
 
           <!-- Sidebar Toggler (Sidebar) -->
           <div class="text-center d-none d-md-inline">
@@ -469,7 +476,7 @@
   <!-- Bootstrap core JavaScript-->
   <script src="~/admin/vendor/jquery/jquery.min.js"></script>
   <script src="~/admin/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-
+  <script src="~/admin/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="~/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
@@ -484,6 +491,41 @@
   <script src="~/admin/js/demo/chart-pie-demo.js"></script>
   @* Thêm sau *@
   <script src="~/admin/js/jquery.elevatezoom.min.js"></script>
+  <!--Table-->
+  @*<script src="~/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="~/admin/vendor/datatables/jquery.dataTables.min.js"></script>*@
+
+  <script>
+    $(document).ready(function () {
+      $.fn.DataTable.ext.pager.numbers_length = 2;
+      $("#example").dataTable({
+        "scrollY": "400px",
+        "scrollCollapse": true,
+        bLengthChange: false,
+        bInfo: false,
+        scrollX: true,
+        fixedHeader: true,
+        language: {
+          paginate: {
+            previous: "Trước",
+            next: "Sau",
+          },
+        },
+      });
+
+
+
+
+    })
+
+
+  </script>
+
+
+
+
+
+
 </body>
 
 </html>
