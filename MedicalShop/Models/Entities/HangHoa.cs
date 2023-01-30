@@ -46,9 +46,6 @@ namespace MedicalShop.Models.Entities
     [DisplayName("Hình ảnh")]
     public string Image { get; set; }
 
-    [DisplayName("SL")]
-    public int? Quantity { get; set; }
-
     [DisplayName("Ghi chú")]
     [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-----")]
     public string Detail { get; set; }

@@ -32,8 +32,16 @@ namespace MedicalShop.Controllers
     [Authorize(Roles = "NV")]
     public IActionResult ViewSelector()
     {
-      ViewBag.TaiKhoan = TempData["TaiKhoan"];
-      ViewBag.ChiNhanh = TempData["ChiNhanh"];
+      
+    //  ViewBag.PhanQuyen = TempData["PhanQuyen"];
+     // string tk = ViewBag.TaiKhoan;
+      string user = User.Claims.ElementAt(0).Value;
+      ViewBag.TaiKhoan = user;
+
+      MedicalShopContext context = new MedicalShopContext();
+      int idtk = context.TaiKhoan.FirstOrDefault(k => k.Active == true && k.UserName == user).Id;
+      ViewBag.ChiNhanh = context.PhanQuyen.Where(aa => aa.Idtk.Equals(idtk) && aa.Active == true).Select(aa => aa.Idcn).Distinct().ToList();
+
       return View();
     }
 
@@ -52,7 +60,7 @@ namespace MedicalShop.Controllers
       var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
       HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-      return RedirectToAction("index", "Home");
+      return RedirectToAction("QuanLy", "QuanLy");
     }
 
 
@@ -94,9 +102,13 @@ namespace MedicalShop.Controllers
         {
           //PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
 
-          var listpq = context.PhanQuyen.Where(j => j.Idtk.Equals(acc.Id) && j.Active == true).Select(j => j.Id).Distinct().ToList();
+        //    var listpq = context.PhanQuyen.Where(aa => aa.Idtk.Equals(acc.Id) && aa.Active == true).Select(aa => aa.Id).Distinct().ToList();
+
+         // var listcn = context.PhanQuyen.Where(k => k.Idtk.Equals(acc.Id) && k.Active == true).Select(k => k.Idcn).Distinct().ToList();
+
           TempData["TaiKhoan"] = user;
-          TempData["ChiNhanh"] = listpq;
+        //  TempData["PhanQuyen"] = listpq;
+       //   TempData["ChiNhanh"] = listcn;
 
 
           if (acc.Staff == true)
@@ -163,6 +175,8 @@ namespace MedicalShop.Controllers
     public ActionResult LogOut()
     {
       HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    //  ViewBag.TaiKhoan = "";
+     // ViewBag.ChiNhanh = "";
       return RedirectToAction("Login");
     }
 

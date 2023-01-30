@@ -25,6 +25,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục hàng hoá";
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "HangHoa" && x.Active == true).FirstOrDefault().Id;
       return View("TableHangHoa");
     }
 

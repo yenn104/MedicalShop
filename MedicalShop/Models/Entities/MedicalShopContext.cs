@@ -380,8 +380,6 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.TenHh)
                     .HasColumnName("TenHH")
                     .HasMaxLength(250);
@@ -448,9 +446,7 @@ namespace MedicalShop.Models.Entities
             {
                 entity.ToTable("HH_Image");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
