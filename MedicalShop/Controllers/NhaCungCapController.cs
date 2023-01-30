@@ -86,7 +86,7 @@ namespace MedicalShop.Controllers
     }
 
     //xóa nhà cung cấp
-    //[Route("/NhaCungCap/Delete/{id}")]
+    //[Route("/NhaCungCap/Delete/{id}")] huhu 
     public IActionResult Delete(int id)
     {
       NhaCungCap ncc = context.NhaCungCap.Find(id);
