@@ -69,9 +69,6 @@
           @Html.DisplayNameFor(model => model.Image)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
           @Html.DisplayNameFor(model => model.Detail)
         </th>
         <th>Tùy chọn</th>
@@ -92,9 +89,6 @@
           </td>
           <td class="side-picture">
             <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;"  id="zoom_01" class="img-fluid">
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
           </td>
           <td style="max-width: 14rem; ">
             @Html.DisplayFor(modelItem => item.Detail)

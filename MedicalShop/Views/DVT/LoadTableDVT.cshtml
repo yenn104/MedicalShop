@@ -43,9 +43,9 @@
         <th>
           @Html.DisplayNameFor(model => model.ModifiedBy)
         </th>
-        <th>
+        @*<th>
           @Html.DisplayNameFor(model => model.Idcn)
-        </th>
+        </th>*@
         <th>Tùy chọn</th>
       </tr>
     </thead>
@@ -103,9 +103,9 @@
             <td>
               @getNV(item.ModifiedBy).TenNv
             </td>
-            <td>
+            @*<td>
               @getCN(item.Idcn).TenCn
-            </td>
+            </td>*@
             <td>
               @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
               @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })

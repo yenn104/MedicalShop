@@ -49,7 +49,7 @@ namespace MedicalShop.Models.Entities
     [DisplayName("SL")]
     public int? Quantity { get; set; }
 
-    [DisplayName("Chi tiết")]
+    [DisplayName("Ghi chú")]
     [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-----")]
     public string Detail { get; set; }
 

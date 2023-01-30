@@ -21,6 +21,15 @@
   }
 }
 
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+                        window.onload = function () {
+                            alert("@Html.Raw(@TempData["ThongBao"])");
+                    };
+  </script>
+}
+
 <div class="card" style=" margin-bottom: 70px;">
   <div class="card-body">
     <form enctype="multipart/form-data" action="/HangHoa/insertHangHoa" method="post">
@@ -112,8 +121,9 @@
       </div>
 
       <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
-        <input type="submit" class="btn btn-primary" value="Thêm">
         <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+        <input type="submit" class="btn btn-primary" value="Thêm">
+        
       </div>
 
     </form>
@@ -121,19 +131,19 @@
   </div>
 </div>
 <script>
-           function readURL(input, previewId) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $(previewId).attr('src', e.target.result);
-                        $(previewId).hide();
-                        $(previewId).fadeIn(650);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-            $("#Fileimage").change(function() {
-                readURL(this, '#image1');
-            });
+  function readURL(input, previewId) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $(previewId).attr('src', e.target.result);
+        $(previewId).hide();
+        $(previewId).fadeIn(650);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $("#Fileimage").change(function () {
+    readURL(this, '#image1');
+  });
 
 </script>

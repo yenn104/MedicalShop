@@ -29,13 +29,54 @@ namespace MedicalShop.Controllers
     }
 
 
-    //[Authorize(Roles = "NV")]
-    //public IActionResult ViewSelector()
-    //{
-    //  ViewBag.TaiKhoan = TempData["TaiKhoan"];
-    //  ViewBag.ChiNhanh = TempData["ChiNhanh"];
-    //  return View();
-    //}
+    [Authorize(Roles = "NV")]
+    public IActionResult ViewSelector()
+    {
+      ViewBag.TaiKhoan = TempData["TaiKhoan"];
+      ViewBag.ChiNhanh = TempData["ChiNhanh"];
+      return View();
+    }
+
+
+
+    [HttpPost]
+    [Authorize(Roles = "NV")]
+    public IActionResult Selector(PhanQuyen pq)
+    {
+      var identity = new ClaimsIdentity(User.Identity);
+      identity.AddClaim(new Claim("VaiTro", pq.Idvt.ToString()));
+      identity.AddClaim(new Claim("ChiNhanh", pq.Idcn.ToString()));
+
+      var claims = identity.Claims.ToList();
+
+      var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+      HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+      return RedirectToAction("index", "Home");
+    }
+
+
+
+    [HttpPost("/loadQuyen")]
+    [Authorize(Roles = "NV")]
+    public IActionResult loadVaiTro(string tk, int idcn)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      int idtk = context.TaiKhoan.FirstOrDefault(k => k.Active == true && k.UserName == tk).Id;
+
+      if (idcn != 0)
+      {
+        var listvt = context.PhanQuyen.Where(a => a.Idcn == idcn && a.Idtk == idtk && a.Active == true).Select(j => j.Idvt).Distinct().ToList();
+        ViewBag.ListPQCN = listvt;
+      }
+      else
+      {
+        var listvt = context.PhanQuyen.Where(a => a.Idtk.Equals(idtk) && a.Active == true).Select(j => j.Idvt).Distinct().ToList();
+        ViewBag.ListPQCN = listvt;
+      }
+      return PartialView();
+    }
+
 
 
     [HttpPost]
@@ -51,7 +92,13 @@ namespace MedicalShop.Controllers
         var acc = context.TaiKhoan.FirstOrDefault(s => s.UserName.Equals(user) && s.Password.Equals(pass));
         if (acc != null)
         {
-          PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
+          //PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
+
+          var listpq = context.PhanQuyen.Where(j => j.Idtk.Equals(acc.Id) && j.Active == true).Select(j => j.Id).Distinct().ToList();
+          TempData["TaiKhoan"] = user;
+          TempData["ChiNhanh"] = listpq;
+
+
           if (acc.Staff == true)
           {
             NhanVien nv = context.NhanVien.FirstOrDefault(n => n.UserName.Equals(acc.UserName));
@@ -59,10 +106,10 @@ namespace MedicalShop.Controllers
               {
                 new Claim(ClaimTypes.Name, account.UserName),
                 new Claim(ClaimTypes.Role, "NV"),
-                new Claim("VaiTro", vaitro.Idvt.ToString()),
-                new Claim(nv.Id.ToString(), nv.TenNv),
-                new Claim(acc.Staff.ToString(), "Nhân viên"),
-                new Claim("ChiNhanh", vaitro.Idcn.ToString()),
+                new Claim(nv.Id.ToString(), nv.TenNv), 
+                // new Claim("VaiTro", vaitro.Idvt.ToString()),
+                //new Claim(acc.Staff.ToString(), "Nhân viên"),
+                // new Claim("ChiNhanh", vaitro.Idcn.ToString()),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -74,18 +121,20 @@ namespace MedicalShop.Controllers
             }
             else
             {
-              return RedirectToAction("Index", "Home");
+              return RedirectToAction("ViewSelector");
+              //return RedirectToAction("Index", "Home");
             }
           }
           else
           {
             KhachHang kh = context.KhachHang.FirstOrDefault(s => s.UserName.Equals(acc.UserName));
+            PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
             var claims = new List<Claim>
               {
                   new Claim(ClaimTypes.Name, account.UserName),
                   new Claim(ClaimTypes.Role, "KH"),
-                  new Claim("VaiTro", vaitro.Idvt.ToString()),
                   new Claim(kh.Id.ToString(), kh.TenKh),
+                  new Claim("VaiTro", vaitro.Idvt.ToString()),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));

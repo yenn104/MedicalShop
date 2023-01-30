@@ -29,12 +29,6 @@ namespace MedicalShop.Controllers
     }
 
 
-    public IActionResult ViewCreate()
-    {
-      ViewData["Title"] = "Thêm hàng hoá";
-      return View();
-    }
-
     //[HttpPost]
     //public IActionResult Create()
     //{
@@ -72,43 +66,36 @@ namespace MedicalShop.Controllers
       return View(hh);
     }
 
-    public IActionResult detail(int id)
-    {
-      MedicalShopContext context = new MedicalShopContext();
-      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
-      return View(hh);
-    }
-
-    public IActionResult testmodel(int id)
-    {
-      MedicalShopContext context = new MedicalShopContext();
-      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
-      return View(hh);
-    }
-
 
     //[Route("/HangHoa/xoa/{id}")]
     public IActionResult Delete(int id)
     {
       MedicalShopContext context = new MedicalShopContext();
-      HangHoa dvt = context.HangHoa.Find(id);
-      dvt.Active = false;
-
-      context.HangHoa.Update(dvt);
+      HangHoa hh = context.HangHoa.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      hh.Active = false;
+      hh.ModifiedBy = idUser;
+      hh.ModifiedDate = DateTime.Now;
+      context.HangHoa.Update(hh);
       context.SaveChanges();
       TempData["ThongBao"] = "Xoá thành công!";
       return RedirectToAction("Table");
     }
 
 
+    public IActionResult ViewCreate()
+    {
+      ViewData["Title"] = "Thêm hàng hoá";
+      return View();
+    }
 
 
     [HttpPost]
     public IActionResult insertHangHoa(HangHoa hh, IFormFile Avt)
     {
       //MedicalShopContext context = new MedicalShopContext();
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(5).Value);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       hh.Idcn = idcn;
       hh.Image = UploadedFile(hh, Avt);
       hh.CreatedBy = idUser;
@@ -119,7 +106,7 @@ namespace MedicalShop.Controllers
       context.HangHoa.Add(hh);
       context.SaveChanges();
       TempData["ThongBao"] = "Thêm thành công!";
-      return View("ViewCreate");
+      return RedirectToAction("ViewCreate");
     }
 
 
@@ -154,7 +141,7 @@ namespace MedicalShop.Controllers
     public IActionResult updateHangHoa(HangHoa hh, IFormFile avt)
     {
       HangHoa dv = context.HangHoa.Find(hh.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       dv.ModifiedBy = idUser;
       dv.ModifiedDate = DateTime.Now;
       dv.TenHh = hh.TenHh;
@@ -241,6 +228,9 @@ namespace MedicalShop.Controllers
     public IActionResult Restore(int id)
     {
       HangHoa hh = context.HangHoa.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      hh.ModifiedBy = idUser;
+      hh.ModifiedDate = DateTime.Now;
       hh.Active = true;
 
       context.HangHoa.Update(hh);

@@ -104,7 +104,14 @@
                 @Html.DisplayNameFor(model => model.Active)
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Active)
+                @if (Model.Active == true)
+                {
+                  <p>Đang hoạt động</p>
+                }
+                else
+                {
+                  <p>Ngừng hoạt động</p>
+                }
               </dd>
             </dl>
           </div>
@@ -112,12 +119,13 @@
       </div>
 
       <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 0px 50px 20px 50px; ">
-        <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
-          <input type="button" class="btn btn-primary" value="Chỉnh sửa">
-        </a>
         <a asp-action="Table">
           <input type="button" class="btn btn-secondary" value="Quay lại">
         </a>
+        <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+          <input type="button" class="btn btn-primary" value="Chỉnh sửa">
+        </a>
+
       </div>
 
     </div>

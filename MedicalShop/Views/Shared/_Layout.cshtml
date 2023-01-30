@@ -69,15 +69,15 @@
                 {
                   //id = acc.Value;
                   username = acc.Subject.Name;
-                  name = User.Claims.ElementAt(3).Value;
-                  idUser = int.Parse(User.Claims.ElementAt(3).Type);
-                  staff = User.Claims.ElementAt(4).Type;
+                  name = User.Claims.ElementAt(2).Value;
+                  idUser = int.Parse(User.Claims.ElementAt(2).Type);
+                  staff = User.Claims.ElementAt(1).Value;
 
-                  if (staff != null && (staff == "True" || staff == "true"))
+                  if (staff != null && staff == "NV")
                   {
                     active = 2;
                   }
-                  if (staff != null && (staff == "False" || staff == "false"))
+                  if (staff != null && staff == "KH")
                   {
                     active = 1;
                   }
@@ -99,7 +99,6 @@
                 {
                   <li><a asp-area="" asp-controller="QuanLy" asp-action="QuanLy">Quản lý</a></li>
                   <li><a asp-area="" asp-controller="TaiKhoan" asp-action="LogOut">Đăng xuất</a></li>
-
                 }
               </ul>
             </li>

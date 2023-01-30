@@ -34,7 +34,7 @@ namespace MedicalShop.Controllers
     public JsonResult updateRoles([FromBody] IEnumerable<FunctionModel> list)
     {
       MedicalShopContext context = new MedicalShopContext();
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
 
       foreach (var item in list)
       {
@@ -106,7 +106,7 @@ namespace MedicalShop.Controllers
     {
       MedicalShopContext context = new MedicalShopContext();
       VaiTro vt = new VaiTro();
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       vt.TenVt = tenVT;
       vt.CreatedBy = idUser;
       vt.CreatedDate = DateTime.Now;
@@ -124,7 +124,7 @@ namespace MedicalShop.Controllers
     {
       MedicalShopContext context = new MedicalShopContext();
       VaiTro vt = context.VaiTro.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       vt.ModifiedBy = idUser;
       vt.ModifiedDate = DateTime.Now;
       vt.Active = true;
@@ -159,7 +159,7 @@ namespace MedicalShop.Controllers
     {
       MedicalShopContext context = new MedicalShopContext();
       VaiTro vt = context.VaiTro.Find(idvt);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       vt.TenVt = tenvt;
       vt.ModifiedBy = idUser;
       vt.ModifiedDate = DateTime.Now;
@@ -176,7 +176,7 @@ namespace MedicalShop.Controllers
       MedicalShopContext context = new MedicalShopContext();
       VaiTro vt = context.VaiTro.Find(idvt);
       vt.Active = false;
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       vt.ModifiedBy = idUser;
       vt.ModifiedDate = DateTime.Now;
       context.Update(vt);

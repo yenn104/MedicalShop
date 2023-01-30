@@ -44,7 +44,7 @@
               @Html.DisplayFor(modelItem => item.Mail)
             </td>
             <td>
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
+              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
               @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục hãng sản xuất này?')" })
             </td>
           </tr>

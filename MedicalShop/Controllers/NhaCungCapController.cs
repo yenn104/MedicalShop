@@ -26,9 +26,12 @@ namespace MedicalShop.Controllers
 
     public IActionResult Details(int id)
     {
+      ViewData["Title"] = "Chi tiết nhà cung cấp";
       NhaCungCap ncc = context.NhaCungCap.FirstOrDefault(x => x.Id == id);
       return View(ncc);
     }
+
+    
 
     //hiển thị view insert
     public IActionResult ViewCreate()
@@ -40,8 +43,8 @@ namespace MedicalShop.Controllers
     //thêm nhà cung cấp
     public IActionResult Insert(NhaCungCap ncc)
     {
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(5).Value);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       ncc.CreatedBy = idUser;
       ncc.ModifiedBy = idUser;
       ncc.Idcn = idcn;
@@ -67,7 +70,7 @@ namespace MedicalShop.Controllers
     public IActionResult Update(NhaCungCap ncc)
     {
       NhaCungCap n = context.NhaCungCap.Find(ncc.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       n.ModifiedBy = idUser;
       n.ModifiedDate = DateTime.Now;
       n.MaNcc = ncc.MaNcc;
@@ -86,10 +89,12 @@ namespace MedicalShop.Controllers
     //[Route("/NhaCungCap/Delete/{id}")]
     public IActionResult Delete(int id)
     {
-      NhaCungCap n = context.NhaCungCap.Find(id);
-      n.Active = false;
-
-      context.NhaCungCap.Update(n);
+      NhaCungCap ncc = context.NhaCungCap.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      ncc.Active = false;
+      ncc.ModifiedBy = idUser;
+      ncc.ModifiedDate = DateTime.Now;
+      context.NhaCungCap.Update(ncc);
       context.SaveChanges();
       return RedirectToAction("Table");
     }
@@ -110,16 +115,40 @@ namespace MedicalShop.Controllers
       return PartialView();
     }
 
-    // [Route("/NhaCungCap/khoiphuc/{id}")]
+    //[Route("/NhaCungCap/khoiphuc/{id}")]
     public IActionResult Restore(int id)
     {
       NhaCungCap ncc = context.NhaCungCap.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       ncc.Active = true;
-
+      ncc.ModifiedBy = idUser;
+      ncc.ModifiedDate = DateTime.Now;
       context.NhaCungCap.Update(ncc);
       context.SaveChanges();
       TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
     }
+
+    [HttpPost("/restore")]
+    public string Restoree(int id)
+    {
+      NhaCungCap ncc = context.NhaCungCap.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      ncc.Active = true;
+      ncc.ModifiedBy = idUser;
+      ncc.ModifiedDate = DateTime.Now;
+      context.NhaCungCap.Update(ncc);
+      context.SaveChanges();
+      return "Khôi phục thành công!";
+    }
+
+    [HttpPost("/loadDetailNCC")]
+    public IActionResult LoadDetail(int id)
+    {
+      ViewData["Title"] = "Chi tiết nhà cung cấp";
+      NhaCungCap ncc = context.NhaCungCap.FirstOrDefault(x => x.Id == id);
+      return View(ncc);
+    }
+
   }
 }

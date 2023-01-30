@@ -6,8 +6,8 @@
   {
     id = acc.Value;
     username = acc.Subject.Name;
-    staff = User.Claims.ElementAt(3).Type;
-    name = User.Claims.ElementAt(3).Value;
+    staff = User.Claims.ElementAt(2).Type;
+    name = User.Claims.ElementAt(2).Value;
   }
 }
 
@@ -250,6 +250,10 @@
                 Lịch sử
               </a>
               <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Chuyển vai trò
+              </a>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 Đăng xuất
