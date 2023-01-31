@@ -1,4 +1,14 @@
-﻿.w-80 {
+﻿.tablee{
+  border-collapse: separate !important;
+  border-spacing: 0;
+  /* border: 0.1px solid #0000007d;  */
+}
+
+.tablee thead th {
+  border: 0.1px solid #0705435c
+  }
+
+.w-80 {
   width: 80% !important;
 }
 

@@ -16,7 +16,6 @@ namespace MedicalShop.Controllers
     
     private readonly IWebHostEnvironment webHostEnvironment;
 
-
     public HangHoaController(IWebHostEnvironment hostEnvironment)
     {
       webHostEnvironment = hostEnvironment;
