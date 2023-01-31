@@ -25,20 +25,20 @@
   }
 }
 
-<div id="tableDVVC" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<div id="tableDVVC" style="overflow-x: auto; overflow-y: hidden; width: 100%; text-align: -webkit-center;">
+  <table class="table w-85">
     <thead>
       <tr>
-        <th>
+        <th class="col-sm-2">
           @Html.DisplayNameFor(model => model.MaDvvc)
         </th>
-        <th>
+        <th class="col-sm-3">
           @Html.DisplayNameFor(model => model.TenDvvc)
         </th>
-        <th>
+        <th class="col-sm-5">
           @Html.DisplayNameFor(model => model.Note)
         </th>
-        <th>Tùy chọn</th>
+        <th class="col-sm-2 text-center">Tùy chọn</th>
       </tr>
     </thead>
     <tbody>
@@ -46,61 +46,61 @@
       {
         @if (item.Active == false)
         {
-      <tr style="background-color: #0000000a;">
-        <td>
-          @Html.DisplayFor(modelItem => item.MaDvvc)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.TenDvvc)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Note)
-        </td>
-        <td>
-          @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-          @if (sua == true)
-          {
-            @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
-          }
-          else
-          {
-            <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
-          }
-        </td>
-      </tr>
+          <tr style="background-color: #0000000a;">
+            <td>
+              @Html.DisplayFor(modelItem => item.MaDvvc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.TenDvvc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td class="text-center pr-4">
+              @if (sua == true)
+              {
+                @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
+              }
+              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+            </td>
+          </tr>
         }
         else
         {
-    <tr>
-      <td>
-        @Html.DisplayFor(modelItem => item.MaDvvc)
-      </td>
-      <td>
-        @Html.DisplayFor(modelItem => item.TenDvvc)
-      </td>
-      <td>
-        @Html.DisplayFor(modelItem => item.Note)
-      </td>
-      <td>
-        @if (sua == true)
-        {
-          @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
-        }
-        else
-        {
-          <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-        }
-        @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-        @if (xoa == true)
-        {
-          @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-        }
-        else
-        {
-          <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-        }
-      </td>
-    </tr>
+          <tr>
+            <td>
+              @Html.DisplayFor(modelItem => item.MaDvvc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.TenDvvc)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td class="center">
+              @if (sua == true)
+              {
+                @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+              }
+              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+              @if (xoa == true)
+              {
+                @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+              }
+            </td>
+          </tr>
         }
       }
     </tbody>

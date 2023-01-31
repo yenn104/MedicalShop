@@ -74,20 +74,20 @@
   </div>
 </div>
 
-<div id="tableDVVC" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<div id="tableDVVC" style="overflow-x: auto; overflow-y: hidden; width: 100%; height:50%; text-align: -webkit-center;">
+  <table class="table w-85">
     <thead>
       <tr>
-        <th>
+        <th class="col-sm-2">
           @Html.DisplayNameFor(model => model.MaDvvc)
         </th>
-        <th>
+        <th class="col-sm-3">
           @Html.DisplayNameFor(model => model.TenDvvc)
         </th>
-        <th>
+        <th class="col-sm-5">
           @Html.DisplayNameFor(model => model.Note)
         </th>
-        <th>Tùy chọn</th>
+        <th class="col-sm-2 text-center">Tùy chọn</th>
       </tr>
     </thead>
     <tbody>
@@ -103,7 +103,7 @@
         <td>
           @Html.DisplayFor(modelItem => item.Note)
         </td>
-        <td>
+        <td class="text-center">
           @if (sua == true)
           {
             @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })

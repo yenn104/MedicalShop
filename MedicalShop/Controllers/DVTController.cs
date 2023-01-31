@@ -14,6 +14,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục đơn vị tính";
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "DVT" && x.Active == true).FirstOrDefault().Id;
       return View("TableDVT");
     }
 
@@ -53,8 +54,8 @@ namespace MedicalShop.Controllers
     [HttpPost]
     public IActionResult insertDVT(Dvt dvt)
     {
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(5).Value);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       dvt.CreatedBy = idUser;
       dvt.ModifiedBy = idUser;
       dvt.Idcn = idcn;
@@ -72,7 +73,7 @@ namespace MedicalShop.Controllers
     public IActionResult updateDVt(Dvt dvt)
     {
       Dvt dv = context.Dvt.Find(dvt.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       dv.ModifiedBy = idUser;
       dv.ModifiedDate = DateTime.Now;
       dv.TenDvt = dvt.TenDvt;
@@ -89,7 +90,7 @@ namespace MedicalShop.Controllers
     public IActionResult Delete(int id)
     {
       Dvt dvt = context.Dvt.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       dvt.ModifiedBy = idUser;
       dvt.ModifiedDate = DateTime.Now;
       dvt.Active = false;
@@ -101,7 +102,7 @@ namespace MedicalShop.Controllers
     public IActionResult Restore(int id)
     {
       Dvt dvt = context.Dvt.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       dvt.ModifiedBy = idUser;
       dvt.ModifiedDate = DateTime.Now;
       dvt.Active = true;

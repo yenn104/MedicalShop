@@ -17,11 +17,24 @@
     else return new NhanVien();
   }
 
-  ChiNhanh getCN(int? id)
+  var acc = User.FindFirst("VaiTro");
+  int idmenu = (int)TempData.Peek("Menu");
+
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  if (acc != null)
   {
-    ChiNhanh cn = context.ChiNhanh.Find(id);
-    if (cn != null) return cn;
-    else return new ChiNhanh();
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      nhap = (bool)cn.Import;
+      sua = (bool)cn.Update;
+      xoa = (bool)cn.Delete;
+      print = (bool)cn.Print;
+      xuat = (bool)cn.Export;
+      canhan = (bool)cn.Person;
+    }
   }
 
 }
@@ -38,8 +51,15 @@
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
   <div style="margin-bottom: 20px">
-    <a href="/DVT/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
-    </div>
+    @if (nhap == true)
+    {
+      <a href="/DVT/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+    }
+    else
+    {
+      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+    }
+  </div>
     <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
       <div style="display: flex">
         <div class="dropdown" style="margin-right:10px">
@@ -62,22 +82,19 @@
           <th>
             @Html.DisplayNameFor(model => model.TenDvt)
           </th>
-          <th>
+          <th class="text-center">
             @Html.DisplayNameFor(model => model.CreatedDate)
           </th>
-          <th>
+          <th class="text-center">
             @Html.DisplayNameFor(model => model.CreatedBy)
           </th>
-          <th>
+          <th class="text-center">
             @Html.DisplayNameFor(model => model.ModifiedDate)
           </th>
-          <th>
+          <th class="text-center">
             @Html.DisplayNameFor(model => model.ModifiedBy)
           </th>
-          @*<th>
-            @Html.DisplayNameFor(model => model.Idcn)
-          </th>*@
-          <th>Tùy chọn</th>
+          <th class="text-center">Tùy chọn</th>
         </tr>
       </thead>
       <tbody>
@@ -90,25 +107,36 @@
             <td>
               @Html.DisplayFor(modelItem => item.TenDvt)
             </td>
-            <td>
+            <td class="text-center">
               @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
-            <td>
+            <td class="text-center">
               @getNV(item.CreatedBy).TenNv
             </td>
-            <td>
+            <td class="text-center">
               @Html.DisplayFor(modelItem => item.ModifiedDate)
             </td>
-            <td>
+            <td class="text-center">
               @getNV(item.ModifiedBy).TenNv
             </td>
-            @*<td>
-              @getCN(item.Idcn).TenCn
-            </td>*@
-            <td>
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
+          <td class="text-center">
+            @if (sua == true)
+            {
+              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
+            }
+            @if (xoa == true)
+            {
               @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            </td>
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+            }
+          </td>
           </tr>
         }
       </tbody>

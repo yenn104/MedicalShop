@@ -1,4 +1,25 @@
-﻿.sidebar {
+﻿.w-80 {
+  width: 80% !important;
+}
+
+.w-85 {
+  width: 85% !important;
+}
+
+.w-90 {
+  width: 90% !important;
+}
+
+.pl-2rem {
+  padding-left: 2rem !important;
+}
+
+
+.pr-2rem {
+  padding-right: 2rem !important;
+}
+
+.sidebar {
   /*width: 6.5rem;
   min-height: 100vh;*/
   /*position: fixed;*/

@@ -1,8 +1,7 @@
-﻿@model MedicalShop.Models.Entities.Dvt
+﻿@model MedicalShop.Models.Entities.NhomHangHoa
 
 @{
   MedicalShopContext context = new MedicalShopContext();
-
 
   NhanVien getNV(int? id)
   {
@@ -12,7 +11,9 @@
   }
 
   var acc = User.FindFirst("VaiTro");
+  // int idmenu = (int)TempData["Menu"];
   int idmenu = (int)TempData.Peek("Menu");
+  // TempData.Keep("Menu");
   string vaitro = null;
   bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
   if (acc != null)
@@ -21,25 +22,28 @@
     if (vaitro != null && vaitro != "")
     {
       ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      nhap = (bool)cn.Import;
-      sua = (bool)cn.Update;
-      xoa = (bool)cn.Delete;
-      print = (bool)cn.Print;
-      xuat = (bool)cn.Export;
-      canhan = (bool)cn.Person;
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+        canhan = (bool)cn.Person;
+      }
     }
   }
 }
 
-<div id="tableDVT" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+<div id="tableNHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
   <table class="table">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaDvt)
+          @Html.DisplayNameFor(model => model.MaNhh)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenDvt)
+          @Html.DisplayNameFor(model => model.TenNhh)
         </th>
         <th class="text-center">
           @Html.DisplayNameFor(model => model.CreatedDate)
@@ -57,16 +61,16 @@
       </tr>
     </thead>
     <tbody>
-      @foreach (Dvt item in ViewBag.DVT)
+      @foreach (NhomHangHoa item in ViewBag.NHH)
       {
         @if (item.Active == false)
         {
           <tr style="background-color: #0000000a;">
             <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
+              @Html.DisplayFor(modelItem => item.MaNhh)
             </td>
             <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
+              @Html.DisplayFor(modelItem => item.TenNhh)
             </td>
             <td class="text-center">
               @Html.DisplayFor(modelItem => item.CreatedDate)
@@ -80,7 +84,7 @@
             <td class="text-center">
               @getNV(item.ModifiedBy).TenNv
             </td>
-          <td class="text-center pr-2rem">
+            <td class="text-center pr-2rem">
               @if (sua == true)
               {
                 @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
@@ -96,10 +100,10 @@
         {
           <tr>
             <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
+              @Html.DisplayFor(modelItem => item.MaNhh)
             </td>
             <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
+              @Html.DisplayFor(modelItem => item.TenNhh)
             </td>
             <td class="text-center">
               @Html.DisplayFor(modelItem => item.CreatedDate)
@@ -113,7 +117,7 @@
             <td class="text-center">
               @getNV(item.ModifiedBy).TenNv
             </td>
-          <td class="text-center">
+            <td class="text-center">
               @if (sua == true)
               {
                 @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })

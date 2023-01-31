@@ -118,7 +118,7 @@ namespace MedicalShop.Controllers
       return RedirectToAction("Table");
     }
 
-    [HttpPost("/restore")]
+    [HttpPost("/restoreDVVC")]
     public string Restoree(int id)
     {
       Dvvc dvvc = context.Dvvc.Find(id);
@@ -131,7 +131,7 @@ namespace MedicalShop.Controllers
       return "Khôi phục thành công!";
     }
 
-    [HttpPost("/loadDetailNCC")]
+    [HttpPost("/loadDetailDVVC")]
     public IActionResult LoadDetail(int id)
     {
       ViewData["Title"] = "Chi tiết dịch vụ vận chuyển";

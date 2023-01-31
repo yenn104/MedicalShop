@@ -20,12 +20,8 @@
   }
 
   var acc = User.FindFirst("VaiTro");
-  // int abc = (int)TempData["Menu"]; ViewBag.Menu;
   int idmenu = (int)TempData.Peek("Menu");
 
-  // int idmenu = (int)TempData["Menu"];
-
-  // TempData.Keep("Menu");
   string vaitro = null;
   bool sua = false;
   if (acc != null)
@@ -122,6 +118,10 @@
       <a asp-action="Table">
         <input type="button" class="btn btn-secondary" value="Quay lại">
       </a>
+      @*<button class="btn btn-secondary" type="button" onclick="window.history.go(-1);">
+        Quay lại
+      </button>*@
+
       @if (Model.Active == true)
       {
         if (sua == true)
@@ -169,7 +169,7 @@
     var id = $('#Id').val();
     $.ajax({
       type: "post",
-      url: "/loadDetailNCC",
+      url: "/loadDetailDVVC",
       data: "id=" + id,
       success: function (result) {
         $("#heredetail").replaceWith(result)
@@ -184,7 +184,7 @@
       var id = $('#Id').val();
       $.ajax({
         type: "post",
-        url: "/restore",
+        url: "/restoreDVVC",
         data: "id=" + id,
         success: function (result) {
           alert(result);
@@ -199,31 +199,5 @@
         }
       });
     })
-
-  $(document).ready(function () {
-
-    $('#myTab a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
-
-    $("#main-image").elevateZoom({
-      scrollZoom: true
-    });
-
-    $('.side-picture').click(function () {
-      var showing = $(this).find("img").attr("src");
-      $('.side-picture').removeClass('active');
-      $(this).addClass('active');
-      $('#main-image').fadeOut(function () {
-        $(this).attr('src', showing);
-        $(this).fadeIn();
-        $(this).elevateZoom({
-          scrollZoom: true
-        });
-      });
-    });
-  });
-
 
 </script>
