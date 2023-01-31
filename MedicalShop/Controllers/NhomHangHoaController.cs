@@ -40,7 +40,7 @@ namespace MedicalShop.Controllers
 
     public IActionResult ViewUpdate(int id)
     {
-      ViewData["Title"] = "Sửa đơn vị tính";
+      ViewData["Title"] = "Sửa nhóm hàng hóa";
       NhomHangHoa nhh = context.NhomHangHoa.Find(id);
       return View(nhh);
     }

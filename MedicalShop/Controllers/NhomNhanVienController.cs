@@ -24,7 +24,7 @@ namespace MedicalShop.Controllers
     }
 
     [HttpPost("/loadTableNNV")]
-    public IActionResult loadTableNHH(bool active)
+    public IActionResult loadTableNNV(bool active)
     {
       if (active)
       {
@@ -40,7 +40,7 @@ namespace MedicalShop.Controllers
 
     public IActionResult ViewUpdate(int id)
     {
-      ViewData["Title"] = "Sửa đơn vị tính";
+      ViewData["Title"] = "Sửa nhóm nhân viên";
       NhomNhanVien nnv = context.NhomNhanVien.Find(id);
       return View(nnv);
     }
@@ -52,7 +52,7 @@ namespace MedicalShop.Controllers
       int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       nnv.CreatedBy = idUser;
       nnv.ModifiedBy = idUser;
-     // nnv.Idcn = idcn;
+      nnv.Idcn = idcn;
       nnv.Active = true;
       nnv.CreatedDate = DateTime.Now;
       nnv.ModifiedDate = DateTime.Now;
@@ -64,16 +64,16 @@ namespace MedicalShop.Controllers
 
 
     [HttpPost]
-    public IActionResult Update(NhomHangHoa nhh)
+    public IActionResult Update(NhomNhanVien nnv)
     {
-      NhomHangHoa nh = context.NhomHangHoa.Find(nhh.Id);
+      NhomNhanVien nv = context.NhomNhanVien.Find(nnv.Id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      nh.ModifiedBy = idUser;
-      nh.ModifiedDate = DateTime.Now;
-      nh.TenNhh = nhh.TenNhh;
-      nh.MaNhh = nhh.MaNhh;
+      nv.ModifiedBy = idUser;
+      nv.ModifiedDate = DateTime.Now;
+      nv.TenNnv = nnv.TenNnv;
+      nv.MaNnv = nnv.MaNnv;
 
-      context.NhomHangHoa.Update(nh);
+      context.NhomNhanVien.Update(nv);
       context.SaveChanges();
       TempData["ThongBao"] = "Sửa thành công!";
       return RedirectToAction("Table");
@@ -81,24 +81,24 @@ namespace MedicalShop.Controllers
 
     public IActionResult Delete(int id)
     {
-      NhomHangHoa nhh = context.NhomHangHoa.Find(id);
+      NhomNhanVien nnv = context.NhomNhanVien.Find(id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      nhh.ModifiedBy = idUser;
-      nhh.ModifiedDate = DateTime.Now;
-      nhh.Active = false;
-      context.NhomHangHoa.Update(nhh);
+      nnv.ModifiedBy = idUser;
+      nnv.ModifiedDate = DateTime.Now;
+      nnv.Active = false;
+      context.NhomNhanVien.Update(nnv);
       context.SaveChanges();
       return RedirectToAction("Table");
     }
 
     public IActionResult Restore(int id)
     {
-      NhomHangHoa nhh = context.NhomHangHoa.Find(id);
+      NhomNhanVien nnv = context.NhomNhanVien.Find(id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      nhh.ModifiedBy = idUser;
-      nhh.ModifiedDate = DateTime.Now;
-      nhh.Active = true;
-      context.NhomHangHoa.Update(nhh);
+      nnv.ModifiedBy = idUser;
+      nnv.ModifiedDate = DateTime.Now;
+      nnv.Active = true;
+      context.NhomNhanVien.Update(nnv);
       context.SaveChanges();
       //TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
