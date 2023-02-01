@@ -28,6 +28,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
@@ -35,6 +36,28 @@
 
   <ItemGroup>
     <Folder Include="Models\Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ReportDataSet\dsTonKho.Designer.cs">
+      <DependentUpon>dsTonKho.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReportDataSet\dsTonKho.xsc">
+      <DependentUpon>dsTonKho.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsTonKho.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsTonKho.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="ReportDataSet\dsTonKho.xss">
+      <DependentUpon>dsTonKho.xsd</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

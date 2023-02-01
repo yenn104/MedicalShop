@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+
+// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
+// If you have enabled NRTs for your project, then un-comment the following line:
+// #nullable disable
+
+namespace MedicalShop.Models.Entities
+{
+    public partial class TonKho
+    {
+        public int Id { get; set; }
+        public int? Idctpn { get; set; }
+        public string SoLo { get; set; }
+        public int? SoLuong { get; set; }
+        public DateTime? NgayNhap { get; set; }
+
+        public virtual ChiTietPhieuNhap IdctpnNavigation { get; set; }
+    }
+}

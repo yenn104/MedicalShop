@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace RDLCSolution.Reports {
+namespace MedicalShop.ReportDataSet {
     
     
     /// <summary>
@@ -281,7 +281,7 @@ namespace RDLCSolution.Reports {
             
             private global::System.Data.DataColumn columnMaHH;
             
-            private global::System.Data.DataColumn columnTenHh;
+            private global::System.Data.DataColumn columnTenHH;
             
             private global::System.Data.DataColumn columnSoLo;
             
@@ -332,9 +332,9 @@ namespace RDLCSolution.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn TenHhColumn {
+            public global::System.Data.DataColumn TenHHColumn {
                 get {
-                    return this.columnTenHh;
+                    return this.columnTenHH;
                 }
             }
             
@@ -399,11 +399,11 @@ namespace RDLCSolution.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoRow AdddsTonKhoRow(string MaHH, string TenHh, int SoLo, int SoLuong, System.DateTime NgayNhap) {
+            public dsTonKhoRow AdddsTonKhoRow(string MaHH, string TenHH, int SoLo, int SoLuong, System.DateTime NgayNhap) {
                 dsTonKhoRow rowdsTonKhoRow = ((dsTonKhoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         MaHH,
-                        TenHh,
+                        TenHH,
                         SoLo,
                         SoLuong,
                         NgayNhap};
@@ -430,7 +430,7 @@ namespace RDLCSolution.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
                 this.columnMaHH = base.Columns["MaHH"];
-                this.columnTenHh = base.Columns["TenHh"];
+                this.columnTenHH = base.Columns["TenHH"];
                 this.columnSoLo = base.Columns["SoLo"];
                 this.columnSoLuong = base.Columns["SoLuong"];
                 this.columnNgayNhap = base.Columns["NgayNhap"];
@@ -441,8 +441,8 @@ namespace RDLCSolution.Reports {
             private void InitClass() {
                 this.columnMaHH = new global::System.Data.DataColumn("MaHH", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMaHH);
-                this.columnTenHh = new global::System.Data.DataColumn("TenHh", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTenHh);
+                this.columnTenHH = new global::System.Data.DataColumn("TenHH", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTenHH);
                 this.columnSoLo = new global::System.Data.DataColumn("SoLo", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSoLo);
                 this.columnSoLuong = new global::System.Data.DataColumn("SoLuong", typeof(int), null, global::System.Data.MappingType.Element);
@@ -609,17 +609,17 @@ namespace RDLCSolution.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string TenHh {
+            public string TenHH {
                 get {
                     try {
-                        return ((string)(this[this.tabledsTonKho.TenHhColumn]));
+                        return ((string)(this[this.tabledsTonKho.TenHHColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TenHh\' in table \'dsTonKho\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TenHH\' in table \'dsTonKho\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsTonKho.TenHhColumn] = value;
+                    this[this.tabledsTonKho.TenHHColumn] = value;
                 }
             }
             
@@ -685,14 +685,14 @@ namespace RDLCSolution.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsTenHhNull() {
-                return this.IsNull(this.tabledsTonKho.TenHhColumn);
+            public bool IsTenHHNull() {
+                return this.IsNull(this.tabledsTonKho.TenHHColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetTenHhNull() {
-                this[this.tabledsTonKho.TenHhColumn] = global::System.Convert.DBNull;
+            public void SetTenHHNull() {
+                this[this.tabledsTonKho.TenHHColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

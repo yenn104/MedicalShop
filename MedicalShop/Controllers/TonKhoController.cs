@@ -6,8 +6,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
@@ -46,17 +44,20 @@ namespace MedicalShop.Controllers
       int extension = 1;
       var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptTonKho.rdlc";
       Dictionary<string, string> paramaters = new Dictionary<string, string>();
-      paramaters.Add("prm1", "RDLC Report");
-      paramaters.Add("prm2", DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"));
-      paramaters.Add("prm3", "Ton Kho");
+      paramaters.Add("prm4", "MEDICAL SHOP");
+      paramaters.Add("prm1", DateTime.Now.ToString("MM/yyyy"));
+      paramaters.Add("prm2", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+      paramaters.Add("prm3", "THỐNG KÊ TỒN KHO");
 
       LocalReport localReport = new LocalReport(path);
-      localReport.AddDataSource("dsTonKho",dt);
+      localReport.AddDataSource("dsTonKho", dt);
 
       var res = localReport.Execute(RenderType.Pdf, extension, paramaters, mimeType);
 
-      return File(res.MainStream,"application/pdf");
+      return File(res.MainStream, "application/pdf");
     }
+
+
 
 
   }
