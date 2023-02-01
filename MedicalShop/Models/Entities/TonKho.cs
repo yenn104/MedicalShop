@@ -12,7 +12,7 @@ namespace MedicalShop.Models.Entities
         public int Id { get; set; }
         public int? Idctpn { get; set; }
         public string SoLo { get; set; }
-        public int? SoLuong { get; set; }
+        public int? SoLuong { get; set; } 
         public DateTime? NgayNhap { get; set; }
 
         public virtual ChiTietPhieuNhap IdctpnNavigation { get; set; }
