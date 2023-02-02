@@ -6,7 +6,20 @@
 
 .tablee thead th {
   border: 0.1px solid #0705435c
-  }
+}
+
+.pr-0{
+  padding-right: 0px;
+}
+
+.pr-05 {
+  padding-right: 0rem !important;
+  padding-left: 1.4rem !important;
+}
+
+.pl-0 {
+  padding-left: 0px;
+}
 
 .w-80 {
   width: 80% !important;

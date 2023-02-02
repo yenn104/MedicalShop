@@ -88,7 +88,7 @@
 }
 
 <div class="card">
-  <div class="card-body">
+  <div class="card-body" style="margin-bottom: 40px">
 
     <!-- Bordered Tabs Justified -->
     <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
@@ -229,7 +229,7 @@
               </tr>
             </thead>
             <tbody id="body_ctpn">
-              <tr>
+              <tr id="temp_ct">
                 <td>...</td>
                 <td>...</td>
                 <td>...</td>
@@ -247,27 +247,27 @@
         </div>
         <div class="form-group p-2 mb-2" style="border-radius: 5px; border: 1px solid black;">
           <div class="row">
-            <label class="col-sm-1 col-lg-1 col-form-label">Tiền hàng</label>
+            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền hàng</label>
             <div class="col-md-2 col-lg-2">
               <input type="text" class="form-control" readonly id="TienHang" placeholder="Tiền hàng">
             </div>
-            <label class="col-sm-1 col-lg-1 col-form-label">Tiền CK</label>
+            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền CK</label>
             <div class="col-md-2 col-lg-2">
               <input type="text" class="form-control" readonly id="TienCK" placeholder="Tiền chiết khấu">
             </div>
-            <label class="col-sm-1 col-lg-1 col-form-label">Tiền thuế</label>
+            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền thuế</label>
             <div class="col-md-2 col-lg-2">
               <input type="text" class="form-control" readonly id="TienThue" placeholder="Tiền thuế">
             </div>
-            <label class="col-sm-1 col-lg-1 col-form-label">Th.Toán</label>
+            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Th.Toán</label>
             <div class="col-md-2 col-lg-2">
               <input type="text" class="form-control" readonly id="TienThanhToan" placeholder="Thanh toán">
             </div>
           </div>
         </div>
-        <div class="row">
+        <div style="flex-direction: row-reverse;">
           <div class="d-flex justify-content-end">
-            <button class="btn btn-primary col-lg-2 col-sm-2" type="submit">Tạo phiếu</button>
+            <button class="btn btn-primary" style="min-width:25%" type="submit">Tạo phiếu</button>
           </div>
         </div>
       </form>
@@ -332,20 +332,81 @@
   $(document).ready(function () {
 
     $("#ThemChiTiet").click(function () {
+      
       addChiTietPhieuTam();
+      
+   //   updateTable2();
     });
+    
   });
 
-  //$(function () {
+  //function reset(){
+  //  var selected = $("#tableChiTietPhieuNhap tbody").hasClass("index");
+  //  alert(selected);
+  //  if (selected == true) {
+  //    var temp = '<tbody id="body_ctpn"><tr id="temp_ct">< td >...</td ><td>...</td><td>...</td> <td>...</td><td>...</td>'
+  //      + '<td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr></tbody>'
+  //    $('#body_ctpn').replaceWith(temp);
+  //  }
+  //}
 
 
+  function deleteRow(index) {
+    //alert(index);
+   // var gett = "index" + index;
+    var row = document.getElementById(index);
+    row.parentNode.removeChild(row);   
+  }
 
-  //})
+
+  $(function () {
+    $("#tableChiTietPhieuNhap").on("click", ".edit", function () {
+      var idhh = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
+      //var thiss = $(this);
+      alert(idhh);
+      //$.ajax({
+      //  type: "post",
+      //  url: "/addRowVT",
+      //  data: "idvt=" + idvt,
+      //  success: function (result) {
+      //    thiss.parents('tr').replaceWith(result);
+      //  },
+      //  error: function () {
+      //    alert("Failload");
+      //  }
+      //});
+    });
+
+
+    $("#tableChiTietPhieuNhap").on("click", ".delete", function () {
+      var index = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
+      alert(index);
+      //var gett = "index" + index;
+     // alert("Xóa" + idhh);
+
+     // var thiss = $(this).parents('tr');
+
+    //  alert(thiss);
+
+      // thiss.parent('tr').removeChild();
+     // thiss.parent('tr').remove();
+   //   var row = document.getElementById(gett);
+     // row.parentNode.removeChild(row);
+
+
+     
+      
+    });
+
+
+  })
 
   //function editChiTietPhieuTam() {
   //  var idhh = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
   //  alert(idhh);
   //}
+
+  var index = 1;
 
 
   function addChiTietPhieuTam() {
@@ -362,33 +423,121 @@
     var ngaySX = $('#NgaySX').val();
     var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
     var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
-    if (idHH == "") {
+
+    if (idHH == "" || idHH == null)
+    {
       alert('Hãy chọn hàng hoá!');
       return;
-    } if (SL == "") {
-      alert('Hãy nhập số lượng hàng hoá!');
-      return;
-    } if (x < y) {
+    }
+    if (SL == "" || SL <= 0)
+    {
+      if (SL < 0) {
+        alert('Số lượng không hợp lệ!');
+        return;
+      }else{
+        alert('Hãy nhập số lượng hàng hoá!');
+        return;
+      }    
+    }
+
+    if (DonGia == "" || DonGia <= 0)
+    {
+      if (DonGia < 0) {
+        alert('Đơn giá không hợp lệ!');
+        return;
+      } else {
+        alert('Hãy nhập đơn giá hoặc thành tiền!');
+        return;
+      }      
+    }
+
+    if (ThanhTien < 0) {
+        alert('Thành tiền không hợp lệ!');
+        return;
+    }
+
+    if (x < y) {
       alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
       return;
     }
+    //thêm: giá tiền notnull
+
+    else
+    {
 
     //<button class=" btn p-0"><i class="far fa-edit pr-2"></i></button>
     //<button[class='btn p-0']><i[class='far fa-edit pr-2']></i></button>
-
-    var ChitietRecord = "<tr><td><input[type='hidden'] [value=" + idHH + "]/>" + tenHH + "</td><td>"
-      + dvt + "</td><td>" + SoLo + "</td><td>" + SL + "</td><td>" + DonGia
-      + "</td><td>" + ThanhTien + "</td><td>" + ChietKhau + "</td><td>" + HanDung + "</td><td>"
-      + ngaySX + "</td><td>" + ThueXuat + "</td><td>" + '<button type="button" class="btn p-0" onclick="editChiTietPhieuTam()"><i class="far fa-edit lighter pr-2" ></i></button>' + "</td></tr>"
-
-    //href="/DVT/ViewUpdate/1"
-
-    $('#body_ctpn').prepend(ChitietRecord);
-
+    //<button type="button" class="edit btn p-0"><i class="far fa-edit lighter pr-2" ></i></button>
+    //<input id="IDCT" type="hidden" value="idHH"/>
+    //<tr class="index" id="index">
+    
+      var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
+        + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
+        + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
+        + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="edit btn p-0"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button>' + "</td></tr>"
+      document.getElementById("temp_ct").remove();
+      $('#body_ctpn').prepend(ChitietRecord);
+      
+      updateTable2();
+      index++;
+    }
   }
 
+  function updateTable2() {
+  //11111111111111111111111111
+ //  var listOfFunctionModel = new Array();
+    var tienhang = 0;
+    var tienck = 0;
+    var tienthue = 0;
+  //  var idvt = $('#vaitro').val();
+    $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
+      //document.getElementById('my-element-id').className
+      var id = $(this).closest('tr').attr('id');
+   //   alert("index: " + id);
+      var idHH = $(this).find("td:eq(0) input[type='hidden']").val();
+     // var dvt = $(this).find("td:eq(1)").text();
+      var SoLo = $(this).find("td:eq(2)").text();
+      var SL = $(this).find("td:eq(3)").text();
+      var DonGia = $(this).find("td:eq(4)").text();
+      var ThanhTien = $(this).find("td:eq(5)").text();
+      var ChietKhau = $(this).find("td:eq(6)").text();
+      var HanDung = $(this).find("td:eq(7)").text();
+      var ngaySX = $(this).find("td:eq(8)").text();
+      var ThueXuat = $(this).find("td:eq(9)").text();
 
+      
+      
+      tienhang = tienhang + (SL * DonGia);
+      tienck = tienck + ((SL * DonGia * ChietKhau) / 100);
+      tienthue = tienthue + ((((SL * DonGia) - ((SL * DonGia * ChietKhau) / 100)) * ThueXuat) / 100);
 
+      alert(id);
+      alert("Meejt");
+
+    //  alert("id:" + id + " sl:" + sl + " dg:" + DonGia );
+     // alert(" tienhang:" + tienhang + " tienck:" + tienck + " tienthue:" + tienthue);
+      alert(" tienhang:" + tienhang);
+  //222222222222222222222222222 
+    //var ChiTietPhieuNhapTam = {};
+    //  ChiTietPhieuNhapTam.Id = id;
+    //  ChiTietPhieuNhapTam.Idhh = idHH;
+    //  ChiTietPhieuNhapTam.Slg = SL;
+    //  ChiTietPhieuNhapTam.DonGia = DonGia;
+    //  ChiTietPhieuNhapTam.ThanhTien = ThanhTien;
+    //  ChiTietPhieuNhapTam.Cktm = ChietKhau;
+    //  ChiTietPhieuNhapTam.Thue = ThueXuat;
+    //  ChiTietPhieuNhapTam.SoLo = SoLo;
+    //  ChiTietPhieuNhapTam.Nsx = ngaySX;
+    //  ChiTietPhieuNhapTam.Hsd = HanDung;
+
+    //  listOfFunctionModel.push(ChiTietPhieuNhapTam);
+
+    });
+
+    var tienthanhtoan = tienhang - tienck + tienthue;
+    alert(tienthanhtoan);
+    
+}
 
   function loadDVT() {
     var idHH = $('#selectHH').val();

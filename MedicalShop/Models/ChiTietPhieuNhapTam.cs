@@ -9,6 +9,7 @@ namespace MedicalShop.Models
   {
     public int Id { get; set; }
     public int? Idhh { get; set; }
+    public int? IdDvt { get; set; }
     public double? Slg { get; set; }
     public double? DonGia { get; set; }
     public double? ThanhTien { get; set; }
