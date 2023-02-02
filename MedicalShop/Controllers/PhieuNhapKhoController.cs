@@ -1,7 +1,12 @@
 ﻿//using MedicalShop.Models.Entities;
 //using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc.Rendering;
+//using Microsoft.AspNetCore.Mvc.ViewEngines;
+//using Microsoft.EntityFrameworkCore;
 //using System;
 //using System.Collections.Generic;
+//using System.Globalization;
+//using System.IO;
 //using System.Linq;
 //using System.Threading.Tasks;
 
@@ -20,51 +25,51 @@
 //    {
 
 //      MedicalShopContext context = new MedicalShopContext();
-//      SoLuongHhcon soLuongHhcon = new SoLuongHhcon();
+//      TonKho TonKho = new TonKho();
 //      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
 //      string h = GetLocalIPAddress();
-//      List<ChiTietPhieuNhapTam> ListCTPNT = context.ChiTietPhieuNhapTam.Where(x => x.Host == h).OrderByDescending(x => x.Id).ToList();
+//      // List<ChiTietPhieuNhapTam> ListCTPNT = context.ChiTietPhieuNhapTam.Where(x => x.Host == h).OrderByDescending(x => x.Id).ToList();
 //      var tran = context.Database.BeginTransaction();
 //      try
 //      {
 //        phieuNhap.NgayHd = DateTime.ParseExact(NgayHd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-//        phieuNhap.NgayTao = DateTime.ParseExact(NgayTao, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+//        phieuNhap.CreatedDate = DateTime.ParseExact(NgayTao, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
 //        phieuNhap.Active = true;
 //        phieuNhap.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
 //        phieuNhap.Idnv = idUser;
 //        phieuNhap.SoPn = getSoPhieu();
 //        context.PhieuNhap.Add(phieuNhap);
 //        context.SaveChanges();
-//        foreach (ChiTietPhieuNhapTam t in ListCTPNT)
-//        {
-//          ChiTietPhieuNhap ct = new ChiTietPhieuNhap();
-//          ct.Idhh = t.Idhh;
-//          ct.Idbh = t.Idbh;
-//          ct.Thue = t.Thue;
-//          ct.Idpn = phieuNhap.Id;
-//          ct.Slg = t.Slg;
-//          ct.Tgbh = t.Tgbh;
-//          ct.DonGia = t.DonGia;
-//          ct.Cktm = t.Cktm;
-//          ct.Nsx = t.Nsx;
-//          ct.Hsd = t.Hsd;
-//          ct.SoLo = t.SoLo;
-//          ct.GhiChu = t.GhiChu;
-//          ct.Active = true;
-//          ct.Nvtao = idUser;
-//          ct.NgayTao = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
-//          context.ChiTietPhieuNhap.Add(ct);
-//          context.ChiTietPhieuNhapTam.Remove(t);
-//          context.SaveChanges();
+//        //foreach (ChiTietPhieuNhapTam t in ListCTPNT)
+//        //{
+//        //  ChiTietPhieuNhap ct = new ChiTietPhieuNhap();
+//        //  ct.Idhh = t.Idhh;
+//        //  ct.Idbh = t.Idbh;
+//        //  ct.Thue = t.Thue;
+//        //  ct.Idpn = phieuNhap.Id;
+//        //  ct.Slg = t.Slg;
+//        //  ct.Tgbh = t.Tgbh;
+//        //  ct.DonGia = t.DonGia;
+//        //  ct.Cktm = t.Cktm;
+//        //  ct.Nsx = t.Nsx;
+//        //  ct.Hsd = t.Hsd;
+//        //  ct.SoLo = t.SoLo;
+//        //  ct.GhiChu = t.GhiChu;
+//        //  ct.Active = true;
+//        //  ct.Nvtao = idUser;
+//        //  ct.NgayTao = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+//        //  context.ChiTietPhieuNhap.Add(ct);
+//        //  context.ChiTietPhieuNhapTam.Remove(t);
+//        //  context.SaveChanges();
 
-//          SoLuongHhcon sl = new SoLuongHhcon();
-//          sl.Idctpn = ct.Id;
-//          sl.Slcon = Math.Round((double)ct.Slg, 2);
-//          sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
-//          sl.NgayNhap = phieuNhap.NgayTao;
-//          context.SoLuongHhcon.Add(sl);
-//          context.SaveChanges();
-//        }
+//        //  TonKho sl = new TonKho();
+//        //  sl.Idctpn = ct.Id;
+//        //  sl.Slcon = Math.Round((double)ct.Slg, 2);
+//        //  sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
+//        //  sl.NgayNhap = phieuNhap.NgayTao;
+//        //  context.TonKho.Add(sl);
+//        //  context.SaveChanges();
+//        //}
 //        var stt = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
 //        stt.Stt += 1;
 //        context.SoThuTu.Update(stt);
@@ -84,9 +89,10 @@
 //    [HttpPost("/getDonViTinh")]
 //    public JsonResult getTenDVT(int idHH)
 //    {
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      HangHoa hh = context.HangHoa.Find(idHH);
-//      Dvt dvt = context.Dvt.Find(hh.Iddvtchinh);
+      
+//      Dvt dvt = context.Dvt.Find(hh.Iddvtc);
 //      return Json(
 //          new
 //          {
@@ -100,7 +106,7 @@
 //        float ChietKhau, string HanDung, string NgaySX)
 //    {
 //      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      ChiTietPhieuNhapTam ct = new ChiTietPhieuNhapTam();
 //      ct.Active = true;
 //      ct.Idhh = idHH;
@@ -142,7 +148,7 @@
 //    public IActionResult editChiTietPhieu(int idHH, string SoLo, float ThueXuat, int SL, float DonGia,
 //        float ThanhTien, float ChietKhau, string HanDung, string NgaySX, int id)
 //    {
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
 //      ChiTietPhieuNhapTam ct = context.ChiTietPhieuNhapTam.Find(id);
 //      ct.Active = true;
@@ -182,7 +188,7 @@
 //    [HttpPost("/delete-Chi-Tiet-Phieu")]
 //    public IActionResult deletePhieuNhapTam(int id)
 //    {
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      ChiTietPhieuNhapTam ch = context.ChiTietPhieuNhapTam.Find(id);
 //      context.ChiTietPhieuNhapTam.Remove(ch);
 //      context.SaveChanges();
@@ -217,7 +223,7 @@
 //    [HttpPost("/editChitietPhieuNhapTam")]
 //    public IActionResult editChitietPhieuNhapTam(int id)
 //    {
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      if (id > 0)
 //      {
 //        return PartialView("GroupChitietPhieuNhapTam", context.ChiTietPhieuNhapTam.Find(id));
@@ -231,7 +237,7 @@
 //    [HttpPost("/ViewThongTinPhieuNhap")]
 //    public IActionResult ViewThongTinPhieuNhap(int idPN)
 //    {
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      var phieu = context.PhieuNhap.Include(x => x.ChiTietPhieuNhap).Include(x => x.IdnccNavigation).Include(x => x.IdnvNavigation).FirstOrDefault(x => x.Id == idPN);
 //      return PartialView(phieu);
 //    }
@@ -242,7 +248,7 @@
 //      DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 //      DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      ViewBag.ListPhieuNhap = context.PhieuNhap
 //                                              .FromSqlRaw("select*from PhieuNhap where CONVERT(date,NgayTao) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,NgayTao) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
 //                                              .Include(x => x.IdnccNavigation)
@@ -277,7 +283,7 @@
 //    }
 //    string getSoPhieu()
 //    {
-//      webContext context = new webContext();
+//      MedicalShopContext context = new MedicalShopContext();
 //      QuyDinhMa qd = context.QuyDinhMa.Find(1);
 //      //ID chi nhánh
 //      string cn = "1";

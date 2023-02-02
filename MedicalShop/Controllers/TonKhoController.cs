@@ -27,7 +27,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Báo cáo tồn kho";
-      return View("TableHangHoa");
+      return View("TableTonKho");
     }
 
     public IActionResult LoadTonKho()
@@ -35,7 +35,8 @@ namespace MedicalShop.Controllers
       return View();
     }
 
-    public IActionResult TonKhoList()
+    //[HttpPost("/ReportTonKho")]
+    public IActionResult Report()
     {
       var dt = new DataTable();
       dt = tonkho.getTonKho();
@@ -56,8 +57,6 @@ namespace MedicalShop.Controllers
 
       return File(res.MainStream, "application/pdf");
     }
-
-
 
 
   }
