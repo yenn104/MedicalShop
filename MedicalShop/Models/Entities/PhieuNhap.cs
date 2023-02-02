@@ -22,6 +22,7 @@ namespace MedicalShop.Models.Entities
         public string TenPn { get; set; }
         public string SoHd { get; set; }
         public DateTime? NgayHd { get; set; }
+        public string Note { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

@@ -47,6 +47,8 @@ namespace MedicalShop.Models.Entities
         public virtual DbSet<PhieuNhap> PhieuNhap { get; set; }
         public virtual DbSet<PhieuTraNo> PhieuTraNo { get; set; }
         public virtual DbSet<PhieuXuat> PhieuXuat { get; set; }
+        public virtual DbSet<QuyDinhMa> QuyDinhMa { get; set; }
+        public virtual DbSet<SoThuTu> SoThuTu { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoan { get; set; }
         public virtual DbSet<TonKho> TonKho { get; set; }
         public virtual DbSet<TrangThai> TrangThai { get; set; }
@@ -963,6 +965,16 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.NgayHd)
+                    .HasColumnName("NgayHD")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Note).HasMaxLength(2000);
+
+                entity.Property(e => e.SoHd)
+                    .HasColumnName("SoHD")
+                    .HasMaxLength(50);
+
                 entity.Property(e => e.SoPn)
                     .HasColumnName("SoPN")
                     .HasMaxLength(50);
@@ -1046,6 +1058,26 @@ namespace MedicalShop.Models.Entities
                     .WithMany(p => p.PhieuXuat)
                     .HasForeignKey(d => d.Idnv)
                     .HasConstraintName("FK_PhieuXuat_NhanVien");
+            });
+
+            modelBuilder.Entity<QuyDinhMa>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
+
+                entity.Property(e => e.TiepDauNgu).HasMaxLength(1);
+            });
+
+            modelBuilder.Entity<SoThuTu>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.Stt).HasColumnName("STT");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
             });
 
             modelBuilder.Entity<TaiKhoan>(entity =>

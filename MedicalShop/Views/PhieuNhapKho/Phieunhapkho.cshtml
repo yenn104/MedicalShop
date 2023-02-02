@@ -1,7 +1,7 @@
-﻿<!--@model PhieuNhapKhoModel
+﻿@model PhieuNhapModel
 @{
-  webContext context = new webContext();
-  string ht = GetLocalIPAddress();
+  MedicalShopContext context = new MedicalShopContext();
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
   List<NhaCungCap> getListNCC()
   {
     return context.NhaCungCap.Where(x => x.Active == true).ToList();
@@ -14,22 +14,11 @@
 
   var a = context.ChiTietPhieuNhap.Select(x => x.SoLo).Distinct().ToList();
 
-  string format(Double? a)
-  {
-    return a?.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
-  }
-  string GetLocalIPAddress()
-  {
-    var host = Dns.GetHostEntry(Dns.GetHostName());
-    foreach (var ip in host.AddressList)
-    {
-      if (ip.AddressFamily == AddressFamily.InterNetwork)
-      {
-        return ip.ToString();
-      }
-    }
-    throw new Exception("No network adapters with an IPv4 address in the system!");
-  }
+  //string format(Double? a)
+  //{
+  //  return a?.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+  //}
+
   string getSoPhieu()
   {
     QuyDinhMa qd = context.QuyDinhMa.Find(1);
@@ -39,14 +28,14 @@
     DateTime d = DateTime.Now;
     string ngayThangNam = d.ToString("yyMMdd");
     string SoPhieu = cn + "_" + qd.TiepDauNgu + ngayThangNam;
-    var list = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
+    var list = context.SoThuTu.FromSqlRaw("select * from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,date) and type = 'NhapKho'").FirstOrDefault();
     int stt;
     if (list == null)
     {
       SoThuTu sttt = new SoThuTu();
-      sttt.Ngay = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      sttt.Date = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
       sttt.Stt = 0;
-      sttt.Loai = "NhapKho";
+      sttt.Type = "NhapKho";
       context.SoThuTu.Add(sttt);
       context.SaveChanges();
       stt = 1;
@@ -63,16 +52,20 @@
     }
     return SoPhieu;
   }
+
+  //lịch sử
   List<PhieuNhap> getListPhieuNhap()
   {
     var list = context.PhieuNhap
-    .FromSqlRaw("select*from PhieuNhap where CONVERT(date,NgayTao) = '" + DateTime.Now.ToString("yyyy-MM-dd") + "' and Active = 1")
+    .FromSqlRaw("select*from PhieuNhap where CONVERT(date,CreatedDate) = '" + DateTime.Now.ToString("yyyy-MM-dd") + "' and Active = 1")
     .Include(x => x.IdnccNavigation)
     .Include(x => x.IdnvNavigation)
     .OrderByDescending(x => x.Id)
     .ToList();
     return list;
   }
+
+
   string dayToString(DateTime? a)
   {
     if (a == null)
@@ -84,10 +77,10 @@
 }
 
 <div class="card">
-  <div class="card-body">-->
+  <div class="card-body">
 
     <!-- Bordered Tabs Justified -->
-    <!--<ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
       <li class="nav-item flex-fill" role="presentation">
         <button class="nav-link w-100 active" id="home-tab" onclick="offTabNhap()" data-bs-toggle="tab" data-bs-target="#borderedTabJustifiedContent" type="button" role="tab" aria-controls="home" aria-selected="true">Phiếu nhập kho</button>
       </li>
@@ -106,7 +99,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Nhà CC</label>
               <div class="col-sm-5 col-lg-5">
-                <select required name="@nameof(Model.phieuNhap.Idncc)" id="nhaCC" class="form-select2">
+                <select required name="@nameof(Model.phieuNhap.Idncc)" id="nhaCC" class="custom-select">
                   <option selected value=""></option>
                   @foreach (NhaCungCap n in getListNCC())
                   {
@@ -116,7 +109,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Ng.Nhập</label>
               <div class="col-sm-2 col-lg-2">
-                <input type="text" required name="@nameof(Model.phieuNhap.NgayTao)" value="@DateTime.Now.ToString("dd-MM-yyyy HH:mm")" placeholder="dd-MM-yyyy" class="form-control" id="NgayNhap">
+                <input type="text" required name="@nameof(Model.phieuNhap.CreatedDate)" value="@DateTime.Now.ToString("dd-MM-yyyy HH:mm")" placeholder="dd-MM-yyyy" class="form-control" id="NgayNhap">
               </div>
             </div>
             <div class="row">
@@ -130,7 +123,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Ghi chú</label>
               <div class="col-sm-5 col-lg-5">
-                <textarea rows="1" name="@nameof(Model.phieuNhap.GhiChu)" class="form-control"></textarea>
+                <textarea rows="1" name="@nameof(Model.phieuNhap.Note)" class="form-control"></textarea>
               </div>
             </div>
           </div>
@@ -138,7 +131,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">Tên hàng</label>
               <div class="col-md-5 mb-2 col-lg-5">
-                <select id="selectHH" onchange="loadDVT()" class="form-select2">
+                <select id="selectHH" onchange="loadDVT()" class="custom-select">
                   <option selected disabled value=""></option>
                   @foreach (HangHoa h in getListHH())
                   {
@@ -148,7 +141,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Số lô</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <select id="SoLo">
+                <select id="SoLo" class="custom-select">
                   <option selected disabled value=""></option>
                   @foreach (string s in a)
                   {
@@ -165,7 +158,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <select id="ThueXuat">
+                <select id="ThueXuat" class="custom-select">
                   <option selected value="0">0</option>
                   <option value="5">5</option>
                   <option value="10">10</option>
@@ -303,11 +296,11 @@
                 <tr>
                   <td>@p.SoPn</td>
                   <td>@p.IdnccNavigation.TenNcc</td>
-                  <td>@p.NgayTao.Value.ToString("dd-MM-yyyy HH:mm")</td>
+                  <td>@p.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm")</td>
                   <td>@p.SoHd</td>
                   <td>@dayToString(p.NgayHd)</td>
                   <td>@p.IdnvNavigation.TenNv</td>
-                  <td>@p.GhiChu</td>
+                  <td>@p.Note</td>
                   <td>
                     <a href="PhieuNhapKhoPDF" class="btn btn-outline-success">In</a>
                     <button type="button" onclick="ViewPhieuNhap('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>
@@ -326,236 +319,236 @@
   </div>
 </div>
 <script>
-    function loadDVT() {
-      var idHH = $('#selectHH').val();
-      console.log(idHH);
-      if(idHH!=0){
-            $.ajax({
-                        type: "post",
-                        url: "/getDonViTinh",
-                        data: "idHH=" + idHH,
-                        success: function (result) {
-                            $('#DVT').val(result.tenDVT);
-                            $('#GiaBan').val(toDecimal(result.giaBan));
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
+  function loadDVT() {
+    var idHH = $('#selectHH').val();
+    console.log(idHH);
+    if (idHH != 0) {
+      $.ajax({
+        type: "post",
+        url: "/getDonViTinh",
+        data: "idHH=" + idHH,
+        success: function (result) {
+          $('#DVT').val(result.tenDVT);
+          $('#GiaBan').val(toDecimal(result.giaBan));
+        },
+        error: function () {
+          alert("Fail");
         }
-    };
-    function inputSLHH(){
-        var thanhTien = $('#ThanhTien').val();
-        var SL = $('#SLHH').val();
-        var DonGia = toDecimal(getValue(thanhTien)/getValue(SL));
-        if(checkNumber(DonGia)){
-            $('#DonGia').val(DonGia);
-        }
-    };
-    function inputDoGia(){
-        var SL  = $('#SLHH').val();
-        var DonGia = $('#DonGia').val();
-        var thanhTien = toDecimal(getValue(DonGia)*getValue(SL));
-        if(checkNumber(thanhTien)){
-            $('#ThanhTien').val(thanhTien);
-        }
-    };
-    function inputThanhTien(){
-        var SL  = $('#SLHH').val();
-        var thanhTien = $('#ThanhTien').val();
-        var DonGia = toDecimal(getValue(thanhTien)/getValue(SL));
-        if(checkNumber(DonGia)){
-            $('#DonGia').val(DonGia);
-        }
+      });
     }
-    $('#ChietKhau').on('input',function(){
-        if(getValue(this.value)>100){
-            $(this).val('');
-            alert('Chiết khấu không quá 100%');
-        }
-    });
-    function getValue(str){
-       return Number(str.replace(/[^0-9.-]+/g,""));
+  };
+  function inputSLHH() {
+    var thanhTien = $('#ThanhTien').val();
+    var SL = $('#SLHH').val();
+    var DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
+    if (checkNumber(DonGia)) {
+      $('#DonGia').val(DonGia);
     }
-    function checkNumber(str) {
-        return /[0-9,.\-$]+/.test(str);
+  };
+  function inputDoGia() {
+    var SL = $('#SLHH').val();
+    var DonGia = $('#DonGia').val();
+    var thanhTien = toDecimal(getValue(DonGia) * getValue(SL));
+    if (checkNumber(thanhTien)) {
+      $('#ThanhTien').val(thanhTien);
     }
-    $('#SLHH,#ThanhTien,#DonGia,#GiaBan,#ChietKhau').on('blur', format);
-    function format(){
-    if(checkNumber(this.value)){
-        const value = this.value.replace(/,/g, '');
-        this.value = parseFloat(value).toLocaleString('en-US', {
+  };
+  function inputThanhTien() {
+    var SL = $('#SLHH').val();
+    var thanhTien = $('#ThanhTien').val();
+    var DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
+    if (checkNumber(DonGia)) {
+      $('#DonGia').val(DonGia);
+    }
+  }
+  $('#ChietKhau').on('input', function () {
+    if (getValue(this.value) > 100) {
+      $(this).val('');
+      alert('Chiết khấu không quá 100%');
+    }
+  });
+  function getValue(str) {
+    return Number(str.replace(/[^0-9.-]+/g, ""));
+  }
+  function checkNumber(str) {
+    return /[0-9,.\-$]+/.test(str);
+  }
+  $('#SLHH,#ThanhTien,#DonGia,#GiaBan,#ChietKhau').on('blur', format);
+  function format() {
+    if (checkNumber(this.value)) {
+      const value = this.value.replace(/,/g, '');
+      this.value = parseFloat(value).toLocaleString('en-US', {
         style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
-            })
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2
+      })
     }
+  }
+  function toDecimal(str) {
+    return parseFloat(str).toLocaleString('en-US', {
+      style: 'decimal',
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    });
+  }
+  function addChiTietPhieu() {
+    var idHH = $('#selectHH').val();
+    var SoLo = $('#SoLo').val();
+    var ThueXuat = $('#ThueXuat').val();
+    var SL = getValue($('#SLHH').val());
+    var DonGia = getValue($('#DonGia').val());
+    var ThanhTien = getValue($('#ThanhTien').val());
+    var ChietKhau = getValue($('#ChietKhau').val());
+    var HanDung = $('#HanDung').val();
+    var ngaySX = $('#NgaySX').val();
+    var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
+    var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
+    if (idHH == "") {
+      alert('Hãy chọn hàng hoá!');
+      return;
+    } if (SL == "") {
+      alert('Hãy nhập số lượng hàng hoá!');
+      return;
+    } if (x < y) {
+      alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
+      return;
     }
-    function toDecimal(str){
-       return parseFloat(str).toLocaleString('en-US', {
-                        style: 'decimal',
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 2
-        });
+
+    $.ajax({
+      type: "post",
+      url: "/add-Chi-Tiet-Phieu",
+      data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
+        + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
+        + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX
+      ,
+      success: function (result) {
+        $('#tableChiTietPhieuNhap').replaceWith(result.table);
+        $('#TienHang').val(toDecimal(result.tienHang));
+        $('#TienCK').val(toDecimal(result.tienCK));
+        $('#TienThue').val(toDecimal(result.tienThue));
+        $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
+
+        editChitietPhieuNhapTam(0);
+      },
+      error: function () {
+        alert("Fail");
+      }
+    });
+  }
+  function editChitietPhieuNhapTam(id) {
+    $.ajax({
+      type: "post",
+      url: "/editChitietPhieuNhapTam",
+      data: "id=" + id,
+      success: function (result) {
+        $('#groupTTChiTiet').replaceWith(result);
+      },
+      error: function () {
+        alert("Fail");
+      }
+    });
+  }
+  function editChiTietPhieu(id) {
+    var idHH = $('#selectHH').val();
+    var SoLo = $('#SoLo').val();
+    var ThueXuat = $('#ThueXuat').val();
+    var SL = getValue($('#SLHH').val());
+    var DonGia = getValue($('#DonGia').val());
+    var ThanhTien = getValue($('#ThanhTien').val());
+    var ChietKhau = getValue($('#ChietKhau').val());
+    var HanDung = $('#HanDung').val();
+    var ngaySX = $('#NgaySX').val();
+    var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
+    var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
+    if (idHH == "") {
+      alert('Hãy chọn hàng hoá!');
+      return;
+    } if (SL == "") {
+      alert('Hãy nhập số lượng hàng hoá!');
+      return;
+    } if (x < y) {
+      alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
+      return;
     }
-    function addChiTietPhieu(){
-        var idHH = $('#selectHH').val();
-        var SoLo = $('#SoLo').val();
-        var ThueXuat = $('#ThueXuat').val();
-        var SL = getValue($('#SLHH').val());
-        var DonGia = getValue($('#DonGia').val());
-        var ThanhTien = getValue($('#ThanhTien').val());
-        var ChietKhau = getValue($('#ChietKhau').val());
-        var HanDung = $('#HanDung').val();
-        var ngaySX = $('#NgaySX').val();
-        var x = new Date(HanDung.substring(3,5) + "-" + HanDung.substring(0,2) + "-" + HanDung.substring(6,10));
-        var y = new Date(ngaySX.substring(3,5) + "-" + ngaySX.substring(0,2) + "-" + ngaySX.substring(6,10));
-        if(idHH==""){
-            alert('Hãy chọn hàng hoá!');
-            return;
-        }if(SL==""){
-            alert('Hãy nhập số lượng hàng hoá!');
-            return;
-        }if(x<y){
-            alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
-            return;
+    $.ajax({
+      type: "post",
+      url: "/edit-Chi-Tiet-Phieu",
+      data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
+        + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
+        + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX + "&id=" + id
+      ,
+      success: function (result) {
+        $('#tableChiTietPhieuNhap').replaceWith(result.table);
+        $('#TienHang').val(toDecimal(result.tienHang));
+        $('#TienCK').val(toDecimal(result.tienCK));
+        $('#TienThue').val(toDecimal(result.tienThue));
+        $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
+
+        editChitietPhieuNhapTam(0);
+      },
+      error: function () {
+        alert("Fail");
+      }
+    });
+  }
+  function deletePhieuNhapTam(id) {
+    if (confirm("Bạn có muốn xoá nội dung này")) {
+      $.ajax({
+        type: "post",
+        url: "/delete-Chi-Tiet-Phieu",
+        data: "id=" + id,
+        success: function (result) {
+          $('#tableChiTietPhieuNhap').replaceWith(result.table);
+          $('#TienHang').val(toDecimal(result.tienHang));
+          $('#TienCK').val(toDecimal(result.tienCK));
+          $('#TienThue').val(toDecimal(result.tienThue));
+          $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
+        },
+        error: function () {
+          alert("Fail");
         }
+      });
+    }
+  }
+  function ViewPhieuNhap(idPhieuNhap) {
+    $('#bordered-justified-profile').removeClass('active');
+    $('#bordered-justified-profile').removeClass('show');
+    $('#tabXemPhieu').removeClass('d-lg-none');
 
-        $.ajax({
-                        type: "post",
-                        url: "/add-Chi-Tiet-Phieu",
-                        data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
-                        + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
-                        + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX
-                        ,
-                        success: function (result) {
-                            $('#tableChiTietPhieuNhap').replaceWith(result.table);
-                            $('#TienHang').val(toDecimal(result.tienHang));
-                            $('#TienCK').val(toDecimal(result.tienCK));
-                            $('#TienThue').val(toDecimal(result.tienThue));
-                            $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
+    $.ajax({
+      type: "post",
+      url: "/ViewThongTinPhieuNhap",
+      data: "idPN=" + idPhieuNhap,
+      success: function (result) {
+        $('#tabXemPhieu').replaceWith(result);
+      },
+      error: function () {
+        alert("Fail");
+      }
+    });
+  }
+  function offTabNhap() {
+    $('#tabXemPhieu').addClass('d-lg-none');
+  }
+  function cancelXemPhieu() {
+    $('#tabXemPhieu').addClass('d-lg-none');
+    $('#bordered-justified-profile').addClass('active');
+    $('#bordered-justified-profile').addClass('show');
+  }
+  function loadTableLichSuNhap() {
+    var toDay = $('#toDay').val();
+    var fromDay = $('#fromDay').val();
 
-                            editChitietPhieuNhapTam(0);
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
-    }
-    function editChitietPhieuNhapTam(id){
-         $.ajax({
-              type: "post",
-                        url: "/editChitietPhieuNhapTam",
-                        data: "id=" + id,
-                        success: function (result) {
-                            $('#groupTTChiTiet').replaceWith(result);
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
-    }
-    function editChiTietPhieu(id){
-        var idHH = $('#selectHH').val();
-        var SoLo = $('#SoLo').val();
-        var ThueXuat = $('#ThueXuat').val();
-        var SL = getValue($('#SLHH').val());
-        var DonGia = getValue($('#DonGia').val());
-        var ThanhTien = getValue($('#ThanhTien').val());
-        var ChietKhau = getValue($('#ChietKhau').val());
-        var HanDung = $('#HanDung').val();
-        var ngaySX = $('#NgaySX').val();
-        var x = new Date(HanDung.substring(3,5) + "-" + HanDung.substring(0,2) + "-" + HanDung.substring(6,10));
-        var y = new Date(ngaySX.substring(3,5) + "-" + ngaySX.substring(0,2) + "-" + ngaySX.substring(6,10));
-        if(idHH==""){
-            alert('Hãy chọn hàng hoá!');
-            return;
-        }if(SL==""){
-            alert('Hãy nhập số lượng hàng hoá!');
-            return;
-        }if(x<y){
-            alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
-            return;
-        }
-        $.ajax({
-                        type: "post",
-                        url: "/edit-Chi-Tiet-Phieu",
-                        data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
-                        + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
-                        + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX + "&id=" + id
-                        ,
-                        success: function (result) {
-                            $('#tableChiTietPhieuNhap').replaceWith(result.table);
-                            $('#TienHang').val(toDecimal(result.tienHang));
-                            $('#TienCK').val(toDecimal(result.tienCK));
-                            $('#TienThue').val(toDecimal(result.tienThue));
-                            $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
-
-                            editChitietPhieuNhapTam(0);
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
-    }
-    function deletePhieuNhapTam(id){
-        if(confirm("Bạn có muốn xoá nội dung này")){
-            $.ajax({
-                        type: "post",
-                        url: "/delete-Chi-Tiet-Phieu",
-                        data: "id="+id,
-                        success: function (result) {
-                            $('#tableChiTietPhieuNhap').replaceWith(result.table);
-                            $('#TienHang').val(toDecimal(result.tienHang));
-                            $('#TienCK').val(toDecimal(result.tienCK));
-                            $('#TienThue').val(toDecimal(result.tienThue));
-                            $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
-        }
-    }
-    function ViewPhieuNhap(idPhieuNhap){
-        $('#bordered-justified-profile').removeClass('active');
-        $('#bordered-justified-profile').removeClass('show');
-        $('#tabXemPhieu').removeClass('d-lg-none');
-
-        $.ajax({
-                        type: "post",
-                        url: "/ViewThongTinPhieuNhap",
-                        data: "idPN=" + idPhieuNhap,
-                        success: function (result) {
-                            $('#tabXemPhieu').replaceWith(result);
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
-    }
-    function offTabNhap(){
-        $('#tabXemPhieu').addClass('d-lg-none');
-    }
-    function cancelXemPhieu(){
-        $('#tabXemPhieu').addClass('d-lg-none');
-        $('#bordered-justified-profile').addClass('active');
-        $('#bordered-justified-profile').addClass('show');
-    }
-    function loadTableLichSuNhap(){
-        var toDay = $('#toDay').val();
-        var fromDay = $('#fromDay').val();
-
-         $.ajax({
-                        type: "post",
-                        url: "/loadTableLichSuNhap",
-                        data: "toDay=" + toDay + "&fromDay="+fromDay,
-                        success: function (result) {
-                            $('#tableLichSuNhap').replaceWith(result);
-                        },
-                        error: function () {
-                            alert("Fail");
-                        }
-                    });
-    }
-</script>-->
+    $.ajax({
+      type: "post",
+      url: "/loadTableLichSuNhap",
+      data: "toDay=" + toDay + "&fromDay=" + fromDay,
+      success: function (result) {
+        $('#tableLichSuNhap').replaceWith(result);
+      },
+      error: function () {
+        alert("Fail");
+      }
+    });
+  }
+</script>
