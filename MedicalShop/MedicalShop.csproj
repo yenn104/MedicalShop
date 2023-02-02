@@ -39,6 +39,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\admin\select\js\selectize.js" />
+    <None Include="wwwroot\admin\select\js\selectize.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ReportDataSet\dsTonKho.Designer.cs">
       <DependentUpon>dsTonKho.xsd</DependentUpon>
       <DesignTime>True</DesignTime>

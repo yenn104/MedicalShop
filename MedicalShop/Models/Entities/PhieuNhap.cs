@@ -19,7 +19,6 @@ namespace MedicalShop.Models.Entities
         public int? Idncc { get; set; }
         public int? Idnv { get; set; }
         public string SoPn { get; set; }
-        public string TenPn { get; set; }
         public string SoHd { get; set; }
         public DateTime? NgayHd { get; set; }
         public string Note { get; set; }

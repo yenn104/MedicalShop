@@ -979,10 +979,6 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("SoPN")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.TenPn)
-                    .HasColumnName("TenPN")
-                    .HasMaxLength(250);
-
                 entity.HasOne(d => d.IdnccNavigation)
                     .WithMany(p => p.PhieuNhap)
                     .HasForeignKey(d => d.Idncc)

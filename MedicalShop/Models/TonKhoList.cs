@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Models
 {
-  public class TonKho
+  public class TonKhoList
   {
     string connectionString = "Data Source=LAPTOP-J4VFA095;Initial Catalog=MedicalShop;Integrated Security=True";
     public DataTable getTonKho()

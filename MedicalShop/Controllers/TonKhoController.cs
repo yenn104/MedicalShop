@@ -14,7 +14,7 @@ namespace MedicalShop.Controllers
     private readonly ILogger<TonKhoController> _logger;
     private readonly IWebHostEnvironment _webHostEnv;
 
-    public TonKho tonkho = new TonKho();
+    public TonKhoList tonkho = new TonKhoList();
 
     public TonKhoController(ILogger<TonKhoController> logger, IWebHostEnvironment webHostEnv)
     {
