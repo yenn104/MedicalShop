@@ -328,15 +328,14 @@
   </div>
 </div>
 <script>
-
+  //ok
   $(document).ready(function () {
 
     //document.getElementById("temp_ct").remove();
-    $("#ThemChiTiet").click(function () {     
-      addChiTietPhieuTam();    
+    $("#ThemChiTiet").click(function () {
+      addChiTietPhieuTam();
       updateTable2();
     });
-    
     
   });
 
@@ -350,7 +349,7 @@
   //  }
   //}
 
-
+  //ok
   function deleteRow(index) {
     //alert(index);
    // var gett = "index" + index;
@@ -359,57 +358,119 @@
     updateTable2();
   }
 
+  //$(".edit").on('click', function () {
+  //  var currentRow = $(this).closest("tr");
+  //  //var col1 = currentRow.find("td:eq(0)").html();
+  //  //var col2 = currentRow.find("td:eq(1)").html();
+  //  //var col3 = currentRow.find("td:eq(2)").html();
+  //  //var data = col1 + "\n" + col2 + "\n" + col3;
+
+  //  //alert(data);
+  //  var idHH = currentRow.find("td:eq(0) input[type='hidden']").val();
+  //  var dvt = currentRow.find("td:eq(1)").html();
+  //  var SoLo = currentRow.find("td:eq(2)").html();
+  //  var SL = currentRow.find("td:eq(3)").html();
+  //  var DonGia = currentRow.find("td:eq(4)").html();
+  //  var ThanhTien = currentRow.find("td:eq(5)").html();
+  //  var ChietKhau = currentRow.find("td:eq(6)").html();
+  //  var HanDung = currentRow.find("td:eq(7)").html();
+  //  var ngaySX = currentRow.find("td:eq(8)").html();
+  //  var ThueXuat = currentRow.find("td:eq(9)").html();
+
+  //  $('#selectHH').val(idHH);
+  //  $("#selectHH option:selected").text(tenHH);
+  //  $('#DVT').val(dvt);
+  //  $('#SoLo').val(SoLo);
+  //  $('#ThueXuat').val(toDecimal(ThueXuat));
+  //  $('#SLHH').val(toDecimal(SL));
+  //  $('#DonGia').val(toDecimal(DonGia));
+  //  $('#ThanhTien').val(toDecimal(ThanhTien));
+  //  $('#ChietKhau').val(ChietKhau);
+  //  $('#HanDung').val(HanDung);
+  //  $('#NgaySX').val(ngaySX);
+
+
+  //  alert(DonGia);
+  //});
+
+  //function UpdateRow(index) {
+  //  alert(index);
+  //  // var gett = "index" + index;
+  ////  var row = document.getElementById(index);
+
+  //  var idHH = row.find("td:eq(0) input[type='hidden']").val();
+  //  alert("khong duoc" + idHH);
+
+  //  var iii = $(row).find("td:eq(0) input[type='hidden']").val();
+  //  alert("khong duoc luon" + iii);
+
+  //  //alert(idHH);
+  //  var idid = row.parentNode.find("td:eq(0) input[type='hidden']").val();
+  //  alert("khong duoc not" + idid);
+  //  var dvt = row.parentNode.find("td:eq(1)").text();
+  //  var SoLo = row.parentNode.find("td:eq(2)").text();
+  //  var SL = row.parentNode.find("td:eq(3)").text();
+  //  var DonGia = row.parentNode.find("td:eq(4)").text();
+  //  var ThanhTien = row.parentNode.find("td:eq(5)").text();
+  //  var ChietKhau = row.parentNode.find("td:eq(6)").text();
+  //  var HanDung = row.parentNode.find("td:eq(7)").text();
+  //  var ngaySX = row.parentNode.find("td:eq(8)").text();
+  //  var ThueXuat = row.parentNode.find("td:eq(9)").text();
+
+    
+  //    $('#selectHH').val(idHH);
+  //    $("#selectHH option:selected").text(tenHH);
+  //    $('#DVT').val(dvt);
+  //    $('#SoLo').val(SoLo);
+  //    $('#ThueXuat').val(toDecimal(ThueXuat));
+  //    $('#SLHH').val(toDecimal(SL));
+  //    $('#DonGia').val(toDecimal(DonGia));
+  //    $('#ThanhTien').val(toDecimal(ThanhTien));
+  //    $('#ChietKhau').val(ChietKhau);
+  //    $('#HanDung').val(HanDung);
+  //    $('#NgaySX').val(ngaySX);
+  //  //updateTable2();
+  //}
+
 
   $(function () {
     $("#tableChiTietPhieuNhap").on("click", ".edit", function () {
-      var idhh = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-      //var thiss = $(this);
-      alert(idhh);
-      //$.ajax({
-      //  type: "post",
-      //  url: "/addRowVT",
-      //  data: "idvt=" + idvt,
-      //  success: function (result) {
-      //    thiss.parents('tr').replaceWith(result);
-      //  },
-      //  error: function () {
-      //    alert("Failload");
-      //  }
-      //});
+      alert("Helo");
+      var id = $(this).closest('tr').attr('id');     
+      var idHH = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
+      alert(idHH);
+
+      var dvt = $(this).parents('tr').find("td:eq(1)").html();
+      alert(dvt);
+      var SoLo = $(this).parents('tr').find("td:eq(2)").html();
+      var SL = $(this).parents('tr').find("td:eq(3)").html();
+      var DonGia = $(this).parents('tr').find("td:eq(4)").html();
+      var ThanhTien = $(this).parents('tr').find("td:eq(5)").html();
+      var ChietKhau = $(this).parents('tr').find("td:eq(6)").html();
+      var HanDung = $(this).parents('tr').find("td:eq(7)").html();
+      var ngaySX = $(this).parents('tr').find("td:eq(8)").html();
+      var ThueXuat = $(this).parents('tr').find("td:eq(9)").html();
+
+
+      $('#selectHH').val(idHH);
+      //$("#selectHH option:selected").text(tenHH);
+      $('#DVT').val(dvt);
+      $('#SoLo').val(SoLo);
+      $('#ThueXuat').val(toDecimal(ThueXuat));
+      $('#SLHH').val(toDecimal(SL));
+      $('#DonGia').val(toDecimal(DonGia));
+      $('#ThanhTien').val(toDecimal(ThanhTien));
+      $('#ChietKhau').val(ChietKhau);
+      $('#HanDung').val(HanDung);
+      $('#NgaySX').val(ngaySX);
+
     });
+ })
 
 
-    $("#tableChiTietPhieuNhap").on("click", ".delete", function () {
-      var index = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-      alert(index);
-      //var gett = "index" + index;
-     // alert("Xóa" + idhh);
-
-     // var thiss = $(this).parents('tr');
-
-    //  alert(thiss);
-
-      // thiss.parent('tr').removeChild();
-     // thiss.parent('tr').remove();
-   //   var row = document.getElementById(gett);
-     // row.parentNode.removeChild(row);
-
-
-     
-      
-    });
-
-
-  })
-
-  //function editChiTietPhieuTam() {
-  //  var idhh = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-  //  alert(idhh);
-  //}
-
+ //ok
   var index = 1;
-
-
+ 
   function addChiTietPhieuTam() {
     var idHH = $('#selectHH').val();
     var tenHH = $("#selectHH option:selected").text();
@@ -475,8 +536,8 @@
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
         + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
         + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
-        + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="edit btn p-0"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button>' + "</td></tr>"
-      
+        + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+      //onclick="UpdateRow(' + index + ')"
       $('#body_ctpn').prepend(ChitietRecord);
       
      // updateTable2();
@@ -484,6 +545,7 @@
     }
   }
 
+  //ok
   function updateTable2() {
   //11111111111111111111111111
  //  var listOfFunctionModel = new Array();
@@ -536,8 +598,22 @@
     $('#TienThue').val(toDecimal(tienthue));
     $('#TienThanhToan').val(toDecimal(tienthanhtoan));
     
-}
+  }
 
+
+  //function editChiTietPhieuTam() {
+  //  var idhh = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
+  //  alert(idhh);
+  //}
+
+
+
+
+
+
+
+
+  //ok
   function loadDVT() {
     var idHH = $('#selectHH').val();
     console.log(idHH);
@@ -680,6 +756,8 @@
       }
     });
   }
+
+
   function editChiTietPhieu(id) {
     var idHH = $('#selectHH').val();
     var SoLo = $('#SoLo').val();
