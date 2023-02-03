@@ -195,7 +195,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">%CKTM</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" id="ChietKhau" placeholder="Chiếc khấu">
+                <input type="text" class="form-control" id="ChietKhau" placeholder="Chiết khấu">
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Hạn SD</label>
               <div class="col-md-2 mb-2 col-lg-2">
@@ -229,7 +229,7 @@
               </tr>
             </thead>
             <tbody id="body_ctpn">
-              <tr id="temp_ct">
+              @*<tr id="temp_ct">
                 <td>...</td>
                 <td>...</td>
                 <td>...</td>
@@ -241,7 +241,7 @@
                 <td>...</td>
                 <td>...</td>
                 <td>...</td>
-              </tr>
+              </tr>*@
             </tbody>
           </table>
         </div>
@@ -331,12 +331,12 @@
 
   $(document).ready(function () {
 
-    $("#ThemChiTiet").click(function () {
-      
-      addChiTietPhieuTam();
-      
-   //   updateTable2();
+    //document.getElementById("temp_ct").remove();
+    $("#ThemChiTiet").click(function () {     
+      addChiTietPhieuTam();    
+      updateTable2();
     });
+    
     
   });
 
@@ -355,7 +355,8 @@
     //alert(index);
    // var gett = "index" + index;
     var row = document.getElementById(index);
-    row.parentNode.removeChild(row);   
+    row.parentNode.removeChild(row);
+    updateTable2();
   }
 
 
@@ -475,10 +476,10 @@
         + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
         + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
         + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="edit btn p-0"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button>' + "</td></tr>"
-      document.getElementById("temp_ct").remove();
+      
       $('#body_ctpn').prepend(ChitietRecord);
       
-      updateTable2();
+     // updateTable2();
       index++;
     }
   }
@@ -510,13 +511,8 @@
       tienhang = tienhang + (SL * DonGia);
       tienck = tienck + ((SL * DonGia * ChietKhau) / 100);
       tienthue = tienthue + ((((SL * DonGia) - ((SL * DonGia * ChietKhau) / 100)) * ThueXuat) / 100);
-
-      alert(id);
-      alert("Meejt");
-
     //  alert("id:" + id + " sl:" + sl + " dg:" + DonGia );
      // alert(" tienhang:" + tienhang + " tienck:" + tienck + " tienthue:" + tienthue);
-      alert(" tienhang:" + tienhang);
   //222222222222222222222222222 
     //var ChiTietPhieuNhapTam = {};
     //  ChiTietPhieuNhapTam.Id = id;
@@ -535,7 +531,10 @@
     });
 
     var tienthanhtoan = tienhang - tienck + tienthue;
-    alert(tienthanhtoan);
+    $('#TienHang').val(toDecimal(tienhang));
+    $('#TienCK').val(toDecimal(tienck));
+    $('#TienThue').val(toDecimal(tienthue));
+    $('#TienThanhToan').val(toDecimal(tienthanhtoan));
     
 }
 
@@ -557,6 +556,7 @@
       });
     }
   };
+
   function inputSLHH() {
     var thanhTien = $('#ThanhTien').val();
     var SL = $('#SLHH').val();
@@ -565,6 +565,7 @@
       $('#DonGia').val(DonGia);
     }
   };
+
   function inputDoGia() {
     var SL = $('#SLHH').val();
     var DonGia = $('#DonGia').val();
@@ -573,6 +574,7 @@
       $('#ThanhTien').val(thanhTien);
     }
   };
+
   function inputThanhTien() {
     var SL = $('#SLHH').val();
     var thanhTien = $('#ThanhTien').val();
@@ -587,13 +589,16 @@
       alert('Chiết khấu không quá 100%');
     }
   });
+
   function getValue(str) {
     return Number(str.replace(/[^0-9.-]+/g, ""));
   }
+
   function checkNumber(str) {
     return /[0-9,.\-$]+/.test(str);
   }
   $('#SLHH,#ThanhTien,#DonGia,#GiaBan,#ChietKhau').on('blur', format);
+
   function format() {
     if (checkNumber(this.value)) {
       const value = this.value.replace(/,/g, '');
