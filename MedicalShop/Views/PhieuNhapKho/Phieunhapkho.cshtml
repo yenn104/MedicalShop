@@ -169,7 +169,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <select id="ThueXuat" class="custom-select">
+                <select id="ThueXuat" class="custom-select vat">
                   <option selected value="0">0</option>
                   <option value="5">5</option>
                   <option value="10">10</option>
@@ -205,7 +205,7 @@
               <div class="col-md-2 mb-2 col-lg-2">
                 <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="NgaySX">
               </div>
-              <div class="col-md-3 mb-2 col-lg-3 d-flex justify-content-end">
+              <div class="col-md-3 mb-2 col-lg-3 d-flex justify-content-end" id="areabtn">
                 <button class="btn btn-primary" id="ThemChiTiet" type="button">Thêm</button>
               </div>
             </div>
@@ -336,7 +336,7 @@
       addChiTietPhieuTam();
       updateTable2();
     });
-    
+
   });
 
   //function reset(){
@@ -348,6 +348,7 @@
   //    $('#body_ctpn').replaceWith(temp);
   //  }
   //}
+
 
   //ok
   function deleteRow(index) {
@@ -417,7 +418,7 @@
   //  var ngaySX = row.parentNode.find("td:eq(8)").text();
   //  var ThueXuat = row.parentNode.find("td:eq(9)").text();
 
-    
+
   //    $('#selectHH').val(idHH);
   //    $("#selectHH option:selected").text(tenHH);
   //    $('#DVT').val(dvt);
@@ -435,13 +436,9 @@
 
   $(function () {
     $("#tableChiTietPhieuNhap").on("click", ".edit", function () {
-      alert("Helo");
-      var id = $(this).closest('tr').attr('id');     
+      var index = $(this).closest('tr').attr('id');
       var idHH = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-      alert(idHH);
-
       var dvt = $(this).parents('tr').find("td:eq(1)").html();
-      alert(dvt);
       var SoLo = $(this).parents('tr').find("td:eq(2)").html();
       var SL = $(this).parents('tr').find("td:eq(3)").html();
       var DonGia = $(this).parents('tr').find("td:eq(4)").html();
@@ -451,12 +448,13 @@
       var ngaySX = $(this).parents('tr').find("td:eq(8)").html();
       var ThueXuat = $(this).parents('tr').find("td:eq(9)").html();
 
-
       $('#selectHH').val(idHH);
       //$("#selectHH option:selected").text(tenHH);
       $('#DVT').val(dvt);
       $('#SoLo').val(SoLo);
-      $('#ThueXuat').val(toDecimal(ThueXuat));
+
+      $("#ThueXuat").val(ThueXuat).change();
+
       $('#SLHH').val(toDecimal(SL));
       $('#DonGia').val(toDecimal(DonGia));
       $('#ThanhTien').val(toDecimal(ThanhTien));
@@ -464,13 +462,52 @@
       $('#HanDung').val(HanDung);
       $('#NgaySX').val(ngaySX);
 
+      changeEdit(index);
+
+
+
     });
- })
+  })
+
+  //ok
+  function changeEdit(index) {
+    var active = '<button class="btn btn-primary" id="ThemChiTiet" onclick="onemoretime2('+ index+')" type="button">Lưu</button>'
+      +'<button class="btn btn-secondary" style="margin-left:5px;" onclick="changeOff()" type="button">Hủy</button>';
+
+    $('#areabtn').html(active);
+  }
+
+  //ok
+  function changeOff(){
+    var off = '<button class="btn btn-primary" id="ThemChiTiet" onclick="onemoretime()" type="button">Thêm</button>';
+    $('#areabtn').html(off);
+    $('#selectHH').val("");
+    $('#DVT').val("");
+    $('#SoLo').val("");
+    $('#ThueXuat').val("");
+    $('#SLHH').val("");
+    $('#DonGia').val("");
+    $('#ThanhTien').val("");
+    $('#ChietKhau').val("");
+    $('#HanDung').val() = @DateTime.Now.ToString("dd-MM-yyyy");
+    $('#NgaySX').val() = @DateTime.Now.ToString("dd-MM-yyyy");
+  }
+
+  //ok
+  function onemoretime(){
+    addChiTietPhieuTam();
+    updateTable2();
+  }
+
+  function onemoretime2(index) {
+    editChiTietPhieuTam(index);
+    updateTable2();
+  }
 
 
  //ok
   var index = 1;
- 
+
   function addChiTietPhieuTam() {
     var idHH = $('#selectHH').val();
     var tenHH = $("#selectHH option:selected").text();
@@ -486,20 +523,18 @@
     var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
     var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
 
-    if (idHH == "" || idHH == null)
-    {
+    if (idHH == "" || idHH == null){
       alert('Hãy chọn hàng hoá!');
       return;
     }
-    if (SL == "" || SL <= 0)
-    {
+    if (SL == "" || SL <= 0){
       if (SL < 0) {
         alert('Số lượng không hợp lệ!');
         return;
       }else{
         alert('Hãy nhập số lượng hàng hoá!');
         return;
-      }    
+      }
     }
 
     if (DonGia == "" || DonGia <= 0)
@@ -510,7 +545,7 @@
       } else {
         alert('Hãy nhập đơn giá hoặc thành tiền!');
         return;
-      }      
+      }
     }
 
     if (ThanhTien < 0) {
@@ -526,24 +561,93 @@
 
     else
     {
-
-    //<button class=" btn p-0"><i class="far fa-edit pr-2"></i></button>
-    //<button[class='btn p-0']><i[class='far fa-edit pr-2']></i></button>
-    //<button type="button" class="edit btn p-0"><i class="far fa-edit lighter pr-2" ></i></button>
-    //<input id="IDCT" type="hidden" value="idHH"/>
-    //<tr class="index" id="index">
-    
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
         + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
         + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
         + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
       //onclick="UpdateRow(' + index + ')"
       $('#body_ctpn').prepend(ChitietRecord);
-      
+
      // updateTable2();
       index++;
     }
   }
+
+
+  function editChiTietPhieuTam(index) {
+   // var row = document.getElementById(index);
+   // row.parentNode.removeChild(row);
+    
+
+    var idHH = $('#selectHH').val();
+    var tenHH = $("#selectHH option:selected").text();
+    alert(index + " - " + tenHH);
+    var dvt = $('#DVT').val();
+    var SoLo = $('#SoLo').val();
+    var ThueXuat = $('#ThueXuat').val();
+    var SL = getValue($('#SLHH').val());
+    var DonGia = getValue($('#DonGia').val());
+    var ThanhTien = getValue($('#ThanhTien').val());
+    var ChietKhau = getValue($('#ChietKhau').val());
+    var HanDung = $('#HanDung').val();
+    var ngaySX = $('#NgaySX').val();
+    var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
+    var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
+
+    if (idHH == "" || idHH == null) {
+      alert('Hãy chọn hàng hoá!');
+      return;
+    }
+    if (SL == "" || SL <= 0) {
+      if (SL < 0) {
+        alert('Số lượng không hợp lệ!');
+        return;
+      } else {
+        alert('Hãy nhập số lượng hàng hoá!');
+        return;
+      }
+    }
+
+    if (DonGia == "" || DonGia <= 0) {
+      if (DonGia < 0) {
+        alert('Đơn giá không hợp lệ!');
+        return;
+      } else {
+        alert('Hãy nhập đơn giá hoặc thành tiền!');
+        return;
+      }
+    }
+
+    if (ThanhTien < 0) {
+      alert('Thành tiền không hợp lệ!');
+      return;
+    }
+
+    if (x < y) {
+      alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
+      return;
+    }
+    //thêm: giá tiền notnull
+
+    else {
+      var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
+        + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
+        + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
+        + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+      //onclick="UpdateRow(' + index + ')"
+      // $('#body_ctpn').prepend(ChitietRecord);
+     // row.html(ChitietRecord);
+
+      $("tr#" + index).replaceWith(ChitietRecord);
+      changeOff();
+    }
+  }
+
+
+
+
+
+
 
   //ok
   function updateTable2() {
@@ -568,14 +672,14 @@
       var ngaySX = $(this).find("td:eq(8)").text();
       var ThueXuat = $(this).find("td:eq(9)").text();
 
-      
-      
+
+
       tienhang = tienhang + (SL * DonGia);
       tienck = tienck + ((SL * DonGia * ChietKhau) / 100);
       tienthue = tienthue + ((((SL * DonGia) - ((SL * DonGia * ChietKhau) / 100)) * ThueXuat) / 100);
     //  alert("id:" + id + " sl:" + sl + " dg:" + DonGia );
      // alert(" tienhang:" + tienhang + " tienck:" + tienck + " tienthue:" + tienthue);
-  //222222222222222222222222222 
+  //222222222222222222222222222
     //var ChiTietPhieuNhapTam = {};
     //  ChiTietPhieuNhapTam.Id = id;
     //  ChiTietPhieuNhapTam.Idhh = idHH;
@@ -597,14 +701,8 @@
     $('#TienCK').val(toDecimal(tienck));
     $('#TienThue').val(toDecimal(tienthue));
     $('#TienThanhToan').val(toDecimal(tienthanhtoan));
-    
+
   }
-
-
-  //function editChiTietPhieuTam() {
-  //  var idhh = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-  //  alert(idhh);
-  //}
 
 
 
@@ -659,6 +757,7 @@
       $('#DonGia').val(DonGia);
     }
   }
+
   $('#ChietKhau').on('input', function () {
     if (getValue(this.value) > 100) {
       $(this).val('');
@@ -743,19 +842,19 @@
   //}
 
 
-  function editChitietPhieuNhapTam(id) {
-    $.ajax({
-      type: "post",
-      url: "/editChitietPhieuNhapTam",
-      data: "id=" + id,
-      success: function (result) {
-        $('#groupTTChiTiet').replaceWith(result);
-      },
-      error: function () {
-        alert("Fail");
-      }
-    });
-  }
+  //function editChitietPhieuNhapTam(id) {
+  //  $.ajax({
+  //    type: "post",
+  //    url: "/editChitietPhieuNhapTam",
+  //    data: "id=" + id,
+  //    success: function (result) {
+  //      $('#groupTTChiTiet').replaceWith(result);
+  //    },
+  //    error: function () {
+  //      alert("Fail");
+  //    }
+  //  });
+  //}
 
 
   function editChiTietPhieu(id) {
@@ -794,13 +893,15 @@
         $('#TienThue').val(toDecimal(result.tienThue));
         $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
 
-        editChitietPhieuNhapTam(0);
+        //editChitietPhieuNhapTam(0);
       },
       error: function () {
         alert("Fail");
       }
     });
   }
+
+
   function deletePhieuNhapTam(id) {
     if (confirm("Bạn có muốn xoá nội dung này")) {
       $.ajax({
