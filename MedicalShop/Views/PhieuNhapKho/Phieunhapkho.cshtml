@@ -100,177 +100,197 @@
       </li>
     </ul>
     <div class="tab-content pt-2">
-      <form onsubmit="return confirm('Bạn có muốn tạo phiếu nhập kho?')" action="/them-phieu-nhap" enctype="multipart/form-data" method="post" class="tab-pane fade active show" id="borderedTabJustifiedContent">
-        <div id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
-          <div class="form-group  p-2 mb-2" style="border-radius: 5px; border: 1px solid black; background-color: lightgrey;">
-            <div class="row mb-2">
-              <label class="col-sm-1 col-lg-1 col-form-label">Số phiếu</label>
-              <div class="col-sm-2 col-lg-2">
-                <input value="@getSoPhieu()" required readonly type="text" class="form-control" name="@nameof(Model.phieuNhap.SoPn)" id="inputText">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Nhà CC</label>
-              <div class="col-sm-5 col-lg-5">
-                <select required name="@nameof(Model.phieuNhap.Idncc)" id="nhaCC" class="custom-select">
-                  <option selected value=""></option>
-                  @foreach (NhaCungCap n in getListNCC())
-                  {
-                    <option value="@n.Id">@n.TenNcc</option>
-                  }
-                </select>
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Ng.Nhập</label>
-              <div class="col-sm-2 col-lg-2">
-                <input type="text" required name="@nameof(Model.phieuNhap.CreatedDate)" value="@DateTime.Now.ToString("dd-MM-yyyy HH:mm")" placeholder="dd-MM-yyyy" class="form-control" id="NgayNhap">
-              </div>
+      @*<form onsubmit="return confirm('Bạn có muốn tạo phiếu nhập kho?')"  class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
+     <div class="tab-pane fade active show" id="borderedTabJustifiedContent">
+      <div id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="form-group  p-2 mb-2" style="border-radius: 5px; border: 1px solid black; background-color: lightgrey;">
+          <div class="row mb-2">
+            <label class="col-sm-1 col-lg-1 col-form-label">Số phiếu</label>
+            <div class="col-sm-2 col-lg-2">
+              <input value="@getSoPhieu()" required readonly type="text" class="form-control" name="@nameof(Model.phieuNhap.SoPn)" id="inputText">
             </div>
-            <div class="row">
-              <label class="col-sm-1 col-lg-1 col-form-label">Số HĐ</label>
-              <div class="col-sm-2 col-lg-2">
-                <input type="text" name="@nameof(Model.phieuNhap.SoHd)" class="form-control" id="inputText">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Ngày HĐ</label>
-              <div class="col-sm-2 col-lg-2">
-                <input type="text" name="@nameof(Model.phieuNhap.NgayHd)" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" id="NgayHD">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Ghi chú</label>
-              <div class="col-sm-5 col-lg-5">
-                <textarea rows="1" name="@nameof(Model.phieuNhap.Note)" class="form-control"></textarea>
-              </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Nhà CC</label>
+            <div class="col-sm-5 col-lg-5">
+              <select required name="@nameof(Model.phieuNhap.Idncc)" id="nhaCC" class="custom-select">
+                <option selected value=""></option>
+                @foreach (NhaCungCap n in getListNCC())
+                {
+                  <option value="@n.Id">@n.TenNcc</option>
+                }
+              </select>
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Ng.Nhập</label>
+            <div class="col-sm-2 col-lg-2">
+              <input type="text" required name="@nameof(Model.phieuNhap.CreatedDate)" value="@DateTime.Now.ToString("dd-MM-yyyy HH:mm")" placeholder="dd-MM-yyyy" class="form-control" id="NgayNhap">
             </div>
           </div>
-          <div class="form-group p-2 mb-2" id="groupTTChiTiet" style="border-radius: 5px; border: 1px solid black;">
-            <div class="row">
-              <label class="col-sm-1 col-lg-1 col-form-label">Tên hàng</label>
-              <div class="col-md-5 mb-2 col-lg-5">
-                <select id="selectHH" onchange="loadDVT()" class="custom-select">
-                  <option selected disabled value=""></option>
-                  @foreach (HangHoa h in getListHH())
-                  {
-                    <option value="@h.Id" data-extra="{'Ma':'@h.MaHh'}">@h.TenHh</option>
-                  }
-                </select>
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Số lô</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <select id="SoLo" class="custom-select">
-                  <option selected disabled value=""></option>
-                  @foreach (string s in a)
-                  {
-                    <option value="@s">@s</option>
-                  }
-                </select>
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">ĐV tính</label>
-              <div class="col-sm-2 col-lg-2">
-                <input type="text" class="form-control" id="DVT" readonly placeholder="Đơn vị tính">
-              </div>
-
-            </div>
-            <div class="row">
-              <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <select id="ThueXuat" class="custom-select vat">
-                  <option selected value="0">0</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                  <option value="25">25</option>
-                  <option value="30">30</option>
-                </select>
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Số lượng</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" data-toggle="popover" data-content="Không được để trống" oninput="inputSLHH()" id="SLHH" placeholder="Số lượng">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Đơn giá</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" oninput="inputDonGia()" id="DonGia" placeholder="Đơn giá">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Th.Tiền</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" oninput="inputThanhTien()" id="ThanhTien" placeholder="Thành tiền">
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-1 col-lg-1 col-form-label">%CKTM</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" id="ChietKhau" placeholder="Chiết khấu">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Hạn SD</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="HanDung">
-              </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Ngày SX</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="NgaySX">
-              </div>
-              <div class="col-md-3 mb-2 col-lg-3 d-flex justify-content-end" id="areabtn">
-                <button class="btn btn-primary" id="ThemChiTiet" type="button">Thêm</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="table-responsive" style="max-height: 400px;overflow-x: auto;white-space:nowrap;">
-          <table class="table table-bordered table-hover table-striped text-center" id="tableChiTietPhieuNhap">
-            <thead style="position: sticky; top: 0;">
-              <tr>
-                <th>Tên hàng hóa</th>
-                <th>ĐVT</th>
-                <th>Số lô</th>
-                <th>Số lượng</th>
-                <th>Đơn giá</th>
-                <th>Thành tiền</th>
-                <th>%CK</th>
-                <th>Hạn dùng</th>
-                <th>Ngày SX</th>
-                <th>Thuế suất</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="body_ctpn">
-              @*<tr id="temp_ct">
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-              </tr>*@
-            </tbody>
-          </table>
-        </div>
-        <div class="form-group p-2 mb-2" style="border-radius: 5px; border: 1px solid black;">
           <div class="row">
-            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền hàng</label>
-            <div class="col-md-2 col-lg-2">
-              <input type="text" class="form-control" readonly id="TienHang" placeholder="Tiền hàng">
+            <label class="col-sm-1 col-lg-1 col-form-label">Số HĐ</label>
+            <div class="col-sm-2 col-lg-2">
+              <input type="text" name="@nameof(Model.phieuNhap.SoHd)" class="form-control" id="inputText">
             </div>
-            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền CK</label>
-            <div class="col-md-2 col-lg-2">
-              <input type="text" class="form-control" readonly id="TienCK" placeholder="Tiền chiết khấu">
+            <label class="col-sm-1 col-lg-1 col-form-label">Ngày HĐ</label>
+            <div class="col-sm-2 col-lg-2">
+              <input type="text" name="@nameof(Model.phieuNhap.NgayHd)" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" id="NgayHD">
             </div>
-            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền thuế</label>
-            <div class="col-md-2 col-lg-2">
-              <input type="text" class="form-control" readonly id="TienThue" placeholder="Tiền thuế">
-            </div>
-            <label class="col-sm-1 col-lg-1 col-form-label pr-05">Th.Toán</label>
-            <div class="col-md-2 col-lg-2">
-              <input type="text" class="form-control" readonly id="TienThanhToan" placeholder="Thanh toán">
+            <label class="col-sm-1 col-lg-1 col-form-label">Ghi chú</label>
+            <div class="col-sm-5 col-lg-5">
+              <textarea rows="1" name="@nameof(Model.phieuNhap.Note)" class="form-control"></textarea>
             </div>
           </div>
         </div>
-        <div style="flex-direction: row-reverse;">
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" style="min-width:20%" type="submit">Tạo phiếu</button>
+        <div class="form-group p-2 mb-2" id="groupTTChiTiet" style="border-radius: 5px; border: 1px solid black;">
+          <div class="row">
+            <label class="col-sm-1 col-lg-1 col-form-label">Tên hàng</label>
+            <div class="col-md-5 mb-2 col-lg-5">
+              <select id="selectHH" onchange="loadDVT()" class="custom-select">
+                <option selected disabled value=""></option>
+                @foreach (HangHoa h in getListHH())
+                {
+                  <option value="@h.Id" data-extra="{'Ma':'@h.MaHh'}">@h.TenHh</option>
+                }
+              </select>
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Số lô</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <select id="SoLo" class="custom-select">
+                <option selected disabled value=""></option>
+                @foreach (string s in a)
+                {
+                  <option value="@s">@s</option>
+                }
+              </select>
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">ĐV tính</label>
+            <div class="col-sm-2 col-lg-2">
+              <input type="text" class="form-control" id="DVT" readonly placeholder="Đơn vị tính">
+            </div>
+
+          </div>
+          <div class="row">
+            <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <select id="ThueXuat" class="custom-select vat">
+                <option selected value="0">0</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+              </select>
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Số lượng</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <input type="text" class="form-control" data-toggle="popover" data-content="Không được để trống" oninput="inputSLHH()" id="SLHH" placeholder="Số lượng">
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Đơn giá</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <input type="text" class="form-control" oninput="inputDonGia()" id="DonGia" placeholder="Đơn giá">
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Th.Tiền</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <input type="text" class="form-control" oninput="inputThanhTien()" id="ThanhTien" placeholder="Thành tiền">
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-1 col-lg-1 col-form-label">%CKTM</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <input type="text" class="form-control" id="ChietKhau" placeholder="Chiết khấu">
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Ngày SX</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="NgaySX">
+            </div>
+            <label class="col-sm-1 col-lg-1 col-form-label">Hạn SD</label>
+            <div class="col-md-2 mb-2 col-lg-2">
+              <input type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="HanDung">
+            </div>
+            <div class="col-md-3 mb-2 col-lg-3 d-flex justify-content-end" id="areabtn">
+              <button class="btn btn-primary" id="ThemChiTiet" type="button">Thêm</button>
+            </div>
+
+            @*<label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
+          <div class="col-md-2 mb-2 col-lg-2">
+            <select id="ThueXuat" class="custom-select vat">
+              <option selected value="0">0</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+            </select>
+          </div>*@
           </div>
         </div>
-      </form>
+        @*<div style="flex-direction: row-reverse;">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary" style="min-width:15%" id="ThemChiTiet" type="button">Thêm</button>
+        </div>
+      </div>*@
+      </div>
+      <div class="table-responsive" style="max-height: 11rem; overflow-x: auto; white-space: nowrap; margin: 0.5rem 0; border: 1px solid black; ">
+        <table class="table table-bordered table-hover table-striped text-center" id="tableChiTietPhieuNhap">
+          <thead style="position: sticky; top: 0;">
+            <tr>
+              <th>Tên hàng hóa</th>
+              <th>ĐVT</th>
+              <th>Số lô</th>
+              <th>Số lượng</th>
+              <th>Đơn giá</th>
+              <th>Thành tiền</th>
+              <th>%CK</th>
+              <th>Thuế suất</th>
+              <th>NSX</th>
+              <th>HSD</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="body_ctpn">
+            @*<tr id="temp_ct">
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+          </tr>*@
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group p-2 mb-2" style="border-radius: 5px; border: 1px solid black;">
+        <div class="row">
+          <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền hàng</label>
+          <div class="col-md-2 col-lg-2">
+            <input type="text" class="form-control" readonly id="TienHang" placeholder="Tiền hàng">
+          </div>
+          <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền CK</label>
+          <div class="col-md-2 col-lg-2">
+            <input type="text" class="form-control" readonly id="TienCK" placeholder="Tiền chiết khấu">
+          </div>
+          <label class="col-sm-1 col-lg-1 col-form-label pr-05">Tiền thuế</label>
+          <div class="col-md-2 col-lg-2">
+            <input type="text" class="form-control" readonly id="TienThue" placeholder="Tiền thuế">
+          </div>
+          <label class="col-sm-1 col-lg-1 col-form-label pr-05">Th.Toán</label>
+          <div class="col-md-2 col-lg-2">
+            <input type="text" class="form-control" readonly id="TienThanhToan" placeholder="Thanh toán">
+          </div>
+        </div>
+      </div>
+      <div style="flex-direction: row-reverse;">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary" style="min-width:20%" type="button" id="btn-create">Tạo phiếu</button>
+        </div>
+      </div>
+       </div>
+      @*</form>*@
     </div>
 
     @* content bên lịch sử phiếu nhập kho  *@
@@ -337,6 +357,11 @@
     $("#ThemChiTiet").click(function () {
       addChiTietPhieuTam();
       updateTable2();
+    });
+
+
+    $("#btn-create").click(function () {
+      CreatePN();
     });
 
   });
@@ -436,6 +461,7 @@
   //}
 
 
+  //enable edit ok
   $(function () {
     $("#tableChiTietPhieuNhap").on("click", ".edit", function () {
       var index = $(this).closest('tr').attr('id');
@@ -446,9 +472,9 @@
       var DonGia = $(this).parents('tr').find("td:eq(4)").html();
       var ThanhTien = $(this).parents('tr').find("td:eq(5)").html();
       var ChietKhau = $(this).parents('tr').find("td:eq(6)").html();
-      var HanDung = $(this).parents('tr').find("td:eq(7)").html();
+      var HanDung = $(this).parents('tr').find("td:eq(9)").html();
       var ngaySX = $(this).parents('tr').find("td:eq(8)").html();
-      var ThueXuat = $(this).parents('tr').find("td:eq(9)").html();
+      var ThueXuat = $(this).parents('tr').find("td:eq(7)").html();
 
       $('#selectHH').val(idHH);
       //$("#selectHH option:selected").text(tenHH);
@@ -570,8 +596,8 @@
     {
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
         + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
-        + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
-        + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+        + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + '</td><td class="text-right">' + ThueXuat + '</td><td>' + ngaySX + '</td><td>'
+        + HanDung + '</td><td> <button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
       //onclick="UpdateRow(' + index + ')"
       $('#body_ctpn').prepend(ChitietRecord);
 
@@ -639,8 +665,8 @@
     else {
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
         + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
-        + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + "</td><td>" + HanDung + "</td><td>"
-        + ngaySX + '</td><td class="text-right">' + ThueXuat + "</td><td>" + '<button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+        + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + '</td><td class="text-right">' + ThueXuat + '</td><td>' + ngaySX +  '</td><td>'
+        + HanDung +  '</td><td> <button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
       //onclick="UpdateRow(' + index + ')"
       // $('#body_ctpn').prepend(ChitietRecord);
      // row.html(ChitietRecord);
@@ -661,25 +687,14 @@
   //ok
   function updateTable2() {
   //11111111111111111111111111
- //  var listOfFunctionModel = new Array();
     var tienhang = 0;
     var tienck = 0;
     var tienthue = 0;
-  //  var idvt = $('#vaitro').val();
     $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
-      //document.getElementById('my-element-id').className
-      var id = $(this).closest('tr').attr('id');
-   //   alert("index: " + id);
-      var idHH = $(this).find("td:eq(0) input[type='hidden']").val();
-     // var dvt = $(this).find("td:eq(1)").text();
-      var SoLo = $(this).find("td:eq(2)").text();
       var SL = $(this).find("td:eq(3)").text();
       var DonGia = $(this).find("td:eq(4)").text();
-      var ThanhTien = $(this).find("td:eq(5)").text();
       var ChietKhau = $(this).find("td:eq(6)").text();
-      var HanDung = $(this).find("td:eq(7)").text();
-      var ngaySX = $(this).find("td:eq(8)").text();
-      var ThueXuat = $(this).find("td:eq(9)").text();
+      var ThueXuat = $(this).find("td:eq(7)").text();
 
 
 
@@ -718,7 +733,7 @@
 
   function CreatePN() {
     //11111111111111111111111111
-    var listOfFunctionModel = new Array();
+    var listOfCTPNT = new Array();
 
     $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
       var index = $(this).closest('tr').attr('id');
@@ -728,39 +743,39 @@
       var DonGia = $(this).find("td:eq(4)").text();
       var ThanhTien = $(this).find("td:eq(5)").text();
       var ChietKhau = $(this).find("td:eq(6)").text();
-      var HanDung = $(this).find("td:eq(7)").text();
+      var HanDung = $(this).find("td:eq(9)").text();
       var ngaySX = $(this).find("td:eq(8)").text();
-      var ThueXuat = $(this).find("td:eq(9)").text();
+      var ThueXuat = $(this).find("td:eq(7)").text();
 
 
       //222222222222222222222222222
       var ChiTietPhieuNhapTam = {};
-        ChiTietPhieuNhapTam.Id = index;
-        ChiTietPhieuNhapTam.Idhh = idHH;
-        ChiTietPhieuNhapTam.Slg = SL;
-        ChiTietPhieuNhapTam.DonGia = DonGia;
-        ChiTietPhieuNhapTam.ThanhTien = ThanhTien;
-        ChiTietPhieuNhapTam.Cktm = ChietKhau;
-        ChiTietPhieuNhapTam.Thue = ThueXuat;
-        ChiTietPhieuNhapTam.SoLo = SoLo;
-        ChiTietPhieuNhapTam.Nsx = ngaySX;
-        ChiTietPhieuNhapTam.Hsd = HanDung;
+      ChiTietPhieuNhapTam.Id = Number(index);
+      ChiTietPhieuNhapTam.Idhh = Number(idHH);
+      ChiTietPhieuNhapTam.Slg = Number(SL);
+      ChiTietPhieuNhapTam.DonGia = Number(DonGia);
+      ChiTietPhieuNhapTam.ThanhTien = Number(ThanhTien);
+      ChiTietPhieuNhapTam.Cktm = Number(ChietKhau);
+      ChiTietPhieuNhapTam.Thue = Number(ThueXuat);
+      ChiTietPhieuNhapTam.SoLo = SoLo;
+      ChiTietPhieuNhapTam.Nsx = ngaySX;
+      ChiTietPhieuNhapTam.Hsd = HanDung;
 
-        listOfFunctionModel.push(ChiTietPhieuNhapTam);
+      listOfCTPNT.push(ChiTietPhieuNhapTam);
 
     });
 
     $.ajax({
-      url: '/them-phieu-nhap',
+      url: '/listCTPNT',
       type: 'POST',
       dataType: 'JSON',
       contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(listOfFunctionModel),
+      data: JSON.stringify(listOfCTPNT),
       success: function (result) {
         alert(result);
       },
       error: function () {
-        alert("Loix");
+        alert("Loiiix");
       }
     });
 

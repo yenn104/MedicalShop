@@ -27,7 +27,6 @@ namespace MedicalShop.Controllers
     [HttpPost("/them-phieu-nhap")]
     public IActionResult ThemPhieuNhap([FromBody] IEnumerable<ChiTietPhieuNhapTam> list, PhieuNhap phieuNhap, string NgayHd, string NgayTao)
     {
-
       MedicalShopContext context = new MedicalShopContext();
       //TonKho TonKho = new TonKho();
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -50,15 +49,15 @@ namespace MedicalShop.Controllers
           ChiTietPhieuNhap ct = new ChiTietPhieuNhap();
           ct.Idhh = t.Idhh;
           HangHoa hhoa = context.HangHoa.FirstOrDefault(hhh => hhh.Id == t.Idhh && hhh.Active == true);
-          ct.Idbh = hhoa.b;
+         // ct.Idbh = hhoa.b;
           ct.Thue = t.Thue;
           ct.Idpn = phieuNhap.Id;
           ct.Quantity = t.Slg;
           //ct.Tgbh = t.Tgbh;
           ct.Price = t.DonGia;
           ct.Cktm = t.Cktm;
-          ct.Nsx = t.Nsx;
-          ct.Hsd = t.Hsd;
+          //ct.Nsx = t.Nsx;
+          //ct.Hsd = t.Hsd;
           ct.SoLo = t.SoLo;
           //ct.Note = t.;
           ct.Active = true;
@@ -91,6 +90,54 @@ namespace MedicalShop.Controllers
       TempData["ThongBao"] = "Thêm thành công";
       return RedirectToAction("Index");
     }
+
+
+
+    [HttpPost("/listCTPNT")]
+    public JsonResult ListCTPNT([FromBody] IEnumerable<ChiTietPhieuNhapTam> list)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+    //  var tran = context.Database.BeginTransaction();
+     // try
+    //  {
+        foreach (ChiTietPhieuNhapTam t in list)
+        {
+          ChiTietPhieuNhap ct = new ChiTietPhieuNhap();
+          ct.Idhh = t.Idhh;
+          HangHoa hhoa = context.HangHoa.FirstOrDefault(hhh => hhh.Id == t.Idhh && hhh.Active == true);
+          // ct.Idbh = hhoa.b;
+          ct.Thue = t.Thue;
+          ct.Quantity = t.Slg;
+          ct.Price = t.DonGia;
+          ct.Cktm = t.Cktm;
+          //  ct.Nsx = t.Nsx;
+          //ct.Hsd = t.Hsd;
+          ct.SoLo = t.SoLo;
+          ct.Active = true;
+          ct.CreatedBy = idUser;
+          ct.CreatedDate = DateTime.Now;
+         // ct.CreatedDate = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+          context.ChiTietPhieuNhap.Add(ct);
+          context.SaveChanges();
+        }
+        //var stt = context.SoThuTu.FromSqlRaw("SELECT * FORM SoThuTu WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
+        //stt.Stt += 1;
+        //context.SoThuTu.Update(stt);
+        //context.SaveChanges();
+     //   tran.Commit();
+      //}
+      //catch (Exception e)
+      //{
+      //  tran.Rollback();
+      //  return Json(data: e);
+      //}
+      return Json(data: "Cập nhật thành công!");
+    }
+
+
+
+
 
     [HttpPost("/getDonViTinh")]
     public JsonResult getTenDVT(int idHH)

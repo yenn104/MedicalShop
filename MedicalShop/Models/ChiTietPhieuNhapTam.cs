@@ -16,8 +16,8 @@ namespace MedicalShop.Models
     public double? Cktm { get; set; }
     public double? Thue { get; set; }
     public string SoLo { get; set; }
-    public DateTime? Nsx { get; set; }
-    public DateTime? Hsd { get; set; }
+    public string Nsx { get; set; }
+    public string Hsd { get; set; }
 
   }
 }
