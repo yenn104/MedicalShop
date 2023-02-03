@@ -12,6 +12,11 @@
   padding-right: 0px;
 }
 
+.div-2button button{
+  display:flex;
+  justify-content: space-between;
+}
+
 .pr-05 {
   padding-right: 0rem !important;
   padding-left: 1.4rem !important;

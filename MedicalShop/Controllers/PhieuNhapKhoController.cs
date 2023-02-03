@@ -25,56 +25,58 @@ namespace MedicalShop.Controllers
 
     //tổng
     [HttpPost("/them-phieu-nhap")]
-    public IActionResult ThemPhieuNhap(PhieuNhap phieuNhap, string NgayHd, string NgayTao)
+    public IActionResult ThemPhieuNhap([FromBody] IEnumerable<ChiTietPhieuNhapTam> list, PhieuNhap phieuNhap, string NgayHd, string NgayTao)
     {
 
       MedicalShopContext context = new MedicalShopContext();
-      TonKho TonKho = new TonKho();
+      //TonKho TonKho = new TonKho();
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
     //  string h = GetLocalIPAddress();
    //   List<ChiTietPhieuNhapTam> ListCTPNT = context.ChiTietPhieuNhapTam.Where(x => x.Host == h).OrderByDescending(x => x.Id).ToList();
       var tran = context.Database.BeginTransaction();
       try
       {
+
         phieuNhap.NgayHd = DateTime.ParseExact(NgayHd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        phieuNhap.CreatedDate = DateTime.ParseExact(NgayTao, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        phieuNhap.CreatedDate = DateTime.ParseExact(NgayTao, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         phieuNhap.Active = true;
         phieuNhap.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
         phieuNhap.Idnv = idUser;
         phieuNhap.SoPn = getSoPhieu();
         context.PhieuNhap.Add(phieuNhap);
         context.SaveChanges();
-        //foreach (ChiTietPhieuNhapTam t in ListCTPNT)
-        //{
-        //  ChiTietPhieuNhap ct = new ChiTietPhieuNhap();
-        //  ct.Idhh = t.Idhh;
-        //  ct.Idbh = t.Idbh;
-        //  ct.Thue = t.Thue;
-        //  ct.Idpn = phieuNhap.Id;
-        //  ct.Slg = t.Slg;
-        //  ct.Tgbh = t.Tgbh;
-        //  ct.DonGia = t.DonGia;
-        //  ct.Cktm = t.Cktm;
-        //  ct.Nsx = t.Nsx;
-        //  ct.Hsd = t.Hsd;
-        //  ct.SoLo = t.SoLo;
-        //  ct.GhiChu = t.GhiChu;
-        //  ct.Active = true;
-        //  ct.Nvtao = idUser;
-        //  ct.NgayTao = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        //  context.ChiTietPhieuNhap.Add(ct);
-        //  context.ChiTietPhieuNhapTam.Remove(t);
-        //  context.SaveChanges();
+        foreach (ChiTietPhieuNhapTam t in list)
+        {
+          ChiTietPhieuNhap ct = new ChiTietPhieuNhap();
+          ct.Idhh = t.Idhh;
+          HangHoa hhoa = context.HangHoa.FirstOrDefault(hhh => hhh.Id == t.Idhh && hhh.Active == true);
+          ct.Idbh = hhoa.b;
+          ct.Thue = t.Thue;
+          ct.Idpn = phieuNhap.Id;
+          ct.Quantity = t.Slg;
+          //ct.Tgbh = t.Tgbh;
+          ct.Price = t.DonGia;
+          ct.Cktm = t.Cktm;
+          ct.Nsx = t.Nsx;
+          ct.Hsd = t.Hsd;
+          ct.SoLo = t.SoLo;
+          //ct.Note = t.;
+          ct.Active = true;
+          ct.CreatedBy = idUser;
+          ct.CreatedDate = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+          context.ChiTietPhieuNhap.Add(ct);
+          //context.ChiTietPhieuNhapTam.Remove(t);
+          context.SaveChanges();
 
-        //  TonKho sl = new TonKho();
-        //  sl.Idctpn = ct.Id;
-        //  sl.Slcon = Math.Round((double)ct.Slg, 2);
-        //  sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
-        //  sl.NgayNhap = phieuNhap.NgayTao;
-        //  context.TonKho.Add(sl);
-        //  context.SaveChanges();
-        //}
-        var stt = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
+          //TonKho sl = new TonKho();
+          //sl.Idctpn = ct.Id;
+          //sl.Slcon = Math.Round((double)ct.Slg, 2);
+          //sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
+          //sl.NgayNhap = phieuNhap.NgayTao;
+          //context.TonKho.Add(sl);
+          //context.SaveChanges();
+        }
+        var stt = context.SoThuTu.FromSqlRaw("SELECT * FORM SoThuTu WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
         stt.Stt += 1;
         context.SoThuTu.Update(stt);
         context.SaveChanges();
@@ -273,11 +275,11 @@ namespace MedicalShop.Controllers
     //  });
     //}
 
-    [HttpPost("/load-table-chitiet")]
-    public IActionResult loadTableChitiet()
-    {
-      return PartialView("TableChiTietPhieuNhap");
-    }
+    //[HttpPost("/load-table-chitiet")]
+    //public IActionResult loadTableChitiet()
+    //{
+    //  return PartialView("TableChiTietPhieuNhap");
+    //}
 
     //[HttpPost("/editChitietPhieuNhapTam")]
     //public IActionResult editChitietPhieuNhapTam(int id)
@@ -293,6 +295,11 @@ namespace MedicalShop.Controllers
     //  }
     //}
 
+
+    //chi tiết phiếu nhập (lịch sử)
+    
+    
+    
     [HttpPost("/ViewThongTinPhieuNhap")]
     public IActionResult ViewThongTinPhieuNhap(int idPN)
     {
@@ -301,6 +308,8 @@ namespace MedicalShop.Controllers
       return PartialView(phieu);
     }
 
+
+    //lịch sử nhập ok
     [HttpPost("/loadTableLichSuNhap")]
     public IActionResult loadTableLichSuNhap(string fromDay, string toDay)
     {
@@ -309,13 +318,16 @@ namespace MedicalShop.Controllers
 
       MedicalShopContext context = new MedicalShopContext();
       ViewBag.ListPhieuNhap = context.PhieuNhap
-                                              .FromSqlRaw("select*from PhieuNhap where CONVERT(date,NgayTao) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,NgayTao) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
+                                              .FromSqlRaw("SELECT * FORM PhieuNhap WHERE CONVERT(date,CreatedDate) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,CreatedDate) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
                                               .Include(x => x.IdnccNavigation)
                                               .Include(x => x.IdnvNavigation)
                                               .OrderByDescending(x => x.Id)
                                               .ToList();
       return PartialView("TableLichSuNhap");
     }
+
+
+
     public string ConvertViewToString(ControllerContext controllerContext, PartialViewResult pvr, ICompositeViewEngine _viewEngine)
     {
       using (StringWriter writer = new StringWriter())
@@ -351,7 +363,7 @@ namespace MedicalShop.Controllers
       DateTime d = DateTime.Now;
       string ngayThangNam = d.ToString("yyMMdd");
       string SoPhieu = cn + "_" + qd.TiepDauNgu + ngayThangNam;
-      var list = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
+      var list = context.SoThuTu.FromSqlRaw("SELECT * FORM SoThuTu WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'NhapKho'").FirstOrDefault();
       int stt;
       if (list == null)
       {

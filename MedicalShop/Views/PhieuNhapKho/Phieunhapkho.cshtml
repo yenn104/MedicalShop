@@ -64,7 +64,7 @@
     return SoPhieu;
   }
 
-  //lịch sử
+  //lịch sử lọc theo ngày tạo
   List<PhieuNhap> getListPhieuNhap()
   {
     var list = context.PhieuNhap
@@ -185,7 +185,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Đơn giá</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" oninput="inputDoGia()" id="DonGia" placeholder="Đơn giá">
+                <input type="text" class="form-control" oninput="inputDonGia()" id="DonGia" placeholder="Đơn giá">
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Th.Tiền</label>
               <div class="col-md-2 mb-2 col-lg-2">
@@ -267,14 +267,16 @@
         </div>
         <div style="flex-direction: row-reverse;">
           <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" style="min-width:25%" type="submit">Tạo phiếu</button>
+            <button class="btn btn-primary" style="min-width:20%" type="submit">Tạo phiếu</button>
           </div>
         </div>
       </form>
     </div>
+
+    @* content bên lịch sử phiếu nhập kho  *@
     <div class="tab-content">
       <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="row justify-content-start" style="position:absolute; z-index:1">
+        <div class="row justify-content-start" style="width: fit-content; padding: 1rem 0rem ">
           <div class="col-lg-5 col-sm-5">
             <input class="form-control" type="text" oninput="loadTableLichSuNhap()" id="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
           </div>
@@ -282,7 +284,7 @@
             <input class="form-control" type="text" oninput="loadTableLichSuNhap()" id="toDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
           </div>
           <div class="col-lg-1 col-sm-1">
-            <button type="button" class="btn btn-secondary" onclick="loadTableLichSuNhap()"><i class="bi bi-search"></i></button>
+            <button type="button" class="btn btn-secondary" onclick="loadTableLichSuNhap()"><i class="fas fa-search fa-sm"></i></button>
           </div>
         </div>
         <div id="tableLichSuNhap" class="table-responsive" style="white-space:nowrap;overflow-y: auto;">
@@ -501,7 +503,12 @@
 
   function onemoretime2(index) {
     editChiTietPhieuTam(index);
+    alert("Update chưa");
+    
     updateTable2();
+    alert("huhuhu chưa");
+    changeOff();
+    alert("huhuhu rồi");
   }
 
 
@@ -581,7 +588,7 @@
 
     var idHH = $('#selectHH').val();
     var tenHH = $("#selectHH option:selected").text();
-    alert(index + " - " + tenHH);
+   // alert(index + " - " + tenHH);
     var dvt = $('#DVT').val();
     var SoLo = $('#SoLo').val();
     var ThueXuat = $('#ThueXuat').val();
@@ -639,7 +646,9 @@
      // row.html(ChitietRecord);
 
       $("tr#" + index).replaceWith(ChitietRecord);
-      changeOff();
+      //changeOff();
+      //updateTable2();
+      //alert("Update chưa");
     }
   }
 
@@ -707,6 +716,56 @@
 
 
 
+  function CreatePN() {
+    //11111111111111111111111111
+    var listOfFunctionModel = new Array();
+
+    $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
+      var index = $(this).closest('tr').attr('id');
+      var idHH = $(this).find("td:eq(0) input[type='hidden']").val();
+      var SoLo = $(this).find("td:eq(2)").text();
+      var SL = $(this).find("td:eq(3)").text();
+      var DonGia = $(this).find("td:eq(4)").text();
+      var ThanhTien = $(this).find("td:eq(5)").text();
+      var ChietKhau = $(this).find("td:eq(6)").text();
+      var HanDung = $(this).find("td:eq(7)").text();
+      var ngaySX = $(this).find("td:eq(8)").text();
+      var ThueXuat = $(this).find("td:eq(9)").text();
+
+
+      //222222222222222222222222222
+      var ChiTietPhieuNhapTam = {};
+        ChiTietPhieuNhapTam.Id = index;
+        ChiTietPhieuNhapTam.Idhh = idHH;
+        ChiTietPhieuNhapTam.Slg = SL;
+        ChiTietPhieuNhapTam.DonGia = DonGia;
+        ChiTietPhieuNhapTam.ThanhTien = ThanhTien;
+        ChiTietPhieuNhapTam.Cktm = ChietKhau;
+        ChiTietPhieuNhapTam.Thue = ThueXuat;
+        ChiTietPhieuNhapTam.SoLo = SoLo;
+        ChiTietPhieuNhapTam.Nsx = ngaySX;
+        ChiTietPhieuNhapTam.Hsd = HanDung;
+
+        listOfFunctionModel.push(ChiTietPhieuNhapTam);
+
+    });
+
+    $.ajax({
+      url: '/them-phieu-nhap',
+      type: 'POST',
+      dataType: 'JSON',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(listOfFunctionModel),
+      success: function (result) {
+        alert(result);
+      },
+      error: function () {
+        alert("Loix");
+      }
+    });
+
+  }
+
 
 
 
@@ -731,16 +790,35 @@
     }
   };
 
+  //function inputSLHH() {
+  //  var thanhTien = $('#ThanhTien').val();
+  //  var SL = $('#SLHH').val();
+  //  var DonGia = $('#DonGia').val();
+
+  //  if (SL > 0)
+  //  {
+  //    if (thanhTien > 0)
+  //    {
+  //      DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
+  //      if (checkNumber(DonGia)) {
+  //        $('#DonGia').val(DonGia);
+  //      }
+  //    }
+  //  }
+  //};
+
+
+
   function inputSLHH() {
     var thanhTien = $('#ThanhTien').val();
     var SL = $('#SLHH').val();
-    var DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
-    if (checkNumber(DonGia)) {
-      $('#DonGia').val(DonGia);
-    }
+      var DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
+      if (checkNumber(DonGia)) {
+        $('#DonGia').val(DonGia);
+     }
   };
 
-  function inputDoGia() {
+  function inputDonGia() {
     var SL = $('#SLHH').val();
     var DonGia = $('#DonGia').val();
     var thanhTien = toDecimal(getValue(DonGia) * getValue(SL));
@@ -857,49 +935,49 @@
   //}
 
 
-  function editChiTietPhieu(id) {
-    var idHH = $('#selectHH').val();
-    var SoLo = $('#SoLo').val();
-    var ThueXuat = $('#ThueXuat').val();
-    var SL = getValue($('#SLHH').val());
-    var DonGia = getValue($('#DonGia').val());
-    var ThanhTien = getValue($('#ThanhTien').val());
-    var ChietKhau = getValue($('#ChietKhau').val());
-    var HanDung = $('#HanDung').val();
-    var ngaySX = $('#NgaySX').val();
-    var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
-    var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
-    if (idHH == "") {
-      alert('Hãy chọn hàng hoá!');
-      return;
-    } if (SL == "") {
-      alert('Hãy nhập số lượng hàng hoá!');
-      return;
-    } if (x < y) {
-      alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
-      return;
-    }
-    $.ajax({
-      type: "post",
-      url: "/edit-Chi-Tiet-Phieu",
-      data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
-        + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
-        + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX + "&id=" + id
-      ,
-      success: function (result) {
-        $('#tableChiTietPhieuNhap').replaceWith(result.table);
-        $('#TienHang').val(toDecimal(result.tienHang));
-        $('#TienCK').val(toDecimal(result.tienCK));
-        $('#TienThue').val(toDecimal(result.tienThue));
-        $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
+  //function editChiTietPhieu(id) {
+  //  var idHH = $('#selectHH').val();
+  //  var SoLo = $('#SoLo').val();
+  //  var ThueXuat = $('#ThueXuat').val();
+  //  var SL = getValue($('#SLHH').val());
+  //  var DonGia = getValue($('#DonGia').val());
+  //  var ThanhTien = getValue($('#ThanhTien').val());
+  //  var ChietKhau = getValue($('#ChietKhau').val());
+  //  var HanDung = $('#HanDung').val();
+  //  var ngaySX = $('#NgaySX').val();
+  //  var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
+  //  var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
+  //  if (idHH == "") {
+  //    alert('Hãy chọn hàng hoá!');
+  //    return;
+  //  } if (SL == "") {
+  //    alert('Hãy nhập số lượng hàng hoá!');
+  //    return;
+  //  } if (x < y) {
+  //    alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
+  //    return;
+  //  }
+  //  $.ajax({
+  //    type: "post",
+  //    url: "/edit-Chi-Tiet-Phieu",
+  //    data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
+  //      + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
+  //      + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX + "&id=" + id
+  //    ,
+  //    success: function (result) {
+  //      $('#tableChiTietPhieuNhap').replaceWith(result.table);
+  //      $('#TienHang').val(toDecimal(result.tienHang));
+  //      $('#TienCK').val(toDecimal(result.tienCK));
+  //      $('#TienThue').val(toDecimal(result.tienThue));
+  //      $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
 
-        //editChitietPhieuNhapTam(0);
-      },
-      error: function () {
-        alert("Fail");
-      }
-    });
-  }
+  //      //editChitietPhieuNhapTam(0);
+  //    },
+  //    error: function () {
+  //      alert("Fail");
+  //    }
+  //  });
+  //}
 
 
   function deletePhieuNhapTam(id) {
@@ -921,6 +999,9 @@
       });
     }
   }
+
+
+  //xem chi tiết phiếu nhập (lịch sử)
   function ViewPhieuNhap(idPhieuNhap) {
     $('#bordered-justified-profile').removeClass('active');
     $('#bordered-justified-profile').removeClass('show');
@@ -934,7 +1015,7 @@
         $('#tabXemPhieu').replaceWith(result);
       },
       error: function () {
-        alert("Fail");
+        alert("Fail Loading + Chi tiet lich su phieu nhap");
       }
     });
   }
