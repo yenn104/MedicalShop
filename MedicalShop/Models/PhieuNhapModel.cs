@@ -8,8 +8,13 @@ namespace MedicalShop.Models
 {
   public class PhieuNhapModel
   {
-    public PhieuNhap phieuNhap { get; set; }
-    public List<ChiTietPhieuNhap> chiTietPhieuNhaps { get; set; }
-    public List<ChiTietTraNo> chiTietTraNos { get; set; }
+    //public PhieuNhap phieuNhap { get; set; }
+    public string NgayHd { get; set; }
+    public string SoHd { get; set; }
+    public int? NCC { get; set; }
+    public string Note { get; set; }
+
+    public List<ChiTietPhieuNhapTam> listOfCTPNT { get; set; }
+
   }
 }

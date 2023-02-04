@@ -103,23 +103,23 @@
           <th>Thành tiền</th>
           <th>%CK</th>
           <th>Thuế suất</th>
-          <th>Giá bán</th>
+          @*<th>Giá bán</th>*@
         </tr>
       </thead>
       <tbody>
         @foreach (ChiTietPhieuNhap c in Model.ChiTietPhieuNhap)
         {
           <tr>
-            <td class="text-start">@getHangHoa(c.Idhh).TenHh</td>
-            <td class="text-start">@getDvt(getHangHoa(c.Idhh).Iddvtc).TenDvt</td>
+            <td class="text-left">@getHangHoa(c.Idhh).TenHh</td>
+            <td class="text-left">@getDvt(getHangHoa(c.Idhh).Iddvtc).TenDvt</td>
             <td class="text-center">@formatDay(c.Hsd)</td>
             <td class="text-center">@formatDay(c.Nsx)</td>
-            <td class="text-end">@c.SoLo</td>
-            <td class="text-end">@format((Double)c.Quantity)</td>
-            <td class="text-end">@format(c.Price)</td>
-            <td class="text-end">@format(c.Quantity * c.Price)</td>
-            <td class="text-end">@format(c.Cktm)</td>
-            <td class="text-end">@format(c.Thue)</td>
+            <td class="text-right">@c.SoLo</td>
+            <td class="text-right">@format((Double)c.Quantity)</td>
+            <td class="text-right">@format(c.Price)</td>
+            <td class="text-right">@format(c.Quantity * c.Price)</td>
+            <td class="text-right">@format(c.Cktm)</td>
+            <td class="text-right">@format(c.Thue)</td>
             @*<td class="text-end">@format(getGiaBan(c.Idhh))</td>*@
           </tr>
         }
