@@ -350,6 +350,7 @@
   </div>
 </div>
 <script>
+
   //ok
   $(document).ready(function () {
 
@@ -366,102 +367,16 @@
 
   });
 
-  //function reset(){
-  //  var selected = $("#tableChiTietPhieuNhap tbody").hasClass("index");
-  //  alert(selected);
-  //  if (selected == true) {
-  //    var temp = '<tbody id="body_ctpn"><tr id="temp_ct">< td >...</td ><td>...</td><td>...</td> <td>...</td><td>...</td>'
-  //      + '<td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr></tbody>'
-  //    $('#body_ctpn').replaceWith(temp);
-  //  }
-  //}
-
-
   //ok
   function deleteRow(index) {
-    //alert(index);
-   // var gett = "index" + index;
     var row = document.getElementById(index);
     row.parentNode.removeChild(row);
     updateTable2();
   }
 
-  //$(".edit").on('click', function () {
-  //  var currentRow = $(this).closest("tr");
-  //  //var col1 = currentRow.find("td:eq(0)").html();
-  //  //var col2 = currentRow.find("td:eq(1)").html();
-  //  //var col3 = currentRow.find("td:eq(2)").html();
-  //  //var data = col1 + "\n" + col2 + "\n" + col3;
-
-  //  //alert(data);
-  //  var idHH = currentRow.find("td:eq(0) input[type='hidden']").val();
-  //  var dvt = currentRow.find("td:eq(1)").html();
-  //  var SoLo = currentRow.find("td:eq(2)").html();
-  //  var SL = currentRow.find("td:eq(3)").html();
-  //  var DonGia = currentRow.find("td:eq(4)").html();
-  //  var ThanhTien = currentRow.find("td:eq(5)").html();
-  //  var ChietKhau = currentRow.find("td:eq(6)").html();
-  //  var HanDung = currentRow.find("td:eq(7)").html();
-  //  var ngaySX = currentRow.find("td:eq(8)").html();
-  //  var ThueXuat = currentRow.find("td:eq(9)").html();
-
-  //  $('#selectHH').val(idHH);
-  //  $("#selectHH option:selected").text(tenHH);
-  //  $('#DVT').val(dvt);
-  //  $('#SoLo').val(SoLo);
-  //  $('#ThueXuat').val(toDecimal(ThueXuat));
-  //  $('#SLHH').val(toDecimal(SL));
-  //  $('#DonGia').val(toDecimal(DonGia));
-  //  $('#ThanhTien').val(toDecimal(ThanhTien));
-  //  $('#ChietKhau').val(ChietKhau);
-  //  $('#HanDung').val(HanDung);
-  //  $('#NgaySX').val(ngaySX);
 
 
-  //  alert(DonGia);
-  //});
-
-  //function UpdateRow(index) {
-  //  alert(index);
-  //  // var gett = "index" + index;
-  ////  var row = document.getElementById(index);
-
-  //  var idHH = row.find("td:eq(0) input[type='hidden']").val();
-  //  alert("khong duoc" + idHH);
-
-  //  var iii = $(row).find("td:eq(0) input[type='hidden']").val();
-  //  alert("khong duoc luon" + iii);
-
-  //  //alert(idHH);
-  //  var idid = row.parentNode.find("td:eq(0) input[type='hidden']").val();
-  //  alert("khong duoc not" + idid);
-  //  var dvt = row.parentNode.find("td:eq(1)").text();
-  //  var SoLo = row.parentNode.find("td:eq(2)").text();
-  //  var SL = row.parentNode.find("td:eq(3)").text();
-  //  var DonGia = row.parentNode.find("td:eq(4)").text();
-  //  var ThanhTien = row.parentNode.find("td:eq(5)").text();
-  //  var ChietKhau = row.parentNode.find("td:eq(6)").text();
-  //  var HanDung = row.parentNode.find("td:eq(7)").text();
-  //  var ngaySX = row.parentNode.find("td:eq(8)").text();
-  //  var ThueXuat = row.parentNode.find("td:eq(9)").text();
-
-
-  //    $('#selectHH').val(idHH);
-  //    $("#selectHH option:selected").text(tenHH);
-  //    $('#DVT').val(dvt);
-  //    $('#SoLo').val(SoLo);
-  //    $('#ThueXuat').val(toDecimal(ThueXuat));
-  //    $('#SLHH').val(toDecimal(SL));
-  //    $('#DonGia').val(toDecimal(DonGia));
-  //    $('#ThanhTien').val(toDecimal(ThanhTien));
-  //    $('#ChietKhau').val(ChietKhau);
-  //    $('#HanDung').val(HanDung);
-  //    $('#NgaySX').val(ngaySX);
-  //  //updateTable2();
-  //}
-
-
-  //enable edit ok
+  // ok
   $(function () {
     $("#tableChiTietPhieuNhap").on("click", ".edit", function () {
       var index = $(this).closest('tr').attr('id');
@@ -529,12 +444,8 @@
 
   function onemoretime2(index) {
     editChiTietPhieuTam(index);
-    alert("Update chưa");
-    
     updateTable2();
-    alert("huhuhu chưa");
     changeOff();
-    alert("huhuhu rồi");
   }
 
 
@@ -560,6 +471,12 @@
       alert('Hãy chọn hàng hoá!');
       return;
     }
+
+    if (SoLo == null) {
+      alert('Hãy nhập số lô!');
+      return;
+    }
+
     if (SL == "" || SL <= 0){
       if (SL < 0) {
         alert('Số lượng không hợp lệ!');
@@ -607,10 +524,7 @@
   }
 
 
-  function editChiTietPhieuTam(index) {
-   // var row = document.getElementById(index);
-   // row.parentNode.removeChild(row);
-    
+  function editChiTietPhieuTam(index) {   
 
     var idHH = $('#selectHH').val();
     var tenHH = $("#selectHH option:selected").text();
@@ -631,6 +545,12 @@
       alert('Hãy chọn hàng hoá!');
       return;
     }
+
+    if (SoLo == null) {
+      alert('Hãy nhập số lô!');
+      return;
+    }
+
     if (SL == "" || SL <= 0) {
       if (SL < 0) {
         alert('Số lượng không hợp lệ!');
@@ -660,21 +580,14 @@
       alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
       return;
     }
-    //thêm: giá tiền notnull
 
     else {
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
         + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia
         + '</td><td class="text-right">' + ThanhTien + '</td><td class="text-right">' + ChietKhau + '</td><td class="text-right">' + ThueXuat + '</td><td>' + ngaySX +  '</td><td>'
         + HanDung +  '</td><td> <button type="button" class="btn p-0 edit" onclick="UpdateRow(' + index + ')"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
-      //onclick="UpdateRow(' + index + ')"
-      // $('#body_ctpn').prepend(ChitietRecord);
-     // row.html(ChitietRecord);
 
       $("tr#" + index).replaceWith(ChitietRecord);
-      //changeOff();
-      //updateTable2();
-      //alert("Update chưa");
     }
   }
 
@@ -695,29 +608,9 @@
       var DonGia = $(this).find("td:eq(4)").text();
       var ChietKhau = $(this).find("td:eq(6)").text();
       var ThueXuat = $(this).find("td:eq(7)").text();
-
-
-
       tienhang = tienhang + (SL * DonGia);
       tienck = tienck + ((SL * DonGia * ChietKhau) / 100);
       tienthue = tienthue + ((((SL * DonGia) - ((SL * DonGia * ChietKhau) / 100)) * ThueXuat) / 100);
-    //  alert("id:" + id + " sl:" + sl + " dg:" + DonGia );
-     // alert(" tienhang:" + tienhang + " tienck:" + tienck + " tienthue:" + tienthue);
-  //222222222222222222222222222
-    //var ChiTietPhieuNhapTam = {};
-    //  ChiTietPhieuNhapTam.Id = id;
-    //  ChiTietPhieuNhapTam.Idhh = idHH;
-    //  ChiTietPhieuNhapTam.Slg = SL;
-    //  ChiTietPhieuNhapTam.DonGia = DonGia;
-    //  ChiTietPhieuNhapTam.ThanhTien = ThanhTien;
-    //  ChiTietPhieuNhapTam.Cktm = ChietKhau;
-    //  ChiTietPhieuNhapTam.Thue = ThueXuat;
-    //  ChiTietPhieuNhapTam.SoLo = SoLo;
-    //  ChiTietPhieuNhapTam.Nsx = ngaySX;
-    //  ChiTietPhieuNhapTam.Hsd = HanDung;
-
-    //  listOfFunctionModel.push(ChiTietPhieuNhapTam);
-
     });
 
     var tienthanhtoan = tienhang - tienck + tienthue;
@@ -732,14 +625,11 @@
 
 
   function CreatePN() {
-    //11111111111111111111111111
     var listOfCTPNT = new Array();
     var NgayHd = $('#NgayHD').val();
     var SoHd = $('#SoHd').val();
     var NCC = $('#NCC').val();
     var Note = $('#Note').val();
-
-    //alert(ngayHd);
 
     $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
       var index = $(this).closest('tr').attr('id');
@@ -753,8 +643,6 @@
       var ngaySX = $(this).find("td:eq(8)").text();
       var ThueXuat = $(this).find("td:eq(7)").text();
 
-
-      //222222222222222222222222222
       var ChiTietPhieuNhapTam = {};
       ChiTietPhieuNhapTam.Id = Number(index);
       ChiTietPhieuNhapTam.Idhh = Number(idHH);
@@ -819,25 +707,6 @@
     }
   };
 
-  //function inputSLHH() {
-  //  var thanhTien = $('#ThanhTien').val();
-  //  var SL = $('#SLHH').val();
-  //  var DonGia = $('#DonGia').val();
-
-  //  if (SL > 0)
-  //  {
-  //    if (thanhTien > 0)
-  //    {
-  //      DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
-  //      if (checkNumber(DonGia)) {
-  //        $('#DonGia').val(DonGia);
-  //      }
-  //    }
-  //  }
-  //};
-
-
-
   function inputSLHH() {
     var thanhTien = $('#ThanhTien').val();
     var SL = $('#SLHH').val();
@@ -898,115 +767,6 @@
       minimumFractionDigits: 2
     });
   }
-
-
-
-
-
-  //function addChiTietPhieu() {
-  //  var idHH = $('#selectHH').val();
-  //  var SoLo = $('#SoLo').val();
-  //  var ThueXuat = $('#ThueXuat').val();
-  //  var SL = getValue($('#SLHH').val());
-  //  var DonGia = getValue($('#DonGia').val());
-  //  var ThanhTien = getValue($('#ThanhTien').val());
-  //  var ChietKhau = getValue($('#ChietKhau').val());
-  //  var HanDung = $('#HanDung').val();
-  //  var ngaySX = $('#NgaySX').val();
-  //  var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
-  //  var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
-  //  if (idHH == "") {
-  //    alert('Hãy chọn hàng hoá!');
-  //    return;
-  //  } if (SL == "") {
-  //    alert('Hãy nhập số lượng hàng hoá!');
-  //    return;
-  //  } if (x < y) {
-  //    alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
-  //    return;
-  //  }
-
-  //  $.ajax({
-  //    type: "post",
-  //    url: "/add-Chi-Tiet-Phieu",
-  //    data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
-  //      + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
-  //      + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX
-  //    ,
-  //    success: function (result) {
-  //      $('#tableChiTietPhieuNhap').replaceWith(result.table);
-  //      $('#TienHang').val(toDecimal(result.tienHang));
-  //      $('#TienCK').val(toDecimal(result.tienCK));
-  //      $('#TienThue').val(toDecimal(result.tienThue));
-  //      $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
-
-  //      editChitietPhieuNhapTam(0);
-  //    },
-  //    error: function () {
-  //      alert("Fail them chi tiet phieu");
-  //    }
-  //  });
-  //}
-
-
-  //function editChitietPhieuNhapTam(id) {
-  //  $.ajax({
-  //    type: "post",
-  //    url: "/editChitietPhieuNhapTam",
-  //    data: "id=" + id,
-  //    success: function (result) {
-  //      $('#groupTTChiTiet').replaceWith(result);
-  //    },
-  //    error: function () {
-  //      alert("Fail");
-  //    }
-  //  });
-  //}
-
-
-  //function editChiTietPhieu(id) {
-  //  var idHH = $('#selectHH').val();
-  //  var SoLo = $('#SoLo').val();
-  //  var ThueXuat = $('#ThueXuat').val();
-  //  var SL = getValue($('#SLHH').val());
-  //  var DonGia = getValue($('#DonGia').val());
-  //  var ThanhTien = getValue($('#ThanhTien').val());
-  //  var ChietKhau = getValue($('#ChietKhau').val());
-  //  var HanDung = $('#HanDung').val();
-  //  var ngaySX = $('#NgaySX').val();
-  //  var x = new Date(HanDung.substring(3, 5) + "-" + HanDung.substring(0, 2) + "-" + HanDung.substring(6, 10));
-  //  var y = new Date(ngaySX.substring(3, 5) + "-" + ngaySX.substring(0, 2) + "-" + ngaySX.substring(6, 10));
-  //  if (idHH == "") {
-  //    alert('Hãy chọn hàng hoá!');
-  //    return;
-  //  } if (SL == "") {
-  //    alert('Hãy nhập số lượng hàng hoá!');
-  //    return;
-  //  } if (x < y) {
-  //    alert('Hạn sử dụng phải lớn hơn ngày sản xuất!');
-  //    return;
-  //  }
-  //  $.ajax({
-  //    type: "post",
-  //    url: "/edit-Chi-Tiet-Phieu",
-  //    data: "idHH=" + idHH + "&SoLo=" + SoLo + "&ThueXuat="
-  //      + ThueXuat + "&SL=" + SL + "&DonGia=" + DonGia + "&ThanhTien=" + ThanhTien
-  //      + "&ChietKhau=" + ChietKhau + "&HanDung=" + HanDung + "&NgaySX=" + ngaySX + "&id=" + id
-  //    ,
-  //    success: function (result) {
-  //      $('#tableChiTietPhieuNhap').replaceWith(result.table);
-  //      $('#TienHang').val(toDecimal(result.tienHang));
-  //      $('#TienCK').val(toDecimal(result.tienCK));
-  //      $('#TienThue').val(toDecimal(result.tienThue));
-  //      $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
-
-  //      //editChitietPhieuNhapTam(0);
-  //    },
-  //    error: function () {
-  //      alert("Fail");
-  //    }
-  //  });
-  //}
 
 
   function deletePhieuNhapTam(id) {
