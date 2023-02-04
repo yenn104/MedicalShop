@@ -27,13 +27,13 @@
       @foreach (PhieuNhap p in ViewBag.ListPhieuNhap)
       {
         <tr>
-          <td>@p.SoPn</td>
-          <td>@p.IdnccNavigation.TenNcc</td>
+          <td class="text-left">@p.SoPn</td>
+          <td class="text-left">@p.IdnccNavigation.TenNcc</td>
           <td>@p.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm:ss")</td>
-          <td>@p.SoHd</td>
+          <td class="text-left">@p.SoHd</td>
           <td>@dayToString(p.NgayHd)</td>
-          <td>@p.IdnvNavigation.TenNv</td>
-          <td>@p.Note</td>
+          <td class="text-left">@p.IdnvNavigation.TenNv</td>
+          <td class="text-left">@p.Note</td>
           <td>
             <a href="PhieuNhapKhoPDF" class="btn btn-outline-success">In</a>
             <button type="button" onclick="ViewPhieuNhap('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>

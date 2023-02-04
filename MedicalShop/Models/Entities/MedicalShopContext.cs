@@ -122,8 +122,6 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Note).HasMaxLength(2000);
-
                 entity.Property(e => e.Nsx)
                     .HasColumnName("NSX")
                     .HasColumnType("datetime");

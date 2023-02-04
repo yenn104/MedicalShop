@@ -88,7 +88,7 @@
 }
 
 <div class="card">
-  <div class="card-body" style="margin-bottom: 40px">
+  <div class="card-body" style="margin-bottom: .8rem">
 
     <!-- Bordered Tabs Justified -->
     <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
@@ -324,19 +324,19 @@
             <tbody>
               @foreach (PhieuNhap p in getListPhieuNhap())
               {
-                <tr>
-                  <td>@p.SoPn</td>
-                  <td>@p.IdnccNavigation.TenNcc</td>
-                  <td>@p.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm")</td>
-                  <td>@p.SoHd</td>
-                  <td>@dayToString(p.NgayHd)</td>
-                  <td>@p.IdnvNavigation.TenNv</td>
-                  <td>@p.Note</td>
-                  <td>
-                    <a href="PhieuNhapKhoPDF" class="btn btn-outline-success">In</a>
-                    <button type="button" onclick="ViewPhieuNhap('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>
-                  </td>
-                </tr>
+              <tr>
+                <td class="text-left">@p.SoPn</td>
+                <td class="text-left">@p.IdnccNavigation.TenNcc</td>
+                <td>@p.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                <td class="text-left">@p.SoHd</td>
+                <td>@dayToString(p.NgayHd)</td>
+                <td class="text-left">@p.IdnvNavigation.TenNv</td>
+                <td class="text-left">@p.Note</td>
+                <td>
+                  <a href="PhieuNhapKhoPDF" class="btn btn-outline-success">In</a>
+                  <button type="button" onclick="ViewPhieuNhap('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>
+                </td>
+              </tr>
               }
 
             </tbody>

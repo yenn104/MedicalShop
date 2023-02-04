@@ -26,7 +26,6 @@ namespace MedicalShop.Models.Entities
         public int? Tgbh { get; set; }
         public DateTime? Nsx { get; set; }
         public DateTime? Hsd { get; set; }
-        public string Note { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
