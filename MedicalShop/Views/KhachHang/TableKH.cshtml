@@ -1,13 +1,13 @@
-﻿@model MedicalShop.Models.Entities.NhaCungCap
+﻿@model MedicalShop.Models.Entities.KhachHang
 
 @{
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
   MedicalShopContext context = new MedicalShopContext();
 
-  List<NhaCungCap> listNCC()
+  List<KhachHang> listKH()
   {
-    return context.NhaCungCap.Where(x => x.Active == true).ToList();
+    return context.KhachHang.Where(x => x.Active == true).ToList();
   }
 
   var acc = User.FindFirst("VaiTro");
@@ -57,7 +57,7 @@
   <div style="margin-bottom: 20px">
     @if (nhap == true)
     {
-      <a href="/NhaCungCap/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+      <a href="/KhachHang/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
     }
     else
     {
@@ -77,15 +77,15 @@
   </div>
 </div>
 
-<div id="tableNCC" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+<div id="tableKH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
   <table class="table">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaNcc)
+          @Html.DisplayNameFor(model => model.MaKh)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenNcc)
+          @Html.DisplayNameFor(model => model.TenKh)
         </th>
         <th>
           @Html.DisplayNameFor(model => model.Address)
@@ -96,48 +96,54 @@
         <th>
           @Html.DisplayNameFor(model => model.Mail)
         </th>
+        <th>
+          @Html.DisplayNameFor(model => model.UserName)
+        </th>
         <th>Tùy chọn</th>
       </tr>
     </thead>
     <tbody>
-      @foreach (NhaCungCap item in listNCC())
+      @foreach (KhachHang item in listKH())
       {
-        <tr>
-          <td>
-            @Html.DisplayFor(modelItem => item.MaNcc)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.TenNcc)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Address)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Mail)
-          </td>
-          <td>
-            @if (sua == true)
-            {
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-            }
-            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-            @if (xoa == true)
-            {
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-            }
-          </td>
-        </tr>
+      <tr>
+        <td>
+          @Html.DisplayFor(modelItem => item.MaKh)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.TenKh)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Mail)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+          @if (sua == true)
+          {
+            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+          }
+          @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+          @if (xoa == true)
+          {
+            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+          }
+        </td>
+      </tr>
       }
     </tbody>
   </table>
@@ -149,10 +155,10 @@
     var a = $(this).val();
     $.ajax({
       type: "post",
-      url: "/loadTableNCC",
+      url: "/loadTableKH",
       data: "active=" + a,
       success: function (result) {
-        $('#tableNCC').replaceWith(result);
+        $('#tableKH').replaceWith(result);
       },
       error: function () {
         alert("Failed");
