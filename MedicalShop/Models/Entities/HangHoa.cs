@@ -70,6 +70,8 @@ namespace MedicalShop.Models.Entities
     [DisplayName("Trạng thái")]
     public bool? Active { get; set; }
 
+
+    public virtual Dvt IddvtcNavigation { get; set; }
     public virtual Hsx IdhsxNavigation { get; set; }
     public virtual NhomHangHoa IdnhhNavigation { get; set; }
     public virtual Nsx IdnsxNavigation { get; set; }

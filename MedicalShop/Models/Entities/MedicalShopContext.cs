@@ -389,6 +389,11 @@ namespace MedicalShop.Models.Entities
                     .HasColumnName("TenHH")
                     .HasMaxLength(250);
 
+                entity.HasOne(d => d.IddvtcNavigation)
+                    .WithMany(p => p.HangHoa)
+                    .HasForeignKey(d => d.Iddvtc)
+                    .HasConstraintName("FK_HangHoa_DVT");
+
                 entity.HasOne(d => d.IdhsxNavigation)
                     .WithMany(p => p.HangHoa)
                     .HasForeignKey(d => d.Idhsx)
