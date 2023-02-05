@@ -56,6 +56,7 @@ namespace MedicalShop.Controllers
           ct.Thue = t.Thue;
           ct.Quantity = t.Slg;
           ct.Price = t.DonGia;
+          ct.SalePrice = t.DonGia + (t.DonGia * 0.5);
           ct.Cktm = t.Cktm;
           ct.Nsx = DateTime.ParseExact(t.Nsx, "dd-MM-yyyy", CultureInfo.InvariantCulture); 
           ct.Hsd = DateTime.ParseExact(t.Hsd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
@@ -67,6 +68,14 @@ namespace MedicalShop.Controllers
           ct.ModifiedDate = DateTime.Now;
           // ct.CreatedDate = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
           context.ChiTietPhieuNhap.Add(ct);
+          context.SaveChanges();
+
+          TonKho sl = new TonKho();
+          sl.Idctpn = ct.Id;
+          sl.SoLuong = Math.Round((double)ct.Quantity, 2);
+          sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
+          sl.NgayNhap = phieuNhap.CreatedDate;
+          context.TonKho.Add(sl);
           context.SaveChanges();
         }
         var stt = context.SoThuTu.FromSqlRaw("SELECT * FROM SoThuTu WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,Date) and Type = 'NhapKho'").FirstOrDefault();

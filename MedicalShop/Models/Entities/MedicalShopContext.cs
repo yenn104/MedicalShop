@@ -130,6 +130,8 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.SalePrice).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.SoLo).HasMaxLength(50);
 
                 entity.Property(e => e.Tgbh).HasColumnName("TGBH");
@@ -1116,15 +1118,13 @@ namespace MedicalShop.Models.Entities
 
             modelBuilder.Entity<TonKho>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
 
                 entity.Property(e => e.Idctpn).HasColumnName("IDCTPN");
 
                 entity.Property(e => e.NgayNhap).HasColumnType("datetime");
-
-                entity.Property(e => e.SoLo).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdctpnNavigation)
                     .WithMany(p => p.TonKho)

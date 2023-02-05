@@ -97,7 +97,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Kh.Hàng</label>
               <div class="col-sm-5 col-lg-5">
-                <select required onchange="appendDVTKH()" name="IdKh" id="IdKh" class="custom-select">
+                <select name="IdKh" id="IdKh" class="custom-select">
                   <option selected value=""></option>
                   @foreach (KhachHang n in getListKH())
                   {
@@ -129,7 +129,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">Tên hàng</label>
               <div class="col-md-5 mb-2 col-lg-5">
-                <select id="selectHH" onchange="appendDVT()" class="custom-select">
+                <select id="selectHH" onchange="loadDVT()" class="custom-select">
                   <option selected disabled value=""></option>
                   @foreach (HangHoa h in getListHH())
                   {
@@ -143,9 +143,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">ĐV tính</label>
               <div class="col-sm-2 col-lg-2">
-                <select id="selectDVT" onchange="loadTienDVT()" class="custom-select">
-                  <option selected value=""></option>
-                </select>
+                <input type="text" class="form-control" id="DVT" readonly placeholder="Đơn vị tính">
               </div>
 
             </div>
@@ -168,11 +166,11 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Đơn giá</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" readonly oninput="inputDoGia()" id="DonGia" placeholder="Đơn giá">
+                <input type="text" class="form-control" readonly id="DonGia" placeholder="Đơn giá">
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Th.Tiền</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <input type="text" class="form-control" oninput="inputThanhTien()" id="ThanhTien" readonly placeholder="Thành tiền">
+                <input type="text" class="form-control" id="ThanhTien" readonly placeholder="Thành tiền">
               </div>
             </div>
             <div class="row justify-content-between">
@@ -309,6 +307,8 @@
   <img class="imageModal-content" id="imageHHModal">
   <div id="imageModelCaption"></div>
 </div>
+
+
 <script>
   function loadDVT() {
     var idHH = $('#selectHH').val();
@@ -316,11 +316,11 @@
     if (idHH != 0) {
       $.ajax({
         type: "post",
-        url: "/getDonViTinh",
+        url: "/getDonViTinhPX",
         data: "idHH=" + idHH,
         success: function (result) {
           $('#DVT').val(result.tenDVT);
-          //$('#GiaBan').val(toDecimal(result.giaBan));
+          $('#SLcon').val(toDecimal(result.slCon));
         },
         error: function () {
           alert("Fail");
@@ -328,19 +328,31 @@
       });
     }
   };
+
+  //
   function inputSLHH() {
     $('#SLHH').removeClass('is-invalid');
     var SL = $('#SLHH').val();
+    var SLcon = $('#SLcon').val();
+   // alert(SLcon)
     var idHH = $('#selectHH').val();
-    var idDVT = $('#selectDVT').val();
-    if (idHH != "" && idDVT != "") {
+    
+    //var idDVT = $('#selectDVT').val();
+    if (idHH != "" && SL > 0){
       $.ajax({
         type: "post",
-        url: "/checkSLC",
-        data: "idHH=" + idHH + "&idDVT= " + idDVT,
+        url: "/checkgia",
+        data: "idHH=" + idHH + "&SL="+SL,
         success: function (result) {
-          if (getValue(SL) > result) {
+          if (getValue(SL) > SLcon) {
             $('#SLHH').addClass('is-invalid');
+            $('#DonGia').val("");
+            $('#ThanhTien').val("");
+          } else {
+           // $('#SLHH').addClass('is-invalid');
+            $('#DonGia').val(toDecimal(result.donGia));
+            $('#ThanhTien').val(toDecimal(result.thanhTien));
+            //alert(result.thanhTien);
           }
         },
         error: function () {
@@ -348,11 +360,22 @@
         }
       });
     }
-    var DonGia = $('#DonGia').val();
-    var thanhTien = toDecimal(getValue(DonGia) * getValue(SL));
-    if (checkNumber(thanhTien)) {
-      $('#ThanhTien').val(thanhTien);
+    //if (SL > slCon) {
+    //  $('#SLHH').addClass('is-invalid');
+    //}
+    if(SL <=0 || SL == ""){
+      $('#DonGia').val("");
+      $('#ThanhTien').val("");
+      
     }
+
+   
+
+    //var DonGia = $('#DonGia').val();
+    //var thanhTien = toDecimal(getValue(DonGia) * getValue(SL));
+    //if (checkNumber(thanhTien)) {
+    //  $('#ThanhTien').val(thanhTien);
+    //}
     if (idHH == "") {
       $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
     }
@@ -360,6 +383,9 @@
       $('#selectDVT').addClass('is-invalid');
     }
   };
+
+
+
   $('#ChietKhau').on('input', function () {
 
     if (getValue(this.value) > 100) {
@@ -530,98 +556,100 @@
     $('#bordered-justified-profile').addClass('show');
   }
 
-  function appendDVT() {
-    var idKH = $('#KH').val();
-    $('#selectHH').nextAll('.custom-select').removeClass('is-invalid');
-    var idHH = $('#selectHH').val();
-    if (idKH != "" && idHH != "") {
-      $.ajax({
-        type: "post",
-        url: "/loadListDVT",
-        data: "idHH=" + idHH + "&idKH=" + idKH,
-        success: function (result) {
-          $('#selectDVT').empty();
-          $('#selectDVT').append(result.options);
-          if (result.giaBan == 0) {
-            alert('Hết hàng');
-          } else {
-            $('#DonGia').val(toDecimal(result.giaBan));
-            $('#SLcon').val(toDecimal(result.slCon));
-          }
-          $('#imageHH').attr("src", "/ImagesHangHoa/" + result.hinhAnh);
-          /*$('#imageHH').attr("alt",$('#selectHH').children(':selected').text());*/
+  //function appendDVT() {
+  //  var idKH = $('#KH').val();
+  //  $('#selectHH').nextAll('.custom-select').removeClass('is-invalid');
+  //  var idHH = $('#selectHH').val();
+  //  if (idKH != "" && idHH != "") {
+  //    $.ajax({
+  //      type: "post",
+  //      url: "/loadListDVT",
+  //      data: "idHH=" + idHH + "&idKH=" + idKH,
+  //      success: function (result) {
+  //        $('#selectDVT').empty();
+  //        $('#selectDVT').append(result.options);
+  //        if (result.giaBan == 0) {
+  //          alert('Hết hàng');
+  //        } else {
+  //          $('#DonGia').val(toDecimal(result.giaBan));
+  //          $('#SLcon').val(toDecimal(result.slCon));
+  //        }
+  //        $('#imageHH').attr("src", "/lib/imagesHH/" + result.hinhAnh);
+  //        /*$('#imageHH').attr("alt",$('#selectHH').children(':selected').text());*/
 
-        },
-        error: function () {
-          alert("Fail");
-        }
-      });
-    }
-    if (idHH == "") {
-      $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
-    }
-    if (idKH == "") {
-      $('#KH').nextAll('.custom-select').addClass('is-invalid');
-    }
-  }
-  function appendDVTKH() {
-    var idKH = $('#KH').val();
-    $('#KH').nextAll('.custom-select').removeClass('is-invalid');
-    var idHH = $('#selectHH').val();
-    if (idHH != "" && idKH != "") {
-      $.ajax({
-        type: "post",
-        url: "/loadListDVT",
-        data: "idHH=" + idHH + "&idKH=" + idKH,
-        success: function (result) {
-          console.log(result);
-          $('#selectDVT').empty();
-          $('#selectDVT').append(result.options);
-          $('#selectDVT').removeClass('is-invalid');
-          if (result.giaBan == 0) {
-            alert('Hết hàng');
-          } else {
-            $('#DonGia').val(toDecimal(result.giaBan));
-            $('#SLcon').val(toDecimal(result.slCon));
-          }
-        },
-        error: function () {
-          alert("Fail");
-        }
-      });
-    }
-    if (idHH == "") {
-      $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
-    }
-    if (idKH == "") {
-      $('#KH').nextAll('.custom-select').addClass('is-invalid');
-    }
-  }
+  //      },
+  //      error: function () {
+  //        alert("Fail");
+  //      }
+  //    });
+  //  }
+  //  if (idHH == "") {
+  //    $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
+  //  }
+  //  if (idKH == "") {
+  //    $('#KH').nextAll('.custom-select').addClass('is-invalid');
+  //  }
+  //}
 
-  function loadTienDVT() {
-    var idKH = $('#KH').val();
-    var idHH = $('#selectHH').val();
-    var idDVT = $('#selectDVT').val();
-    $('#selectDVT').removeClass('is-invalid');
-    if (idHH != "" && idKH != "") {
-      $.ajax({
-        type: "post",
-        url: "/loadTienDVT",
-        data: "idHH=" + idHH + "&idKH=" + idKH + "&idDVT=" + idDVT,
-        success: function (result) {
-          if (result == 0) {
-            alert('Hết hàng');
-          } else {
-            $('#DonGia').val(toDecimal(result.giaBan));
-            $('#SLcon').val(toDecimal(result.slCon));
-          }
-        },
-        error: function () {
-          alert("Fail");
-        }
-      });
-    }
-  }
+
+  //function appendDVTKH() {
+  //  var idKH = $('#KH').val();
+  //  $('#KH').nextAll('.custom-select').removeClass('is-invalid');
+  //  var idHH = $('#selectHH').val();
+  //  if (idHH != "" && idKH != "") {
+  //    $.ajax({
+  //      type: "post",
+  //      url: "/loadListDVT",
+  //      data: "idHH=" + idHH + "&idKH=" + idKH,
+  //      success: function (result) {
+  //        console.log(result);
+  //        $('#selectDVT').empty();
+  //        $('#selectDVT').append(result.options);
+  //        $('#selectDVT').removeClass('is-invalid');
+  //        if (result.giaBan == 0) {
+  //          alert('Hết hàng');
+  //        } else {
+  //          $('#DonGia').val(toDecimal(result.giaBan));
+  //          $('#SLcon').val(toDecimal(result.slCon));
+  //        }
+  //      },
+  //      error: function () {
+  //        alert("Fail");
+  //      }
+  //    });
+  //  }
+  //  if (idHH == "") {
+  //    $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
+  //  }
+  //  if (idKH == "") {
+  //    $('#KH').nextAll('.custom-select').addClass('is-invalid');
+  //  }
+  //}
+
+  //function loadTienDVT() {
+  //  var idKH = $('#KH').val();
+  //  var idHH = $('#selectHH').val();
+  //  var idDVT = $('#selectDVT').val();
+  //  $('#selectDVT').removeClass('is-invalid');
+  //  if (idHH != "" && idKH != "") {
+  //    $.ajax({
+  //      type: "post",
+  //      url: "/loadTienDVT",
+  //      data: "idHH=" + idHH + "&idKH=" + idKH + "&idDVT=" + idDVT,
+  //      success: function (result) {
+  //        if (result == 0) {
+  //          alert('Hết hàng');
+  //        } else {
+  //          $('#DonGia').val(toDecimal(result.giaBan));
+  //          $('#SLcon').val(toDecimal(result.slCon));
+  //        }
+  //      },
+  //      error: function () {
+  //        alert("Fail");
+  //      }
+  //    });
+  //  }
+  //}
 
   // Get the modal
   var modal = document.getElementById("imageModal");
