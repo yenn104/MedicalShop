@@ -5,10 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\prtHHN.rdlc" />
+    <Content Remove="wwwroot\Reports\prtHHX.rdlc" />
     <Content Remove="wwwroot\Reports\rptTonKho.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Reports\prtHHN.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\prtHHX.rdlc" />
     <EmbeddedResource Include="wwwroot\Reports\rptTonKho.rdlc" />
   </ItemGroup>
 
@@ -44,6 +48,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="ReportDataSet\dsHHN.Designer.cs">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="ReportDataSet\dsTonKho.Designer.cs">
       <DependentUpon>dsTonKho.xsd</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -52,6 +61,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ReportDataSet\dsHHN.xsc">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsHHN.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsHHN.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="ReportDataSet\dsHHN.xss">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
     <None Update="ReportDataSet\dsTonKho.xsc">
       <DependentUpon>dsTonKho.xsd</DependentUpon>
     </None>

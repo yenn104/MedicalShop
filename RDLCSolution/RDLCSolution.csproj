@@ -54,6 +54,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\dsHHN.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\dsTonKho.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -68,6 +73,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reports\prtHHN.rdlc" />
+    <EmbeddedResource Include="Reports\prtHHX.rdlc" />
     <EmbeddedResource Include="Reports\rptTonKho.rdlc" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -78,6 +85,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Reports\dsHHN.xsc">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\dsHHN.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsHHN.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\dsHHN.xss">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
     <None Include="Reports\dsTonKho.xsc">
       <DependentUpon>dsTonKho.xsd</DependentUpon>
     </None>
