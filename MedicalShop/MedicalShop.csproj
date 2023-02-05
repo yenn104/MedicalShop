@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Reports\prtHHN.rdlc" />
-    <Content Remove="wwwroot\Reports\prtHHX.rdlc" />
+    <Content Remove="wwwroot\Reports\rptHHN.rdlc" />
+    <Content Remove="wwwroot\Reports\rptHHX.rdlc" />
     <Content Remove="wwwroot\Reports\rptTonKho.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\Reports\prtHHN.rdlc" />
-    <EmbeddedResource Include="wwwroot\Reports\prtHHX.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\rptHHN.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\rptHHX.rdlc" />
     <EmbeddedResource Include="wwwroot\Reports\rptTonKho.rdlc" />
   </ItemGroup>
 

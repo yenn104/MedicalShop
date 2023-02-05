@@ -22,7 +22,7 @@ namespace MedicalShop.Controllers
       System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
     }
 
-    public HHNList hhn = new HHNList();
+    public Report report = new Report();
 
 
     public IActionResult Index()
@@ -31,19 +31,20 @@ namespace MedicalShop.Controllers
     }
 
 
-    public IActionResult Report()
+    public IActionResult ReportTon()
     {
       var dt = new DataTable();
-      dt = hhn.getHangHoa();
+      //Report reportt = new Report();
+    dt = report.getTonKho();
 
       string mimeType = "";
       int extension = 1;
       var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptTonKho.rdlc";
       Dictionary<string, string> paramaters = new Dictionary<string, string>();
       paramaters.Add("prm4", "MEDICAL SHOP");
-      paramaters.Add("prm1", DateTime.Now.ToString("MM/yyyy"));
-      paramaters.Add("prm2", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
-      paramaters.Add("prm3", "THỐNG KÊ HÀNG HÓA ĐÃ NHẬP");
+      paramaters.Add("prm1", DateTime.Now.ToString("MM-yyyy"));
+      paramaters.Add("prm2", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+      paramaters.Add("prm3", "THỐNG KÊ TỒN KHO");
 
       LocalReport localReport = new LocalReport(path);
       localReport.AddDataSource("dsTonKho", dt);
@@ -52,6 +53,58 @@ namespace MedicalShop.Controllers
 
       return File(res.MainStream, "application/pdf");
     }
+
+
+
+    public IActionResult ReportHHN()
+    {
+      var dt = new DataTable();
+      dt = report.getHangHoaNhap();
+
+      string mimeType = "";
+      int extension = 1;
+      var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptHHN.rdlc";
+      Dictionary<string, string> paramaters = new Dictionary<string, string>();
+      paramaters.Add("prm4", "MEDICAL SHOP");
+      //paramaters.Add("prm1", DateTime.Now.ToString("MM-yyyy"));
+      paramaters.Add("prm2", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+      paramaters.Add("prm3", "THỐNG KÊ HÀNG HÓA ĐÃ NHẬP");
+
+      LocalReport localReport = new LocalReport(path);
+      localReport.AddDataSource("dsHHN", dt);
+
+      var res = localReport.Execute(RenderType.Pdf, extension, paramaters, mimeType);
+
+      return File(res.MainStream, "application/pdf");
+    }
+
+
+
+    public IActionResult ReportHHX()
+    {
+      var dt = new DataTable();
+      dt = report.getHangHoaNhap();
+
+      string mimeType = "";
+      int extension = 1;
+      var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptHHN.rdlc";
+      Dictionary<string, string> paramaters = new Dictionary<string, string>();
+      paramaters.Add("prm4", "MEDICAL SHOP");
+      //paramaters.Add("prm1", DateTime.Now.ToString("MM-yyyy"));
+      paramaters.Add("prm2", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+      paramaters.Add("prm3", "THỐNG KÊ HÀNG HÓA ĐÃ NHẬP");
+
+      LocalReport localReport = new LocalReport(path);
+      localReport.AddDataSource("dsHHN", dt);
+
+      var res = localReport.Execute(RenderType.Pdf, extension, paramaters, mimeType);
+
+      return File(res.MainStream, "application/pdf");
+    }
+
+
+
+
 
   }
 }
