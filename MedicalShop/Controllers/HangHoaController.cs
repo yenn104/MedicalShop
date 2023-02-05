@@ -166,61 +166,61 @@ namespace MedicalShop.Controllers
 
 
     [HttpPost("/loadTableHH")]
-    public IActionResult loadTable(bool active, int nhomHH, int SL)
+    public IActionResult loadTable(bool active, int nhomHH)
     {
       if (active)
       {
         if (nhomHH != 0)
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).ToList();
+          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).OrderBy(x => x.TenHh).ToList();
         }
         else
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).ToList();
+          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).OrderBy(x => x.TenHh).ToList();
         }
       }
       else
       {
         if (nhomHH != 0)
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).ToList();
+          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).OrderBy(x => x.TenHh).ToList();
         }
         else
         {
-          ViewBag.ListHH = context.HangHoa.ToList();
+          ViewBag.ListHH = context.HangHoa.OrderBy(x => x.TenHh).ToList();
         }
       }
       return PartialView("LoadTableHH");
     }
 
 
-    [HttpPost("/loadMoreTableHH")]
-    public IActionResult loadMoreTableHH(bool active, int nhomHH, int SL)
-    {
-      if (active)
-      {
-        if (nhomHH != 0)
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).Take(SL + 9).ToList();
-        }
-        else
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).Take(SL + 9).ToList();
-        }
-      }
-      else
-      {
-        if (nhomHH != 0)
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).Take(SL + 9).ToList();
-        }
-        else
-        {
-          ViewBag.ListHH = context.HangHoa.Take(SL + 9).ToList();
-        }
-      }
-      return PartialView("LoadTableHH");
-    }
+    //[HttpPost("/loadMoreTableHH")]
+    //public IActionResult loadMoreTableHH(bool active, int nhomHH, int SL)
+    //{
+    //  if (active)
+    //  {
+    //    if (nhomHH != 0)
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).Take(SL + 9).ToList();
+    //    }
+    //    else
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).Take(SL + 9).ToList();
+    //    }
+    //  }
+    //  else
+    //  {
+    //    if (nhomHH != 0)
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).Take(SL + 9).ToList();
+    //    }
+    //    else
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Take(SL + 9).ToList();
+    //    }
+    //  }
+    //  return PartialView("LoadTableHH");
+    //}
 
 
 

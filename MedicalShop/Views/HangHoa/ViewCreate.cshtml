@@ -43,32 +43,9 @@
             <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
           </div>
         </div>
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">Mã HH</label>
-            <input asp-for="@Model.MaHh" type="text" class="form-control" required>
-          </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">Tên HH</label>
-            <input asp-for="@Model.TenHh" type="text" class="form-control" required>
-          </div>
-
-        </div>
-
 
         <div class="form-group" style="display:flex">
           <div class="group-left">
-            <label style="margin:7px 0;">DVT</label>
-            <select required class="custom-select" asp-for="@Model.Iddvtc">
-              @foreach (Dvt hh in getListDVT())
-              {
-                <option value="@hh.Id">
-                  @hh.TenDvt
-                </option>
-              }
-            </select>
-          </div>
-          <div class="group-right">
             <label style="margin:7px 0;">Nhóm HH</label>
             <select required class="custom-select" asp-for="@Model.Idnhh">
               @foreach (NhomHangHoa hh in getListNHH())
@@ -79,10 +56,42 @@
               }
             </select>
           </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Mã HH</label>
+            <input asp-for="@Model.MaHh" type="text" class="form-control" required>
+            
+          </div>
         </div>
 
         <div class="form-group" style="display:flex">
           <div class="group-left">
+            <label style="margin:7px 0;">Tên HH</label>
+            <input asp-for="@Model.TenHh" type="text" class="form-control" required>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">DVT</label>
+            <select required class="custom-select" asp-for="@Model.Iddvtc">
+              @foreach (Dvt hh in getListDVT())
+              {
+                <option value="@hh.Id">
+                  @hh.TenDvt
+                </option>
+              }
+            </select>
+          </div>
+
+        </div>
+
+
+
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">Barcode</label>
+            <input asp-for="@Model.BarCode" type="text" class="form-control" required>
+           
+          </div>
+          <div class="group-right">
             <label style="margin:7px 0;">NSX</label>
             <select required class="custom-select" asp-for="@Model.Idnsx">
               @foreach (Nsx hh in getListNSX())
@@ -93,7 +102,10 @@
               }
             </select>
           </div>
-          <div class="group-right">
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
             <label style="margin:7px 0;">HSX</label>
             <select required class="custom-select" asp-for="@Model.Idhsx">
               @foreach (Hsx hh in getListHSX())
@@ -104,19 +116,11 @@
               }
             </select>
           </div>
-        </div>
-
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">Barcode</label>
-            <input asp-for="@Model.BarCode" type="text" class="form-control" required>
-          </div>
           <div class="group-right">
             <label style="margin:7px 0;">Chi tiết</label>
             <input asp-for="@Model.Detail" type="text" class="form-control" required>
           </div>
         </div>
-
 
       </div>
 

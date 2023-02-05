@@ -6,7 +6,7 @@
 
   List<HangHoa> listHH()
   {
-    return context.HangHoa.Where(a => a.Active == true).ToList();
+    return context.HangHoa.Where(a => a.Active == true).OrderBy(a => a.TenHh).ToList();
   }
 
   List<NhomHangHoa> getListNHH()
@@ -117,7 +117,7 @@
           <td>
             @Html.DisplayFor(modelItem => item.BarCode)
           </td>
-          <td class="side-picture">
+          <td id="imageHH" class="side-picture">
             <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;"  id="zoom_01" class="img-fluid">
           </td>
           <td style="max-width: 14rem; ">
@@ -147,8 +147,12 @@
     </tbody>
   </table>
 </div>
+@*<div id="imageModal" class="imageModal">
+  <span class="closeImageModal">&times;</span>
+  <img class="imageModal-content" id="imageHHModal">
+  <div id="imageModelCaption"></div>
+</div>*@
 <script>
-
 
   function changeHH() {
     var active = $('#active').val();
@@ -167,7 +171,6 @@
     });
   }
 
-
   $('.side-picture').hover(function () {
     var showing = $(this).find("img").attr("src");
     $('.side-picture').find("img").removeAttr('id');
@@ -177,6 +180,30 @@
     });
 
   });
+
+
+
+  //// Get the modal
+  //var modal = document.getElementById("imageModal");
+
+  //// Get the image and insert it inside the modal - use its "alt" text as a caption
+  //var img = document.getElementById("imageHH");
+  //var modalImg = document.getElementById("imageHHModal");
+  //var captionText = document.getElementById("imageModelCaption");
+  //img.onclick = function () {
+  //  modal.style.display = "block";
+  //  modalImg.src = this.src;
+  //  captionText.innerHTML = this.alt;
+  //}
+
+  //// Get the <span> element that closes the modal
+  //var span = document.getElementsByClassName("closeImageModal")[0];
+
+  //// When the user clicks on <span> (x), close the modal
+  //span.onclick = function () {
+  //  modal.style.display = "none";
+  //}
+
 
 
 
