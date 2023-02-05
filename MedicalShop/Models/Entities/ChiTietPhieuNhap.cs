@@ -11,6 +11,7 @@ namespace MedicalShop.Models.Entities
     {
         public ChiTietPhieuNhap()
         {
+            ChiTietPhieuXuat = new HashSet<ChiTietPhieuXuat>();
             TonKho = new HashSet<TonKho>();
         }
 
@@ -37,6 +38,7 @@ namespace MedicalShop.Models.Entities
         public virtual Dvbh IdbhNavigation { get; set; }
         public virtual HangHoa IdhhNavigation { get; set; }
         public virtual PhieuNhap IdpnNavigation { get; set; }
+        public virtual ICollection<ChiTietPhieuXuat> ChiTietPhieuXuat { get; set; }
         public virtual ICollection<TonKho> TonKho { get; set; }
     }
 }

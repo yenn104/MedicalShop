@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -903,32 +904,36 @@ namespace MedicalShop.Controllers
     //  });
     //}
 
-    //[HttpPost("/ViewThongTinPhieuXuat")]
-    //public IActionResult ViewThongTinPhieuXuat(int idPX)
-    //{
-    //  MedicalShopContext context = new MedicalShopContext();
-    //  var phieu = context.PhieuXuat.Include(x => x.ChiTietPhieuXuat)
-    //      .Include(x => x.IdkhNavigation)
-    //      .Include(x => x.IdnvNavigation)
-    //      .FirstOrDefault(x => x.Id == idPX);
-    //  return PartialView(phieu);
-    //}
 
-    //[HttpPost("/loadTableLichSuXuat")]
-    //public IActionResult loadTableLichSuXuat(string fromDay, string toDay)
-    //{
-    //  DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-    //  DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 
-    //  MedicalShopContext context = new MedicalShopContext();
-    //  ViewBag.ListPhieuXuat = context.PhieuXuat
-    //                                          .FromSqlRaw("select*from PhieuXuat where CONVERT(date,NgayTao) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,NgayTao) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
-    //                                          .Include(x => x.IdkhNavigation)
-    //                                          .Include(x => x.IdnvNavigation)
-    //                                          .OrderByDescending(x => x.Id)
-    //                                          .ToList();
-    //  return PartialView("TableLichSuXuat");
-    //}
+    [HttpPost("/ViewThongTinPhieuXuat")]
+    public IActionResult ViewThongTinPhieuXuat(int idPX)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      var phieu = context.PhieuXuat.Include(x => x.ChiTietPhieuXuat)
+          .Include(x => x.IdkhNavigation)
+          .Include(x => x.IdnvNavigation)
+          .FirstOrDefault(x => x.Id == idPX);
+      return PartialView(phieu);
+    }
+
+
+
+    [HttpPost("/loadTableLichSuXuat")]
+    public IActionResult loadTableLichSuXuat(string fromDay, string toDay)
+    {
+      DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+
+      MedicalShopContext context = new MedicalShopContext();
+      ViewBag.ListPhieuXuat = context.PhieuXuat
+                                              .FromSqlRaw("select*from PhieuXuat where CONVERT(date,NgayTao) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,NgayTao) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
+                                              .Include(x => x.IdkhNavigation)
+                                              .Include(x => x.IdnvNavigation)
+                                              .OrderByDescending(x => x.Id)
+                                              .ToList();
+      return PartialView("TableLichSuXuat");
+    }
 
     //double? getTiLe(double? tl)
     //{
@@ -947,53 +952,42 @@ namespace MedicalShop.Controllers
     //    return writer.GetStringBuilder().ToString();
     //  }
     //}
-    //string GetLocalIPAddress()
-    //{
-    //  var host = Dns.GetHostEntry(Dns.GetHostName());
-    //  foreach (var ip in host.AddressList)
-    //  {
-    //    if (ip.AddressFamily == AddressFamily.InterNetwork)
-    //    {
-    //      return ip.ToString();
-    //    }
-    //  }
-    //  throw new Exception("No network adapters with an IPv4 address in the system!");
-    //}
 
-    //string getSoPhieu()
-    //{
-    //  MedicalShopContext context = new MedicalShopContext();
-    //  QuyDinhMa qd = context.QuyDinhMa.Find(2);
-    //  //ID chi nhánh
-    //  string cn = "01";
 
-    //  DateTime d = DateTime.Now;
-    //  string ngayThangNam = d.ToString("yyMMdd");
-    //  string SoPhieu = cn + "_" + qd.TiepDauNgu + ngayThangNam;
-    //  var list = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'XuatKho'").FirstOrDefault();
-    //  int stt;
-    //  if (list == null)
-    //  {
-    //    SoThuTu sttt = new SoThuTu();
-    //    sttt.Ngay = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
-    //    sttt.Stt = 0;
-    //    sttt.Loai = "XuatKho";
-    //    context.SoThuTu.Add(sttt);
-    //    context.SaveChanges();
-    //    stt = 1;
-    //  }
-    //  else
-    //  {
-    //    stt = (Int32)list.Stt + 1;
-    //  }
-    //  SoPhieu += stt;
-    //  while (true)
-    //  {
-    //    if (qd.DoDai == SoPhieu.Length) break;
-    //    SoPhieu = SoPhieu.Insert(SoPhieu.Length - stt.ToString().Length, "0");
-    //  }
-    //  return SoPhieu;
-    //}
+    string getSoPhieu()
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      QuyDinhMa qd = context.QuyDinhMa.Find(2);
+      //ID chi nhánh
+      string cn = "01";
+
+      DateTime d = DateTime.Now;
+      string ngayThangNam = d.ToString("yyMMdd");
+      string SoPhieu = cn + "_" + qd.TiepDauNgu + ngayThangNam;
+      var list = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'XuatKho'").FirstOrDefault();
+      int stt;
+      if (list == null)
+      {
+        SoThuTu sttt = new SoThuTu();
+        sttt.Date = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        sttt.Stt = 0;
+        sttt.Type = "XuatKho";
+        context.SoThuTu.Add(sttt);
+        context.SaveChanges();
+        stt = 1;
+      }
+      else
+      {
+        stt = (Int32)list.Stt + 1;
+      }
+      SoPhieu += stt;
+      while (true)
+      {
+        if (qd.DoDai == SoPhieu.Length) break;
+        SoPhieu = SoPhieu.Insert(SoPhieu.Length - stt.ToString().Length, "0");
+      }
+      return SoPhieu;
+    }
 
     //List<SoLuongHhcon> soLuongHhcon()
     //{

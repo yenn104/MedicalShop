@@ -167,15 +167,11 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Hsd)
-                    .HasColumnName("HSD")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.Idctpn).HasColumnName("IDCTPN");
 
                 entity.Property(e => e.Iddvt).HasColumnName("IDDVT");
 
                 entity.Property(e => e.Idhh).HasColumnName("IDHH");
-
-                entity.Property(e => e.Idpn).HasColumnName("IDPN");
 
                 entity.Property(e => e.Idpx).HasColumnName("IDPX");
 
@@ -183,13 +179,14 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Nsx)
-                    .HasColumnName("NSX")
-                    .HasColumnType("datetime");
-
                 entity.Property(e => e.Price).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.IdctpnNavigation)
+                    .WithMany(p => p.ChiTietPhieuXuat)
+                    .HasForeignKey(d => d.Idctpn)
+                    .HasConstraintName("FK_ChiTietPhieuXuat_ChiTietPhieuNhap");
 
                 entity.HasOne(d => d.IdhhNavigation)
                     .WithMany(p => p.ChiTietPhieuXuat)

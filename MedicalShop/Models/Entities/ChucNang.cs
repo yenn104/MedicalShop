@@ -10,8 +10,8 @@ namespace MedicalShop.Models.Entities
     public partial class ChucNang
     {
         public int Id { get; set; }
-        public int? Idmenu { get; set; }
         public int? Idvt { get; set; }
+        public int? Idmenu { get; set; }
         public string MaCnang { get; set; }
         public string TenCnang { get; set; }
         public bool? Import { get; set; }
