@@ -769,26 +769,6 @@
   }
 
 
-  function deletePhieuNhapTam(id) {
-    if (confirm("Bạn có muốn xoá nội dung này")) {
-      $.ajax({
-        type: "post",
-        url: "/delete-Chi-Tiet-Phieu",
-        data: "id=" + id,
-        success: function (result) {
-          $('#tableChiTietPhieuNhap').replaceWith(result.table);
-          $('#TienHang').val(toDecimal(result.tienHang));
-          $('#TienCK').val(toDecimal(result.tienCK));
-          $('#TienThue').val(toDecimal(result.tienThue));
-          $('#TienThanhToan').val(toDecimal(result.tienThanhToan));
-        },
-        error: function () {
-          alert("Fail");
-        }
-      });
-    }
-  }
-
 
   //xem chi tiết phiếu nhập (lịch sử)
   function ViewPhieuNhap(idPhieuNhap) {
