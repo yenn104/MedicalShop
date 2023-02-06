@@ -20,17 +20,17 @@ namespace MedicalShop.ReportDataSet {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("dsTonKho")]
+    [global::System.Xml.Serialization.XmlRootAttribute("dsHHX")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class dsTonKho : global::System.Data.DataSet {
+    public partial class dsHHX : global::System.Data.DataSet {
         
-        private dsTonKhoDataTable tabledsTonKho;
+        private dsHHXDataTable tabledsHHX;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public dsTonKho() {
+        public dsHHX() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace MedicalShop.ReportDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        protected dsTonKho(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected dsHHX(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace MedicalShop.ReportDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["dsTonKho"] != null)) {
-                    base.Tables.Add(new dsTonKhoDataTable(ds.Tables["dsTonKho"]));
+                if ((ds.Tables["dsHHX"] != null)) {
+                    base.Tables.Add(new dsHHXDataTable(ds.Tables["dsHHX"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace MedicalShop.ReportDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public dsTonKhoDataTable _dsTonKho {
+        public dsHHXDataTable _dsHHX {
             get {
-                return this.tabledsTonKho;
+                return this.tabledsHHX;
             }
         }
         
@@ -127,7 +127,7 @@ namespace MedicalShop.ReportDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            dsTonKho cln = ((dsTonKho)(base.Clone()));
+            dsHHX cln = ((dsHHX)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace MedicalShop.ReportDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["dsTonKho"] != null)) {
-                    base.Tables.Add(new dsTonKhoDataTable(ds.Tables["dsTonKho"]));
+                if ((ds.Tables["dsHHX"] != null)) {
+                    base.Tables.Add(new dsHHXDataTable(ds.Tables["dsHHX"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace MedicalShop.ReportDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tabledsTonKho = ((dsTonKhoDataTable)(base.Tables["dsTonKho"]));
+            this.tabledsHHX = ((dsHHXDataTable)(base.Tables["dsHHX"]));
             if ((initTable == true)) {
-                if ((this.tabledsTonKho != null)) {
-                    this.tabledsTonKho.InitVars();
+                if ((this.tabledsHHX != null)) {
+                    this.tabledsHHX.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace MedicalShop.ReportDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "dsTonKho";
+            this.DataSetName = "dsHHX";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/dsTonKho.xsd";
+            this.Namespace = "http://tempuri.org/dsHHX.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tabledsTonKho = new dsTonKhoDataTable();
-            base.Tables.Add(this.tabledsTonKho);
+            this.tabledsHHX = new dsHHXDataTable();
+            base.Tables.Add(this.tabledsHHX);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        private bool ShouldSerialize_dsTonKho() {
+        private bool ShouldSerialize_dsHHX() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace MedicalShop.ReportDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            dsTonKho ds = new dsTonKho();
+            dsHHX ds = new dsHHX();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,14 +270,14 @@ namespace MedicalShop.ReportDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public delegate void dsTonKhoRowChangeEventHandler(object sender, dsTonKhoRowChangeEvent e);
+        public delegate void dsHHXRowChangeEventHandler(object sender, dsHHXRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class dsTonKhoDataTable : global::System.Data.TypedTableBase<dsTonKhoRow> {
+        public partial class dsHHXDataTable : global::System.Data.TypedTableBase<dsHHXRow> {
             
             private global::System.Data.DataColumn columnMaHH;
             
@@ -289,8 +289,8 @@ namespace MedicalShop.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoDataTable() {
-                this.TableName = "dsTonKho";
+            public dsHHXDataTable() {
+                this.TableName = "dsHHX";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -298,7 +298,7 @@ namespace MedicalShop.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal dsTonKhoDataTable(global::System.Data.DataTable table) {
+            internal dsHHXDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -315,7 +315,7 @@ namespace MedicalShop.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected dsTonKhoDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected dsHHXDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -363,48 +363,48 @@ namespace MedicalShop.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoRow this[int index] {
+            public dsHHXRow this[int index] {
                 get {
-                    return ((dsTonKhoRow)(this.Rows[index]));
+                    return ((dsHHXRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event dsTonKhoRowChangeEventHandler dsTonKhoRowChanging;
+            public event dsHHXRowChangeEventHandler dsHHXRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event dsTonKhoRowChangeEventHandler dsTonKhoRowChanged;
+            public event dsHHXRowChangeEventHandler dsHHXRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event dsTonKhoRowChangeEventHandler dsTonKhoRowDeleting;
+            public event dsHHXRowChangeEventHandler dsHHXRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event dsTonKhoRowChangeEventHandler dsTonKhoRowDeleted;
+            public event dsHHXRowChangeEventHandler dsHHXRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void AdddsTonKhoRow(dsTonKhoRow row) {
+            public void AdddsHHXRow(dsHHXRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoRow AdddsTonKhoRow(string MaHH, string TenHH, int SL, System.DateTime Gia) {
-                dsTonKhoRow rowdsTonKhoRow = ((dsTonKhoRow)(this.NewRow()));
+            public dsHHXRow AdddsHHXRow(string MaHH, string TenHH, string SL, string Gia) {
+                dsHHXRow rowdsHHXRow = ((dsHHXRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         MaHH,
                         TenHH,
                         SL,
                         Gia};
-                rowdsTonKhoRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowdsTonKhoRow);
-                return rowdsTonKhoRow;
+                rowdsHHXRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowdsHHXRow);
+                return rowdsHHXRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                dsTonKhoDataTable cln = ((dsTonKhoDataTable)(base.Clone()));
+                dsHHXDataTable cln = ((dsHHXDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -412,7 +412,7 @@ namespace MedicalShop.ReportDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new dsTonKhoDataTable();
+                return new dsHHXDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -431,38 +431,38 @@ namespace MedicalShop.ReportDataSet {
                 base.Columns.Add(this.columnMaHH);
                 this.columnTenHH = new global::System.Data.DataColumn("TenHH", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTenHH);
-                this.columnSL = new global::System.Data.DataColumn("SL", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSL = new global::System.Data.DataColumn("SL", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSL);
-                this.columnGia = new global::System.Data.DataColumn("Gia", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnGia = new global::System.Data.DataColumn("Gia", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGia);
-                this.ExtendedProperties.Add("Generator_TablePropName", "_dsTonKho");
-                this.ExtendedProperties.Add("Generator_UserTableName", "dsTonKho");
+                this.ExtendedProperties.Add("Generator_TablePropName", "_dsHHX");
+                this.ExtendedProperties.Add("Generator_UserTableName", "dsHHX");
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoRow NewdsTonKhoRow() {
-                return ((dsTonKhoRow)(this.NewRow()));
+            public dsHHXRow NewdsHHXRow() {
+                return ((dsHHXRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new dsTonKhoRow(builder);
+                return new dsHHXRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(dsTonKhoRow);
+                return typeof(dsHHXRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.dsTonKhoRowChanged != null)) {
-                    this.dsTonKhoRowChanged(this, new dsTonKhoRowChangeEvent(((dsTonKhoRow)(e.Row)), e.Action));
+                if ((this.dsHHXRowChanged != null)) {
+                    this.dsHHXRowChanged(this, new dsHHXRowChangeEvent(((dsHHXRow)(e.Row)), e.Action));
                 }
             }
             
@@ -470,8 +470,8 @@ namespace MedicalShop.ReportDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.dsTonKhoRowChanging != null)) {
-                    this.dsTonKhoRowChanging(this, new dsTonKhoRowChangeEvent(((dsTonKhoRow)(e.Row)), e.Action));
+                if ((this.dsHHXRowChanging != null)) {
+                    this.dsHHXRowChanging(this, new dsHHXRowChangeEvent(((dsHHXRow)(e.Row)), e.Action));
                 }
             }
             
@@ -479,8 +479,8 @@ namespace MedicalShop.ReportDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.dsTonKhoRowDeleted != null)) {
-                    this.dsTonKhoRowDeleted(this, new dsTonKhoRowChangeEvent(((dsTonKhoRow)(e.Row)), e.Action));
+                if ((this.dsHHXRowDeleted != null)) {
+                    this.dsHHXRowDeleted(this, new dsHHXRowChangeEvent(((dsHHXRow)(e.Row)), e.Action));
                 }
             }
             
@@ -488,14 +488,14 @@ namespace MedicalShop.ReportDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.dsTonKhoRowDeleting != null)) {
-                    this.dsTonKhoRowDeleting(this, new dsTonKhoRowChangeEvent(((dsTonKhoRow)(e.Row)), e.Action));
+                if ((this.dsHHXRowDeleting != null)) {
+                    this.dsHHXRowDeleting(this, new dsHHXRowChangeEvent(((dsHHXRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void RemovedsTonKhoRow(dsTonKhoRow row) {
+            public void RemovedsHHXRow(dsHHXRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -504,7 +504,7 @@ namespace MedicalShop.ReportDataSet {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                dsTonKho ds = new dsTonKho();
+                dsHHX ds = new dsHHX();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -522,7 +522,7 @@ namespace MedicalShop.ReportDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "dsTonKhoDataTable";
+                attribute2.FixedValue = "dsHHXDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -566,15 +566,15 @@ namespace MedicalShop.ReportDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class dsTonKhoRow : global::System.Data.DataRow {
+        public partial class dsHHXRow : global::System.Data.DataRow {
             
-            private dsTonKhoDataTable tabledsTonKho;
+            private dsHHXDataTable tabledsHHX;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal dsTonKhoRow(global::System.Data.DataRowBuilder rb) : 
+            internal dsHHXRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tabledsTonKho = ((dsTonKhoDataTable)(this.Table));
+                this.tabledsHHX = ((dsHHXDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -582,14 +582,14 @@ namespace MedicalShop.ReportDataSet {
             public string MaHH {
                 get {
                     try {
-                        return ((string)(this[this.tabledsTonKho.MaHHColumn]));
+                        return ((string)(this[this.tabledsHHX.MaHHColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'MaHH\' in table \'dsTonKho\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'MaHH\' in table \'dsHHX\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsTonKho.MaHHColumn] = value;
+                    this[this.tabledsHHX.MaHHColumn] = value;
                 }
             }
             
@@ -598,95 +598,95 @@ namespace MedicalShop.ReportDataSet {
             public string TenHH {
                 get {
                     try {
-                        return ((string)(this[this.tabledsTonKho.TenHHColumn]));
+                        return ((string)(this[this.tabledsHHX.TenHHColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TenHH\' in table \'dsTonKho\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TenHH\' in table \'dsHHX\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsTonKho.TenHHColumn] = value;
+                    this[this.tabledsHHX.TenHHColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int SL {
+            public string SL {
                 get {
                     try {
-                        return ((int)(this[this.tabledsTonKho.SLColumn]));
+                        return ((string)(this[this.tabledsHHX.SLColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'SL\' in table \'dsTonKho\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SL\' in table \'dsHHX\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsTonKho.SLColumn] = value;
+                    this[this.tabledsHHX.SLColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public System.DateTime Gia {
+            public string Gia {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tabledsTonKho.GiaColumn]));
+                        return ((string)(this[this.tabledsHHX.GiaColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Gia\' in table \'dsTonKho\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Gia\' in table \'dsHHX\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsTonKho.GiaColumn] = value;
+                    this[this.tabledsHHX.GiaColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsMaHHNull() {
-                return this.IsNull(this.tabledsTonKho.MaHHColumn);
+                return this.IsNull(this.tabledsHHX.MaHHColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetMaHHNull() {
-                this[this.tabledsTonKho.MaHHColumn] = global::System.Convert.DBNull;
+                this[this.tabledsHHX.MaHHColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsTenHHNull() {
-                return this.IsNull(this.tabledsTonKho.TenHHColumn);
+                return this.IsNull(this.tabledsHHX.TenHHColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetTenHHNull() {
-                this[this.tabledsTonKho.TenHHColumn] = global::System.Convert.DBNull;
+                this[this.tabledsHHX.TenHHColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsSLNull() {
-                return this.IsNull(this.tabledsTonKho.SLColumn);
+                return this.IsNull(this.tabledsHHX.SLColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetSLNull() {
-                this[this.tabledsTonKho.SLColumn] = global::System.Convert.DBNull;
+                this[this.tabledsHHX.SLColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsGiaNull() {
-                return this.IsNull(this.tabledsTonKho.GiaColumn);
+                return this.IsNull(this.tabledsHHX.GiaColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetGiaNull() {
-                this[this.tabledsTonKho.GiaColumn] = global::System.Convert.DBNull;
+                this[this.tabledsHHX.GiaColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -694,22 +694,22 @@ namespace MedicalShop.ReportDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public class dsTonKhoRowChangeEvent : global::System.EventArgs {
+        public class dsHHXRowChangeEvent : global::System.EventArgs {
             
-            private dsTonKhoRow eventRow;
+            private dsHHXRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoRowChangeEvent(dsTonKhoRow row, global::System.Data.DataRowAction action) {
+            public dsHHXRowChangeEvent(dsHHXRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsTonKhoRow Row {
+            public dsHHXRow Row {
                 get {
                     return this.eventRow;
                 }

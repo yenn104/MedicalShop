@@ -65,10 +65,10 @@ namespace MedicalShop.Controllers
       int extension = 1;
       var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptHHN.rdlc";
       Dictionary<string, string> paramaters = new Dictionary<string, string>();
-      paramaters.Add("prm4", "MEDICAL SHOP");
+      paramaters.Add("prm1", "MEDICAL SHOP");
       //paramaters.Add("prm1", DateTime.Now.ToString("MM-yyyy"));
-      paramaters.Add("prm2", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
-      paramaters.Add("prm3", "THỐNG KÊ HÀNG HÓA ĐÃ NHẬP");
+      paramaters.Add("prm3", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+      paramaters.Add("prm2", "THỐNG KÊ HÀNG HÓA ĐÃ NHẬP");
 
       LocalReport localReport = new LocalReport(path);
       localReport.AddDataSource("dsHHN", dt);
@@ -83,19 +83,19 @@ namespace MedicalShop.Controllers
     public IActionResult ReportHHX()
     {
       var dt = new DataTable();
-      dt = report.getHangHoaNhap();
+      dt = report.getHangHoaXuat();
 
       string mimeType = "";
       int extension = 1;
-      var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptHHN.rdlc";
+      var path = $"{_webHostEnv.WebRootPath}\\Reports\\rptHHX.rdlc";
       Dictionary<string, string> paramaters = new Dictionary<string, string>();
-      paramaters.Add("prm4", "MEDICAL SHOP");
+      paramaters.Add("prm1", "MEDICAL SHOP");
       //paramaters.Add("prm1", DateTime.Now.ToString("MM-yyyy"));
-      paramaters.Add("prm2", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
-      paramaters.Add("prm3", "THỐNG KÊ HÀNG HÓA ĐÃ NHẬP");
+      paramaters.Add("prm3", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+      paramaters.Add("prm2", "THỐNG KÊ HÀNG HÓA ĐÃ XUẤT");
 
       LocalReport localReport = new LocalReport(path);
-      localReport.AddDataSource("dsHHN", dt);
+      localReport.AddDataSource("dsHHX", dt);
 
       var res = localReport.Execute(RenderType.Pdf, extension, paramaters, mimeType);
 

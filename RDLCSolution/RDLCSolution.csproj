@@ -59,6 +59,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsHHN.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\dsHHX.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsHHX.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\dsTonKho.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -95,6 +100,17 @@
     </None>
     <None Include="Reports\dsHHN.xss">
       <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\dsHHX.xsc">
+      <DependentUpon>dsHHX.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\dsHHX.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsHHX.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\dsHHX.xss">
+      <DependentUpon>dsHHX.xsd</DependentUpon>
     </None>
     <None Include="Reports\dsTonKho.xsc">
       <DependentUpon>dsTonKho.xsd</DependentUpon>

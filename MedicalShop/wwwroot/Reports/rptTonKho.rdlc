@@ -25,16 +25,12 @@
           <DataField>TenHH</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="SoLo">
-          <DataField>SoLo</DataField>
+        <Field Name="SL">
+          <DataField>SL</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="SoLuong">
-          <DataField>SoLuong</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="NgayNhap">
-          <DataField>NgayNhap</DataField>
+        <Field Name="Gia">
+          <DataField>Gia</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
@@ -56,27 +52,24 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.44167cm</Width>
+                  <Width>1.71684cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.12039cm</Width>
+                  <Width>2.39556cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.4019cm</Width>
+                  <Width>5.10981cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.29032cm</Width>
+                  <Width>3.56415cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.27244cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>4.26774cm</Width>
+                  <Width>4.00811cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.86073cm</Height>
+                  <Height>1.10563cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -106,7 +99,8 @@
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -143,7 +137,8 @@
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -180,7 +175,8 @@
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -198,7 +194,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Số lô</Value>
+                                  <Value>Tổng số lượng tồn</Value>
                                   <Style>
                                     <FontFamily>times New Roman</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -217,7 +213,8 @@
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -235,7 +232,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Số lượng</Value>
+                                  <Value>Tổng trị giá tồn</Value>
                                   <Style>
                                     <FontFamily>times New Roman</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -254,44 +251,8 @@
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox12">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Ngày nhập</Value>
-                                  <Style>
-                                    <FontFamily>times New Roman</FontFamily>
-                                    <FontSize>11pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox12</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -314,7 +275,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=rownumber(nothing)</Value>
                                   <Style>
                                     <FontFamily>times New Roman</FontFamily>
                                   </Style>
@@ -407,14 +368,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="SoLo">
+                        <Textbox Name="SL">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!SoLo.Value</Value>
+                                  <Value>=Fields!SL.Value</Value>
                                   <Style>
                                     <FontFamily>times New Roman</FontFamily>
                                   </Style>
@@ -423,7 +384,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>SoLo</rd:DefaultName>
+                          <rd:DefaultName>SL</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -439,14 +400,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="SoLuong">
+                        <Textbox Name="Gia">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!SoLuong.Value</Value>
+                                  <Value>=Fields!Gia.Value</Value>
                                   <Style>
                                     <FontFamily>times New Roman</FontFamily>
                                   </Style>
@@ -457,41 +418,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>SoLuong</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="NgayNhap">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!NgayNhap.Value</Value>
-                                  <Style>
-                                    <FontFamily>times New Roman</FontFamily>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>NgayNhap</rd:DefaultName>
+                          <rd:DefaultName>Gia</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -516,7 +443,6 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
-                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -532,7 +458,7 @@
             <DataSetName>dsTonKho</DataSetName>
             <Top>0.17639cm</Top>
             <Left>0cm</Left>
-            <Height>1.92992cm</Height>
+            <Height>2.17482cm</Height>
             <Width>16.79446cm</Width>
             <Style>
               <Border>
@@ -541,7 +467,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>2.35121cm</Height>
+        <Height>2.56288cm</Height>
         <Style />
       </Body>
       <Width>16.79446cm</Width>

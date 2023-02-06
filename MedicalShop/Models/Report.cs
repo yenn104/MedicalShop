@@ -21,7 +21,7 @@ namespace MedicalShop.Models
 
       using (SqlConnection conn = new SqlConnection(connectionString))
       {
-        SqlCommand cmd = new SqlCommand("Sto_Nhap", conn);
+        SqlCommand cmd = new SqlCommand("Sto_HHTonKho", conn);
         cmd.CommandType = CommandType.StoredProcedure;
         conn.Open();
         SqlDataAdapter da = new SqlDataAdapter(cmd);
