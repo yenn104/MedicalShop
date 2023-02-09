@@ -14,9 +14,9 @@
 }
 
 <div class="col-12 vaitro" style="padding-bottom: 20px;">
-  <label for="vt" class="form-label">Vai trò</label>
+  <label for="vt" class="form-label" style="width: 10rem">Vai trò</label>
 
-  <select id="idvt" onchange="" class="w-100 form-select" asp-for="Idvt" style="height: 38px;">
+  <select id="idvt" onchange="" class="w-100 custom-select" asp-for="Idvt" style="height: 38px;">
     @foreach (var vt in ViewBag.ListPQCN)
     {
       <option value="@vt">@getVT(@vt).TenVt</option>

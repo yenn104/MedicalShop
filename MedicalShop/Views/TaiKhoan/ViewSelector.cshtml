@@ -63,21 +63,21 @@
                 <a href="index.html"
                    class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="" />
-                  <span class="d-none d-lg-block">Medical Shop</span>
+                  <span class="d-none d-lg-block font-size-3">Medical Shop</span>
                 </a>
               </div>
               <!-- End Logo -->
 
-              <div class="card mb-3" style="padding: 30px;">
+              <div class="card mb-3" style="padding: 30px; width: 36rem">
                 <div class="card-body" style="padding-top: 20px;">
 
 
                   <form class="row g-3 needs-validation" action="/TaiKhoan/Selector" novalidate method="post">
                     <div class="col-12" style="padding-bottom: 10px;">
-                      <label for="chin" class="form-label">Chi nhánh</label>
+                      <label for="chin" class="form-label" style="width: 10rem">Chi nhánh</label>
                       <div class="input-group has-validation">
                         <input type="hidden" value="@ViewBag.TaiKhoan" id="tk" asp-for="Idtk" />
-                        <select id="idcn" onchange="loadPQCN()" class="w-100 form-select" asp-for="Idcn" style="height: 38px;">
+                        <select id="idcn" onchange="loadPQCN()" class="w-100 custom-select" asp-for="Idcn" style="height: 38px;">
                           <option selected disabled>--- Chọn chi nhánh ---</option>
                           @foreach (var cn in ViewBag.ChiNhanh)
                           {
@@ -91,8 +91,8 @@
                     </div>
 
                     <div class="col-12 vaitro" style="padding-bottom: 20px;">
-                      <label for="vt" class="form-label">Vai trò</label>
-                      <select id="idvt" onchange="" class="w-100 form-select" asp-for="Idvt" style="height: 38px;" disabled>
+                      <label for="vt" class="form-label" style="width: 10rem">Vai trò</label>
+                      <select id="idvt" onchange="" class="w-100 custom-select" asp-for="Idvt" style="height: 38px;" disabled>
                         <option selected disabled>--- Chọn vai trò ---</option>
                         @foreach (VaiTro vt in ListVT())
                         {
@@ -106,7 +106,7 @@
 
 
                     <div class="col-6">
-                      <button class="btn btn-primary w-100" type="button" onclick="window.history.go(-1);">
+                      <button class="btn btn-secondary w-100" type="button" onclick="window.history.go(-1);">
                         Quay lại
                       </button>
                     </div>
