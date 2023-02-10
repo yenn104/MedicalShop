@@ -58,7 +58,7 @@
           <div class="group-right">
             <label style="margin:7px 0;">Mã NV</label>
             <input asp-for="@Model.MaNv" type="text" class="form-control" required>
-
+            <input asp-for="@Model.Id" type="hidden" />
           </div>
         </div>
 
@@ -85,7 +85,7 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">Ngày sinh</label>
-            <input asp-for="@Model.DateOfBirth" type="date" class="form-control" required> @*2001-04-10*@
+            <input asp-for="@Model.DateOfBirth" value="2001-04-10" type="date" class="form-control" required> @*2001-04-10*@
           </div>
         </div>
 
@@ -103,7 +103,7 @@
         <div class="form-group" style="display:flex">
           <div class="group-left">
             <label style="margin:7px 0;">SĐT</label>
-            <input asp-for="@Model.Phone" type="text" class="quantity-input input-text qty text form-control" onkeypress="return isNumberKey(event)" title="Số lượng cần mua" name="quantity" value="">
+            <input asp-for="@Model.Phone" type="text" class="quantity-input input-text qty text form-control" onkeypress="return isNumberKey(event)">
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">Mail</label>
@@ -124,6 +124,19 @@
   </div>
 </div>
 <script>
+
+  $(document).ready(function () {
+    $('.quantity-input').bind("cut copy paste drag drop", function (e) {
+      e.preventDefault();
+    });
+  });
+  function isNumberKey(e) {
+    var charCode = (e.which) ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57) /*&& charCode != 43*/)
+      return false;
+    return true;
+  }
+
            function readURL(input, previewId) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();

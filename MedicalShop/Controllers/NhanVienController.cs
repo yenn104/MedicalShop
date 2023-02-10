@@ -148,14 +148,14 @@ namespace MedicalShop.Controllers
     {
       NhanVien dv = context.NhanVien.Find(nv.Id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      dv.ModifiedBy = idUser;
+      dv.ModifiedBy = 1;
       dv.ModifiedDate = DateTime.Now;
       dv.TenNv = nv.TenNv;
       dv.MaNv = nv.MaNv;
-      //sua cho nay///////////////////////////////////////////////////
       dv.Address = nv.Address;
       dv.Mail = nv.Mail;
       dv.Phone = nv.Phone;
+      dv.Cccd = nv.Cccd;
       dv.HomeTown = nv.HomeTown;
       dv.Sex = nv.Sex;
       dv.DateOfBirth = nv.DateOfBirth;
