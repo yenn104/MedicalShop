@@ -1,0 +1,142 @@
+﻿@model MedicalShop.Models.Entities.NhanVien
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  //List<Hsx> getListHSX()
+  //{
+  //  return context.Hsx.ToList();
+  //}
+  List<NhomNhanVien> getListNNV()
+  {
+    return context.NhomNhanVien.ToList();
+  }
+  //List<Nsx> getListNSX()
+  //{
+  //  return context.Nsx.ToList();
+  //}
+  //List<Dvt> getListDVT()
+  //{
+  //  return context.Dvt.ToList();
+  //}
+}
+
+<div class="card" style=" margin-bottom: 70px;">
+  <div class="card-body">
+    <form enctype="multipart/form-data" action="/NhanVien/updateNhanVien" method="post">
+      <div class="forms-body">
+        <div class="form-group" style="display: flex; ">
+          <div>
+            <label style="margin-bottom: 70px;">Hình ảnh</label>
+            <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
+          </div>
+          <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
+            @if (Model.Image != null)
+            {
+              <img alt="" src="~/lib/imagesNV/@Model.Image" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+            }
+            else
+            {
+              <img alt="" src="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+            }
+          </div>
+        </div>
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">Nhóm NV</label>
+            <select required class="custom-select" asp-for="@Model.Idnnv">
+              @foreach (NhomNhanVien hh in getListNNV())
+              {
+                <option value="@hh.Id">
+                  @hh.TenNnv
+                </option>
+              }
+            </select>
+
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Mã NV</label>
+            <input asp-for="@Model.MaNv" type="text" class="form-control" required>
+
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">Tên NV</label>
+            <input asp-for="@Model.TenNv" type="text" class="form-control" required>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">CCCD</label>
+            <input asp-for="@Model.Cccd" type="text" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0; width:100%">Giới tính</label>
+            <div class="form-group" style="display:flex;">
+              <input asp-for="@Model.Sex" type="radio" id="male"  value="true" checked>
+              <label for="male" style="margin-bottom: 0rem; padding: 0rem 10% 0rem 3%; align-self: center;">Nam</label><br>
+              <input asp-for="@Model.Sex" type="radio" id="female" value="false">
+              <label for="female" style="margin-bottom: 0rem; padding: 0rem 10% 0rem 3%; align-self: center; ">Nữ</label><br>
+            </div>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Ngày sinh</label>
+            <input asp-for="@Model.DateOfBirth" type="date" class="form-control" required> @*2001-04-10*@
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">Địa chỉ</label>
+            <input asp-for="@Model.Address" type="text" class="form-control" required>
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Quê quán</label>
+            <input asp-for="@Model.HomeTown" type="text" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
+            <label style="margin:7px 0;">SĐT</label>
+            <input asp-for="@Model.Phone" type="text" class="quantity-input input-text qty text form-control" onkeypress="return isNumberKey(event)" title="Số lượng cần mua" name="quantity" value="">
+          </div>
+          <div class="group-right">
+            <label style="margin:7px 0;">Mail</label>
+            <input asp-for="@Model.Mail" type="text" class="form-control" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 20px 0px 10px 0px; ">
+        <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+        <input type="submit" class="btn btn-primary" value="Lưu">
+
+      </div>
+
+
+    </form>
+
+  </div>
+</div>
+<script>
+           function readURL(input, previewId) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $(previewId).attr('src', e.target.result);
+                        $(previewId).hide();
+                        $(previewId).fadeIn(650);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#Fileimage").change(function() {
+                readURL(this, '#image1');
+            });
+
+</script>

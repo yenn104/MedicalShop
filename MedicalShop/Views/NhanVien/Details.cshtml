@@ -61,8 +61,8 @@
   <div class="col-xl-4">
 
     <div class="card zoomContainer" style="width: 100%">
-      <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 40px; margin-bottom: 20px; height: 20rem; justify-content: center;">
-        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+      <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 60px; margin-bottom: 20px; height: 20rem; justify-content: center;">
+        <img src="/lib/imagesNV/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesNV/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
       </div>
 
 
@@ -75,12 +75,12 @@
         <div class="slide-container">
           <div class="slide-stage">
             <div class="slide-image side-picture center-imgdiv active" height="80" width="80" role="button" data-target="side-1">
-              <img src="/lib/imagesHH/@Model.Image" id="zoom_01" class="img-fluid" />
+              <img src="/lib/imagesNV/@Model.Image" id="zoom_01" class="img-fluid" />
             </div>
             @foreach (NvImage anh in listIMG(@Model.Id))
             {
               <div class="slide-image side-picture center-imgdiv" height="80" width="80" role="button" data-target="side-2">
-                <img src="/lib/imagesHH/@anh.Name" id="zoom_02" class="img-fluid" />
+                <img src="/lib/imagesNV/@anh.Name" id="zoom_02" class="img-fluid" />
               </div>
             }
           </div>
@@ -136,7 +136,14 @@
                 @Html.DisplayNameFor(model => model.Sex)
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Sex)
+                @if (Model.Sex == true)
+                {
+                  <span>Nam</span>
+                }
+                else
+                {
+                  <span>Nữ</span>
+                }
               </dd>
 
               <dt class="col-sm-2">
@@ -144,6 +151,20 @@
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.DateOfBirth)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HomeTown)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HomeTown)
               </dd>
 
               <dt class="col-sm-2">

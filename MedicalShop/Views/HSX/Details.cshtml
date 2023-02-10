@@ -20,6 +20,22 @@
     else return new NhanVien();
   }
 
+  var acc = User.FindFirst("VaiTro");
+  int idmenu = (int)TempData.Peek("Menu");
+
+  string vaitro = null;
+  bool sua = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      sua = (bool)cn.Update;
+    }
+  }
+
+
 }
 
 <div class="row" style="margin-bottom: 70px;">
@@ -122,9 +138,45 @@
         <a asp-action="Table">
           <input type="button" class="btn btn-secondary" value="Quay lại">
         </a>
-        <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
-          <input type="button" class="btn btn-primary" value="Chỉnh sửa">
-        </a>
+        @*<button class="btn btn-secondary" type="button" onclick="window.history.go(-1);">
+      Quay lại
+    </button>*@
+
+        @if (Model.Active == true)
+        {
+          if (sua == true)
+          {
+            <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+              <input type="button" class="btn btn-primary" value="Chỉnh sửa">
+            </a>
+          }
+          else
+          {
+            <button class="btn btn-primary disabled">
+              <span>Chỉnh sửa</span>
+            </button>
+          }
+
+        }
+        else
+        {
+          if (sua == true)
+          {
+            //thêm ajax
+            <button class="btn btn-primary" style="" id="btn_khoiphuc">
+              <span>Khôi phục</span>
+            </button>
+          }
+          else
+          {
+            <button class="btn btn-primary disabled">
+              <span>Khôi phục</span>
+            </button>
+          }
+        }
+
+
+
 
       </div>
 

@@ -18,6 +18,31 @@
     else return new ChiNhanh();
   }
 
+  var acc = User.FindFirst("VaiTro");
+  // int idmenu = (int)TempData["Menu"];
+  int idmenu = (int)TempData.Peek("Menu");
+  // TempData.Keep("Menu");
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+        canhan = (bool)cn.Person;
+      }
+    }
+  }
+
+
 }
 
 
@@ -77,8 +102,14 @@
               @getCN(item.Idcn).TenCn
             </td>
             <td>
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
-              @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đơn vị tính này?')" })
+              @if (sua == true)
+              {
+                @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
+              }
             </td>
           </tr>
         }
@@ -107,8 +138,22 @@
               @getCN(item.Idcn).TenCn
             </td>
             <td>
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+              @if (sua == true)
+              {
+                @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+              }
+              @if (xoa == true)
+              {
+                @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+              }
             </td>
           </tr>
         }

@@ -146,26 +146,26 @@ namespace MedicalShop.Controllers
     [HttpPost]
     public IActionResult updateNhanVien(NhanVien nv, IFormFile avt)
     {
-      HangHoa dv = context.HangHoa.Find(nv.Id);
+      NhanVien dv = context.NhanVien.Find(nv.Id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       dv.ModifiedBy = idUser;
       dv.ModifiedDate = DateTime.Now;
-      dv.TenHh = nv.TenNv;
-      dv.MaHh = nv.MaNv;
+      dv.TenNv = nv.TenNv;
+      dv.MaNv = nv.MaNv;
       //sua cho nay///////////////////////////////////////////////////
-      //dv.BarCode = nv.BarCode;
-      //dv.Detail = nv.Detail;
-      //dv.Idnhh = nv.Idnhh;
-      //dv.Iddvtc = nv.Iddvtc;
-      //dv.Idhsx = nv.Idhsx;
-      //dv.Idnsx = nv.Idnsx;
+      dv.Address = nv.Address;
+      dv.Mail = nv.Mail;
+      dv.Phone = nv.Phone;
+      dv.HomeTown = nv.HomeTown;
+      dv.Sex = nv.Sex;
+      dv.DateOfBirth = nv.DateOfBirth;
       if (avt != null)
       {
         dv.Image = UploadedFile(nv, avt);
       }
 
 
-      context.HangHoa.Update(dv);
+      context.NhanVien.Update(dv);
       context.SaveChanges();
       TempData["ThongBao"] = "Sửa thành công!";
       return RedirectToAction("Table");
@@ -179,25 +179,25 @@ namespace MedicalShop.Controllers
       {
         if (nhomNV != 0)
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomNV).OrderBy(x => x.TenHh).ToList();
+          ViewBag.ListNV = context.NhanVien.Where(x => x.Active == active && x.Idnnv == nhomNV).OrderBy(x => x.TenNv).ToList();
         }
         else
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).OrderBy(x => x.TenHh).ToList();
+          ViewBag.ListNV = context.NhanVien.Where(x => x.Active == active).OrderBy(x => x.TenNv).ToList();
         }
       }
       else
       {
         if (nhomNV != 0)
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomNV).OrderBy(x => x.TenHh).ToList();
+          ViewBag.ListNV = context.NhanVien.Where(x => x.Idnnv == nhomNV).OrderBy(x => x.TenNv).ToList();
         }
         else
         {
-          ViewBag.ListHH = context.HangHoa.OrderBy(x => x.TenHh).ToList();
+          ViewBag.ListNV = context.NhanVien.OrderBy(x => x.TenNv).ToList();
         }
       }
-      return PartialView("LoadTableHH");
+      return PartialView("LoadTableNV");
     }
 
 
