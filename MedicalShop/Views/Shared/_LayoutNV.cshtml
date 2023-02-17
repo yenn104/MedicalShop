@@ -1,14 +1,23 @@
 ﻿@{
   var acc = User.FindFirst("VaiTro");
-  string name = null, staff = null, id = null, username = null;
+  string name = null, staff = null, vaitro = null, username = null;
   //int active = 0;
   if (acc != null)
   {
-    id = acc.Value;
+    vaitro = acc.Value;
     username = acc.Subject.Name;
     staff = User.Claims.ElementAt(2).Type;
     name = User.Claims.ElementAt(2).Value;
   }
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  List<ChucNang> getListMenu = context.ChucNang
+  .Include(x => x.IdmenuNavigation)
+  .Where(x => x.Idvt == int.Parse(vaitro) && x.Active == true)
+  .ToList();
+
+
 }
 
 
@@ -287,9 +296,9 @@
           <!--<li class="nav-item active">-->
           @*<hr class="sidebar-divider">*@
           <!--<div class="sidebar-heading">
-              Quản lý
-            </div>
-          </li>-->
+      Quản lý
+    </div>
+  </li>-->
           <!-- Nav Item - Pages Collapse Menu -->
           <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
@@ -299,16 +308,24 @@
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                <a class="collapse-item" href="/DVVC/Table">Dịch vụ vận chuyển</a>
-                <a class="collapse-item" href="/DVT/Table">Đơn vị tính</a>
-                <a class="collapse-item" href="/HangHoa/Table">Hàng hóa</a>
-                <a class="collapse-item" href="/HSX/Table">Hãng sản xuất</a>
-                <a class="collapse-item" href="/KhachHang/Table">Khách hàng</a>
-                <a class="collapse-item" href="/NhaCungCap/Table">Nhà cung cấp</a>
-                <a class="collapse-item" href="/NhanVien/Table">Nhân viên</a>
-                <a class="collapse-item" href="/NhomHangHoa/Table">Nhóm hàng hóa</a>
-                <a class="collapse-item" href="/NhomNhanVien/Table">Nhóm nhân viên</a>
-                <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>
+                @*<a class="collapse-item" href="/DVVC/Table">Dịch vụ vận chuyển</a>
+                  <a class="collapse-item" href="/DVT/Table">Đơn vị tính</a>
+                  <a class="collapse-item" href="/HangHoa/Table">Hàng hóa</a>
+                  <a class="collapse-item" href="/HSX/Table">Hãng sản xuất</a>
+                  <a class="collapse-item" href="/KhachHang/Table">Khách hàng</a>
+                  <a class="collapse-item" href="/NhaCungCap/Table">Nhà cung cấp</a>
+                  <a class="collapse-item" href="/NhanVien/Table">Nhân viên</a>
+                  <a class="collapse-item" href="/NhomHangHoa/Table">Nhóm hàng hóa</a>
+                  <a class="collapse-item" href="/NhomNhanVien/Table">Nhóm nhân viên</a>
+                  <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>*@
+
+
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.TenMenu))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu">@cn.IdmenuNavigation.TenMenu</a>
+                }
+
+
 
               </div>
             </div>
@@ -324,10 +341,10 @@
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                @*<h6 class="collapse-header">Nhập kho</h6>*@
+                <h6 class="collapse-header">Nhập kho</h6>
                 <a class="collapse-item" href="/PhieuNhapKho">Nhập kho</a>
                 <a class="collapse-item" href="/PhieuXuatKho">Xuất kho</a>
-                @*<a class="collapse-item" href="cards.html">Trả nợ</a>*@
+                <a class="collapse-item disabled" style="color:red">Trả nợ</a>
               </div>
             </div>
           </li>
@@ -346,7 +363,7 @@
                 <a class="collapse-item" href="/Report/ReportTon">Thống kê tồn kho</a>
                 <a class="collapse-item" href="/Report/ReportHHN">Thống kê hàng hóa đã nhập</a>
                 <a class="collapse-item" href="/Report/ReportHHX">Thống kê hàng hóa đã xuất</a>
-                <a class="collapse-item" href="utilities-animation.html">Thống kê doanh thu</a>
+                <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
                 @*<a class="collapse-item" href="utilities-other.html">Other</a>*@
               </div>
             </div>
@@ -361,9 +378,9 @@
             <div id="collapseSystem" class="collapse" aria-labelledby="headingSystem"
                  data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                <a class="collapse-item" href="utilities-color.html">Cấp tài khoản</a>
+                <a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>
                 @*<a class="collapse-item" href="utilities-color.html">Khách hàng cá nhân</a>*@
-                <a class="collapse-item" href="/NhapXuat/Table">Nhập - Xuất dữ liệu</a>
+                <a class="collapse-item disabled" style="color:red">Nhập - Xuất dữ liệu</a>
                 <a class="collapse-item" href="/PhanQuyen/Table">Phân quyền</a>
                 <a class="collapse-item" href="/VaiTro/Table">Vai trò</a>
                 @*<a class="collapse-item" href="utilities-color.html">Xuất dữ liệu</a>*@
@@ -377,31 +394,31 @@
 
             <!-- Heading -->
             @*<div class="sidebar-heading">
-                Quản lý trang
-              </div>*@
+        Quản lý trang
+      </div>*@
           </li>
 
 
 
           <!-- Nav Item - Pages Collapse Menu -->
           @*<li class="nav-item">
-              <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                 aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Cài Đặt Cá Nhân</span>
-              </a>
-              <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-xx py-2 collapse-inner rounded">
-                  <h6 class="collapse-header">Tài khoản:</h6>
-                  <a class="collapse-item" href="login.html">Hồ sơ</a>
-                  <a class="collapse-item" href="register.html">Đổi mật khẩu</a>
-                  <div class="collapse-divider"></div>
-                  <h6 class="collapse-header">Chế độ xem:</h6>
-                  <a class="collapse-item" href="404.html">Phân trang</a>
-                  <a class="collapse-item" href="blank.html">Blank Page</a>
-                </div>
-              </div>
-            </li>*@
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+         aria-expanded="true" aria-controls="collapsePages">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Cài Đặt Cá Nhân</span>
+      </a>
+      <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-xx py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Tài khoản:</h6>
+          <a class="collapse-item" href="login.html">Hồ sơ</a>
+          <a class="collapse-item" href="register.html">Đổi mật khẩu</a>
+          <div class="collapse-divider"></div>
+          <h6 class="collapse-header">Chế độ xem:</h6>
+          <a class="collapse-item" href="404.html">Phân trang</a>
+          <a class="collapse-item" href="blank.html">Blank Page</a>
+        </div>
+      </div>
+    </li>*@
 
           <!-- Sidebar Toggler (Sidebar) -->
           <div class="text-center d-none d-md-inline">

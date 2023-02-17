@@ -263,6 +263,12 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idmenu)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_ChucNang_Menu");
+
+                entity.HasOne(d => d.IdvtNavigation)
+                    .WithMany(p => p.ChucNang)
+                    .HasForeignKey(d => d.Idvt)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_ChucNang_VaiTro");
             });
 
             modelBuilder.Entity<Dvbh>(entity =>
@@ -942,11 +948,23 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.HasOne(d => d.IdcnNavigation)
+                    .WithMany(p => p.PhanQuyen)
+                    .HasForeignKey(d => d.Idcn)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_PhanQuyen_ChiNhanh");
+
                 entity.HasOne(d => d.IdtkNavigation)
                     .WithMany(p => p.PhanQuyen)
                     .HasForeignKey(d => d.Idtk)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_VaiTro_TK_TaiKhoan");
+
+                entity.HasOne(d => d.IdvtNavigation)
+                    .WithMany(p => p.PhanQuyen)
+                    .HasForeignKey(d => d.Idvt)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_PhanQuyen_VaiTro");
             });
 
             modelBuilder.Entity<PhieuNhap>(entity =>

@@ -27,5 +27,6 @@ namespace MedicalShop.Models.Entities
         public bool? Active { get; set; }
 
         public virtual Menu IdmenuNavigation { get; set; }
+        public virtual VaiTro IdvtNavigation { get; set; }
     }
 }
