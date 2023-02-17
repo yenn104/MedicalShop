@@ -178,9 +178,8 @@
               <div class="col-md-2 mb-2 col-lg-2">
                 <input type="text" class="form-control" id="ChietKhau" placeholder="Chiếc khấu">
               </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Hình ảnh</label>
-              <div class="col-md-2 mb-2 col-lg-2">
-                <img id="imageHH" class="col-lg-3 col-md-3" style="object-fit:contain;max-width:25%;box-shadow: 0 1px 4px 0 rgb(0 0 0 / 37%);">
+              <div class="col-md-3 mb-2 col-lg-3">
+
               </div>
               <div class="col-md-3 mb-2 col-lg-3">
 
@@ -251,10 +250,10 @@
       <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="row justify-content-start" style="width: fit-content; padding: 1rem 0rem ">
           <div class="col-lg-5 col-sm-5">
-            <input class="form-control" type="text" id="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
+            <input class="form-control" type="text" id="fromDay" oninput="loadTableLichSuXuat()" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
           </div>
           <div class="col-lg-5 col-sm-5">
-            <input class="form-control" type="text" id="toDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
+            <input class="form-control" type="text" id="toDay" oninput="loadTableLichSuXuat()" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
           </div>
           <div class="col-lg-1 col-sm-1">
             <button type="button" class="btn btn-secondary" onclick="loadTableLichSuXuat()"><i class="fas fa-search fa-sm"></i></button>
@@ -286,7 +285,7 @@
                 <td class="text-left">@p.IdnvNavigation.TenNv</td>
                 <td class="text-left">@p.Note</td>
                 <td>
-                  <a href="PhieuNhapKhoPDF" class="btn btn-outline-success">In</a>
+                  <a href="PhieuXuatPDF" class="btn btn-outline-success">In</a>
                   <button type="button" onclick="ViewPhieuXuat('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>
                 </td>
               </tr>
@@ -302,11 +301,11 @@
     </div>
   </div>
 </div>
-<div id="imageModal" class="imageModal">
+@*<div id="imageModal" class="imageModal">
   <span class="closeImageModal">&times;</span>
   <img class="imageModal-content" id="imageHHModal">
   <div id="imageModelCaption"></div>
-</div>
+</div>*@
 
 
 <script>
@@ -563,20 +562,20 @@
     var ChietKhau = getValue($('#ChietKhau').val());
     var ThanhTien = getValue($('#ThanhTien').val());
 
-    //if (idHH == "") {
-    //  $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
-    //  if (SL == "") {
-    //    $('#SLHH').addClass('is-invalid');
-    //  }
-    //  return;
-    //} if (SL == "") {
-    //  $('#SLHH').addClass('is-invalid');
-    //  return;
-    //}
+    if (idHH == "") {
+      $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
+      if (SL == "") {
+        $('#SLHH').addClass('is-invalid');
+      }
+      return;
+    } if (SL == "") {
+      $('#SLHH').addClass('is-invalid');
+      return;
+    }
 
     //alert("2");
-    alert(index); alert(idHH); alert(idDVT); alert(ThueXuat); alert(SL); alert(DonGia);
-    alert(ChietKhau); alert(ThanhTien);
+    //alert(index); alert(idHH); alert(idDVT); alert(ThueXuat); alert(SL); alert(DonGia);
+    //alert(ChietKhau); alert(ThanhTien);
 
     var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
       + idDVT + '</td><td class="text-right">' + SL + '</td><td class="text-right">' + DonGia

@@ -308,10 +308,7 @@ namespace MedicalShop.Controllers
     public IActionResult ViewThongTinPhieuXuat(int idPX)
     {
       MedicalShopContext context = new MedicalShopContext();
-      var phieu = context.PhieuXuat.Include(x => x.ChiTietPhieuXuat)
-          .Include(x => x.IdkhNavigation)
-          .Include(x => x.IdnvNavigation)
-          .FirstOrDefault(x => x.Id == idPX);
+      var phieu = context.PhieuXuat.Include(x => x.ChiTietPhieuXuat).Include(x => x.IdkhNavigation).Include(x => x.IdnvNavigation).FirstOrDefault(x => x.Id == idPX);
       return PartialView(phieu);
       //var phieu = context.PhieuXuat.Include(x => x.ChiTietPhieuXuat).Include(x => x.IdkhNavigation).Include(x => x.IdnvNavigation).FirstOrDefault(x => x.Id == idPX);
       //return PartialView(phieu);
@@ -327,7 +324,7 @@ namespace MedicalShop.Controllers
 
       MedicalShopContext context = new MedicalShopContext();
       ViewBag.ListPhieuXuat = context.PhieuXuat
-                                              .FromSqlRaw("select*from PhieuXuat where CONVERT(date,NgayTao) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,NgayTao) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
+                                              .FromSqlRaw("select*from PhieuXuat where CONVERT(date,CreatedDate) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,CreatedDate) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
                                               .Include(x => x.IdkhNavigation)
                                               .Include(x => x.IdnvNavigation)
                                               .OrderByDescending(x => x.Id)
