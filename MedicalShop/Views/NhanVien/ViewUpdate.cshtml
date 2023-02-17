@@ -4,22 +4,11 @@
 
   MedicalShopContext context = new MedicalShopContext();
 
-  //List<Hsx> getListHSX()
-  //{
-  //  return context.Hsx.ToList();
-  //}
   List<NhomNhanVien> getListNNV()
   {
-    return context.NhomNhanVien.ToList();
+    return context.NhomNhanVien.Where(x => x.Active == true).ToList();
   }
-  //List<Nsx> getListNSX()
-  //{
-  //  return context.Nsx.ToList();
-  //}
-  //List<Dvt> getListDVT()
-  //{
-  //  return context.Dvt.ToList();
-  //}
+
 }
 
 <div class="card" style=" margin-bottom: 70px;">

@@ -5,19 +5,19 @@
   MedicalShopContext context = new MedicalShopContext();
   List<Hsx> getListHSX()
   {
-    return context.Hsx.ToList();
+    return context.Hsx.Where(x => x.Active == true).ToList();
   }
   List<NhomHangHoa> getListNHH()
   {
-    return context.NhomHangHoa.ToList();
+    return context.NhomHangHoa.Where(x => x.Active == true).ToList();
   }
   List<Nsx> getListNSX()
   {
-    return context.Nsx.ToList();
+    return context.Nsx.Where(x => x.Active == true).ToList();
   }
   List<Dvt> getListDVT()
   {
-    return context.Dvt.ToList();
+    return context.Dvt.Where(x => x.Active == true).ToList();
   }
 }
 

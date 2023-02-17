@@ -132,8 +132,8 @@ namespace MedicalShop.Controllers
     public IActionResult ViewUpdate(int id)
     {
       ViewData["Title"] = "Sửa hàng hoá";
-      HangHoa dvt = context.HangHoa.Find(id);
-      return View(dvt);
+      HangHoa hh = context.HangHoa.Find(id);
+      return View(hh);
     }
 
     //update hh
@@ -155,9 +155,7 @@ namespace MedicalShop.Controllers
       if (avt != null)
       {
         dv.Image = UploadedFile(hh, avt);
-      }
-      
-
+      }     
       context.HangHoa.Update(dv);
       context.SaveChanges();
       TempData["ThongBao"] = "Sửa thành công!";
@@ -237,6 +235,29 @@ namespace MedicalShop.Controllers
       context.SaveChanges();
       TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
+    }
+
+
+
+    [HttpPost("/restoreHH")]
+    public string Restoree(int id)
+    {
+      HangHoa hh = context.HangHoa.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      hh.Active = true;
+      hh.ModifiedBy = idUser;
+      hh.ModifiedDate = DateTime.Now;
+      context.HangHoa.Update(hh);
+      context.SaveChanges();
+      return "Khôi phục thành công!";
+    }
+
+    [HttpPost("/loadDetailHH")]
+    public IActionResult LoadDetail(int id)
+    {
+      ViewData["Title"] = "Chi tiết hàng hóa";
+      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
+      return View(hh);
     }
 
 
