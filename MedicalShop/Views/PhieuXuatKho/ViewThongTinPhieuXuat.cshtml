@@ -106,15 +106,15 @@
         @foreach (ChiTietPhieuXuat c in Model.ChiTietPhieuXuat)
         {
           <tr>
-            <td class="text-start">@getHangHoa(c.Idhh).TenHh</td>
-            <td class="text-start">@getDvt(c.Iddvt).TenDvt</td>
+            <td class="text-left">@getHangHoa(c.Idhh).TenHh</td>
+            <td class="text-left">@getDvt(c.Iddvt).TenDvt</td>
             <td class="text-center">@format(c.Quantity)</td>
             <td class="text-center">@format(c.Price)</td>
-            <td class="text-end">@format(c.Quantity * c.Price)</td>
-            <td class="text-end">@format(c.Cktm)</td>
-            <td class="text-end">@format(c.Thue)</td>
+            <td class="text-right">@format(c.Quantity * c.Price)</td>
+            <td class="text-right">@format(c.Cktm)</td>
+            <td class="text-right">@format(c.Thue)</td>
           </tr>
-        }
+        } 
       </tbody>
     </table>
   </div>

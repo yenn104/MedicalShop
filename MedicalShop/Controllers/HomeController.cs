@@ -32,12 +32,13 @@ namespace MedicalShop.Controllers
       return View();
     }
 
-    [Authorize]
+    
     public IActionResult About()
     {
       return View();
     }
 
+    [Authorize]
     public IActionResult News()
     {
       return View();

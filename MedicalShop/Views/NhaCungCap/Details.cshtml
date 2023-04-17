@@ -208,14 +208,10 @@
         data: "id=" + id,
         success: function (result) {
           alert(result);
-          loadAgain();
-        //  $("#Detail").replaceWith(result)
-          
+          loadAgain();         
         },
         error: function () {
           alert("Lỗi");
-          alert(id);
-
         }
       });
     })

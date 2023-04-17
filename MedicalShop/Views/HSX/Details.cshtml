@@ -39,7 +39,7 @@
 }
 
 <div class="row" style="margin-bottom: 70px;">
-    <div class="card">
+    <div class="card" id="heredetail">
       <div class="card-body pt-3 pl-5 pr-5" style="padding: 0;">
         <!-- Bordered Tabs -->
         <div class="tab-content pt-2">
@@ -174,16 +174,46 @@
             </button>
           }
         }
-
-
-
-
       </div>
 
     </div>
 </div>
 
 <script>
+
+  function loadAgain() {
+    var id = $('#Id').val();
+    $.ajax({
+      type: "post",
+      url: "/loadDetailHSX",
+      data: "id=" + id,
+      success: function (result) {
+        $("#heredetail").replaceWith(result)
+      },
+      error: function () {
+        alert("Lỗi");
+      }
+    });
+  }
+
+  $("#btn_khoiphuc").click(function () {
+    var id = $('#Id').val();
+    $.ajax({
+      type: "post",
+      url: "/restoreHSX",
+      data: "id=" + id,
+      success: function (result) {
+        alert(result);
+        loadAgain();
+        //  $("#Detail").replaceWith(result)
+
+      },
+      error: function () {
+        alert("Lỗi");
+      }
+    });
+  })
+
 
   $(document).ready(function () {
 
