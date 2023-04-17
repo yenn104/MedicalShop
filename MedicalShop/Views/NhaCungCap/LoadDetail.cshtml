@@ -1,0 +1,147 @@
+﻿@model MedicalShop.Models.Entities.NhaCungCap
+
+@{
+  Layout = null;
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  ChiNhanh getCN(int? id)
+  {
+    ChiNhanh cn = context.ChiNhanh.Find(id);
+    if (cn != null) return cn;
+    else return new ChiNhanh();
+  }
+
+  NhanVien getNV(int? id)
+  {
+    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
+    if (nv != null) return nv;
+    else return new NhanVien();
+  }
+
+}
+
+
+<div class="card" id="heredetail">
+  <div class="card-body pt-3 pl-5 pr-5" style="padding: 0;">
+    <!-- Bordered Tabs -->
+    <div class="tab-content pt-2">
+      <div id="Detail">
+        <dl class="row slgit">
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaNcc)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaNcc)
+            @Html.HiddenFor(model => model.Id)
+          </dd>
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TenNcc)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TenNcc)
+          </dd>
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+          </dd>
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+          </dd>
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mail)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mail)
+          </dd>
+
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Note)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+          </dd>
+
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+          </dt>
+          <dd class="col-sm-10">
+            @getNV(Model.CreatedBy).TenNv
+          </dd>
+
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedDate)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+          </dd>
+
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+          </dt>
+          <dd class="col-sm-10">
+            @getNV(Model.ModifiedBy).TenNv
+          </dd>
+
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ModifiedDate)
+          </dd>
+
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Idcn)
+          </dt>
+          <dd class="col-sm-10">
+            @getCN(Model.Idcn).TenCn
+          </dd>
+          <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+          </dt>
+          <dd class="col-sm-10">
+            @if (Model.Active == true)
+            {
+              <p>Đang hoạt động</p>
+            }
+            else
+            {
+              <p>Ngừng hoạt động</p>
+            }
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 0px 50px 20px 50px; ">
+    <a asp-action="Table">
+      <input type="button" class="btn btn-secondary" value="Quay lại">
+    </a>
+    @if (Model.Active == true)
+    {
+      <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+        <input type="button" class="btn btn-primary" value="Chỉnh sửa">
+      </a>
+    }
+    else
+    {
+      //thêm ajax
+      <button class="btn btn-primary" style="" id="btn_khoiphuc">
+        <span>Khôi phục</span>
+      </button>
+
+      @*<a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+
+          <input type="button" class="btn btn-primary " value="Khôi phục">
+        </a>*@
+    }
+
+  </div>
+
+</div>

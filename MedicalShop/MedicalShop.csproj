@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\rptHHN.rdlc" />
+    <Content Remove="wwwroot\Reports\rptHHX.rdlc" />
+    <Content Remove="wwwroot\Reports\rptTonKho.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Reports\rptHHN.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\rptHHX.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\rptTonKho.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -19,11 +32,73 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\admin\select\js\selectize.js" />
+    <None Include="wwwroot\admin\select\js\selectize.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ReportDataSet\dsHHN.Designer.cs">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ReportDataSet\dsHHX.Designer.cs">
+      <DependentUpon>dsHHX.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ReportDataSet\dsTonKho.Designer.cs">
+      <DependentUpon>dsTonKho.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReportDataSet\dsHHN.xsc">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsHHN.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsHHN.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="ReportDataSet\dsHHN.xss">
+      <DependentUpon>dsHHN.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsHHX.xsc">
+      <DependentUpon>dsHHX.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsHHX.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsHHX.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="ReportDataSet\dsHHX.xss">
+      <DependentUpon>dsHHX.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsTonKho.xsc">
+      <DependentUpon>dsTonKho.xsd</DependentUpon>
+    </None>
+    <None Update="ReportDataSet\dsTonKho.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsTonKho.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="ReportDataSet\dsTonKho.xss">
+      <DependentUpon>dsTonKho.xsd</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

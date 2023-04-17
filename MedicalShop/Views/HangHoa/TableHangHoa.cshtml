@@ -6,12 +6,35 @@
 
   List<HangHoa> listHH()
   {
-    return context.HangHoa.Where(a => a.Active == true).ToList();
+    return context.HangHoa.Where(a => a.Active == true).OrderBy(a => a.TenHh).ToList();
   }
 
   List<NhomHangHoa> getListNHH()
   {
     return context.NhomHangHoa.ToList();
+  }
+
+  var acc = User.FindFirst("VaiTro");
+  int idmenu = (int)TempData.Peek("Menu");
+
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+        canhan = (bool)cn.Person;
+      }
+    }
   }
 
 }
@@ -28,7 +51,14 @@
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
   <div style="margin-bottom: 20px">
-    <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+    @if (nhap == true)
+    {
+      <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+    }
+    else
+    {
+      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+    }
   </div>
   <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
     <div style="display: flex">
@@ -69,9 +99,6 @@
           @Html.DisplayNameFor(model => model.Image)
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
           @Html.DisplayNameFor(model => model.Detail)
         </th>
         <th>Tùy chọn</th>
@@ -90,27 +117,42 @@
           <td>
             @Html.DisplayFor(modelItem => item.BarCode)
           </td>
-          <td class="side-picture">
+          <td id="imageHH" class="side-picture">
             <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;"  id="zoom_01" class="img-fluid">
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
           </td>
           <td style="max-width: 14rem; ">
             @Html.DisplayFor(modelItem => item.Detail)
           </td>
           <td>
-            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
-            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
-            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+            @if(sua == true)
+            {
+              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+            }
+            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+            @if(xoa == true)
+            {
+              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+            }
           </td>
         </tr>
       }
     </tbody>
   </table>
 </div>
+@*<div id="imageModal" class="imageModal">
+  <span class="closeImageModal">&times;</span>
+  <img class="imageModal-content" id="imageHHModal">
+  <div id="imageModelCaption"></div>
+</div>*@
 <script>
-
 
   function changeHH() {
     var active = $('#active').val();
@@ -129,7 +171,6 @@
     });
   }
 
-
   $('.side-picture').hover(function () {
     var showing = $(this).find("img").attr("src");
     $('.side-picture').find("img").removeAttr('id');
@@ -139,6 +180,30 @@
     });
 
   });
+
+
+
+  //// Get the modal
+  //var modal = document.getElementById("imageModal");
+
+  //// Get the image and insert it inside the modal - use its "alt" text as a caption
+  //var img = document.getElementById("imageHH");
+  //var modalImg = document.getElementById("imageHHModal");
+  //var captionText = document.getElementById("imageModelCaption");
+  //img.onclick = function () {
+  //  modal.style.display = "block";
+  //  modalImg.src = this.src;
+  //  captionText.innerHTML = this.alt;
+  //}
+
+  //// Get the <span> element that closes the modal
+  //var span = document.getElementsByClassName("closeImageModal")[0];
+
+  //// When the user clicks on <span> (x), close the modal
+  //span.onclick = function () {
+  //  modal.style.display = "none";
+  //}
+
 
 
 

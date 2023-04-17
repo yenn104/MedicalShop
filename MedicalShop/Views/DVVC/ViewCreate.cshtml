@@ -1,0 +1,33 @@
+﻿@model MedicalShop.Models.Entities.Dvvc
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+}
+
+<div class="card" style=" margin-bottom: 70px;">
+  <div class="card-body">
+    <form action="/DVVC/Insert" method="post">
+      <div class="forms-body">
+        <div class="form-group">
+          <label style="margin:7px 0;">Mã DVVC</label>
+          <input asp-for="@Model.MaDvvc" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label style="margin:7px 0;">Tên DVVC</label>
+          <input asp-for="@Model.TenDvvc" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label style="margin:7px 0;">Ghi chú</label>
+          <input asp-for="@Model.Note" type="text" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
+        <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+        <input type="submit" class="btn btn-primary" value="Thêm">
+      </div>
+
+    </form>
+
+  </div>
+</div>

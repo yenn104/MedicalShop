@@ -1,0 +1,165 @@
+﻿@model MedicalShop.Models.Entities.NhomNhanVien
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+  MedicalShopContext context = new MedicalShopContext();
+
+
+  List<NhomNhanVien> listNNV()
+  {
+    return context.NhomNhanVien.Where(a => a.Active == true).ToList();
+  }
+
+  NhanVien getNV(int? id)
+  {
+    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
+    if (nv != null) return nv;
+    else return new NhanVien();
+  }
+
+  var acc = User.FindFirst("VaiTro");
+  int idmenu = (int)TempData.Peek("Menu");
+
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+        canhan = (bool)cn.Person;
+      }
+    }
+  }
+
+}
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+                        window.onload = function () {
+                            alert("@Html.Raw(@TempData["ThongBao"])");
+                    };
+  </script>
+}
+
+
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div style="margin-bottom: 20px">
+    @if (nhap == true)
+    {
+      <a href="/NhomNhanVien/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+    }
+    else
+    {
+      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+    }
+  </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" onchange="changeHH()" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tableNNV" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          @Html.DisplayNameFor(model => model.MaNnv)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.TenNnv)
+        </th>
+        <th class="text-center">
+          @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th class="text-center">
+          @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th class="text-center">
+          @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        <th class="text-center">
+          @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th class="text-center">Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (NhomNhanVien item in listNNV())
+      {
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.MaNnv)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.TenNnv)
+          </td>
+          <td class="text-center">
+            @Html.DisplayFor(modelItem => item.CreatedDate)
+          </td>
+          <td class="text-center">
+            @getNV(item.CreatedBy).TenNv
+          </td>
+          <td class="text-center">
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+          </td>
+          <td class="text-center">
+            @getNV(item.ModifiedBy).TenNv
+          </td>
+          <td class="text-center">
+            @if (sua == true)
+            {
+              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
+            }
+            @if (xoa == true)
+            {
+              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+  $('#active').on('change', function () {
+    var a = $(this).val();
+    $.ajax({
+      type: "post",
+      url: "/loadTableNNV",
+      data: "active=" + a,
+      success: function (result) {
+        $('#tableNNV').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
+    });
+  });
+</script>

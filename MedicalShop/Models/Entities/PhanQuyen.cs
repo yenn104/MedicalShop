@@ -19,6 +19,8 @@ namespace MedicalShop.Models.Entities
         public int? ModifiedBy { get; set; }
         public bool? Active { get; set; }
 
+        public virtual ChiNhanh IdcnNavigation { get; set; }
         public virtual TaiKhoan IdtkNavigation { get; set; }
+        public virtual VaiTro IdvtNavigation { get; set; }
     }
 }

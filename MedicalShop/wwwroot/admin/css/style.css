@@ -1,4 +1,53 @@
-﻿.sidebar {
+﻿.tablee{
+  border-collapse: separate !important;
+  border-spacing: 0;
+  /* border: 0.1px solid #0000007d;  */
+}
+
+.tablee thead th {
+  border: 0.1px solid #0705435c
+}
+
+.pr-0{
+  padding-right: 0px;
+}
+
+.div-2button button{
+  display:flex;
+  justify-content: space-between;
+}
+
+.pr-05 {
+  padding-right: 0rem !important;
+  padding-left: 1.4rem !important;
+}
+
+.pl-0 {
+  padding-left: 0px;
+}
+
+.w-80 {
+  width: 80% !important;
+}
+
+.w-85 {
+  width: 85% !important;
+}
+
+.w-90 {
+  width: 90% !important;
+}
+
+.pl-2rem {
+  padding-left: 2rem !important;
+}
+
+
+.pr-2rem {
+  padding-right: 2rem !important;
+}
+
+.sidebar {
   /*width: 6.5rem;
   min-height: 100vh;*/
   /*position: fixed;*/
@@ -134,13 +183,13 @@ a:hover {
 
 
 .group-left {
-  width: 35%;
+  width: 46%;
 }
 
 
 .group-right {
-  margin-left: 5%;
-  width: 60%;
+  width: 46%;
+  margin-left: 8%;
 }
 
 .lighter{

@@ -52,7 +52,7 @@ namespace MedicalShop.Controllers
       MedicalShopContext context = new MedicalShopContext();
       PhanQuyen pq = context.PhanQuyen.Find(id);
       pq.Active = false;
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       pq.ModifiedBy = idUser;
       pq.ModifiedDate = DateTime.Now;
       context.Update(pq);
@@ -119,7 +119,7 @@ namespace MedicalShop.Controllers
       }
       else
       {
-        int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+        int idUser = int.Parse(User.Claims.ElementAt(2).Type);
         pq.Idtk = idtk;
         pq.Idvt = idvt;
         pq.Idcn = idcn;
@@ -189,7 +189,7 @@ namespace MedicalShop.Controllers
     {
       MedicalShopContext context = new MedicalShopContext();
       PhanQuyen pq = context.PhanQuyen.Find(idpq);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       pq.Idvt = idvt;
       pq.Idcn = idcn;
       pq.ModifiedBy = idUser;

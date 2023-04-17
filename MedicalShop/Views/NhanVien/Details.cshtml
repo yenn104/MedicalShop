@@ -1,0 +1,265 @@
+﻿@model MedicalShop.Models.Entities.NhanVien
+
+@{
+  ViewData["Title"] = "Chi tiết hàng hóa";
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  NhomNhanVien getNNV(int? id)
+  {
+    NhomNhanVien nhh = context.NhomNhanVien.Find(id);
+    if (nhh != null) return nhh;
+    else return new NhomNhanVien();
+  }
+
+  ChiNhanh getCN(int? id)
+  {
+    ChiNhanh cn = context.ChiNhanh.Find(id);
+    if (cn != null) return cn;
+    else return new ChiNhanh();
+  }
+
+  Hsx getHSX(int? id)
+  {
+    Hsx hsx = context.Hsx.Find(id);
+    if (hsx != null) return hsx;
+    else return new Hsx();
+  }
+
+  Nsx getNSX(int? id)
+  {
+    Nsx nsx = context.Nsx.Find(id);
+    if (nsx != null) return nsx;
+    else return new Nsx();
+  }
+
+  //Dvt getDVT(int? id)
+  //{
+  //  Dvt dvt = context.Dvt.Find(id);
+  //  if (dvt != null) return dvt;
+  //  else return new Dvt();
+  //}
+
+  NhanVien getNV(int? id)
+  {
+    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
+    if (nv != null) return nv;
+    else return new NhanVien();
+  }
+
+
+  List<NvImage> listIMG(int? id)
+  {
+    return context.NvImage.Where(y => y.Idnv == id && y.Active == true).ToList();
+  }
+
+
+}
+
+<div class="row" style=" margin-bottom: 70px;">
+  <div class="col-xl-4">
+
+    <div class="card zoomContainer" style="width: 100%">
+      <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 60px; margin-bottom: 20px; height: 20rem; justify-content: center;">
+        <img src="/lib/imagesNV/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesNV/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+      </div>
+
+
+      <!--Slide img -->
+
+      <div class="slide-holder" style="display: flex; align-items: center;">
+        <div class="slide-pager" style="left: -10px;">
+          <div class="slide-control-prev">«</div>
+        </div>
+        <div class="slide-container">
+          <div class="slide-stage">
+            <div class="slide-image side-picture center-imgdiv active" height="80" width="80" role="button" data-target="side-1">
+              <img src="/lib/imagesNV/@Model.Image" id="zoom_01" class="img-fluid" />
+            </div>
+            @foreach (NvImage anh in listIMG(@Model.Id))
+            {
+              <div class="slide-image side-picture center-imgdiv" height="80" width="80" role="button" data-target="side-2">
+                <img src="/lib/imagesNV/@anh.Name" id="zoom_02" class="img-fluid" />
+              </div>
+            }
+          </div>
+        </div>
+        <div class="slide-pager" style="right: -10px;">
+          <div class="slide-control-next">»</div>
+        </div>
+      </div>
+
+      <!--End slide img -->
+
+    </div>
+  </div>
+
+
+  <div class="col-xl-8">
+
+    <div class="card">
+      <div class="card-body pt-3 pl-5 pr-5" style="padding: 0;">
+        <!-- Bordered Tabs -->
+        <div class="tab-content pt-2">
+          <div id="Detail">
+            <dl class="row">
+              <dt class="col-sm-2">
+                @Html.HiddenFor(model => model.Id)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.HiddenFor(model => model.Id)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MaNv)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TenNv)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Idnnv)
+              </dt>
+              <dd class="col-sm-10">
+                @getNNV(Model.Idnnv).TenNnv
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MaNv)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MaNv)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Sex)
+              </dt>
+              <dd class="col-sm-10">
+                @if (Model.Sex == true)
+                {
+                  <span>Nam</span>
+                }
+                else
+                {
+                  <span>Nữ</span>
+                }
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateOfBirth)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HomeTown)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HomeTown)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Phone)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Phone)
+              </dd>
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Mail)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Mail)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CreatedBy)
+              </dt>
+              <dd class="col-sm-10">
+                @getNV(Model.CreatedBy).TenNv
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CreatedDate)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CreatedDate)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+              </dt>
+              <dd class="col-sm-10">
+                @getNV(Model.ModifiedBy).TenNv
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+              </dt>
+              <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ModifiedDate)
+              </dd>
+
+              <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Idcn)
+              </dt>
+              <dd class="col-sm-10">
+                @getCN(Model.Idcn).TenCn
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 0px 50px 20px 50px; ">
+
+        <a asp-action="Table">
+          <input type="button" class="btn btn-secondary" value="Quay lại">
+        </a>
+        <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+          <input type="button" class="btn btn-primary" value="Chỉnh sửa">
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+  window.addEventListener('load', function () {
+
+    $("#zoom_01").elevateZoom({
+      scrollZoom: true
+    });
+
+    $('.side-picture').click(function () {
+      var showing = $(this).find("img").attr("src");
+      $('.side-picture').removeClass('active');
+      $('.side-picture').removeData();
+      $(this).addClass('active');
+
+      $('#zoom_01').fadeOut(function () {
+        $(this).attr('src', showing);
+        $(this).fadeIn();
+        $("#zoom_01").data('zoom-image', showing).elevateZoom({
+          scrollZoom: true,
+        });
+      });
+    });
+  });
+
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="~/admin/js/slideimg.js"></script>

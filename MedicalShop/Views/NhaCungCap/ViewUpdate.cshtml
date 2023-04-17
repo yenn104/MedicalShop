@@ -42,8 +42,8 @@
         </div>
       </div>
       <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 20px 0px 10px 0px; ">
-        <input type="submit" class="btn btn-primary" value="Lưu">
         <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+        <input type="submit" class="btn btn-primary" value="Lưu">       
       </div>
 
 
@@ -51,20 +51,3 @@
 
   </div>
 </div>
-<script>
-  function readURL(input, previewId) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        $(previewId).attr('src', e.target.result);
-        $(previewId).hide();
-        $(previewId).fadeIn(650);
-      }
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-  $("#Fileimage").change(function () {
-    readURL(this, '#image1');
-  });
-
-</script>

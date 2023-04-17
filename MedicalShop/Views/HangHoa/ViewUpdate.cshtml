@@ -6,19 +6,19 @@
 
   List<Hsx> getListHSX()
   {
-    return context.Hsx.ToList();
+    return context.Hsx.Where(x => x.Active == true).ToList();
   }
   List<NhomHangHoa> getListNHH()
   {
-    return context.NhomHangHoa.ToList();
+    return context.NhomHangHoa.Where(x => x.Active == true).ToList();
   }
   List<Nsx> getListNSX()
   {
-    return context.Nsx.ToList();
+    return context.Nsx.Where(x => x.Active == true).ToList();
   }
   List<Dvt> getListDVT()
   {
-    return context.Dvt.ToList();
+    return context.Dvt.Where(x => x.Active == true).ToList();
   }
 }
 
@@ -44,13 +44,21 @@
         </div>
         <div class="form-group" style="display:flex">
           <div class="group-left">
+            <label style="margin:7px 0;">Nhóm HH</label>
+            <select required class="custom-select" asp-for="@Model.Idnhh">
+              @foreach (NhomHangHoa hh in getListNHH())
+              {
+                <option value="@hh.Id">
+                  @hh.TenNhh
+                </option>
+              }
+            </select>
+            
+          </div>
+          <div class="group-right">
             <label style="margin:7px 0;">Mã HH</label>
             <input asp-for="@Model.MaHh" type="text" class="form-control" required>
             <input asp-for="@Model.Id" type="hidden" />
-          </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">Tên HH</label>
-            <input asp-for="@Model.TenHh" type="text" class="form-control" required>
           </div>
 
         </div>
@@ -58,6 +66,11 @@
 
         <div class="form-group" style="display:flex">
           <div class="group-left">
+            <label style="margin:7px 0;">Tên HH</label>
+            <input asp-for="@Model.TenHh" type="text" class="form-control" required>
+            
+          </div>
+          <div class="group-right">
             <label style="margin:7px 0;">DVT</label>
             <select required class="custom-select" asp-for="@Model.Iddvtc">
               @foreach (Dvt hh in getListDVT())
@@ -68,22 +81,15 @@
               }
             </select>
           </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">Nhóm HH</label>
-            <select required class="custom-select" asp-for="@Model.Idnhh">
-              @foreach (NhomHangHoa hh in getListNHH())
-              {
-                <option value="@hh.Id">
-                  @hh.TenNhh
-                </option>
-              }
-            </select>
-          </div>
         </div>
 
         <div class="form-group" style="display:flex">
 
           <div class="group-left">
+            <label style="margin:7px 0;">Barcode</label>
+            <input asp-for="@Model.BarCode" type="text" class="form-control" required>
+          </div>
+          <div class="group-right">
             <label style="margin:7px 0;">NSX</label>
             <select required class="custom-select" asp-for="@Model.Idnsx">
               @foreach (Nsx hh in getListNSX())
@@ -94,7 +100,10 @@
               }
             </select>
           </div>
-          <div class="group-right">
+        </div>
+
+        <div class="form-group" style="display:flex">
+          <div class="group-left">
             <label style="margin:7px 0;">HSX</label>
             <select required class="custom-select" asp-for="@Model.Idhsx">
               @foreach (Hsx hh in getListHSX())
@@ -105,13 +114,6 @@
               }
             </select>
           </div>
-        </div>
-
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">Barcode</label>
-            <input asp-for="@Model.BarCode" type="text" class="form-control" required>
-          </div>
           <div class="group-right">
             <label style="margin:7px 0;">Chi tiết</label>
             <input asp-for="@Model.Detail" type="text" class="form-control" required>
@@ -120,8 +122,9 @@
 
       </div>
       <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 20px 0px 10px 0px; ">
-        <input type="submit" class="btn btn-primary" value="Lưu">
         <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+        <input type="submit" class="btn btn-primary" value="Lưu">
+        
       </div>
 
 

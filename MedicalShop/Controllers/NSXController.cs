@@ -15,7 +15,8 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục nước sản xuất";
-      ViewBag.nuocsx = context.Nsx.ToList();
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NSX" && x.Active == true).FirstOrDefault().Id;
+      //ViewBag.nuocsx = context.Nsx.ToList();
       return View("TableNSX");
     }
 
@@ -30,8 +31,8 @@ namespace MedicalShop.Controllers
     [HttpPost]
     public IActionResult Insert(Nsx nsx)
     {
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(5).Value);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       nsx.CreatedBy = idUser;
       nsx.ModifiedBy = idUser;
       nsx.Idcn = idcn;
@@ -50,7 +51,7 @@ namespace MedicalShop.Controllers
     public IActionResult Delete(int id)
     {
       Nsx nsx = context.Nsx.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       nsx.ModifiedBy = idUser;
       nsx.ModifiedDate = DateTime.Now;
       nsx.Active = false;
@@ -74,7 +75,7 @@ namespace MedicalShop.Controllers
     public IActionResult Update(Nsx nsx)
     {
       Nsx n = context.Nsx.Find(nsx.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       n.ModifiedBy = idUser;
       n.ModifiedDate = DateTime.Now;
       n.MaNsx = nsx.MaNsx;
@@ -112,6 +113,15 @@ namespace MedicalShop.Controllers
       context.SaveChanges();
       //TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
+    }
+
+
+    [HttpPost("/loadDetailHSX")]
+    public IActionResult LoadDetail(int id)
+    {
+      ViewData["Title"] = "Chi tiết hãng sản xuất";
+      Hsx h = context.Hsx.FirstOrDefault(x => x.Id == id);
+      return View(h);
     }
 
   }

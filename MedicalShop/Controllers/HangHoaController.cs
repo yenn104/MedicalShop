@@ -16,7 +16,6 @@ namespace MedicalShop.Controllers
     
     private readonly IWebHostEnvironment webHostEnvironment;
 
-
     public HangHoaController(IWebHostEnvironment hostEnvironment)
     {
       webHostEnvironment = hostEnvironment;
@@ -25,15 +24,10 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục hàng hoá";
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "HangHoa" && x.Active == true).FirstOrDefault().Id;
       return View("TableHangHoa");
     }
 
-
-    public IActionResult ViewCreate()
-    {
-      ViewData["Title"] = "Thêm hàng hoá";
-      return View();
-    }
 
     //[HttpPost]
     //public IActionResult Create()
@@ -72,43 +66,36 @@ namespace MedicalShop.Controllers
       return View(hh);
     }
 
-    public IActionResult detail(int id)
-    {
-      MedicalShopContext context = new MedicalShopContext();
-      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
-      return View(hh);
-    }
-
-    public IActionResult testmodel(int id)
-    {
-      MedicalShopContext context = new MedicalShopContext();
-      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
-      return View(hh);
-    }
-
 
     //[Route("/HangHoa/xoa/{id}")]
     public IActionResult Delete(int id)
     {
       MedicalShopContext context = new MedicalShopContext();
-      HangHoa dvt = context.HangHoa.Find(id);
-      dvt.Active = false;
-
-      context.HangHoa.Update(dvt);
+      HangHoa hh = context.HangHoa.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      hh.Active = false;
+      hh.ModifiedBy = idUser;
+      hh.ModifiedDate = DateTime.Now;
+      context.HangHoa.Update(hh);
       context.SaveChanges();
       TempData["ThongBao"] = "Xoá thành công!";
       return RedirectToAction("Table");
     }
 
 
+    public IActionResult ViewCreate()
+    {
+      ViewData["Title"] = "Thêm hàng hoá";
+      return View();
+    }
 
 
     [HttpPost]
     public IActionResult insertHangHoa(HangHoa hh, IFormFile Avt)
     {
       //MedicalShopContext context = new MedicalShopContext();
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(5).Value);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       hh.Idcn = idcn;
       hh.Image = UploadedFile(hh, Avt);
       hh.CreatedBy = idUser;
@@ -119,7 +106,7 @@ namespace MedicalShop.Controllers
       context.HangHoa.Add(hh);
       context.SaveChanges();
       TempData["ThongBao"] = "Thêm thành công!";
-      return View("ViewCreate");
+      return RedirectToAction("ViewCreate");
     }
 
 
@@ -145,8 +132,8 @@ namespace MedicalShop.Controllers
     public IActionResult ViewUpdate(int id)
     {
       ViewData["Title"] = "Sửa hàng hoá";
-      HangHoa dvt = context.HangHoa.Find(id);
-      return View(dvt);
+      HangHoa hh = context.HangHoa.Find(id);
+      return View(hh);
     }
 
     //update hh
@@ -154,7 +141,7 @@ namespace MedicalShop.Controllers
     public IActionResult updateHangHoa(HangHoa hh, IFormFile avt)
     {
       HangHoa dv = context.HangHoa.Find(hh.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(3).Type);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       dv.ModifiedBy = idUser;
       dv.ModifiedDate = DateTime.Now;
       dv.TenHh = hh.TenHh;
@@ -168,9 +155,7 @@ namespace MedicalShop.Controllers
       if (avt != null)
       {
         dv.Image = UploadedFile(hh, avt);
-      }
-      
-
+      }     
       context.HangHoa.Update(dv);
       context.SaveChanges();
       TempData["ThongBao"] = "Sửa thành công!";
@@ -179,61 +164,61 @@ namespace MedicalShop.Controllers
 
 
     [HttpPost("/loadTableHH")]
-    public IActionResult loadTable(bool active, int nhomHH, int SL)
+    public IActionResult loadTable(bool active, int nhomHH)
     {
       if (active)
       {
         if (nhomHH != 0)
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).ToList();
+          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).OrderBy(x => x.TenHh).ToList();
         }
         else
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).ToList();
+          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).OrderBy(x => x.TenHh).ToList();
         }
       }
       else
       {
         if (nhomHH != 0)
         {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).ToList();
+          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).OrderBy(x => x.TenHh).ToList();
         }
         else
         {
-          ViewBag.ListHH = context.HangHoa.ToList();
+          ViewBag.ListHH = context.HangHoa.OrderBy(x => x.TenHh).ToList();
         }
       }
       return PartialView("LoadTableHH");
     }
 
 
-    [HttpPost("/loadMoreTableHH")]
-    public IActionResult loadMoreTableHH(bool active, int nhomHH, int SL)
-    {
-      if (active)
-      {
-        if (nhomHH != 0)
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).Take(SL + 9).ToList();
-        }
-        else
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).Take(SL + 9).ToList();
-        }
-      }
-      else
-      {
-        if (nhomHH != 0)
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).Take(SL + 9).ToList();
-        }
-        else
-        {
-          ViewBag.ListHH = context.HangHoa.Take(SL + 9).ToList();
-        }
-      }
-      return PartialView("LoadTableHH");
-    }
+    //[HttpPost("/loadMoreTableHH")]
+    //public IActionResult loadMoreTableHH(bool active, int nhomHH, int SL)
+    //{
+    //  if (active)
+    //  {
+    //    if (nhomHH != 0)
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).Take(SL + 9).ToList();
+    //    }
+    //    else
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).Take(SL + 9).ToList();
+    //    }
+    //  }
+    //  else
+    //  {
+    //    if (nhomHH != 0)
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).Take(SL + 9).ToList();
+    //    }
+    //    else
+    //    {
+    //      ViewBag.ListHH = context.HangHoa.Take(SL + 9).ToList();
+    //    }
+    //  }
+    //  return PartialView("LoadTableHH");
+    //}
 
 
 
@@ -241,12 +226,38 @@ namespace MedicalShop.Controllers
     public IActionResult Restore(int id)
     {
       HangHoa hh = context.HangHoa.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      hh.ModifiedBy = idUser;
+      hh.ModifiedDate = DateTime.Now;
       hh.Active = true;
 
       context.HangHoa.Update(hh);
       context.SaveChanges();
       TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
+    }
+
+
+
+    [HttpPost("/restoreHH")]
+    public string Restoree(int id)
+    {
+      HangHoa hh = context.HangHoa.Find(id);
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      hh.Active = true;
+      hh.ModifiedBy = idUser;
+      hh.ModifiedDate = DateTime.Now;
+      context.HangHoa.Update(hh);
+      context.SaveChanges();
+      return "Khôi phục thành công!";
+    }
+
+    [HttpPost("/loadDetailHH")]
+    public IActionResult LoadDetail(int id)
+    {
+      ViewData["Title"] = "Chi tiết hàng hóa";
+      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
+      return View(hh);
     }
 
 

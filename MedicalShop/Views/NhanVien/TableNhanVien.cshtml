@@ -1,0 +1,284 @@
+﻿@model IEnumerable<MedicalShop.Models.Entities.NhanVien>
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+  MedicalShopContext context = new MedicalShopContext();
+
+  List<NhanVien> listNV()
+  {
+    return context.NhanVien.Where(a => a.Active == true).OrderBy(a => a.TenNv).ToList();
+  }
+
+  List<NhomNhanVien> getListNNV()
+  {
+    return context.NhomNhanVien.ToList();
+  }
+
+  var acc = User.FindFirst("VaiTro");
+  int idmenu = (int)TempData.Peek("Menu");
+
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+        canhan = (bool)cn.Person;
+      }
+    }
+  }
+
+}
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+                        window.onload = function () {
+                            alert("@Html.Raw(@TempData["ThongBao"])");
+                    };
+  </script>
+}
+
+
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div style="margin-bottom: 20px">
+    @if (nhap == true)
+    {
+      <a href="/NhanVien/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+    }
+    else
+    {
+      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+    }
+  </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" onchange="changeHH()" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
+      </div>
+      <div class="dropdown">
+        <select id="nhomNV" onchange="changeHH()" class="custom-select" aria-label="Default select example">
+          <option selected disabled value="0">Nhóm nhân viên</option>
+          @foreach (NhomNhanVien n in getListNNV())
+          {
+            <option value="@n.Id">@n.TenNnv</option>
+          }
+        </select>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="tableNV" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+  <input type="hidden" id="SL" value="9" />
+  <table class="table" id="example">
+    <thead>
+      <tr>
+        <th>
+          @Html.DisplayNameFor(model => model.MaNv)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.TenNv)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Cccd)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Sex)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Address)
+        </th>
+
+        <th>Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in listNV())
+      {
+      <tr>
+        <td>
+          @Html.DisplayFor(modelItem => item.MaNv)
+        </td>
+        <td style="max-width: 14rem;">
+          @Html.DisplayFor(modelItem => item.TenNv)
+        </td>
+        <td style="max-width: 14rem;">
+          @Html.DisplayFor(modelItem => item.Cccd)
+        </td>
+        <td id="imageHH" class="side-picture">
+          <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+        </td>
+        <td>
+          @if (item.Sex == true)
+          {
+            <p>Nam</p>
+          }
+          else
+          {
+            <p>Nữ</p>
+          }
+        </td>
+        <td style="max-width: 14rem; ">
+          @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td style="max-width: 14rem; ">
+          @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td style="max-width: 14rem; ">
+          @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+          @if (sua == true)
+          {
+            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+          }
+          @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+          @if (xoa == true)
+          {
+            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+@*<div id="imageModal" class="imageModal">
+    <span class="closeImageModal">&times;</span>
+    <img class="imageModal-content" id="imageHHModal">
+    <div id="imageModelCaption"></div>
+  </div>*@
+<script>
+
+  function changeHH() {
+    var active = $('#active').val();
+    var nhomNV = $('#nhomNV').val();
+
+    $.ajax({
+      type: "post",
+      url: "/loadTableNV",
+      data: "active=" + active + "&nhomNV=" + nhomNV,
+      success: function (result) {
+        $('#tableNV').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
+    });
+  }
+
+  $('.side-picture').hover(function () {
+    var showing = $(this).find("img").attr("src");
+    $('.side-picture').find("img").removeAttr('id');
+    $(this).find("img").attr('id', 'zoom_01');
+    $("#zoom_01").data('zoom-image', showing).elevateZoom({
+      scrollZoom: true,
+    });
+
+  });
+
+
+
+  //// Get the modal
+  //var modal = document.getElementById("imageModal");
+
+  //// Get the image and insert it inside the modal - use its "alt" text as a caption
+  //var img = document.getElementById("imageHH");
+  //var modalImg = document.getElementById("imageHHModal");
+  //var captionText = document.getElementById("imageModelCaption");
+  //img.onclick = function () {
+  //  modal.style.display = "block";
+  //  modalImg.src = this.src;
+  //  captionText.innerHTML = this.alt;
+  //}
+
+  //// Get the <span> element that closes the modal
+  //var span = document.getElementsByClassName("closeImageModal")[0];
+
+  //// When the user clicks on <span> (x), close the modal
+  //span.onclick = function () {
+  //  modal.style.display = "none";
+  //}
+
+
+
+
+
+  //window.addEventListener('load', function () {
+
+  //  //$('.side-picture').hover(function () {
+  //  //  var showing = $(this).find("img").attr("src");
+  //  //  $('.side-picture').find("img").removeAttr('id');
+  //  //  $(this).find("img").attr('id', 'zoom_01');
+  //  //  $("#zoom_01").data('zoom-image', showing).elevateZoom({
+  //  //    scrollZoom: true,
+  //  //  });
+
+  //  //});
+
+
+  //});
+
+
+  //function loadMore() {
+  //  var active = $('#active').val();
+  //  var nhomHH = $('#nhomHH').val();
+  //  var sl = $('#tableHH tr').length;
+  //  $.ajax({
+  //    type: "post",
+  //    url: "/loadMoreTableHH",
+  //    data: "active=" + active + "&nhomHH=" + nhomHH + "&SL=" + sl,
+  //    success: function (result) {
+  //      $('#tableHH').replaceWith(result);
+  //    },
+  //    error: function () {
+  //      alert("Fail to delete");
+  //    }
+  //  });
+  //}
+  //$('#search').keyup(function (e) {
+  //  var key = $(this).val();
+  //  $.ajax({
+  //    type: "post",
+  //    url: "/searchHH",
+  //    data: "key=" + key,
+  //    success: function (result) {
+  //      $('#tableHH').replaceWith(result);
+  //    },
+  //    error: function () {
+  //      alert("Fail");
+  //    }
+  //  });
+  //});
+
+</script>

@@ -1,14 +1,23 @@
 ﻿@{
   var acc = User.FindFirst("VaiTro");
-  string name = null, staff = null, id = null, username = null;
+  string name = null, staff = null, vaitro = null, username = null;
   //int active = 0;
   if (acc != null)
   {
-    id = acc.Value;
+    vaitro = acc.Value;
     username = acc.Subject.Name;
-    staff = User.Claims.ElementAt(3).Type;
-    name = User.Claims.ElementAt(3).Value;
+    staff = User.Claims.ElementAt(2).Type;
+    name = User.Claims.ElementAt(2).Value;
   }
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  List<ChucNang> getListMenu = context.ChucNang
+  .Include(x => x.IdmenuNavigation)
+  .Where(x => x.Idvt == int.Parse(vaitro) && (x.Person == true || x.Import == true || x.Export == true || x.Delete == true || x.Update == true || x.Print == true))
+  .ToList();
+
+
 }
 
 
@@ -32,17 +41,17 @@
   <link href="~/admin/css/style.css" rel="stylesheet" />
   <link href="~/admin/css/hh.css" rel="stylesheet" />
   <link href="~/admin/css/slideimg.css" rel="stylesheet" />
+
   <script src="~/jquery-3.6.1.min.js"></script>
-
-
-  <script src="~/admin/umd/popper.min.js"></script>
   <script src="~/admin/moment.js/moment.min.js"></script>
+  <script src="~/admin/umd/popper.min.js"></script>
+  <link href="~/admin/bootstrap-datetimepicker.css" rel="stylesheet" />
+  <link href="~/admin/bootstrap-datetimepicker.min.css" rel="stylesheet" />
   <script src="~/admin/select/js/selectize.min.js"></script>
-  <script src="~/admin/select/js/selectize.js"></script>
-  <!--table-->
-  @*<link href="~/admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
 
-  <link rel="stylesheet" href="~/admin/select/css/selectize.bootstrap4.min.css" />
+
+  <link href="~/admin/select/css/selectize.bootstrap4.min.css" rel="stylesheet" />
+
 
 </head>
 
@@ -51,7 +60,7 @@
     @* HEADER IN HERE *@
     <div class="header-medical flex-column d-flex fixed-top header">
       <!-- Topbar -->
-      <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r fixed-top" >
+      <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r fixed-top">
         @* mb-4 *@
         <a class="sidebar-brand d-flex align-items-center justify-content-center medical-title" href="/QuanLy">
           <div class="sidebar-brand-text mx-3 d-none d-lg-block"><span>Medical Admin</span></div>
@@ -159,11 +168,11 @@
             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-envelope fa-fw"></i>-->
-              <!-- Counter - Messages -->
-              <!--<span class="badge badge-danger badge-counter">7</span>
-            </a>-->
-            <!-- Dropdown - Messages -->
-            <!--<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+          <!-- Counter - Messages -->
+          <!--<span class="badge badge-danger badge-counter">7</span>
+          </a>-->
+          <!-- Dropdown - Messages -->
+          <!--<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                  aria-labelledby="messagesDropdown">
               <h6 class="dropdown-header">
                 Message Center
@@ -227,7 +236,6 @@
               <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
             </div>
           </li>-->
-
           @*<div class="topbar-divider d-none d-sm-block"></div>*@
 
           <!-- Nav Item - User Information -->
@@ -235,8 +243,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="mr-2 d-none d-lg-inline text-gray-600 small">@name</span>
-              <img class="img-profile rounded-circle"
-                   src="~/lib/images/catby.png">
+              <img class="img-profile rounded-circle" src="~/lib/imagesNV/NV000001.jpg" />
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -250,6 +257,10 @@
                 Lịch sử
               </a>
               <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changeModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Chuyển vai trò
+              </a>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 Đăng xuất
@@ -272,12 +283,11 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
           <!--<li class="nav-item active">-->
-            @*<hr class="sidebar-divider">*@
-            <!--<div class="sidebar-heading">
+          @*<hr class="sidebar-divider">*@
+          <!--<div class="sidebar-heading">
               Quản lý
             </div>
           </li>-->
-
           <!-- Nav Item - Pages Collapse Menu -->
           <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
@@ -287,19 +297,26 @@
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                <a class="collapse-item" href="/DVVC/Table">Dịch vụ vận chuyển</a>
-                <a class="collapse-item" href="/DVT/Table">Đơn vị tính</a>
-                <a class="collapse-item" href="/HangHoa/Table">Hàng hóa</a>
-                <a class="collapse-item" href="/HHDVT/Table">Hàng hóa - Đơn vị tính</a>
-                <a class="collapse-item" href="/HSX/Table">Hãng sản xuất</a>
-                <a class="collapse-item" href="/KhachHang/Table">Khách hàng</a>
-                <a class="collapse-item" href="/NhaCungCap/Table">Nhà cung cấp</a>
-                <a class="collapse-item" href="/NhanVien/Table">Nhân viên</a>
-                <a class="collapse-item" href="/NhomHH/Table">Nhóm hàng hóa</a>
-                <a class="collapse-item" href="/NhomNV/Table">Nhóm nhân viên</a>
-                <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>
+                @*<a class="collapse-item" href="/DVVC/Table">Dịch vụ vận chuyển</a>
+                  <a class="collapse-item" href="/DVT/Table">Đơn vị tính</a>
+                  <a class="collapse-item" href="/HangHoa/Table">Hàng hóa</a>
+                  <a class="collapse-item" href="/HSX/Table">Hãng sản xuất</a>
+                  <a class="collapse-item" href="/KhachHang/Table">Khách hàng</a>
+                  <a class="collapse-item" href="/NhaCungCap/Table">Nhà cung cấp</a>
+                  <a class="collapse-item" href="/NhanVien/Table">Nhân viên</a>
+                  <a class="collapse-item" href="/NhomHangHoa/Table">Nhóm hàng hóa</a>
+                  <a class="collapse-item" href="/NhomNhanVien/Table">Nhóm nhân viên</a>
+                  <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>*@
 
-              </div>             
+
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.TenMenu))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
+                }
+
+
+
+              </div>
             </div>
           </li>
 
@@ -313,10 +330,11 @@
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                @*<h6 class="collapse-header">Nhập kho</h6>*@
-                <a class="collapse-item" href="buttons.html">Phiếu nhập kho</a>
-                <a class="collapse-item" href="buttons.html">Phiếu xuất kho</a>
-                @*<a class="collapse-item" href="cards.html">Phiếu trả nợ</a>*@
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 2).OrderBy(x => x.IdmenuNavigation.TenMenu))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu">@cn.IdmenuNavigation.TenMenu</a>
+                }
+                <a class="collapse-item disabled" style="color:red">Trả nợ</a>
               </div>
             </div>
           </li>
@@ -332,10 +350,10 @@
                  data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
                 @*<h6 class="collapse-header">Thống kê kho</h6>*@
-                <a class="collapse-item" href="utilities-color.html">Thống kê tồn kho</a>
-                <a class="collapse-item" href="utilities-border.html">Thống kê đơn hàng</a>
-                <a class="collapse-item" href="utilities-border.html">Thống kê nhập-xuất</a>
-                <a class="collapse-item" href="utilities-animation.html">Thống kê doanh thu</a>
+                <a class="collapse-item" href="/Report/ReportTon">Thống kê tồn kho</a>
+                <a class="collapse-item" href="/Report/ReportHHN">Thống kê hàng hóa đã nhập</a>
+                <a class="collapse-item" href="/Report/ReportHHX">Thống kê hàng hóa đã xuất</a>
+                <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
                 @*<a class="collapse-item" href="utilities-other.html">Other</a>*@
               </div>
             </div>
@@ -350,9 +368,9 @@
             <div id="collapseSystem" class="collapse" aria-labelledby="headingSystem"
                  data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                <a class="collapse-item" href="utilities-color.html">Cấp tài khoản</a>
-                <a class="collapse-item" href="utilities-color.html">Khách hàng cá nhân</a>
-                <a class="collapse-item" href="/NhapXuat/Table">Nhập - Xuất dữ liệu</a>
+                <a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>
+                @*<a class="collapse-item" href="utilities-color.html">Khách hàng cá nhân</a>*@
+                <a class="collapse-item disabled" style="color:red">Nhập - Xuất dữ liệu</a>
                 <a class="collapse-item" href="/PhanQuyen/Table">Phân quyền</a>
                 <a class="collapse-item" href="/VaiTro/Table">Vai trò</a>
                 @*<a class="collapse-item" href="utilities-color.html">Xuất dữ liệu</a>*@
@@ -366,31 +384,31 @@
 
             <!-- Heading -->
             @*<div class="sidebar-heading">
-              Quản lý trang
-            </div>*@
+                Quản lý trang
+              </div>*@
           </li>
 
 
 
           <!-- Nav Item - Pages Collapse Menu -->
           @*<li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-               aria-expanded="true" aria-controls="collapsePages">
-              <i class="fas fa-fw fa-folder"></i>
-              <span>Cài Đặt Cá Nhân</span>
-            </a>
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-              <div class="bg-xx py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Tài khoản:</h6>
-                <a class="collapse-item" href="login.html">Hồ sơ</a>
-                <a class="collapse-item" href="register.html">Đổi mật khẩu</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Chế độ xem:</h6>
-                <a class="collapse-item" href="404.html">Phân trang</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
+              <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                 aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Cài Đặt Cá Nhân</span>
+              </a>
+              <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-xx py-2 collapse-inner rounded">
+                  <h6 class="collapse-header">Tài khoản:</h6>
+                  <a class="collapse-item" href="login.html">Hồ sơ</a>
+                  <a class="collapse-item" href="register.html">Đổi mật khẩu</a>
+                  <div class="collapse-divider"></div>
+                  <h6 class="collapse-header">Chế độ xem:</h6>
+                  <a class="collapse-item" href="404.html">Phân trang</a>
+                  <a class="collapse-item" href="blank.html">Blank Page</a>
+                </div>
               </div>
-            </div>
-          </li>*@
+            </li>*@
 
           <!-- Sidebar Toggler (Sidebar) -->
           <div class="text-center d-none d-md-inline">
@@ -413,11 +431,11 @@
             <div id="content">
               <div class="container-fluid">
                 @*<div class="d-sm-flex align-items-center justify-content-between mb-4">
-          <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-          </a>
-        </div>*@
+                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                      <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                    </a>
+                  </div>*@
 
                 @RenderBody()
 
@@ -431,7 +449,7 @@
           <footer class="sticky-footer">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2021</span>
+                <span>Copyright &copy; Your Website 2022</span>
               </div>
             </div>
           </footer>
@@ -459,19 +477,63 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Đăng xuất tài khoản</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-body">Bạn muốn đăng xuất tài khoản hiện tại?</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="/TaiKhoan/LogOut">Log Out</a>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+          <a class="btn btn-primary" href="/TaiKhoan/LogOut">Đăng xuất</a>
         </div>
       </div>
     </div>
   </div>
+
+
+  <!-- Chuyển vai trò Modal-->
+  <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Chuyển đổi quyền truy cấp</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Bạn muốn thay đổi vai trò hiện tại?</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+          <a class="btn btn-primary" href="/TaiKhoan/ViewSelector" @*data-toggle="modal" data-target="#SelectorModal"*@>Thay đổi</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Chuyển vai trò Modal-->
+  <div class="modal fade" id="SelectorModal" tabindex="-5" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Chọn vai trò</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Hihhi</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+          <a class="btn btn-primary" href="/TaiKhoan/ViewSelector">Thay đổi</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="~/admin/vendor/jquery/jquery.min.js"></script>
@@ -493,10 +555,24 @@
   <script src="~/admin/js/jquery.elevatezoom.min.js"></script>
   <!--Table-->
   @*<script src="~/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-  <script src="~/admin/vendor/datatables/jquery.dataTables.min.js"></script>*@
+    <script src="~/admin/vendor/datatables/jquery.dataTables.min.js"></script>*@
 
   <script>
+
+
     $(document).ready(function () {
+
+
+      $(function () {
+        $('.tungay input').datepicker({
+          format: "dd-MM-yyyy",
+          todayBtn: "linked",
+          language: "vi"
+        });
+      });
+
+
+
       $.fn.DataTable.ext.pager.numbers_length = 2;
       $("#example").dataTable({
         "scrollY": "400px",
@@ -514,6 +590,51 @@
       });
 
 
+      $('.custom-select').selectize({
+        dataAttr: 'data-extra',
+        searchField: ['value', 'text', 'label']
+      });
+
+      $('#SoLo,#ThueXuat').selectize({
+        create: true,
+        dataAttr: 'data-extra',
+        searchField: ['value', 'text', 'label']
+      });
+
+
+
+
+      //$('#toDay, #fromDay').datetimepicker({
+      //  autoclose: true,
+      //  timepicker: false,
+      //  datepicker: true,
+      //  format: "d-m-Y",
+      //  weeks: true
+      //});
+
+
+      //$.datetimepicker.setLocale('vi');
+
+
+
+
+
+      $('#HanDung,#NgayHD,#NgaySX,#toDayy,#fromDayy').datetimepicker({
+        locale: 'vi',
+        useStrict: true,
+        format: "DD-MM-yyyy",
+        icons: {
+          date: "bi bi-calendar2-date",
+          up: "bi bi-chevron-up",
+          down: "bi bi-chevron-down",
+          previous: 'bi bi-chevron-left',
+          next: 'bi bi-chevron-right',
+          time: "bi bi-clock"
+        }
+      });
+
+
+
 
 
     })
@@ -523,6 +644,7 @@
 
 
 
+  <script src="~/admin/bootstrap-datetimepicker.min.js"></script>
 
 
 

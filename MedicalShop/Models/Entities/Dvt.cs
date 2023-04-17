@@ -13,6 +13,7 @@ namespace MedicalShop.Models.Entities
   {
     public Dvt()
     {
+      HangHoa = new HashSet<HangHoa>();
       HhDvt = new HashSet<HhDvt>();
     }
 
@@ -45,5 +46,6 @@ namespace MedicalShop.Models.Entities
     public bool? Active { get; set; }
 
     public virtual ICollection<HhDvt> HhDvt { get; set; }
+    public virtual ICollection<HangHoa> HangHoa { get; set; }
   }
 }

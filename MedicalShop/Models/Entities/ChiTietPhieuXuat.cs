@@ -11,19 +11,20 @@ namespace MedicalShop.Models.Entities
     {
         public int Id { get; set; }
         public int? Idpx { get; set; }
-        public int? Idpn { get; set; }
+        public int? Idctpn { get; set; }
         public int? Idhh { get; set; }
         public int? Iddvt { get; set; }
         public int? Quantity { get; set; }
         public double? Price { get; set; }
-        public DateTime? Nsx { get; set; }
-        public DateTime? Hsd { get; set; }
+        public double? Cktm { get; set; }
+        public double? Thue { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
         public bool? Active { get; set; }
 
+        public virtual ChiTietPhieuNhap IdctpnNavigation { get; set; }
         public virtual HangHoa IdhhNavigation { get; set; }
         public virtual PhieuXuat IdpxNavigation { get; set; }
     }
