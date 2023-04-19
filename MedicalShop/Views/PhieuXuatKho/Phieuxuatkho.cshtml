@@ -2,10 +2,7 @@
 @{
   MedicalShopContext context = new MedicalShopContext();
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
-  List<KhachHang> getListKH()
-  {
-    return context.KhachHang.Where(x => x.Active == true).ToList();
-  }
+  List<KhachHang> getListKH = context.KhachHang.Where(x => x.Active == true).ToList();
 
   List<HangHoa> getListHH()
   {
@@ -73,8 +70,9 @@
   }
 }
 
-<div class="card">
-  <div class="card-body">
+
+<div class="card" style="margin-bottom: .8rem">
+  <div class="card-body" style="margin-bottom: .8rem">
 
     <!-- Bordered Tabs Justified -->
     <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
@@ -97,9 +95,9 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Kh.Hàng</label>
               <div class="col-sm-5 col-lg-5">
-                <select name="IdKh" id="IdKh" class="custom-select">
+                <select required name="@nameof(Model.Idkh)" id="idKH" class="form-select1">
                   <option selected value=""></option>
-                  @foreach (KhachHang n in getListKH())
+                  @foreach (KhachHang n in getListKH)
                   {
                     <option value="@n.Id" label="@n.MaKh">@n.TenKh</option>
                   }
@@ -129,7 +127,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">Tên hàng</label>
               <div class="col-md-5 mb-2 col-lg-5">
-                <select id="selectHH" onchange="loadDVT()" class="custom-select">
+                <select id="selectHH" onchange="loadDVT()" class="form-select2">
                   <option selected disabled value=""></option>
                   @foreach (HangHoa h in getListHH())
                   {
@@ -150,7 +148,7 @@
             <div class="row">
               <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
               <div class="col-md-2 mb-2 col-lg-2">
-                <select id="ThueXuat" class="custom-select">
+                <select id="ThueXuat" class="form-select1">
                   <option selected value="0">0</option>
                   <option value="5">5</option>
                   <option value="10">10</option>
@@ -190,7 +188,7 @@
             </div>
           </div>
         </div>
-        <div class="table-responsive" style="max-height: 11rem; overflow-x: auto; white-space: nowrap; margin: 0.5rem 0; border: 1px solid black; ">
+        <div class="table-responsive" style="max-height: 8rem; overflow-x: auto; white-space: nowrap; margin: 0.5rem 0; border: 1px solid black; ">
           <table class="table table-bordered table-hover table-striped text-center" id="tableChiTietPhieuNhap">
             <thead style="position: sticky; top: 0;">
               <tr>
@@ -206,15 +204,15 @@
             </thead>
             <tbody id="body_ctpnx">
               @*<tr>
-                <th>...</th>
-                <th>...</th>
-                <th>...</th>
-                <th>...</th>
-                <th>...</th>
-                <th>...</th>
-                <th>...</th>
-                <th>...</th>
-              </tr>*@
+                  <th>...</th>
+                  <th>...</th>
+                  <th>...</th>
+                  <th>...</th>
+                  <th>...</th>
+                  <th>...</th>
+                  <th>...</th>
+                  <th>...</th>
+                </tr>*@
             </tbody>
           </table>
         </div>
@@ -243,9 +241,9 @@
             <button class="btn btn-primary" style="min-width:20%" type="button" id="btn-create">Tạo phiếu</button>
           </div>
         </div>
-        </div>
-       @* </form>*@
       </div>
+      @* </form>*@
+    </div>
     <div class="tab-content">
       <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="row justify-content-start" style="width: fit-content; padding: 1rem 0rem ">
@@ -276,19 +274,19 @@
             <tbody>
               @foreach (PhieuXuat p in getListPhieuXuat())
               {
-              <tr>
-                <td class="text-left">@p.SoPx</td>
-                <td class="text-left">@p.IdkhNavigation.TenKh</td>
-                <td>@p.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm:ss")</td>
-                <td class="text-left">@p.SoHd</td>
-                <td>@dayToString(p.NgayHd)</td>
-                <td class="text-left">@p.IdnvNavigation.TenNv</td>
-                <td class="text-left">@p.Note</td>
-                <td>
-                  <a href="PhieuXuatPDF" class="btn btn-outline-success">In</a>
-                  <button type="button" onclick="ViewPhieuXuat('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>
-                </td>
-              </tr>
+                <tr>
+                  <td class="text-left">@p.SoPx</td>
+                  <td class="text-left">@p.IdkhNavigation.TenKh</td>
+                  <td>@p.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                  <td class="text-left">@p.SoHd</td>
+                  <td>@dayToString(p.NgayHd)</td>
+                  <td class="text-left">@p.IdnvNavigation.TenNv</td>
+                  <td class="text-left">@p.Note</td>
+                  <td>
+                    <a href="PhieuXuatPDF" class="btn btn-outline-success">In</a>
+                    <button type="button" onclick="ViewPhieuXuat('@p.Id')" class="btn btn-outline-primary mx-1">Xem</button>
+                  </td>
+                </tr>
               }
 
             </tbody>
@@ -302,10 +300,10 @@
   </div>
 </div>
 @*<div id="imageModal" class="imageModal">
-  <span class="closeImageModal">&times;</span>
-  <img class="imageModal-content" id="imageHHModal">
-  <div id="imageModelCaption"></div>
-</div>*@
+    <span class="closeImageModal">&times;</span>
+    <img class="imageModal-content" id="imageHHModal">
+    <div id="imageModelCaption"></div>
+  </div>*@
 
 
 <script>
@@ -407,6 +405,13 @@
   //ok
   function updateTable2() {
     //11111111111111111111111111
+    if ($("#tableChiTietPhieuNhap").find("tr:gt(0)").length < 1) {
+      $('#TienHang').val("");
+      $('#TienCK').val("");
+      $('#TienThue').val("");
+      $('#TienThanhToan').val("");
+      return;
+    }
     var tienhang = 0;
     var tienck = 0;
     var tienthue = 0;
@@ -432,6 +437,11 @@
 
   function loadDVT() {
     var idHH = $('#selectHH').val();
+    var idKH = $('#IdKh').val();
+    $('#DonGia').val("");
+
+    $('#selectHH').nextAll('.form-select2').removeClass('is-invalid');
+
 
     if (idHH != 0) {
       $.ajax({
@@ -446,6 +456,12 @@
           alert("Fail");
         }
       });
+    }
+    if(idHH == "") {
+      $('#selectHH').nextAll('.form-select2').addClass('is-invalid');
+    }
+    if(idKH == "") {
+      $('#KH').nextAll('.form-select2').addClass('is-invalid');
     }
   };
 
@@ -497,7 +513,7 @@
     //  $('#ThanhTien').val(thanhTien);
     //}
     if (idHH == "") {
-      $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
+      $('#selectHH').nextAll('.form-select2').addClass('is-invalid');
     }
     if (idDVT == "") {
       $('#selectDVT').addClass('is-invalid');
@@ -558,17 +574,18 @@
     var idDVT = $('#DVT').val();
     var ThueXuat = $('#ThueXuat').val();
     var SL = getValue($('#SLHH').val());
+    var SLcon = getValue($('#SLcon').val());
     var DonGia = getValue($('#DonGia').val());
     var ChietKhau = getValue($('#ChietKhau').val());
     var ThanhTien = getValue($('#ThanhTien').val());
 
     if (idHH == "") {
-      $('#selectHH').nextAll('.custom-select').addClass('is-invalid');
+      $('#selectHH').nextAll('.form-select2').addClass('is-invalid');
       if (SL == "") {
         $('#SLHH').addClass('is-invalid');
       }
       return;
-    } if (SL == "") {
+    } if (SL == "" || SL > SLcon) {
       $('#SLHH').addClass('is-invalid');
       return;
     }

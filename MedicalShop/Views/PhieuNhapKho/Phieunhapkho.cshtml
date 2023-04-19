@@ -87,7 +87,7 @@
   }
 }
 
-<div class="card">
+<div class="card" style="margin-bottom: .8rem">
   <div class="card-body" style="margin-bottom: .8rem">
 
     <!-- Bordered Tabs Justified -->
@@ -111,7 +111,7 @@
             </div>
             <label class="col-sm-1 col-lg-1 col-form-label">Nhà CC</label>
             <div class="col-sm-5 col-lg-5">
-              <select required name="idNCC" id="NCC" class="custom-select">
+              <select required name="idNCC" id="NCC" class="form-select2">
                 <option selected value=""></option>
                 @foreach (NhaCungCap n in getListNCC())
                 {
@@ -143,7 +143,7 @@
           <div class="row">
             <label class="col-sm-1 col-lg-1 col-form-label">Tên hàng</label>
             <div class="col-md-5 mb-2 col-lg-5">
-              <select id="selectHH" onchange="loadDVT()" class="custom-select">
+              <select id="selectHH" onchange="loadDVT()" class="form-select2">
                 <option selected disabled value=""></option>
                 @foreach (HangHoa h in getListHH())
                 {
@@ -153,7 +153,7 @@
             </div>
             <label class="col-sm-1 col-lg-1 col-form-label">Số lô</label>
             <div class="col-md-2 mb-2 col-lg-2">
-              <select id="SoLo" class="custom-select">
+              <select id="SoLo" class="form-select1">
                 <option selected disabled value=""></option>
                 @foreach (string s in a)
                 {
@@ -170,7 +170,7 @@
           <div class="row">
             <label class="col-sm-1 col-lg-1 col-form-label">VAT</label>
             <div class="col-md-2 mb-2 col-lg-2">
-              <select id="ThueXuat" class="custom-select vat">
+              <select id="ThueXuat" class="form-select1 vat">
                 <option selected value="0">0</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -230,7 +230,7 @@
         </div>
       </div>*@
       </div>
-      <div class="table-responsive" style="max-height: 11rem; overflow-x: auto; white-space: nowrap; margin: 0.5rem 0; border: 1px solid black; ">
+      <div class="table-responsive" style="max-height: 8rem; overflow-x: auto; white-space: nowrap; margin: 0.5rem 0; border: 1px solid black; ">
         <table class="table table-bordered table-hover table-striped text-center" id="tableChiTietPhieuNhap">
           <thead style="position: sticky; top: 0;">
             <tr>

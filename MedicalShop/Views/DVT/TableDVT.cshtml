@@ -63,103 +63,121 @@
       <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
     }
   </div>
-    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-      <div style="display: flex">
-        <div class="dropdown" style="margin-right:10px">
-          <select id="active" onchange="changeHH()" class="custom-select">
-            <option value="true" selected>Hiện tại</option>
-            <option value="false">Tất cả</option>
-          </select>
-        </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" onchange="changeHH()" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
       </div>
     </div>
   </div>
+</div>
 
-  <div id="tableDVT" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            @Html.DisplayNameFor(model => model.MaDvt)
-          </th>
-          <th>
-            @Html.DisplayNameFor(model => model.TenDvt)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-          </th>
-          <th class="text-center">Tùy chọn</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach (Dvt item in listDVT())
-        {
+@*<div class="table-responsive" style="white-space:nowrap;overflow-y: auto;">
+  <table id="example" class="table table-striped table-hover text-center display nowrap" style="width:100%">*@
+    <div id="tableDVT" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+      <table id="example" class="table table-striped" style="width:100%">
+        <thead>
           <tr>
-            <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
-            </td>
-            <td class="text-center">
-              @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.CreatedBy).TenNv
-            </td>
-            <td class="text-center">
-              @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.ModifiedBy).TenNv
-            </td>
-          <td class="text-center">
-            @if (sua == true)
-            {
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
-            }
-            @if (xoa == true)
-            {
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-            }
-          </td>
+            <th>
+              @Html.DisplayNameFor(model => model.MaDvt)
+            </th>
+            <th>
+              @Html.DisplayNameFor(model => model.TenDvt)
+            </th>
+            <th class="text-center">
+              @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th class="text-center">
+              @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th class="text-center">
+              @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th class="text-center">
+              @Html.DisplayNameFor(model => model.ModifiedBy)
+            </th>
+            <th class="text-center">Tùy chọn</th>
           </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          @foreach (Dvt item in listDVT())
+          {
+            <tr>
+              <td>
+                @Html.DisplayFor(modelItem => item.MaDvt)
+              </td>
+              <td>
+                @Html.DisplayFor(modelItem => item.TenDvt)
+              </td>
+              <td class="text-center">
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+              </td>
+              <td class="text-center">
+                @getNV(item.CreatedBy).TenNv
+              </td>
+              <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+              </td>
+              <td class="text-center">
+                @getNV(item.ModifiedBy).TenNv
+              </td>
+              <td class="text-center">
+                @if (sua == true)
+                {
+                  @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
+                }
+                else
+                {
+                  <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
+                }
+                @if (xoa == true)
+                {
+                  @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+                }
+                else
+                {
+                  <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
 
 
-  <script>
-    $('#active').on('change', function () {
-      var a = $(this).val();
-      $.ajax({
-        type: "post",
-        url: "/loadTableDVT",
-        data: "active=" + a,
-        success: function (result) {
-          $('#tableDVT').replaceWith(result);
-        },
-        error: function () {
-          alert("Failed");
-        }
+    <script>
+      $(document).ready(function () {
+        $('#example').DataTable({
+          searching: false,
+          "language": {
+            "lengthMenu": "Hiển thị _MENU_ dòng",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+            "paginate": {
+              "previous": "Trước",
+              "next": "Sau"
+            }
+          },
+          "lengthMenu": [5, 10, 25, 50]
+        });
       });
-    });
-  </script>
+
+
+      $('#active').on('change', function () {
+        var a = $(this).val();
+        $.ajax({
+          type: "post",
+          url: "/loadTableDVT",
+          data: "active=" + a,
+          success: function (result) {
+            $('#tableDVT').replaceWith(result);
+          },
+          error: function () {
+            alert("Failed");
+          }
+        });
+      });
+    </script>

@@ -1,0 +1,31 @@
+﻿@{
+  ViewData["Title"] = "Thống kê";
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+}
+
+<html>
+    <head>
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+      <py-env>
+        - numpy
+        - matplotlib
+      </py-env>
+    </head>
+
+  <body>
+    <div id="matplotlib-bar"></div>
+    <py-script output="matplotlib-bar">
+      import matplotlib.pyplot as plt
+      fig, ax = plt.subplots()
+
+      x = ["Betahistine", "Stilux-60mg", "Rotacor 10mg", "Tomethrol 4mg"]
+      y = [100,500,900,760]
+      plt.bar(x,y)
+      plt.xlabel('Hàng hóa')
+      plt.ylabel('Số lượng (hộp)')
+      plt.title('Tổng hàng hóa đã nhập \n 04/2023')
+      fig
+    </py-script>
+  </body>
+</html>

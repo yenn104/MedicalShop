@@ -368,7 +368,7 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Detail).HasColumnType("ntext");
+                entity.Property(e => e.Detail).HasMaxLength(500);
 
                 entity.Property(e => e.Idcn).HasColumnName("IDCN");
 
@@ -550,9 +550,7 @@ namespace MedicalShop.Models.Entities
 
             modelBuilder.Entity<KhachHang>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 

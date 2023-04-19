@@ -9,13 +9,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedicalShop.Models.Entities
 {
-  public partial class Dvt
-  {
-    public Dvt()
+    public partial class Dvt
     {
-      HangHoa = new HashSet<HangHoa>();
-      HhDvt = new HashSet<HhDvt>();
-    }
+        public Dvt()
+        {
+            HangHoa = new HashSet<HangHoa>();
+            HhDvt = new HashSet<HhDvt>();
+        }
 
     public int Id { get; set; }
 
