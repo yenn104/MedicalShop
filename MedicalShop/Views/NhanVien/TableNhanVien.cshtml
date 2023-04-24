@@ -70,7 +70,8 @@
       </div>
       <div class="dropdown">
         <select id="nhomNV" onchange="changeHH()" class="custom-select" aria-label="Default select example">
-          <option selected disabled value="0">Nhóm nhân viên</option>
+          <option selected disabled hidden>Nhóm nhân viên</option>
+          <option value="0">Tất cả</option>
           @foreach (NhomNhanVien n in getListNNV())
           {
             <option value="@n.Id">@n.TenNnv</option>
@@ -81,7 +82,7 @@
     </div>
   </div>
 </div>
-<div id="tableNV" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
+<div id="tableNV" style=" width: 100%;">
   <input type="hidden" id="SL" value="9" />
   <table class="table" id="example">
     <thead>

@@ -29,6 +29,7 @@ namespace MedicalShop.Models.Entities
         public virtual DbSet<Dvvc> Dvvc { get; set; }
         public virtual DbSet<HangHoa> HangHoa { get; set; }
         public virtual DbSet<HhDvt> HhDvt { get; set; }
+        public virtual DbSet<HhGia> HhGia { get; set; }
         public virtual DbSet<HhImage> HhImage { get; set; }
         public virtual DbSet<Hsx> Hsx { get; set; }
         public virtual DbSet<Httt> Httt { get; set; }
@@ -129,8 +130,6 @@ namespace MedicalShop.Models.Entities
                 entity.Property(e => e.Price).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.SalePrice).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.SoLo).HasMaxLength(50);
 
@@ -455,6 +454,32 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idhh)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_HH_DVT_HangHoa");
+            });
+
+            modelBuilder.Entity<HhGia>(entity =>
+            {
+                entity.ToTable("HH_Gia");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
+
+                entity.Property(e => e.Idhh).HasColumnName("IDHH");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.IdhhNavigation)
+                    .WithMany(p => p.HhGia)
+                    .HasForeignKey(d => d.Idhh)
+                    .HasConstraintName("FK_HH_Gia_HangHoa");
             });
 
             modelBuilder.Entity<HhImage>(entity =>

@@ -7,17 +7,12 @@ using System.Collections.Generic;
 
 namespace MedicalShop.Models.Entities
 {
-    public partial class Dvt
+    public partial class HhGia
     {
-        public Dvt()
-        {
-            HangHoa = new HashSet<HangHoa>();
-            HhDvt = new HashSet<HhDvt>();
-        }
-
         public int Id { get; set; }
-        public string MaDvt { get; set; }
-        public string TenDvt { get; set; }
+        public int? Idhh { get; set; }
+        public double? TiLe { get; set; }
+        public double? Price { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
@@ -25,7 +20,6 @@ namespace MedicalShop.Models.Entities
         public int? Idcn { get; set; }
         public bool? Active { get; set; }
 
-        public virtual ICollection<HangHoa> HangHoa { get; set; }
-        public virtual ICollection<HhDvt> HhDvt { get; set; }
+        public virtual HangHoa IdhhNavigation { get; set; }
     }
 }

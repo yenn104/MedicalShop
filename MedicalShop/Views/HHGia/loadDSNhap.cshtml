@@ -1,0 +1,21 @@
+﻿@{
+  int stt = 1;
+}
+
+<tbody id="gianhap">
+  @foreach (ChiTietPhieuNhap ctpn in ViewBag.ListCTNK)
+  {
+    <tr>
+      <td class="text-right col-1">
+        <span>@stt</span>
+        @*<input type="hidden" value="@ctpn.Id" id="idctpn" />*@
+      </td>
+      <td class="giadouble text-right">
+        @ctpn.Price
+      </td>
+    </tr>
+    stt++;
+
+  }
+</tbody>
+

@@ -34,8 +34,11 @@
   }
 }
 
-<div id="tableDVT" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<script src="~/admin/js/datatable-custom.js"></script>
+
+
+<div id="tableDVT" style="width: 100%;">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
@@ -83,7 +86,7 @@
             <td class="text-center">
               @getNV(item.ModifiedBy).TenNv
             </td>
-          <td class="text-center pr-2rem">
+            <td class="text-center pr-2rem">
               @if (sua == true)
               {
                 @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
@@ -116,7 +119,7 @@
             <td class="text-center">
               @getNV(item.ModifiedBy).TenNv
             </td>
-          <td class="text-center">
+            <td class="text-center">
               @if (sua == true)
               {
                 @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })

@@ -70,7 +70,8 @@
       </div>
       <div class="dropdown">
         <select id="nhomHH" onchange="changeHH()" class="custom-select" aria-label="Default select example">
-          <option selected disabled value="0">Nhóm hàng hoá</option>
+          <option selected disabled hidden>Nhóm hàng hoá</option>
+          <option value="0">Tất cả</option>
           @foreach (NhomHangHoa n in getListNHH())
           {
             <option value="@n.Id">@n.TenNhh</option>
@@ -81,9 +82,8 @@
     </div>
   </div>
 </div>
-<div id="tableHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <input type="hidden" id="SL" value="9" />
-  <table class="table" id="example">
+<div id="tableHH" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
@@ -111,20 +111,20 @@
           <td>
             @Html.DisplayFor(modelItem => item.MaHh)
           </td>
-          <td style="max-width: 14rem;">
+          <td>
             @Html.DisplayFor(modelItem => item.TenHh)
           </td>
           <td>
             @Html.DisplayFor(modelItem => item.BarCode)
           </td>
           <td id="imageHH" class="side-picture">
-            <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;"  id="zoom_01" class="img-fluid">
+            <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
           </td>
-          <td style="max-width: 14rem; ">
+          <td>
             @Html.DisplayFor(modelItem => item.Detail)
           </td>
           <td>
-            @if(sua == true)
+            @if (sua == true)
             {
               @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
             }
@@ -133,7 +133,7 @@
               <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
             }
             @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-            @if(xoa == true)
+            @if (xoa == true)
             {
               @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
             }

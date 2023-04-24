@@ -56,7 +56,7 @@ namespace MedicalShop.Controllers
           ct.Thue = t.Thue;
           ct.Quantity = t.Slg;
           ct.Price = t.DonGia;
-          ct.SalePrice = t.DonGia + (t.DonGia * 0.5);
+          //ct.SalePrice = t.DonGia + (t.DonGia * 0.5);
           ct.Cktm = t.Cktm;
           ct.Nsx = DateTime.ParseExact(t.Nsx, "dd-MM-yyyy", CultureInfo.InvariantCulture); 
           ct.Hsd = DateTime.ParseExact(t.Hsd, "dd-MM-yyyy", CultureInfo.InvariantCulture);

@@ -14,6 +14,7 @@ namespace MedicalShop.Models.Entities
             ChiTietPhieuNhap = new HashSet<ChiTietPhieuNhap>();
             ChiTietPhieuXuat = new HashSet<ChiTietPhieuXuat>();
             HhDvt = new HashSet<HhDvt>();
+            HhGia = new HashSet<HhGia>();
             HhImage = new HashSet<HhImage>();
         }
 
@@ -41,6 +42,7 @@ namespace MedicalShop.Models.Entities
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhap { get; set; }
         public virtual ICollection<ChiTietPhieuXuat> ChiTietPhieuXuat { get; set; }
         public virtual ICollection<HhDvt> HhDvt { get; set; }
+        public virtual ICollection<HhGia> HhGia { get; set; }
         public virtual ICollection<HhImage> HhImage { get; set; }
     }
 }

@@ -1,0 +1,50 @@
+﻿@{
+  ViewData["Title"] = "Thống kê";
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+}
+
+<html>
+  <head>
+    <title>Ice Cream Picker</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  </head>
+  <body>
+
+    <py-config>
+      packages = ["matplotlib", "pandas", "seaborn"]
+    </py-config>
+
+    <py-script>
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      import seaborn as sns
+      from pyodide.http import open_url
+
+      url = (
+      "https://raw.githubusercontent.com/yenn104/datatesting/master/industryandtrade_market_price.csv_27.csv"
+      )
+
+      data = pd.read_csv(open_url(url))
+
+      def plot(data):
+        plt.rcParams["figure.figsize"] = (30,10) # đổi kích thước biểu đồ
+        fig, ax = plt.subplots()
+        bars = ax.bar(data["ten"], data["donvitinh"]) # đổi thành bar chart
+        ax.bar_label(bars, labels=data["so_luong"].values) # hiển thị giá trị của các cột lên trên chúng
+        plt.title("Rating of ice cream flavours of your choice")
+        plt.xticks(rotation=45) # xoay tên các mẫu kem 45 độ để tránh bị chồng lên nhau
+        display(fig, target="graph-area", append=False)
+
+      plot(data)
+
+    </py-script>
+
+    @*<py-repl>
+      ice_data
+    </py-repl>*@
+
+    <div id="graph-area"></div>
+  </body>
+</html>

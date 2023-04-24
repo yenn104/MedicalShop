@@ -279,7 +279,7 @@ namespace MedicalShop.Controllers
 
         if (SLtemp <= tk.SoLuong)
         {
-          donGia = (double)ct.SalePrice;
+          //donGia = (double)ct.SalePrice;
           //SLtemp = (int)(tk.SoLuong - SL);
           thanhTien = thanhTien + (SLtemp * donGia);
           break; 
@@ -287,7 +287,7 @@ namespace MedicalShop.Controllers
         }
         else
         {
-          donGia = (double)ct.SalePrice;
+          //donGia = (double)ct.SalePrice;
           thanhTien = thanhTien + ((double)tk.SoLuong * donGia);
           SLtemp = (double)(SL - tk.SoLuong);
           //break; 

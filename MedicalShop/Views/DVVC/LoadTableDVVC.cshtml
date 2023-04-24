@@ -27,9 +27,11 @@
     }
   }
 }
+<script src="~/admin/js/datatable-custom.js"></script>
 
-<div id="tableDVVC" style="overflow-x: auto; overflow-y: hidden; width: 100%; text-align: -webkit-center;">
-  <table class="table w-85">
+
+<div id="tableDVVC" style="width: 100%;">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th class="col-sm-2">
@@ -59,7 +61,7 @@
             <td>
               @Html.DisplayFor(modelItem => item.Note)
             </td>
-            <td class="text-center pr-4">
+            <td class="text-center">
               @if (sua == true)
               {
                 @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
@@ -84,7 +86,7 @@
             <td>
               @Html.DisplayFor(modelItem => item.Note)
             </td>
-            <td class="center">
+            <td class="text-center">
               @if (sua == true)
               {
                 @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })

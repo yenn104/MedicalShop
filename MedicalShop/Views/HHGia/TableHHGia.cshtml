@@ -1,0 +1,186 @@
+﻿@{
+  ViewData["Title"] = "Giá bán";
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+  List<HangHoa> listHH()
+  {
+    return context.HangHoa.Where(x => x.Active == true).OrderBy(x => x.TenHh).ToList();
+  }
+
+  HhGia getGia(int? id)
+  {
+    HhGia giahh = context.HhGia.Find(id);
+    if (giahh != null) return giahh;
+    else return new HhGia();
+  }
+
+
+}
+
+<style>
+  .wh-input input {
+    width: 17px;
+    height: 17px;
+  }
+
+  .color-clicked {
+    background-color: #f5f8fe;
+    font-weight: bold;
+    color: #0d6efd;
+  }
+</style>
+
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+        window.onload = function () {
+            alert("@Html.Raw(@TempData["ThongBao"])");
+    };
+  </script>
+}
+
+<div class="card mb-0" style="height:35rem;">
+  <div class="" style="overflow-x:auto">
+    <div class="m-3" style="display: flex; flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-evenly; ">
+      <div id="table1" class=" border-dark table-responsive-lg">
+        <table class="table table-bordered table-hover" id="example" >
+          <thead>
+            <tr style="background: white;">
+              <th colspan="3" class="p-0">
+                <div class="group-btn">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary" style="border-radius:3px" type="button" id="btn-save">
+                      <span>Lưu</span>
+                    </button>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            <tr style="background: #e9ecef;">
+              @*<th style="width:15px">STT</th>*@
+              <th class="text-center">Danh sách hàng hóa</th>
+              <th>Tỉ lệ</th>
+              <th>Giá</th>
+            </tr>
+          </thead>
+          <tbody id="giaban">
+            @foreach (HangHoa hh in listHH())
+            {
+            <tr onclick="loadDSNhap(@hh.Id)">
+              @*<td id="stt"></td>*@
+              <td class="text-left">
+                <span>@hh.TenHh</span>
+                <input type="hidden" value="@hh.Id" id="idvt" />
+              </td>
+              <td>
+                <input type="text" value="@getGia(@hh.Id).TiLe" id="TiLe"/>
+              </td>
+              <td>
+                <input type="text" value="@getGia(@hh.Id).Price" id="Gia"/>
+              </td>             
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @*<input type="hidden" id="idvt" />*@
+      <div class="col-lg-3 border-dark" style="overflow-x: auto">
+        <table class="table tablee table-bordered  mb-0  text-center bg-light" id="example2" style="margin-top: 2.85rem; ">
+          <thead >
+            
+            <tr>
+              <th class="text-center" style="vertical-align : middle;text-align:center;">STT</th>
+              <th class="text-center">Giá nhập</th>
+            </tr>
+          </thead>
+          <tbody id="gianhap">
+            <tr>
+              <td>..</td>
+              <td>..</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+
+  $("#giaban tr").click(function () {
+    var selected = $(this).hasClass("color-clicked");
+    $("#giaban tr").removeClass("color-clicked");
+    if (!selected)
+      $(this).addClass("color-clicked");
+  });
+
+  //
+  function loadDSNhap(id) {
+    $('#giaban').val(id);
+    $.ajax({
+      type: "post",
+      url: "/loadDSNhap", // loadTableCN
+      data: "idhh=" + id,
+      success: function (result) {
+        $('#gianhap').replaceWith(result);
+        updateDouble();
+      },
+      error: function () {
+        alert("Failhuhu");
+      }
+    });
+  }
+
+
+  $(document).ready(function () {
+    
+   
+
+    //$("#btn-save").click(function () {
+    //  updateRoles();
+    //});
+  });
+
+
+  function updateDouble() {
+
+    $("#example2").find("tr:gt(1)").each(function () {
+      var gia = $(this).find("td:eq(1)").text();
+     /* $(this).text(toDecimal(gia));*/
+      $(this).find("td:eq(1)").text(toDecimal(gia));
+    });
+
+  }
+
+
+
+
+  function toDecimal(str) {
+    return parseFloat(str).toLocaleString('en-US', {
+      style: 'decimal',
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    });
+  }
+
+
+  //$('.giadouble').on('blur', format);
+
+  //function format() {
+  //  if (checkNumber(this.value)) {
+  //    const value = this.value.replace(/,/g, '');
+  //    this.value = parseFloat(value).toLocaleString('en-US', {
+  //      style: 'decimal',
+  //      maximumFractionDigits: 2,
+  //      minimumFractionDigits: 2
+  //    })
+  //  }
+  //}
+
+
+
+
+
+</script>
