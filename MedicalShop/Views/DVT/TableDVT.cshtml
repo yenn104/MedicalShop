@@ -10,6 +10,18 @@
     return context.Dvt.Where(a => a.Active == true).ToList();
   }
 
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   NhanVien getNV(int? id)
   {
     NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
@@ -94,22 +106,22 @@
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaDvt)
+          Mã
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenDvt)
+          Tên
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.CreatedDate)
+          Ngày tạo
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.CreatedBy)
+          NV tạo
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.ModifiedDate)
+         Ngày sửa
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.ModifiedBy)
+          NV sửa
         </th>
         <th class="text-center">Tùy chọn</th>
       </tr>
@@ -125,13 +137,13 @@
             @Html.DisplayFor(modelItem => item.TenDvt)
           </td>
           <td class="text-center">
-            @Html.DisplayFor(modelItem => item.CreatedDate)
+            @formatDay(item.CreatedDate)
           </td>
           <td class="text-center">
             @getNV(item.CreatedBy).TenNv
           </td>
           <td class="text-center">
-            @Html.DisplayFor(modelItem => item.ModifiedDate)
+            @formatDay(item.ModifiedDate)
           </td>
           <td class="text-center">
             @getNV(item.ModifiedBy).TenNv

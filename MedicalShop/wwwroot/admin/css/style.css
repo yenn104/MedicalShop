@@ -280,3 +280,31 @@ a:hover {
 .btn.focus, .btn:focus {
   box-shadow: none;
 }
+
+
+@media (max-width: 1000px) {
+  #example tbody tr {
+    white-space: nowrap;
+  }
+}
+
+/*@media (max-height: 100px) {
+  .card{
+    overflow: auto;
+  }
+}*/
+
+
+th {
+  text-align: center !important;
+  white-space: nowrap;
+}
+
+table thead tr th {
+  
+}
+
+
+.ws_nowrap {
+  white-space: nowrap;
+}
