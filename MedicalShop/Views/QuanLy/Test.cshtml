@@ -5,7 +5,7 @@
 
 <html>
   <head>
-    <title>Ice Cream Picker</title>
+    <title>Thống kê</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
@@ -13,13 +13,13 @@
   <body>
 
     <py-config>
-      packages = ["matplotlib", "pandas", "seaborn"]
+      packages = ["matplotlib", "pandas"]
     </py-config>
 
     <py-script>
+
       import pandas as pd
       import matplotlib.pyplot as plt
-      import seaborn as sns
       from pyodide.http import open_url
 
       url = (
@@ -29,21 +29,24 @@
       data = pd.read_csv(open_url(url))
 
       def plot(data):
-        plt.rcParams["figure.figsize"] = (30,10) # đổi kích thước biểu đồ
+        df_grouped = data.groupby(['donvitinh'])['ten'].sum().reset_index()
+        data['so_luong'] = 1
+
+        df_grouped = data.groupby(['donvitinh'])['so_luong'].sum().reset_index()
+
+        plt.rcParams["figure.figsize"] = (12,5) # đổi kích thước biểu đồ
         fig, ax = plt.subplots()
-        bars = ax.bar(data["ten"], data["donvitinh"]) # đổi thành bar chart
-        ax.bar_label(bars, labels=data["so_luong"].values) # hiển thị giá trị của các cột lên trên chúng
-        plt.title("Rating of ice cream flavours of your choice")
-        plt.xticks(rotation=45) # xoay tên các mẫu kem 45 độ để tránh bị chồng lên nhau
+        bars = ax.bar(df_grouped["donvitinh"], df_grouped["so_luong"]) # đổi thành bar chart
+        ax.bar_label(bars, labels=df_grouped["so_luong"].values) # hiển thị giá trị của các cột lên trên chúng
+
+        plt.title("Số sản phẩm theo đơn vị tính")
+
+        plt.xticks(rotation=45) 
         display(fig, target="graph-area", append=False)
 
       plot(data)
 
     </py-script>
-
-    @*<py-repl>
-      ice_data
-    </py-repl>*@
 
     <div id="graph-area"></div>
   </body>

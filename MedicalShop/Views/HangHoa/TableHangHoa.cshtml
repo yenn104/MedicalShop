@@ -39,6 +39,13 @@
 
 }
 
+<style>
+  .ws_nowrap{
+    white-space: nowrap;
+  }
+ 
+</style>
+
 @if (TempData["ThongBao"] != null)
 {
   <script type="text/javascript" charset="utf-8">
@@ -82,7 +89,7 @@
     </div>
   </div>
 </div>
-<div id="tableHH" class="table-responsive" style="margin-bottom: 5rem">
+<div id="tableHH" class="table-responsive-lg" style="margin-bottom: 5rem">
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
@@ -107,7 +114,7 @@
     <tbody>
       @foreach (var item in listHH())
       {
-        <tr>
+        <tr style="white-space: initial;">
           <td>
             @Html.DisplayFor(modelItem => item.MaHh)
           </td>

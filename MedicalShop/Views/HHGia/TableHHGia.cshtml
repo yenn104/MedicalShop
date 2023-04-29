@@ -19,6 +19,7 @@
 }
 
 <style>
+
   .wh-input input {
     width: 17px;
     height: 17px;
@@ -29,6 +30,7 @@
     font-weight: bold;
     color: #0d6efd;
   }
+
 </style>
 
 
@@ -61,7 +63,7 @@
             <tr style="background: #e9ecef;">
               @*<th style="width:15px">STT</th>*@
               <th class="text-center">Danh sách hàng hóa</th>
-              <th>Tỉ lệ</th>
+              <th>Tỉ lệ (%)</th>
               <th>Giá</th>
             </tr>
           </thead>
@@ -75,10 +77,10 @@
                 <input type="hidden" value="@hh.Id" id="idvt" />
               </td>
               <td>
-                <input type="text" value="@getGia(@hh.Id).TiLe" id="TiLe"/>
+                <input type="text" class="form-control tile" value="@getGia(@hh.Id).TiLe" />
               </td>
               <td>
-                <input type="text" value="@getGia(@hh.Id).Price" id="Gia"/>
+                <input type="text" class="form-control gia" value="@getGia(@hh.Id).Price" />
               </td>             
             </tr>
             }
@@ -88,8 +90,7 @@
       @*<input type="hidden" id="idvt" />*@
       <div class="col-lg-3 border-dark" style="overflow-x: auto">
         <table class="table tablee table-bordered  mb-0  text-center bg-light" id="example2" style="margin-top: 2.85rem; ">
-          <thead >
-            
+          <thead >          
             <tr>
               <th class="text-center" style="vertical-align : middle;text-align:center;">STT</th>
               <th class="text-center">Giá nhập</th>
@@ -109,11 +110,26 @@
 <script>
 
 
+
+
+  var lastClickedTr;
+
+  $("input").click(function (event) {
+    event.stopPropagation();
+    var tr = $(this).closest("tr");
+    if (lastClickedTr) {
+      lastClickedTr.removeClass("color-clicked");
+    }
+    tr.addClass("color-clicked");
+    lastClickedTr = tr;
+  });
+
   $("#giaban tr").click(function () {
-    var selected = $(this).hasClass("color-clicked");
-    $("#giaban tr").removeClass("color-clicked");
-    if (!selected)
-      $(this).addClass("color-clicked");
+    if (lastClickedTr && lastClickedTr != $(this)) {
+      lastClickedTr.removeClass("color-clicked");
+    }
+    $(this).addClass("color-clicked");
+    lastClickedTr = $(this);
   });
 
   //
@@ -136,23 +152,72 @@
 
   $(document).ready(function () {
     
-   
+    
 
-    //$("#btn-save").click(function () {
-    //  updateRoles();
-    //});
+    $(".gia, .tile").each(function () {
+      var gia = $(this).val();
+
+      if (gia != 0) {
+        gia = parseFloat($(this).val());
+        var gia_decimal = gia.toFixed(2);
+        $(this).val(gia_decimal);
+      }
+    });
+
+
   });
+
+  //$("#example").on("change", ".gia, .tile", function () {
+  //  var gia = $(this).val();
+  //  if (gia != 0) {
+  //    /* $(this).text(toDecimal(gia));*/
+  //    $(this).val(toDecimal(gia));
+  //  }
+  //});
+
+
+
+
+
+  $("#example").on("change", ".gia, .tile", function () {
+    var gia = $(this).val();
+    if ($(this).hasClass("gia") && gia != 0) {
+      $(this).val(toDecimal(gia));
+      $(this).siblings(".tile").prop("readonly", true);
+    } else if ($(this).hasClass("tile") && gia != 0) {
+      $(this).val(toDecimal(gia));
+      $(this).siblings(".gia").prop("readonly", true);
+    } else {
+      $(this).siblings(".gia, .tile").prop("readonly", false);
+    }
+  });
+
+
+
+
+  //$("#example").on("load", ".gia", function () {
+  //  var idvt = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
+  //  var tenvt = $(this).parents('tr').find("td:eq(0) input[type='text']").val();
+
+  //});
+
+
+
+
+ 
 
 
   function updateDouble() {
 
-    $("#example2").find("tr:gt(1)").each(function () {
+    $("#example2").find("tr:gt(0)").each(function () {
       var gia = $(this).find("td:eq(1)").text();
      /* $(this).text(toDecimal(gia));*/
       $(this).find("td:eq(1)").text(toDecimal(gia));
     });
 
   }
+
+
 
 
 
@@ -178,7 +243,6 @@
   //    })
   //  }
   //}
-
 
 
 
