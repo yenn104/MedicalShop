@@ -257,46 +257,68 @@ namespace MedicalShop.Controllers
       MedicalShopContext context = new MedicalShopContext();
       ////  TonKho tk = context.TonKho.OrderBy(x => x.NgayNhap).FirstOrDefault(x => x.Id == idHH);
 
-      
+
       ////List<ChiTietPhieuNhap> tkk = context.ChiTietPhieuNhap.Where(x => x.Id == idHH).OrderBy(x => x.CreatedDate).ToList();
-      
+
       //List<TonKho> tkk = context.TonKho.Where(x => x.Id == idHH).OrderBy(x => x.NgayNhap).ToList();
-      List<TonKho> tkk = context.TonKho.Include(x => x.IdctpnNavigation).Where(x => x.IdctpnNavigation.Idhh == idHH).OrderBy(x => x.NgayNhap).ToList();
+     List<TonKho> tkk = context.TonKho.Include(x => x.IdctpnNavigation).Where(x => x.IdctpnNavigation.Idhh == idHH).OrderBy(x => x.NgayNhap).ToList();
+
+      // List<HhGia> price = context.HhGia.ToList();
 
 
-      int idCTPN = 0;
+      //  int idCTPN = 0;
       double donGia = 0;
       double thanhTien = 0;
-      int i = 1;
-      double SLtemp = SL;
-      foreach (TonKho tk in tkk)
-      {
-        idCTPN = (int)tk.Idctpn;
-        ChiTietPhieuNhap ct = context.ChiTietPhieuNhap.FirstOrDefault(y => y.Id == idCTPN);
-        //donGia = donGia + (double)ct.SalePrice;
-      //  SLtemp = (int)(tk.SoLuong - SL);
-       // thanhTien = thanhTien + SL * donGia;
+      double SLtemp = 0;
+      double SLT = 0;
 
-        if (SLtemp <= tk.SoLuong)
+
+      HhGia gia = context.HhGia.FirstOrDefault(y => y.Idhh == idHH);
+
+      if (gia.Price != 0 && gia.Price != null)
+      {
+        donGia = (double)gia.Price;
+        thanhTien = donGia * SL;
+      }
+      if (gia.TiLe != 0 && gia.TiLe != null)
+      {
+        if (SL < tkk[0].SoLuong)
         {
-          //donGia = (double)ct.SalePrice;
-          //SLtemp = (int)(tk.SoLuong - SL);
-          thanhTien = thanhTien + (SLtemp * donGia);
-          break; 
-         
+          donGia = (double)(tkk[0].IdctpnNavigation.Price * (1 + (gia.TiLe / 100)));
+          thanhTien = donGia * SL;
         }
         else
         {
-          //donGia = (double)ct.SalePrice;
-          thanhTien = thanhTien + ((double)tk.SoLuong * donGia);
-          SLtemp = (double)(SL - tk.SoLuong);
-          //break; 
-        }     
+          foreach (TonKho tk in tkk)
+          {
+            if (SLT < SL)
+            {
+              if ((SL - SLT) > tk.SoLuong)
+              {
+                SLT = (double)(SLT + tk.SoLuong);
+                SLtemp = (double)tk.SoLuong;
+              }
+              else
+              {         
+                SLtemp = SL - SLT;
+                SLT = SL;
+              }
+
+              donGia = (double)(tk.IdctpnNavigation.Price * (1 + (gia.TiLe / 100)));
+              thanhTien = (double)(thanhTien + (donGia * SLtemp));
+            }
+            // thành tiền chia đều cho số lượng -> đơn giá
+            donGia = thanhTien / SL;
+          }
+       }
+
       }
+
+
       return Json(
           new
           {
-            donGia = thanhTien/SL,
+            donGia = donGia,
             thanhTien = thanhTien
           });
 

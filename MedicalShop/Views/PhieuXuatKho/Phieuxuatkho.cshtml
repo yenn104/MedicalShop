@@ -416,10 +416,10 @@
     var tienck = 0;
     var tienthue = 0;
     $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
-      var SL = $(this).find("td:eq(3)").text();
-      var DonGia = $(this).find("td:eq(4)").text();
-      var ChietKhau = $(this).find("td:eq(6)").text();
-      var ThueXuat = $(this).find("td:eq(7)").text();
+      var SL = $(this).find("td:eq(2)").text();
+      var DonGia = $(this).find("td:eq(3)").text();
+      var ChietKhau = $(this).find("td:eq(5)").text();
+      var ThueXuat = $(this).find("td:eq(6)").text();
       tienhang = tienhang + (SL * DonGia);
       tienck = tienck + ((SL * DonGia * ChietKhau) / 100);
       tienthue = tienthue + ((((SL * DonGia) - ((SL * DonGia * ChietKhau) / 100)) * ThueXuat) / 100);
