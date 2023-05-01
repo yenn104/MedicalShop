@@ -1,4 +1,5 @@
-﻿using MedicalShop.Models.Entities;
+﻿using MedicalShop.Models;
+using MedicalShop.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -255,18 +256,13 @@ namespace MedicalShop.Controllers
     public JsonResult Checkgia(int idHH, double SL)
     {
       MedicalShopContext context = new MedicalShopContext();
-      ////  TonKho tk = context.TonKho.OrderBy(x => x.NgayNhap).FirstOrDefault(x => x.Id == idHH);
-
 
       ////List<ChiTietPhieuNhap> tkk = context.ChiTietPhieuNhap.Where(x => x.Id == idHH).OrderBy(x => x.CreatedDate).ToList();
 
       //List<TonKho> tkk = context.TonKho.Where(x => x.Id == idHH).OrderBy(x => x.NgayNhap).ToList();
-     List<TonKho> tkk = context.TonKho.Include(x => x.IdctpnNavigation).Where(x => x.IdctpnNavigation.Idhh == idHH).OrderBy(x => x.NgayNhap).ToList();
-
-      // List<HhGia> price = context.HhGia.ToList();
+      List<TonKho> tkk = context.TonKho.Include(x => x.IdctpnNavigation).Where(x => x.IdctpnNavigation.Idhh == idHH).OrderBy(x => x.NgayNhap).ToList();
 
 
-      //  int idCTPN = 0;
       double donGia = 0;
       double thanhTien = 0;
       double SLtemp = 0;
@@ -299,7 +295,7 @@ namespace MedicalShop.Controllers
                 SLtemp = (double)tk.SoLuong;
               }
               else
-              {         
+              {
                 SLtemp = SL - SLT;
                 SLT = SL;
               }
@@ -310,7 +306,7 @@ namespace MedicalShop.Controllers
             // thành tiền chia đều cho số lượng -> đơn giá
             donGia = thanhTien / SL;
           }
-       }
+        }
 
       }
 
@@ -323,6 +319,135 @@ namespace MedicalShop.Controllers
           });
 
     }
+
+
+
+
+    [HttpPost("/listCTPXT")]
+    public JsonResult ListCTPXT([FromBody] /*IEnumerable<ChiTietPhieuNhapTam> list,  string NgayHd*/ PhieuXuatModel px)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+      int idCN = int.Parse(User.Claims.ElementAt(4).Value);
+      var tran = context.Database.BeginTransaction();
+      try
+      {
+        PhieuXuat phieuXuat = new PhieuXuat();
+        phieuXuat.Note = px.Note;
+        phieuXuat.SoHd = px.SoHd;
+        phieuXuat.Idkh = px.KH;
+        phieuXuat.NgayHd = DateTime.ParseExact(px.NgayHd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        phieuXuat.CreatedDate = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        phieuXuat.Active = true;
+        phieuXuat.Idcn = idCN;
+        phieuXuat.Idnv = idUser;
+        phieuXuat.CreatedBy = idUser;
+        phieuXuat.ModifiedBy = idUser;
+        phieuXuat.SoPx = getSoPhieu();
+        context.PhieuXuat.Add(phieuXuat);
+        context.SaveChanges();
+
+        foreach (ChiTietPhieuXuatTam t in px.listOfCTPXT)
+        {
+
+          //ChiTietPhieuXuat ct = new ChiTietPhieuXuat();
+          //ct.Idhh = t.Idhh;
+          //ct.Idpx = phieuXuat.Id;
+          //ct.Thue = t.Thue;
+          //ct.Quantity = t.Slg;
+          //ct.Price = t.DonGia;
+          //ct.Cktm = t.Cktm;
+          //ct.Active = true;
+          //ct.CreatedBy = idUser;
+          //ct.CreatedDate = DateTime.Now;
+          //ct.ModifiedBy = idUser;
+          //ct.ModifiedDate = DateTime.Now;
+          //trên ok
+
+
+         // ct.Idctpn  ct.Iddvt px.SoHd
+          // ct.CreatedDate = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+          
+
+          List<TonKho> tkk = context.TonKho.Include(x => x.IdctpnNavigation).Where(x => x.IdctpnNavigation.Idhh == t.Idhh).OrderBy(x => x.NgayNhap).ToList();
+          double SLT = (double)t.Slg;
+          foreach (TonKho tk in tkk)
+          {
+            if (SLT < tk.SoLuong)
+            {
+              //context.TonKho.Remove(tk);
+              tk.SoLuong = tk.SoLuong - SLT;
+              context.TonKho.Update(tk);
+              // var iddvt = context.HangHoa.FirstOrDefault(x => x.Id == t.Idhh).Iddvtc;
+              ChiTietPhieuXuat ct = new ChiTietPhieuXuat();
+              ct.Idhh = t.Idhh;
+              ct.Idpx = phieuXuat.Id;
+              ct.Thue = t.Thue;
+              ct.Quantity = SLT;
+              ct.Price = t.DonGia;
+              ct.Iddvt = context.HangHoa.FirstOrDefault(x => x.Id == t.Idhh).Iddvtc;
+              ct.Cktm = t.Cktm;
+              ct.Active = true;
+              ct.CreatedBy = idUser;
+              ct.CreatedDate = DateTime.Now;
+              ct.ModifiedBy = idUser;
+              ct.ModifiedDate = DateTime.Now;
+              ct.Idctpn = tk.Idctpn;
+              context.ChiTietPhieuXuat.Add(ct);
+              context.SaveChanges();
+              break;
+            }
+            else
+            {
+              SLT = (double)(SLT - tk.SoLuong);
+              context.TonKho.Remove(tk);
+
+              ChiTietPhieuXuat ct = new ChiTietPhieuXuat();
+              ct.Idhh = t.Idhh;
+              ct.Idpx = phieuXuat.Id;
+              ct.Thue = t.Thue;
+              ct.Quantity = tk.SoLuong;
+              ct.Price = t.DonGia;
+              ct.Iddvt = context.HangHoa.FirstOrDefault(x => x.Id == t.Idhh).Iddvtc;
+              ct.Cktm = t.Cktm;
+              ct.Active = true;
+              ct.CreatedBy = idUser;
+              ct.CreatedDate = DateTime.Now;
+              ct.ModifiedBy = idUser;
+              ct.ModifiedDate = DateTime.Now;
+              ct.Idctpn = tk.Idctpn;
+              context.ChiTietPhieuXuat.Add(ct);
+              context.SaveChanges();
+            }
+          }
+
+
+
+
+          //TonKho sl = new TonKho();
+          //sl.Idctpn = ct.Id;
+          //sl.SoLuong = Math.Round((double)ct.Quantity, 2);
+          //sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
+          //sl.NgayNhap = phieuXuat.CreatedDate;
+          //context.TonKho.Add(sl);
+          // context.SaveChanges();
+        }
+        var stt = context.SoThuTu.FromSqlRaw("SELECT * FROM SoThuTu WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,Date) and Type = 'XuatKho'").FirstOrDefault();
+        stt.Stt += 1;
+        context.SoThuTu.Update(stt);
+        context.SaveChanges();
+        tran.Commit();
+      }
+      catch (Exception e)
+      {
+        tran.Rollback();
+        return Json(data: e);
+      }
+      return Json(data: "Cập nhật thành công!");
+    }
+
+
+
 
 
 
@@ -358,14 +483,13 @@ namespace MedicalShop.Controllers
     string getSoPhieu()
     {
       MedicalShopContext context = new MedicalShopContext();
-      QuyDinhMa qd = context.QuyDinhMa.Find(2);
-      //ID chi nhánh
-      string cn = "01";
+      QuyDinhMa qd = context.QuyDinhMa.Find(1);
+      string cn = User.Claims.ElementAt(4).Value;
 
       DateTime d = DateTime.Now;
       string ngayThangNam = d.ToString("yyMMdd");
       string SoPhieu = cn + "_" + qd.TiepDauNgu + ngayThangNam;
-      var list = context.SoThuTu.FromSqlRaw("select*from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,ngay) and Loai = 'XuatKho'").FirstOrDefault();
+      var list = context.SoThuTu.FromSqlRaw("SELECT * FROM SoThuTu WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,Date) and Type = 'XuatKho'").FirstOrDefault();
       int stt;
       if (list == null)
       {

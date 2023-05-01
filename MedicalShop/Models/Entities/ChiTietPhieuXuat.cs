@@ -14,7 +14,7 @@ namespace MedicalShop.Models.Entities
         public int? Idctpn { get; set; }
         public int? Idhh { get; set; }
         public int? Iddvt { get; set; }
-        public int? Quantity { get; set; }
+        public double? Quantity { get; set; }
         public double? Price { get; set; }
         public double? Cktm { get; set; }
         public double? Thue { get; set; }

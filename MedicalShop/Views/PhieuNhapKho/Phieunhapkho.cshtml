@@ -391,17 +391,21 @@
       var ngaySX = $(this).parents('tr').find("td:eq(8)").html();
       var ThueXuat = $(this).parents('tr').find("td:eq(7)").html();
 
-      $('#selectHH').val(idHH);
+      //$('#selectHH').val(idHH);
+      ($('#selectHH')[0].selectize).setValue(idHH);
+
       //$("#selectHH option:selected").text(tenHH);
       $('#DVT').val(dvt);
       $('#SoLo').val(SoLo);
 
-      $("#ThueXuat").val(ThueXuat).change();
+     // $("#ThueXuat").val(ThueXuat).change();
 
+      ($('#ThueXuat')[0].selectize).setValue(ThueXuat);
       $('#SLHH').val(toDecimal(SL));
       $('#DonGia').val(toDecimal(DonGia));
       $('#ThanhTien').val(toDecimal(ThanhTien));
       $('#ChietKhau').val(ChietKhau);
+      $('#ThueXuat').val(ThueXuat);
       $('#HanDung').val(HanDung);
       $('#NgaySX').val(ngaySX);
 
@@ -424,7 +428,8 @@
   function changeOff(){
     var off = '<button class="btn btn-primary" id="ThemChiTiet" onclick="onemoretime()" type="button">Thêm</button>';
     $('#areabtn').html(off);
-    $('#selectHH').val("");
+    //$('#selectHH').val("");
+    ($('#ThueXuat')[0].selectize).setValue(0);
     $('#DVT').val("");
     $('#SoLo').val("");
     $('#ThueXuat').val("");
