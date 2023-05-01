@@ -280,7 +280,7 @@ namespace MedicalShop.Controllers
       {
         if (SL < tkk[0].SoLuong)
         {
-          donGia = (double)(tkk[0].IdctpnNavigation.Price * (1 + (gia.TiLe / 100)));
+          donGia = (double)(tkk[0].IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
           thanhTien = donGia * SL;
         }
         else
@@ -300,7 +300,7 @@ namespace MedicalShop.Controllers
                 SLT = SL;
               }
 
-              donGia = (double)(tk.IdctpnNavigation.Price * (1 + (gia.TiLe / 100)));
+              donGia = (double)(tk.IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
               thanhTien = (double)(thanhTien + (donGia * SLtemp));
             }
             // thành tiền chia đều cho số lượng -> đơn giá
