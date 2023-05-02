@@ -3,6 +3,17 @@
 @{
   MedicalShopContext context = new MedicalShopContext();
 
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
 
   NhanVien getNV(int? id)
   {
@@ -37,27 +48,27 @@
 <script src="~/admin/js/datatable-custom.js"></script>
 
 
-<div id="tableDVT" style="width: 100%;">
+<div id="tableDVT" class="table-responsive">
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaDvt)
+          Mã
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenDvt)
+          Tên
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.CreatedDate)
+          Ngày tạo
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.CreatedBy)
+          NV tạo
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.ModifiedDate)
+          Ngày sửa
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.ModifiedBy)
+          NV sửa
         </th>
         <th class="text-center">Tùy chọn</th>
       </tr>
@@ -67,7 +78,7 @@
       {
         @if (item.Active == false)
         {
-          <tr style="background-color: #0000000a;">
+          <tr  style="background-color: #0000000a;">
             <td>
               @Html.DisplayFor(modelItem => item.MaDvt)
             </td>
@@ -75,13 +86,13 @@
               @Html.DisplayFor(modelItem => item.TenDvt)
             </td>
             <td class="text-center">
-              @Html.DisplayFor(modelItem => item.CreatedDate)
+              @formatDay(item.CreatedDate)
             </td>
             <td class="text-center">
               @getNV(item.CreatedBy).TenNv
             </td>
             <td class="text-center">
-              @Html.DisplayFor(modelItem => item.ModifiedDate)
+              @formatDay(item.ModifiedDate)
             </td>
             <td class="text-center">
               @getNV(item.ModifiedBy).TenNv
@@ -108,13 +119,13 @@
               @Html.DisplayFor(modelItem => item.TenDvt)
             </td>
             <td class="text-center">
-              @Html.DisplayFor(modelItem => item.CreatedDate)
+              @formatDay(item.CreatedDate)
             </td>
             <td class="text-center">
               @getNV(item.CreatedBy).TenNv
             </td>
             <td class="text-center">
-              @Html.DisplayFor(modelItem => item.ModifiedDate)
+              @formatDay(item.ModifiedDate)
             </td>
             <td class="text-center">
               @getNV(item.ModifiedBy).TenNv

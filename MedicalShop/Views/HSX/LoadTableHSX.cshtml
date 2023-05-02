@@ -28,25 +28,26 @@
   }
 }
 
+<script src="~/admin/js/datatable-custom.js"></script>
 
-<div id="tableHSX" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<div id="tableHSX" class="table-responsive">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaHsx)
+          Mã HSX
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenHsx)
+          Tên HSX
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Address)
+          Địa chỉ
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Phone)
+          SĐT
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Mail)
+          Mail
         </th>
         <th>Tùy chọn</th>
       </tr>

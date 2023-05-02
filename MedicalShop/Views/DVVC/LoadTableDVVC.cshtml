@@ -30,18 +30,18 @@
 <script src="~/admin/js/datatable-custom.js"></script>
 
 
-<div id="tableDVVC" style="width: 100%;">
+<div id="tableDVVC" class="table-responsive">
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th class="col-sm-2">
-          @Html.DisplayNameFor(model => model.MaDvvc)
+          Mã DVVC
         </th>
         <th class="col-sm-3">
-          @Html.DisplayNameFor(model => model.TenDvvc)
+          Tên DVVC
         </th>
         <th class="col-sm-5">
-          @Html.DisplayNameFor(model => model.Note)
+          Ghi chú
         </th>
         <th class="col-sm-2 text-center">Tùy chọn</th>
       </tr>
@@ -51,7 +51,7 @@
       {
         @if (item.Active == false)
         {
-          <tr style="background-color: #0000000a;">
+          <tr  style="background-color: #0000000a;">
             <td>
               @Html.DisplayFor(modelItem => item.MaDvvc)
             </td>

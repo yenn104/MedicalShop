@@ -14,7 +14,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục khách hàng";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "KH" && x.Active == true).FirstOrDefault().Id;
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "KhachHang" && x.Active == true).FirstOrDefault().Id;
 
 
       //TempData["Menu"] = context.Menu.Where( menu => EF.Functions.Like( menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Select(menu => menu.Id);
@@ -24,7 +24,7 @@ namespace MedicalShop.Controllers
 
     public IActionResult Details(int id)
     {
-      ViewData["Title"] = "Chi tiết nhà cung cấp";
+      ViewData["Title"] = "Chi tiết khách hàng";
       KhachHang kh = context.KhachHang.FirstOrDefault(x => x.Id == id);
       return View(kh);
     }
@@ -34,7 +34,7 @@ namespace MedicalShop.Controllers
     //hiển thị view insert
     public IActionResult ViewCreate()
     {
-      ViewData["Title"] = "Thêm nhà cung cấp";
+      ViewData["Title"] = "Thêm khách hàng";
       return View();
     }
 
@@ -61,7 +61,7 @@ namespace MedicalShop.Controllers
 
     {
       KhachHang kh = context.KhachHang.Find(id);
-      ViewData["Title"] = "Sửa nhà cung cấp";
+      ViewData["Title"] = "Sửa khách hàng";
       return View(kh);
     }
 
@@ -141,7 +141,7 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadDetailKH")]
     public IActionResult LoadDetailKH(int id)
     {
-      ViewData["Title"] = "Chi tiết nhà cung cấp";
+      ViewData["Title"] = "Chi tiết khách hàng";
       KhachHang kh = context.KhachHang.FirstOrDefault(x => x.Id == id);
       return View(kh);
     }

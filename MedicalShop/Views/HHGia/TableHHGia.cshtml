@@ -53,7 +53,7 @@
               <th colspan="3" class="p-0">
                 <div class="group-btn">
                   <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary" style="border-radius:3px" type="button" id="btn-save">
+                    <button class="btn btn-primary" style="border-radius:unset ; width: 5rem ;"  type="button" id="btn-save"> @*border-radius: 3px;*@
                       <span>Lưu</span>
                     </button>
                   </div>
@@ -77,10 +77,10 @@
                 <input type="hidden" value="@hh.Id" id="idvt" />
               </td>
               <td>
-                <input type="text" class="form-control tile" value="@getGia(@hh.Id).TiLe"  >
+                <input type="text" class="form-control tile text-right" value="@getGia(@hh.Id).TiLe"  >
               </td>
               <td>
-                <input type="text" class="form-control gia" value="@getGia(@hh.Id).Price" />
+                <input type="text" class="form-control gia text-right" value="@getGia(@hh.Id).Price" />
               </td>             
             </tr>
             }
@@ -91,7 +91,7 @@
       <div class="col-lg-3 border-dark" style="overflow-x: auto">
         <table class="table tablee table-bordered  mb-0  text-center bg-light" id="example2" style="margin-top: 2.85rem; ">
           <thead >          
-            <tr>
+            <tr style="background: #e9ecef;">
               <th class="text-center" style="vertical-align : middle;text-align:center;">STT</th>
               <th class="text-center">Giá nhập</th>
             </tr>

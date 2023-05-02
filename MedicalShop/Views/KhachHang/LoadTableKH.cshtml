@@ -28,28 +28,30 @@
   }
 }
 
-<div id="tableKH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<script src="~/admin/js/datatable-custom.js"></script>
+
+
+<div id="tableKH" class="table-responsive">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaKh)
+          Mã KH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenKh)
+          Tên KH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Address)
+          Địa chỉ
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Phone)
-        </th>
-
-        <th>
-          @Html.DisplayNameFor(model => model.Mail)
+          SĐT
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.UserName)
+          Mail
+        </th>
+        <th>
+          Tài khoản
         </th>
         <th>Tùy chọn</th>
       </tr>

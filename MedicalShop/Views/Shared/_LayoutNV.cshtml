@@ -331,7 +331,7 @@
                   <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>*@
 
 
-                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.TenMenu))
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.Stt))
                 {
                   <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
                 }

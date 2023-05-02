@@ -2,6 +2,7 @@
 using MedicalShop.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SelectPdf;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -478,6 +479,46 @@ namespace MedicalShop.Controllers
                                               .ToList();
       return PartialView("TableLichSuXuat");
     }
+
+
+
+
+    [Route("/download/phieuxuat/{id:int}")]
+    public IActionResult downloadPhieuXuat(int id)
+    {
+      var fullView = new HtmlToPdf();
+      fullView.Options.WebPageWidth = 1280;
+      fullView.Options.PdfPageSize = PdfPageSize.A4;
+      fullView.Options.MarginTop = 20;
+      fullView.Options.MarginBottom = 20;
+      fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+
+      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+
+      var pdf = fullView.ConvertUrl(currentUrl + "/PhieuXuatPDF/" + id);
+
+      var pdfBytes = pdf.Save();
+      return File(pdfBytes, "application/pdf", "PhieuXuat.pdf");
+    }
+
+
+    [Route("/PhieuXuatPDF/{id:int}")]
+    public IActionResult viewPDF(int id)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      var phieu = context.PhieuXuat
+          .Include(x => x.IdkhNavigation)
+          .Include(x => x.ChiTietPhieuXuat)
+          .Where(x => x.Id == id).FirstOrDefault();
+      return View("PhieuXuatPDF", phieu);
+    }
+
+
+
+
+
+
+
 
 
     string getSoPhieu()

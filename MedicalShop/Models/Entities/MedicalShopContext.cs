@@ -53,6 +53,7 @@ namespace MedicalShop.Models.Entities
         public virtual DbSet<TaiKhoan> TaiKhoan { get; set; }
         public virtual DbSet<TonKho> TonKho { get; set; }
         public virtual DbSet<TrangThai> TrangThai { get; set; }
+        public virtual DbSet<TtdoanhNghiep> TtdoanhNghiep { get; set; }
         public virtual DbSet<VaiTro> VaiTro { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -638,6 +639,8 @@ namespace MedicalShop.Models.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.Stt).HasColumnName("STT");
+
                 entity.Property(e => e.TenMenu).HasMaxLength(500);
             });
 
@@ -1222,6 +1225,31 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idpx)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_TrangThai_PhieuXuat");
+            });
+
+            modelBuilder.Entity<TtdoanhNghiep>(entity =>
+            {
+                entity.ToTable("TTDoanhNghiep");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Address).HasMaxLength(200);
+
+                entity.Property(e => e.Bank).HasMaxLength(200);
+
+                entity.Property(e => e.Holder).HasMaxLength(100);
+
+                entity.Property(e => e.Mail).HasMaxLength(50);
+
+                entity.Property(e => e.Name).HasMaxLength(200);
+
+                entity.Property(e => e.Phone).HasMaxLength(20);
+
+                entity.Property(e => e.Stk)
+                    .HasColumnName("STK")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.TaxCode).HasMaxLength(50);
             });
 
             modelBuilder.Entity<VaiTro>(entity =>

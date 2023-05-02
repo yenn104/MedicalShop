@@ -308,3 +308,8 @@ table thead tr th {
 .ws_nowrap {
   white-space: nowrap;
 }
+
+.btn.disabled {
+  border-color: transparent !important;
+  color: #808080c7;
+}

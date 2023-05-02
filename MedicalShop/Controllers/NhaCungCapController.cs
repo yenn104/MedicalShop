@@ -15,7 +15,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục nhà cung cấp";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NCC" && x.Active == true).FirstOrDefault().Id;
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NhaCungCap" && x.Active == true).FirstOrDefault().Id;
 
 
       //TempData["Menu"] = context.Menu.Where( menu => EF.Functions.Like( menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Select(menu => menu.Id);
