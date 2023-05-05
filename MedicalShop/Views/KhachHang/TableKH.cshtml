@@ -18,7 +18,7 @@
 
   // TempData.Keep("Menu");
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -32,7 +32,6 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
@@ -77,7 +76,7 @@
   </div>
 </div>
 
-<div id="tableKH" class="table-responsive">
+<div id="tableKH" class="table-responsive" style="margin-bottom: 5rem">
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
@@ -105,45 +104,45 @@
     <tbody>
       @foreach (KhachHang item in listKH())
       {
-      <tr>
-        <td>
-          @Html.DisplayFor(modelItem => item.MaKh)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.TenKh)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Mail)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-          @if (sua == true)
-          {
-            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
-          }
-          else
-          {
-            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-          }
-          @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-          @if (xoa == true)
-          {
-            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-          }
-          else
-          {
-            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-          }
-        </td>
-      </tr>
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.MaKh)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.TenKh)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Address)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Mail)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+          </td>
+          <td>
+            @if (sua == true)
+            {
+              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+            }
+            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+            @if (xoa == true)
+            {
+              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+            }
+            else
+            {
+              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+            }
+          </td>
+        </tr>
       }
     </tbody>
   </table>

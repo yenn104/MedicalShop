@@ -1,1 +1,22 @@
-﻿
+﻿@model List<TonKhoModel>
+@{ 
+  Layout = null;
+}
+
+@*<script src="~/admin/js/datatable-custom.js"></script>*@
+
+
+<tbody id="BCTK">
+
+  @foreach (var result in Model)
+  {
+
+    <tr>
+  
+      <td class="text-center">@result.MaHH</td>
+      <td class="text-start">@result.TenHH</td>
+      <td class="text-end">@result.SL</td>
+      <td class="text-end">@result.Gia</td>
+    </tr>
+  }
+</tbody>

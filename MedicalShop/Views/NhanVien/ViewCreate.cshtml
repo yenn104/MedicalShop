@@ -76,7 +76,8 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">Ngày sinh</label>
-            <input asp-for="@Model.DateOfBirth" type="date" class="form-control" required>
+            <input asp-for="@Model.DateOfBirth" type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="DateOfBirth">
+           @* <input asp-for="@Model.DateOfBirth" type="date" class="form-control" required>*@
           </div>
         </div>
 
@@ -118,6 +119,9 @@
     $('.quantity-input').bind("cut copy paste drag drop", function (e) {
       e.preventDefault();
     });
+
+   
+
   });
   function isNumberKey(e) {
     var charCode = (e.which) ? e.which : e.keyCode;

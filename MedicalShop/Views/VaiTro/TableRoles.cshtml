@@ -96,7 +96,7 @@
             </tr>
             <tr>
               <th class="text-center" rowspan="2" style="vertical-align : middle;text-align:center;">Danh sách menu</th>
-              <th class="text-center" colspan="6">Chức năng</th>
+              <th class="text-center" colspan="5">Chức năng</th>
               @*<th class="text-center">Tùy chọn</th>*@
             </tr>
             <tr>
@@ -105,7 +105,6 @@
               <th class="text-center">Xóa</th>
               <th class="text-center">In</th>
               <th class="text-center">Xuất</th>
-              <th class="text-center">Cá nhân</th>
             </tr>
           </thead>
           <tbody id="chucnang">
@@ -162,7 +161,6 @@
       var xoa = $(this).find("td:eq(3) input[type='checkbox'] ").is(":checked");
       var print = $(this).find("td:eq(4) input[type='checkbox'] ").is(":checked");
       var xuat = $(this).find("td:eq(5) input[type='checkbox'] ").is(":checked");
-      var canhan = $(this).find("td:eq(6) input[type='checkbox'] ").is(":checked");
 
       var FunctionModel = {};
       FunctionModel.Idmenu = Number(idmenu);
@@ -172,7 +170,6 @@
       FunctionModel.Delete = xoa;
       FunctionModel.Print = print;
       FunctionModel.Export = xuat;
-      FunctionModel.Person = canhan;
 
       listOfFunctionModel.push(FunctionModel);
     });

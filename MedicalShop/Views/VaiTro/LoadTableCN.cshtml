@@ -41,10 +41,6 @@
             <td>
               @Html.CheckBox("Export", item.Export == true ? true : false)
             </td>
-            <td>
-
-              @Html.CheckBox("Person", item.Person == true ? true : false)
-            </td>
             @*<td>
                   <button value="@item.Id" class="edit btn btn-primary" style="margin-right: 5px" id="edit">Sửa</button>
                   <button value="@item.Id" class="remove btn btn-danger">Xóa</button>
@@ -76,9 +72,6 @@
           <td>
             @Html.CheckBox("Export")
           </td>
-          <td>
-            @Html.CheckBox("Person")
-          </td>
         </tr>
       }
     }
@@ -107,9 +100,6 @@
         </td>
         <td>
           @Html.CheckBox("Export")
-        </td>
-        <td>
-          @Html.CheckBox("Person")
         </td>
       </tr>
     }

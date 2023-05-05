@@ -18,12 +18,26 @@
     else return new ChiNhanh();
   }
 
+
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+
   var acc = User.FindFirst("VaiTro");
   // int idmenu = (int)TempData["Menu"];
   int idmenu = (int)TempData.Peek("Menu");
   // TempData.Keep("Menu");
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -37,7 +51,6 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
@@ -45,31 +58,33 @@
 
 }
 
+<script src="~/admin/js/datatable-custom.js"></script>
 
-<div id="tableNSX" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+
+<div id="tableNSX" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaNsx)
+          Mã NSX
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenNsx)
+          Tên NSX
+        </th>
+        <th class="text-center">
+          Ngày tạo
+        </th>
+        <th class="text-center">
+          NV tạo
+        </th>
+        <th class="text-center">
+          Ngày sửa
+        </th>
+        <th class="text-center">
+          NV sửa
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.ModifiedDate)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.ModifiedBy)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.Idcn)
+          Chi nhánh
         </th>
         <th>Tùy chọn</th>
       </tr>
@@ -79,83 +94,83 @@
       {
         @if (item.Active == false)
         {
-          <tr style="background-color: #0000000a;">
-            <td>
-              @Html.DisplayFor(modelItem => item.MaNsx)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.TenNsx)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-              @getNV(item.CreatedBy).TenNv
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-              @getNV(item.ModifiedBy).TenNv
-            </td>
-            <td>
-              @getCN(item.Idcn).TenCn
-            </td>
-            <td>
-              @if (sua == true)
-              {
-                @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
-              }
-              else
-              {
-                <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
-              }
-            </td>
-          </tr>
+      <tr style="background-color: #0000000a;">
+        <td>
+          @Html.DisplayFor(modelItem => item.MaNsx)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.TenNsx)
+        </td>
+        <td>
+          @formatDay(item.CreatedDate)
+        </td>
+        <td>
+          @getNV(item.CreatedBy).TenNv
+        </td>
+        <td>
+          @formatDay(item.ModifiedDate)
+        </td>
+        <td>
+          @getNV(item.ModifiedBy).TenNv
+        </td>
+        <td>
+          @getCN(item.Idcn).TenCn
+        </td>
+        <td>
+          @if (sua == true)
+          {
+            @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
+          }
+        </td>
+      </tr>
         }
         else
         {
-          <tr>
-            <td>
-              @Html.DisplayFor(modelItem => item.MaNsx)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.TenNsx)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-              @getNV(item.CreatedBy).TenNv
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-              @getNV(item.ModifiedBy).TenNv
-            </td>
-            <td>
-              @getCN(item.Idcn).TenCn
-            </td>
-            <td>
-              @if (sua == true)
-              {
-                @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
-              }
-              else
-              {
-                <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-              }
-              @if (xoa == true)
-              {
-                @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-              }
-              else
-              {
-                <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-              }
-            </td>
-          </tr>
+    <tr>
+      <td>
+        @Html.DisplayFor(modelItem => item.MaNsx)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.TenNsx)
+      </td>
+      <td>
+        @formatDay(item.CreatedDate)
+      </td>
+      <td>
+        @getNV(item.CreatedBy).TenNv
+      </td>
+      <td>
+        @formatDay(item.ModifiedDate)
+      </td>
+      <td>
+        @getNV(item.ModifiedBy).TenNv
+      </td>
+      <td>
+        @getCN(item.Idcn).TenCn
+      </td>
+      <td>
+        @if (sua == true)
+        {
+          @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+        }
+        else
+        {
+          <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+        }
+        @if (xoa == true)
+        {
+          @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+        }
+        else
+        {
+          <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+        }
+      </td>
+    </tr>
         }
       }
     </tbody>

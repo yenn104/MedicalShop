@@ -19,7 +19,7 @@
 
   // TempData.Keep("Menu");
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -33,7 +33,6 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
@@ -74,7 +73,7 @@
   </div>
 </div>
 
-<div id="tableHSX" class="table-responsive">
+<div id="tableHSX" class="table-responsive" style="margin-bottom: 5rem">
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>

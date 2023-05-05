@@ -14,7 +14,7 @@
 
   List<ChucNang> getListMenu = context.ChucNang
   .Include(x => x.IdmenuNavigation)
-  .Where(x => x.Idvt == int.Parse(vaitro) && (x.Person == true || x.Import == true || x.Export == true || x.Delete == true || x.Update == true || x.Print == true))
+  .Where(x => x.Idvt == int.Parse(vaitro) && (x.Import == true || x.Export == true || x.Delete == true || x.Update == true || x.Print == true))
   .ToList();
 
 
@@ -372,7 +372,8 @@
                  data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
                 @*<h6 class="collapse-header">Thống kê kho</h6>*@
-                <a class="collapse-item" href="/Report/ReportTon">Thống kê tồn kho</a>
+                <a class="collapse-item" href="/BaoCaoTonKho">Thống kê tồn kho</a>
+                <a class="collapse-item" href="/TonKho/LoadTonKho">Thống kê tồn kho</a>
                 <a class="collapse-item" href="/Report/ReportHHN">Thống kê hàng hóa đã nhập</a>
                 <a class="collapse-item" href="/Report/ReportHHX">Thống kê hàng hóa đã xuất</a>
                 <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
@@ -473,7 +474,7 @@
           <footer class="sticky-footer">
             <div class="container my-auto">
               <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2022</span>
+                <span>Copyright &copy; Y'Medical 2022</span>
               </div>
             </div>
           </footer>
@@ -581,7 +582,7 @@
   @*<script src="~/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/admin/vendor/datatables/jquery.dataTables.min.js"></script>*@
 
-  <script>
+<script>
 
 
     $(document).ready(function () {
@@ -592,6 +593,17 @@
           field: 'text',
           direction: 'asc'
         }
+      });
+
+      $('.form-select3').selectize({
+        placeholder: "Nhóm hàng hóa"
+      });
+
+      $('.form-select4').selectize({
+        placeholder: "Hàng hóa",
+        //onChange: function () {
+        //  $('.form-select4 .selectize-input').addClass('selected');
+        //}
       });
 
       $('.form-select2').selectize({
@@ -662,6 +674,31 @@
       });
 
 
+      var maxDate = moment().subtract(18, 'years').startOf('day');
+      var minDate = moment().subtract(60, 'years').add(1, 'day').startOf('day');
+
+      //var dateOfBirth = moment("#DateOfBirth").format("DD-MM-yyyy");
+      //$('#DateOfBirth').val(dateOfBirth);
+
+      // Thiết lập minDate cho datetimepicker
+      $('#DateOfBirth').datetimepicker({
+        maxDate: maxDate.toDate(),
+        minDate: minDate.toDate(),
+        locale: 'vi',
+        useStrict: true,
+        format: "DD-MM-yyyy",
+        icons: {
+          date: "bi bi-calendar2-date",
+          up: "bi bi-chevron-up",
+          down: "bi bi-chevron-down",
+          previous: 'bi bi-chevron-left',
+          next: 'bi bi-chevron-right',
+          time: "bi bi-clock"
+        }
+      });
+
+
+
       $('#HanDung,#NgayHD,#NgaySX,#toDay,#fromDay').datetimepicker({
         locale: 'vi',
         useStrict: true,
@@ -683,7 +720,7 @@
     })
 
 
-  </script>
+</script>
 
   
 

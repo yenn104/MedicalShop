@@ -9,6 +9,15 @@
     return context.NhomNhanVien.Where(x => x.Active == true).ToList();
   }
 
+  string dayToString(DateTime? a)
+  {
+    if (a == null)
+    {
+      return "";
+    }
+    return a.Value.ToString("dd-MM-yyyy");
+  }
+
 }
 
 <div class="card" style=" margin-bottom: 70px;">
@@ -74,7 +83,14 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">Ngày sinh</label>
-            <input asp-for="@Model.DateOfBirth" value="2001-04-10" type="date" class="form-control" required> @*2001-04-10*@
+
+
+
+
+            @*//chưa được buồn ngủ quá*@
+            <input asp-for="@Model.DateOfBirth" type="text" value="@dayToString(Model.DateOfBirth)" class="form-control">
+
+            @*<input asp-for="@Model.DateOfBirth" type="text" class="form-control" id="DateOfBirth" data-date-format="DD-MM-yyyy" value="@Model.DateOfBirth.ToString("dd-MM-yyyy")" />*@
           </div>
         </div>
 
@@ -118,6 +134,7 @@
     $('.quantity-input').bind("cut copy paste drag drop", function (e) {
       e.preventDefault();
     });
+
   });
   function isNumberKey(e) {
     var charCode = (e.which) ? e.which : e.keyCode;

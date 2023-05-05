@@ -19,7 +19,6 @@ namespace MedicalShop.Models.Entities
         public bool? Delete { get; set; }
         public bool? Print { get; set; }
         public bool? Export { get; set; }
-        public bool? Person { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

@@ -33,7 +33,7 @@
   int idmenu = (int)TempData.Peek("Menu");
 
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -47,19 +47,18 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
 
 }
 
-<style>
+@*<style>
   .dataTables_filter {
     display: none;
   }
 
-</style>
+</style>*@
 
 
 @*@section Scripts{
@@ -101,15 +100,15 @@
 
 @*<div class="table-responsive" style="white-space:nowrap;overflow-y: auto;">
   <table id="example" class="table table-striped table-hover text-center display nowrap" style="width:100%">*@
-<div id="tableDVT" class="table-responsive">
+<div id="tableDVT" class="table-responsive" style="margin-bottom: 5rem">
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          Mã
+          Mã DVT
         </th>
         <th>
-          Tên
+          Tên DVT
         </th>
         <th class="text-center">
           Ngày tạo

@@ -1,6 +1,20 @@
 ﻿
   $(document).ready(function () {
-  
+
+    $('#table2').DataTable({
+      searching: false,
+      lengthChange: false,
+      pageLength: 5,
+      info: false,
+      language: {
+        paginate: {
+          previous: "Trước",
+          next: "Sau"
+        }
+      }
+    });
+
+
     $('#example').DataTable({
       lengthChange: false,
       pageLength: 5,

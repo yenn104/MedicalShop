@@ -311,5 +311,9 @@ table thead tr th {
 
 .btn.disabled {
   border-color: transparent !important;
-  color: #808080c7;
+  /*color: #808080c7;*/
 }
+/*
+.btn-disabled {
+  color: white !important;
+}*/
