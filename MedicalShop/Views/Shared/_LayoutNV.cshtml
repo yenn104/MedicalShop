@@ -1,6 +1,9 @@
 ﻿@{
+  MedicalShopContext context = new MedicalShopContext();
+
   var acc = User.FindFirst("VaiTro");
   string name = null, staff = null, vaitro = null, username = null;
+  string img = null, image = null;
   //int active = 0;
   if (acc != null)
   {
@@ -8,9 +11,9 @@
     username = acc.Subject.Name;
     staff = User.Claims.ElementAt(2).Type;
     name = User.Claims.ElementAt(2).Value;
+    img = context.NhanVien.FirstOrDefault(x => x.UserName == username).Image;
+    image = img != null ? img : "Unone.jpg" ;
   }
-
-  MedicalShopContext context = new MedicalShopContext();
 
   List<ChucNang> getListMenu = context.ChucNang
   .Include(x => x.IdmenuNavigation)
@@ -60,7 +63,6 @@
   <link href="~/admin/css/style.css" rel="stylesheet" />
   <link href="~/admin/css/hh.css" rel="stylesheet" />
   <link href="~/admin/css/slideimg.css" rel="stylesheet" />
-
 
 
 
@@ -262,7 +264,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="mr-2 d-none d-lg-inline text-gray-600 small">@name</span>
-              <img class="img-profile rounded-circle" src="~/lib/imagesNV/NV000001.jpg" />
+              <img class="img-profile rounded-circle" src="~/lib/imagesNV/@image" />
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -676,11 +678,19 @@
 
       var maxDate = moment().subtract(18, 'years').startOf('day');
       var minDate = moment().subtract(60, 'years').add(1, 'day').startOf('day');
+      /* var defaultDate = moment('06-04-2001', 'DD-MM-yyyy');*/
+
+      /*var defaultDate = moment(inputValue, 'DD-MM-yyyy');*/
+      var defaultDate = moment($('#DateOfBirth').val(), 'DD-MM-yyyy');
 
       //var dateOfBirth = moment("#DateOfBirth").format("DD-MM-yyyy");
       //$('#DateOfBirth').val(dateOfBirth);
 
+
+   /*   .val(defaultDate.format("DD-MM-yyyy"));*/
       // Thiết lập minDate cho datetimepicker
+
+
       $('#DateOfBirth').datetimepicker({
         maxDate: maxDate.toDate(),
         minDate: minDate.toDate(),
@@ -695,7 +705,7 @@
           next: 'bi bi-chevron-right',
           time: "bi bi-clock"
         }
-      });
+      }).val(defaultDate.format("DD-MM-yyyy"));
 
 
 
@@ -713,9 +723,7 @@
         }
       });
 
-
-
-
+     
 
     })
 

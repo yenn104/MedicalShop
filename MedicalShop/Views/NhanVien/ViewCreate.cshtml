@@ -25,14 +25,29 @@
     <form enctype="multipart/form-data" action="/NhanVien/insertNhanVien" method="post">
       <div class="forms-body">
         <div class="form-group" style="display: flex; ">
-          <div>
-            <label style="margin-bottom: 70px;">Hình ảnh</label>
-            <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
+          <div class="d-flex align-items-start align-items-sm-center gap-4">
+            <img alt="" class="d-block rounded" height="100" width="100" id="image1">
+            <div class="button-wrapper">
+              <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                <span class="d-none d-sm-block">Tải ảnh mới</span>
+                <i class="fa fa-thin fa-upload d-block d-sm-none" style="color: #ffffff;"></i>
+                <input name="Avt" type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+              </label>
+              <p class="text-muted mb-0" style="font-size:1rem !important">Cho phép JPG or PNG.</p>
+            </div>
           </div>
-          <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
-            <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
-          </div>
+
+
+
+          @*<div>
+        <label style="margin-bottom: 70px;">Hình ảnh</label>
+        <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
+      </div>
+      <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
+        <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+      </div>*@
         </div>
+
 
         <div class="form-group" style="display:flex">
           <div class="group-left">
@@ -76,8 +91,8 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">Ngày sinh</label>
-            <input asp-for="@Model.DateOfBirth" type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" class="form-control" id="DateOfBirth">
-           @* <input asp-for="@Model.DateOfBirth" type="date" class="form-control" required>*@
+            <input asp-for="@Model.DateOfBirth" type="text" placeholder="dd-mm-yyyy" value="@DateTime.Now.AddYears(-18).ToString("dd-MM-yyyy")" class="form-control" id="DateOfBirth">
+            @* <input asp-for="@Model.DateOfBirth" type="date" class="form-control" required>*@
           </div>
         </div>
 
@@ -118,6 +133,7 @@
   $(document).ready(function () {
     $('.quantity-input').bind("cut copy paste drag drop", function (e) {
       e.preventDefault();
+
     });
 
    
@@ -145,8 +161,38 @@
       reader.readAsDataURL(input.files[0]);
     }
   }
-  $("#Fileimage").change(function () {
+  $("#upload").change(function () {
     readURL(this, '#image1');
   });
+
+
+
+
+
+
+  // Lắng nghe sự kiện "change" của input type "file"
+  document.getElementById("upload").addEventListener("change", function () {
+    // Lấy thông tin ảnh được chọn
+    var file = this.files[0];
+
+    // Kiểm tra nếu file là hình ảnh
+    if (file && file.type.startsWith("image/")) {
+      // Tạo đối tượng FileReader để đọc nội dung của file
+      var reader = new FileReader();
+
+      // Xử lý sự kiện "load" của đối tượng FileReader
+      reader.addEventListener("load", function () {
+        // Cập nhật ảnh hiển thị
+        document.getElementById("image1").src = reader.result;
+      });
+
+      // Đọc nội dung của file
+      reader.readAsDataURL(file);
+    }
+  });
+
+
+
+
 
 </script>

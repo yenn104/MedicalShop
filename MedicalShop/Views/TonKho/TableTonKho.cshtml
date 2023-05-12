@@ -67,7 +67,7 @@
 }
 
 <style>
-  .dataTables_empty {
+  .hide-empty-table .dataTables_empty {
     display: none;
   }
 
@@ -84,9 +84,16 @@
   }
 
 
+/*  table.dataTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+  }*/
 
 
-
+  .dataTables_filter {
+    display: none;
+  }
 
 </style>
 
@@ -131,7 +138,8 @@
                     </select>
                   </div>
                   <div class="col-sm-1 col-lg-2">
-                    <input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">
+                    <input type="text" required name="fromDay" value="@DateTime.Now.AddMonths(-1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">
+                    @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
                   </div>
 
                   <div class="col-sm-1 col-lg-2">
@@ -149,9 +157,9 @@
                 <article>
 
 
-                  <div class="table-responsive">
-                    <table id="table2" class="table table-striped" style="width:100%">
-                      <thead>
+                  <div  class="table-responsive" style="height: 20rem; overflow-y: auto; ">
+                    <table id="table2" class="table table-striped hide-empty-table" style="width:100%">
+                      <thead style="position: sticky; top: 0;">
                         <tr style="background: #e9ecef;">
                           <th class="text-center">STT</th>
                           <th class="text-center">Mã hàng</th>
@@ -241,9 +249,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @{
-                          int index1 = 0;
-                        }
+
                         @foreach (var result in Model)
                         {
                           //index1++;
@@ -286,13 +292,36 @@
     //    this.$control_input.parent().css('display', 'flex');
     //  }
     //});
+    $('.dataTables_filter').hide();
+
+
+
+    
 
   });
+
+
+
+  function initDataTableSearch() {
+    var dataTableSearch = $('#example_filter').find('input');
+    var dataTableSearch2 = $('#table2_filter').find('input');
+    var mySearch = $('#timkiem');
+
+    mySearch.on('keyup', function () {
+      dataTableSearch.val($(this).val()).keyup();
+      dataTableSearch2.val($(this).val()).keyup();
+    });
+  }
+
+
+
+
   function loadTable() {
     var nhomNHH = $('#nhomNHH').val();
     var hanghoa = $('#hanghoa').val();
     var toDay = $('#toDay').val();
     var fromDay = $('#fromDay').val();
+
     /*var index = 0;*/
     $.ajax({
       type: "POST",
@@ -300,18 +329,16 @@
       data: "idnhh=" + nhomNHH + "&idhh=" + hanghoa + "&toDay=" + toDay + "&fromDay=" + fromDay,
       success: function (result) {
         console.log(result)
+        $('#table2').removeClass('hide-empty-table');
         $('#table2').DataTable({
           destroy: true,
-          searching: false,
+          /*searching: false,*/
           lengthChange: false,
-          pageLength: 5,
+          pageLength: false,
+          paginate: false,
           info: false,
-          "language": {
-            "emptyTable": "Không có dữ liệu.",
-            "paginate": {
-              "previous": "Trước",
-              "next": "Sau"
-            }
+          language: {
+            emptyTable: "Chưa có dữ liệu.",
           },
           data: result,
           columns: [
@@ -331,6 +358,9 @@
             }
           ]
         });
+
+        updateTable2();
+        initDataTableSearch();
         //$('#example').DataTable().clear().rows.add(result).draw();
         //index = $('#example').DataTable().rows().count();
         // $('#BCTK').replaceWith(result);
@@ -338,6 +368,42 @@
       error: function () {
         alert("Failed");
       }
+    });
+  }
+
+
+
+  function updateTable2() {
+    //11111111111111111111111111
+    var sumTT = 0;
+    var sumTGT = 0;
+
+    if ($("#table2").DataTable().rows().count() === 0) {
+      return;
+    }
+
+    $("#table2").find("tr:gt(0)").each(function () {
+      var SL = $(this).find("td:eq(3)").text();
+      SL = parseFloat(SL.replace(/,/g, '').replace(/\.00$/, '')); 
+      var Gia = $(this).find("td:eq(4)").text();  
+      Gia = parseFloat(Gia.replace(/,/g, '').replace(/\.00$/, ''));
+
+      sumTT = sumTT + SL;
+      sumTGT = sumTGT + Gia;
+    });
+    sumTT = toDecimal(sumTT);
+    sumTGT = toDecimal(sumTGT);
+
+    var ChitietRecord = '<tr><td colspan="4" class="text-right">' + sumTT + '</td><td class="text-right">' + sumTGT + '</td></tr>'
+
+    $('#BCTK').append(ChitietRecord);
+  }
+
+  function toDecimal(str) {
+    return parseFloat(str).toLocaleString('en-US', {
+      style: 'decimal',
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
     });
   }
 

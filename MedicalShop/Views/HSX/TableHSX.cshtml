@@ -1,4 +1,4 @@
-﻿@model MedicalShop.Models.Entities.Hsx
+﻿@model IEnumerable<MedicalShop.Models.Entities.Hsx>
 
 @{
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
@@ -96,7 +96,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach (Hsx item in listHSX())
+      @foreach (var item in Model)
       {
         <tr>
           <td>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SelectPdf;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -138,16 +139,54 @@ namespace MedicalShop.Controllers
     }
 
 
-    [Route("/TonKhoPDF/{id:int}")]
-    public IActionResult viewPDF(int id)
+
+    [Route("/download/tonkhotonghop/")]
+    public IActionResult downloadPhieuXuat(int id)
+    {
+      var fullView = new HtmlToPdf();
+      fullView.Options.WebPageWidth = 1280;
+      fullView.Options.PdfPageSize = PdfPageSize.A4;
+      fullView.Options.MarginTop = 20;
+      fullView.Options.MarginBottom = 20;
+      fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+
+      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+
+      var pdf = fullView.ConvertUrl(currentUrl + "/TKTongHopPDF/");
+
+      var pdfBytes = pdf.Save();
+      return File(pdfBytes, "application/pdf", "BCaoTonKho.pdf");
+    }
+
+
+
+
+
+    [Route("/TonKhoPDF/{idnhh:int}/{idhh:int}/{fromDay}/{toDay}")]
+    public IActionResult viewPDF(int idnhh, int idhh, string fromDay, string toDay)
     {
       MedicalShopContext context = new MedicalShopContext();
+      int index = 0;
+      DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 
-      var phieu = context.PhieuXuat
-          .Include(x => x.IdkhNavigation)
-          .Include(x => x.ChiTietPhieuXuat)
-          .Where(x => x.Id == id).FirstOrDefault();
-      return View("TonKhoPDF", phieu);
+      var results = context.TonKho
+         .Join(context.ChiTietPhieuNhap, tk => tk.Idctpn, ctn => ctn.Id, (tk, ctn) => new { tk, ctn })
+         .Join(context.HangHoa.Where(hh => (idnhh == 0 ? true : hh.Idnhh == idnhh) && (idhh == 0 ? true : hh.Id == idhh)), x => x.ctn.Idhh, hh => hh.Id, (x, hh) => new { x.tk, x.ctn, hh })
+          .Where(tk => tk.tk.NgayNhap >= FromDay && tk.tk.NgayNhap <= ToDay)
+         .GroupBy(x => new { x.hh.MaHh, x.hh.TenHh })
+         .Select(g => new TonKhoModel
+         {
+           STT = index + 1,
+           MaHH = g.Key.MaHh,
+           TenHH = g.Key.TenHh,
+           SL = (double)g.Sum(tk => tk.tk.SoLuong),
+           Gia = (double)g.Sum(x => x.tk.SoLuong * (x.ctn.Price * (1 + x.ctn.Thue / 100)))
+         })
+         .OrderBy(r => r.TenHH)
+         .ToList();
+
+      return View("TKTongHopPDF", results);
     }
 
 

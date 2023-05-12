@@ -94,7 +94,15 @@
 
     <div class="card zoomContainer" style="width: 100%">
       <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 40px; margin-bottom: 20px; height: 20rem; justify-content: center;">
-        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+        @if (@Model.Image != null && @Model.Image != "")
+        {
+          <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+        }
+        else
+        {
+          <img src="/lib/imagesHH/HHnone.jpg" alt="@Model.TenHh" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+        }
+
       </div>
 
 

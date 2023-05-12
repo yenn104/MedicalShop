@@ -246,17 +246,9 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idvt).HasColumnName("IDVT");
 
-                entity.Property(e => e.MaCnang)
-                    .HasColumnName("MaCNang")
-                    .HasMaxLength(50);
-
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.TenCnang)
-                    .HasColumnName("TenCNang")
-                    .HasMaxLength(500);
 
                 entity.HasOne(d => d.IdmenuNavigation)
                     .WithMany(p => p.ChucNang)
@@ -1273,6 +1265,8 @@ namespace MedicalShop.Models.Entities
                 entity.Property(e => e.TenVt)
                     .HasColumnName("TenVT")
                     .HasMaxLength(500);
+
+                entity.Property(e => e.Type).HasDefaultValueSql("((0))");
             });
 
             OnModelCreatingPartial(modelBuilder);

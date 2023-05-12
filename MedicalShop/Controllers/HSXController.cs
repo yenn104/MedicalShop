@@ -14,7 +14,16 @@ namespace MedicalShop.Controllers
     {
       ViewData["Title"] = "Danh mục hãng sản xuất";
       TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "HSX" && x.Active == true).FirstOrDefault().Id;
-      return View("TableHSX");
+
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+      List<Hsx> listHSX = context.Hsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+      
+      return View("TableHSX", listHSX);
     }
 
     //hiển thị view insert

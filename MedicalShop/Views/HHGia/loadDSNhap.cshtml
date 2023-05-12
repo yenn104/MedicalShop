@@ -1,21 +1,62 @@
-﻿@{
-  int stt = 1;
+﻿@*@{
+    int stt = 1;
+  }
+
+  <tbody id="gianhap">
+    @foreach (ChiTietPhieuNhap ctpn in ViewBag.ListCTNK)
+    {
+      <tr>
+        <td class="text-right col-1">
+          <span>@stt</span>
+          <input type="hidden" value="@ctpn.Id" id="idctpn" /> an cai nay
+        </td>
+        <td class="giadouble text-right">
+          @ctpn.Price
+        </td>
+      </tr>
+      stt++;
+
+    }
+  </tbody>*@
+
+@{
+  MedicalShopContext context = new MedicalShopContext();
+
+
+  string toDecimal(double? d)
+  {
+    return d.Value.ToString("#,##0.00");
+  }
+
+  double? getTK(int? id)
+  {
+    return context.TonKho.FirstOrDefault(x => x.Idctpn == id) != null ? context.TonKho.FirstOrDefault(x => x.Idctpn == id).SoLuong : 0;
+
+  }
+
 }
+
 
 <tbody id="gianhap">
   @foreach (ChiTietPhieuNhap ctpn in ViewBag.ListCTNK)
   {
     <tr>
-      <td class="text-right col-1">
-        <span>@stt</span>
-        @*<input type="hidden" value="@ctpn.Id" id="idctpn" />*@
+      <td class="text-center">
+        @ctpn.Hsd?.ToString("dd-MM-yyyy")
       </td>
-      <td class="giadouble text-right">
-        @ctpn.Price
+      <td class="text-center">
+        @ctpn.CreatedDate?.ToString("dd-MM-yyyy")
+      </td>
+      <td class="text-right">
+        @toDecimal(@getTK(@ctpn.Id))
+      </td>
+      <td class="text-right">
+        @toDecimal(@ctpn.Price)
       </td>
     </tr>
-    stt++;
+
 
   }
 </tbody>
 
+@*giadouble*@ 

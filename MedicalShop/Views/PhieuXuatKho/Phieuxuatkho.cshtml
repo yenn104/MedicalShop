@@ -95,7 +95,7 @@
               </div>
               <label class="col-sm-1 col-lg-1 col-form-label">Kh.Hàng</label>
               <div class="col-sm-5 col-lg-5">
-                <select required name="@nameof(Model.Idkh)" id="idKH" class="form-select1">
+                <select required name="@nameof(Model.Idkh)" id="idKH" class="form-select2">
                   <option selected value=""></option>
                   @foreach (KhachHang n in getListKH)
                   {
@@ -103,7 +103,7 @@
                   }
                 </select>
               </div>
-              <label class="col-sm-1 col-lg-1 col-form-label">Ng.Nhập</label>
+              <label class="col-sm-1 col-lg-1 col-form-label">Ng.Xuất</label>
               <div class="col-sm-2 col-lg-2">
                 <input type="text" required name="CreatedBy" value="@DateTime.Now.ToString("dd-MM-yyyy HH:mm")" placeholder="dd-MM-yyyy" class="form-control" id="NgayNhap">
               </div>
@@ -248,10 +248,10 @@
       <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="row justify-content-start" style="width: fit-content; padding: 1rem 0rem ">
           <div class="col-lg-5 col-sm-5">
-            <input class="form-control" type="text" id="fromDay" oninput="loadTableLichSuXuat()" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
+            <input class="form-control" type="text" id="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
           </div>
           <div class="col-lg-5 col-sm-5">
-            <input class="form-control" type="text" id="toDay" oninput="loadTableLichSuXuat()" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
+            <input class="form-control" type="text" id="toDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
           </div>
           <div class="col-lg-1 col-sm-1">
             <button type="button" class="btn btn-secondary" onclick="loadTableLichSuXuat()"><i class="fas fa-search fa-sm"></i></button>

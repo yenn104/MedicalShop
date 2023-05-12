@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -102,6 +103,7 @@ namespace MedicalShop.Controllers
       //MedicalShopContext context = new MedicalShopContext();
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+      var abc = nv.DateOfBirth;
       nv.Idcn = idcn;
       nv.Image = UploadedFile(nv, Avt);
       nv.CreatedBy = idUser;
@@ -144,7 +146,7 @@ namespace MedicalShop.Controllers
 
     //update hh
     [HttpPost]
-    public IActionResult updateNhanVien(NhanVien nv, IFormFile avt)
+    public IActionResult updateNhanVien(NhanVien nv, IFormFile avt, string DateOfBirth)
     {
       NhanVien dv = context.NhanVien.Find(nv.Id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -158,7 +160,7 @@ namespace MedicalShop.Controllers
       dv.Cccd = nv.Cccd;
       dv.HomeTown = nv.HomeTown;
       dv.Sex = nv.Sex;
-      dv.DateOfBirth = nv.DateOfBirth;
+      dv.DateOfBirth = DateTime.ParseExact(DateOfBirth, "dd-MM-yyyy", CultureInfo.InvariantCulture); ;
       if (avt != null)
       {
         dv.Image = UploadedFile(nv, avt);

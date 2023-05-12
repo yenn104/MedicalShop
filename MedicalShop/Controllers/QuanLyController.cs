@@ -26,6 +26,11 @@ namespace MedicalShop.Controllers
       return View();
     }
 
+    public IActionResult Index()
+    {
+      return View();
+    }
+
     public IActionResult Test()
     {
       return View();

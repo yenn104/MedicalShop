@@ -18,7 +18,7 @@ namespace MedicalShop.Controllers
 
 
 
-    [HttpPost("/addRowVT")]
+    [HttpPost("/addRowGia")]
     public IActionResult addRowGia(int idHH)
     {
       MedicalShopContext context = new MedicalShopContext();
@@ -39,7 +39,7 @@ namespace MedicalShop.Controllers
     public IActionResult loadDSNhap(int idhh)
     {
       MedicalShopContext context = new MedicalShopContext();
-      List<ChiTietPhieuNhap> listctnk = context.ChiTietPhieuNhap.Where(x => x.Idhh == idhh).OrderBy(x => x.CreatedDate).ToList();
+      List<ChiTietPhieuNhap> listctnk = context.ChiTietPhieuNhap.Where(x => x.Idhh == idhh).OrderByDescending(x => x.Hsd).ToList();
       ViewBag.ListCTNK = listctnk;
       ViewBag.IDHH = idhh;
       return PartialView();

@@ -2,15 +2,14 @@
   $(document).ready(function () {
 
     $('#table2').DataTable({
-      searching: false,
+      /*searching: false,*/
       lengthChange: false,
-      pageLength: 5,
+      pageLength: false,
+      paginate: false,
       info: false,
       language: {
-        paginate: {
-          previous: "Trước",
-          next: "Sau"
-        }
+        emptyTable: "Không có dữ liệu.",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
       }
     });
 
@@ -34,11 +33,14 @@
 
     var dataTableSearch = $('#example_filter').find('input');
 
+    var dataTableSearch1 = $('#table2_filter').find('input');
+
     // Lấy đối tượng ô tìm kiếm của bạn
     var mySearch = $('#timkiem');
 
     // Áp dụng phương thức hoạt động của ô tìm kiếm của DataTable vào ô tìm kiếm của bạn
     mySearch.on('keyup', function () {
+      dataTableSearch1.val($(this).val()).keyup();
       dataTableSearch.val($(this).val()).keyup();
     });
 

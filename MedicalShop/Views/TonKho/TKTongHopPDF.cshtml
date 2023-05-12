@@ -1,0 +1,140 @@
+﻿@model List<TonKhoModel>
+
+@{
+  Layout = null;
+  MedicalShopContext context = new MedicalShopContext();
+
+  HangHoa getHH(int? id)
+  {
+
+    return context.HangHoa.Find(id);
+  }
+  Dvt getDVt(int? id)
+  {
+    return context.Dvt.Find(id);
+  }
+
+  string toDecimal(double? d)
+  {
+    return d.Value.ToString("#,##0.00");
+  }
+  string toDecimal2(double? d)
+  {
+    return d.Value.ToString("#,##0");
+  }
+  TtdoanhNghiep dn = context.TtdoanhNghiep.Find(1);
+
+
+  }
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>Y'Medical</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/admin/css/sb-admin-2.min.css" rel="stylesheet" />
+    <script src="~/jquery-3.6.1.min.js"></script>
+    <link href="~/admin/select/css/selectize.bootstrap5.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+            integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <!-- Custom fonts for this template-->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="shortcut icon " href="~/medical.ico">
+
+    <link href="~/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+    @*<link href="~/admin/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+
+    <style>
+      body {
+        font-size: 13px;
+      }
+    </style>
+
+  </head>
+  <body style="background-color:white">
+    <section class="section" style="background-color:white;">
+      <div class="card p-0" style="box-shadow:none">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-1 col-lg-3">
+
+            </div>
+
+          </div>
+          <br />
+          <article>
+
+
+            <div class="table-responsive">
+              <table id="table2" class="table table-striped " style="width:100%">
+                <thead style="position: sticky; top: 0;">
+                  <tr style="background: #e9ecef;">
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Mã hàng</th>
+                    <th class="text-center">Tên hàng</th>
+                    <th class="text-center">Tổng tồn</th>
+                    <th class="text-center">Trị giá tồn</th>
+                  </tr>
+                </thead>
+                <tbody id="BCTK">
+                  @foreach (var result in Model)
+                  {
+                    <tr>
+                      <td class="text-center">@result.STT</td>
+                      <td class="text-center">@result.MaHH</td>
+                      <td class="text-start">@result.TenHH</td>
+                      <td class="text-end">@result.SL</td>
+                      <td class="text-end">@result.Gia</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+
+    <script>
+      $(document).ready(function () {
+        $('#table2').DataTable({
+          columns: [
+            { data: 'stt', title: 'STT', className: 'text-center' },
+            { data: 'maHH', title: 'Mã hàng hóa', className: 'text-left' },
+            { data: 'tenHH', title: 'Tên hàng hóa', className: 'text-left' },
+            { data: 'sl', title: 'Tổng tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+            { data: 'gia', title: 'Trị giá tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') }
+          ],
+          columnDefs: [
+            {
+              targets: 0, // cột STT nằm ở cột đầu tiên (index 0)
+              title: 'STT',
+              render: function (data, type, row, meta) {
+                return meta.row + 1;
+              }
+            }
+          ]
+        });
+
+      });
+
+      
+
+
+
+    </script>
+  </body>
+</html>

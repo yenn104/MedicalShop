@@ -1,0 +1,58 @@
+﻿@{
+  Layout = null;
+
+  MedicalShopContext context = new MedicalShopContext();
+
+  TaiKhoan getTK(string tk)
+  {
+    TaiKhoan tkk = context.TaiKhoan.FirstOrDefault(a => a.UserName == tk);
+    if (tkk != null) return tkk;
+    else return null;
+  }
+
+  List<NhanVien> ListNV()
+  {
+    return context.NhanVien.Where(z => z.Active == true).ToList();
+  }
+
+}
+<script src="~/admin/js/datatable-custom2.js"></script>
+<div class="table-responsive" id="table_nv">
+  <table class="table table-bordered table-hover hide-empty-table mb-0 text-center h-100" id="table2">
+    <thead>
+      <tr style="background: #e9ecef;">
+        <th class="text-center">Nhân viên</th>
+      </tr>
+    </thead>
+    <tbody id="taikhoan" style="text-align:left">
+      @foreach (NhanVien nv in ViewBag.ListNV)
+      {
+        @if (@getTK(@nv.UserName) != null)
+        {
+          <tr onclick="loadTablePQ(@getTK(@nv.UserName).Id)">
+            <td style="color: #0d6efd">
+              @nv.TenNv
+              <input type="hidden" value="@nv.UserName" id="tentk" />
+            </td>
+          </tr>
+        }
+        else
+        {
+          <tr onclick="chuacaptk()">
+            <td>
+              @nv.TenNv
+              <input type="hidden" value="@nv.UserName" id="tentk" />
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('.dataTables_filter').hide();
+
+
+    })
+  </script>

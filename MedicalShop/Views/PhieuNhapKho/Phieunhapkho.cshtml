@@ -298,10 +298,10 @@
       <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="row justify-content-start" style="width: fit-content; padding: 1rem 0rem ">
           <div class="col-lg-5 col-sm-5 tungay">
-            <input class="form-control" type="text" oninput="loadTableLichSuNhap()" id="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
+            <input class="form-control" type="text"  id="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Từ ngày" />
           </div>
           <div class="col-lg-5 col-sm-5">
-            <input class="form-control" type="text" oninput="loadTableLichSuNhap()" id="toDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
+            <input class="form-control" type="text" id="toDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="Tới ngày" />
           </div>
           <div class="col-lg-1 col-sm-1">
             <button type="button" class="btn btn-secondary" onclick="loadTableLichSuNhap()"><i class="fas fa-search fa-sm"></i></button>

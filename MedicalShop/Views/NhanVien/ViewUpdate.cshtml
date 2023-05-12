@@ -9,7 +9,7 @@
     return context.NhomNhanVien.Where(x => x.Active == true).ToList();
   }
 
-  string dayToString(DateTime? a)
+  string formatDate(DateTime? a)
   {
     if (a == null)
     {
@@ -88,7 +88,7 @@
 
 
             @*//chưa được buồn ngủ quá*@
-            <input asp-for="@Model.DateOfBirth" type="text" value="@dayToString(Model.DateOfBirth)" class="form-control">
+            <input asp-for="@Model.DateOfBirth" type="text" placeholder="dd-mm-yyyy" value="@Model.DateOfBirth?.ToString("dd-MM-yyyy")" data-date-format="DD-MM-yyyy" class="form-control">
 
             @*<input asp-for="@Model.DateOfBirth" type="text" class="form-control" id="DateOfBirth" data-date-format="DD-MM-yyyy" value="@Model.DateOfBirth.ToString("dd-MM-yyyy")" />*@
           </div>

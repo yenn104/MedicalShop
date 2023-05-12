@@ -12,8 +12,6 @@ namespace MedicalShop.Models.Entities
         public int Id { get; set; }
         public int? Idvt { get; set; }
         public int? Idmenu { get; set; }
-        public string MaCnang { get; set; }
-        public string TenCnang { get; set; }
         public bool? Import { get; set; }
         public bool? Update { get; set; }
         public bool? Delete { get; set; }

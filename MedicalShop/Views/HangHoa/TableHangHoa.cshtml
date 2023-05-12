@@ -134,7 +134,15 @@
             @Html.DisplayFor(modelItem => item.BarCode)
           </td>
           <td id="imageHH" class="side-picture text-center">
-            <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+            @if (@item.Image != null && @item.Image != "")
+            {
+              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+
+            }
+            else
+            {
+              <img src="~/lib/imagesHH/HHnone.jpg" alt="@item.TenHh" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+            }
           </td>
           <td>
             @Html.DisplayFor(modelItem => item.Detail)
