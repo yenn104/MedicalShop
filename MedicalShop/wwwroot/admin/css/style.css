@@ -51,7 +51,7 @@
   /*width: 6.5rem;
   min-height: 100vh;*/
   /*position: fixed;*/
-  top: 60px;
+ /* top: 60px;*/
   left: 0;
   bottom: 0;
   transition: all 0.3s;
@@ -80,7 +80,7 @@
 
 .dashboard ul {
   display: flex;
-  padding-top: 90px;
+  /*padding-top: 90px;*/
   justify-content: center;
   border: 0.1px solid #0068f82e;
   /*scoll*/
@@ -93,11 +93,11 @@
   display: flex;
 }
 
-.main {
+/*.main {
   margin-top: 70px;
   padding-top: 25px;
 }
-
+*/
 .main-content {
   
 }
@@ -287,6 +287,14 @@ a:hover {
     white-space: nowrap;
   }
 }
+
+
+@media (max-width: 1200px) {
+  #table2 tbody tr {
+    white-space: nowrap;
+  }
+}
+
 
 /*@media (max-height: 100px) {
   .card{

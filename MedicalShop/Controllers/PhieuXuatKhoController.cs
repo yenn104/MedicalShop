@@ -55,199 +55,14 @@ namespace MedicalShop.Controllers
 
       return Json(new
       {
-        dvt = hh.Iddvtc,
-        tenDVT = dvt.TenDvt,
+        dvt = hh.Iddvtc == null ? 0 : hh.Iddvtc,
+        tenDVT = dvt == null ? "" : dvt.TenDvt,
         //giaBan = GiaBan,
         slCon = getSLCon(idHH),
         //hinhAnh = hh.Image
       });
 
-      //lấy giá theo khách hàng
-      //var GiaTheoKH = context.GiaTheoKhachHang
-      //    .Where(x => x.Idkh == idKH && x.Idhh == idHH && x.Iddvt == hh.Iddvtc)
-      //    .FirstOrDefault();
-
-      // lấy giá nhập của hàng hoá
-      // SoLuongHhcon GiaHangTon;
-
-      //    if (cachXuat.TheoTgnhap == true)
-      //{
-      //  GiaHangTon = context.SoLuongHhcon
-      //      .Include(x => x.IdctpnNavigation)
-      //      .Where(x => x.IdctpnNavigation.Idhh == idHH)
-      //      .OrderBy(x => x.NgayNhap).
-      //      FirstOrDefault();
-      //}
-      //else
-      //{
-      //  GiaHangTon = context.SoLuongHhcon
-      //      .Include(x => x.IdctpnNavigation)
-      //      .Where(x => x.IdctpnNavigation.Idhh == idHH)
-      //      .OrderBy(x => x.IdctpnNavigation.Hsd)
-      //      .FirstOrDefault();
-      //}
-      //if (GiaHangTon == null)
-      //{
-      //  return Json(new
-      //  {
-      //    options = options,
-      //    giaBan = 0,
-      //    slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //    hinhAnh = hh.Avatar
-      //  });
-      //}
-
-
-      ////nếu giá theo khách hàng không tồn tại thì xét tiếp
-      //if (GiaTheoKH == null || (GiaTheoKH.TiLeLe == 0 && GiaTheoKH.TiLeSi == 0 && GiaTheoKH.GiaBanSi == 0 && GiaTheoKH.GiaBanLe == 0))
-      //{
-      //  //Xét tiếp tới giá theo nhóm hàng hoá
-      //  var listGTNHH = context.GiaTheoNhomHangHoa.Where(x => x.Idnhh == hh.Idnhh).ToList();
-
-      //  //Nếu giá theo nhóm hàng hoá có tồn tại
-      //  if (listGTNHH.Count > 0)
-      //  {
-      //    //xét nhiều khoản min max khác nhau
-      //    foreach (var h in listGTNHH)
-      //    {
-      //      if (GiaHangTon.IdctpnNavigation.DonGia >= h.Min && GiaHangTon.IdctpnNavigation.DonGia <= h.Max)
-      //      {
-      //        if (kh.LoaiKh == true)
-      //        {
-      //          GiaBan = getTiLe(h.TiLeLe) * GiaHangTon.IdctpnNavigation.DonGia; // giá bán nhân tỉ lệ
-      //        }
-      //        else // nếu loại khách hàng là sĩ
-      //        {
-      //          GiaBan = getTiLe(h.TiLeSi) * GiaHangTon.IdctpnNavigation.DonGia;
-      //        }
-      //        return Json(new
-      //        {
-      //          options = options,
-      //          giaBan = GiaBan,
-      //          slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //          hinhAnh = hh.Avatar
-      //        });
-      //      }
-      //    }
-      //    // nếu sau khi xét trong list Giá theo nhóm nhà hoá và vẫn kh return thì xét xuống giá theo hàng hoá
-      //    if (kh.LoaiKh == true)
-      //    {
-      //      if (hh.GiaBanLe != 0) //Nếu giá bán lẻ tồn tại
-      //      {
-      //        GiaBan = hh.GiaBanLe; // lấy giá bán
-      //      }
-      //      else // xét tỉ lẹ lẻ
-      //      {
-      //        GiaBan = getTiLe(hh.TiLeLe) * GiaHangTon.IdctpnNavigation.DonGia; // giá bán nhân tỉ lệ
-      //      }
-      //      return Json(new
-      //      {
-      //        options = options,
-      //        giaBan = GiaBan,
-      //        slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //        hinhAnh = hh.Avatar
-      //      });
-      //    }
-      //    else // nếu loại khách hàng là sĩ
-      //    {
-      //      if (hh.GiaBanSi != 0) //Nếu giá bán sĩ tồn tại
-      //      {
-      //        GiaBan = hh.GiaBanSi;
-      //      }
-      //      else // xét tỉ lẹ lẻ
-      //      {
-      //        GiaBan = getTiLe(hh.TiLeSi) * GiaHangTon.IdctpnNavigation.DonGia;
-      //      }
-      //      return Json(new
-      //      {
-      //        options = options,
-      //        giaBan = GiaBan,
-      //        slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //        hinhAnh = hh.Avatar
-      //      });
-      //    }
-      //  }
-      //  else  // xét tiếp giá theo hàng hoá
-      //  {
-      //    //Nếu loại khách hàng là lẻ
-      //    if (kh.LoaiKh == true)
-      //    {
-      //      if (hh.GiaBanLe != 0) //Nếu giá bán lẻ tồn tại
-      //      {
-      //        GiaBan = hh.GiaBanLe; // lấy giá bán
-      //      }
-      //      else // xét tỉ lẹ lẻ
-      //      {
-      //        GiaBan = getTiLe(hh.TiLeLe) * GiaHangTon.IdctpnNavigation.DonGia; // giá bán nhân tỉ lệ
-      //      }
-      //      return Json(new
-      //      {
-      //        options = options,
-      //        giaBan = GiaBan,
-      //        slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //        hinhAnh = hh.Avatar
-      //      });
-      //    }
-      //    else // nếu loại khách hàng là sĩ
-      //    {
-      //      if (hh.GiaBanSi != 0) //Nếu giá bán sĩ tồn tại
-      //      {
-      //        GiaBan = hh.GiaBanSi;
-      //      }
-      //      else // xét tỉ lẹ lẻ
-      //      {
-      //        GiaBan = getTiLe(hh.TiLeSi) * GiaHangTon.IdctpnNavigation.DonGia;
-      //      }
-      //      return Json(new
-      //      {
-      //        options = options,
-      //        giaBan = GiaBan,
-      //        slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //        hinhAnh = hh.Avatar
-      //      });
-      //    }
-      //  }
-      //}
-      //else //Nếu giá theo khách hàng tồn tại
-      //{
-      //  //Nếu loại khách hàng là lẻ
-      //  if (kh.LoaiKh == true)
-      //  {
-      //    if (GiaTheoKH.GiaBanLe != 0) //Nếu giá bán lẻ tồn tại
-      //    {
-      //      GiaBan = GiaTheoKH.GiaBanLe; // lấy giá bán
-      //    }
-      //    else // xét tỉ lẹ lẻ
-      //    {
-      //      GiaBan = getTiLe(GiaTheoKH.TiLeLe) * GiaHangTon.IdctpnNavigation.DonGia; // giá bán nhân tỉ lệ
-      //    }
-      //    return Json(new
-      //    {
-      //      options = options,
-      //      giaBan = GiaBan,
-      //      slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //      hinhAnh = hh.Avatar
-      //    });
-      //  }
-      //  else // nếu loại khách hàng là sĩ
-      //  {
-      //    if (GiaTheoKH.GiaBanSi != 0) //Nếu giá bán sĩ tồn tại
-      //    {
-      //      GiaBan = GiaTheoKH.GiaBanSi;
-      //    }
-      //    else // xét tỉ lẹ lẻ
-      //    {
-      //      GiaBan = getTiLe(GiaTheoKH.TiLeSi) * GiaHangTon.IdctpnNavigation.DonGia;
-      //    }
-      //    return Json(new
-      //    {
-      //      options = options,
-      //      giaBan = GiaBan,
-      //      slCon = getSLCon(idHH, (Int32)hh.Iddvtchinh),
-      //      hinhAnh = hh.Avatar
-      //    });
-      //  }
-      //}
+    
     }
 
 
@@ -266,8 +81,8 @@ namespace MedicalShop.Controllers
 
       double donGia = 0;
       double thanhTien = 0;
-      double SLtemp = 0;
-      double SLT = 0;
+      //double SLtemp = 0;
+      //double SLT = 0;
 
 
       HhGia gia = context.HhGia.FirstOrDefault(y => y.Idhh == idHH);
@@ -279,35 +94,45 @@ namespace MedicalShop.Controllers
       }
       if (gia.TiLe != 0 && gia.TiLe != null)
       {
-        if (SL < tkk[0].SoLuong)
-        {
-          donGia = (double)(tkk[0].IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
-          thanhTien = donGia * SL;
-        }
-        else
-        {
-          foreach (TonKho tk in tkk)
-          {
-            if (SLT < SL)
-            {
-              if ((SL - SLT) > tk.SoLuong)
-              {
-                SLT = (double)(SLT + tk.SoLuong);
-                SLtemp = (double)tk.SoLuong;
-              }
-              else
-              {
-                SLtemp = SL - SLT;
-                SLT = SL;
-              }
+        var giaa = context.TonKho.Include(x => x.IdctpnNavigation)
+                                  .Where(x => x.IdctpnNavigation.Idhh == idHH)
+                                  .Max(x => x.IdctpnNavigation.Price);
 
-              donGia = (double)(tk.IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
-              thanhTien = (double)(thanhTien + (donGia * SLtemp));
-            }
-            // thành tiền chia đều cho số lượng -> đơn giá
-            donGia = thanhTien / SL;
-          }
-        }
+        var thuee = context.TonKho.Include(x => x.IdctpnNavigation)
+                                    .Where(x => x.IdctpnNavigation.Idhh == idHH)
+                                    .Max(x => x.IdctpnNavigation.Thue);
+
+        donGia = (double)(giaa * (1 + (gia.TiLe / 100) + (thuee / 100)));
+        thanhTien = donGia * SL;
+        //if (SL < tkk[0].SoLuong)
+        //{
+        //  donGia = (double)(tkk[0].IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
+        //  thanhTien = donGia * SL;
+        //}
+        //else
+        //{
+        //  foreach (TonKho tk in tkk)
+        //  {
+        //    if (SLT < SL)
+        //    {
+        //      if ((SL - SLT) > tk.SoLuong)
+        //      {
+        //        SLT = (double)(SLT + tk.SoLuong);
+        //        SLtemp = (double)tk.SoLuong;
+        //      }
+        //      else
+        //      {
+        //        SLtemp = SL - SLT;
+        //        SLT = SL;
+        //      }
+
+        //      donGia = (double)(tk.IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
+        //      thanhTien = (double)(thanhTien + (donGia * SLtemp));
+        //    }
+        //    // thành tiền chia đều cho số lượng -> đơn giá
+        //    donGia = thanhTien / SL;
+        //  }
+        //}
 
       }
 
@@ -386,7 +211,7 @@ namespace MedicalShop.Controllers
               ct.Thue = t.Thue;
               ct.Quantity = SLT;
               ct.Price = t.DonGia;
-              ct.Iddvt = context.HangHoa.FirstOrDefault(x => x.Id == t.Idhh).Iddvtc;
+              ct.Iddvt = t.IdDvt;
               ct.Cktm = t.Cktm;
               ct.Active = true;
               ct.CreatedBy = idUser;
@@ -409,7 +234,7 @@ namespace MedicalShop.Controllers
               ct.Thue = t.Thue;
               ct.Quantity = tk.SoLuong;
               ct.Price = t.DonGia;
-              ct.Iddvt = context.HangHoa.FirstOrDefault(x => x.Id == t.Idhh).Iddvtc;
+              ct.Iddvt = t.IdDvt;
               ct.Cktm = t.Cktm;
               ct.Active = true;
               ct.CreatedBy = idUser;
@@ -475,7 +300,7 @@ namespace MedicalShop.Controllers
                                               .FromSqlRaw("select*from PhieuXuat where CONVERT(date,CreatedDate) >= '" + FromDay.ToString("yyyy-MM-dd") + "' and CONVERT(date,CreatedDate) <= '" + ToDay.ToString("yyyy-MM-dd") + "' and Active = 1")
                                               .Include(x => x.IdkhNavigation)
                                               .Include(x => x.IdnvNavigation)
-                                              .OrderByDescending(x => x.Id)
+                                              .OrderByDescending(x => x.CreatedDate)
                                               .ToList();
       return PartialView("TableLichSuXuat");
     }
@@ -516,7 +341,57 @@ namespace MedicalShop.Controllers
 
 
 
+    [HttpPost("/download/BaoCaoPhieuXuat")]
+    public IActionResult downloadBaoCaoPhieuXuat(string fromDay, string toDay, string soPhieuLS, string soHDLS, int khLS, int hhLS)
+    {
+      var fullView = new HtmlToPdf();
+      fullView.Options.WebPageWidth = 1280;
+      fullView.Options.PdfPageSize = PdfPageSize.A4;
+      fullView.Options.MarginTop = 20;
+      fullView.Options.MarginBottom = 20;
+      fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
 
+      var url = Url.Action("viewBaoCaoPhieuXuatPDF", "PhieuXuatKho", new { fromDay = fromDay, toDay = toDay, soPhieuLS = soPhieuLS, soHDLS = soHDLS, khLS = khLS, hhLS = hhLS });
+
+      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + url;
+
+      var pdf = fullView.ConvertUrl(currentUrl);
+
+      var pdfBytes = pdf.Save();
+      return File(pdfBytes, "application/pdf", "BaoCaoPhieuXuat.pdf");
+    }
+
+
+    public IActionResult viewBaoCaoPhieuXuatPDF(string fromDay, string toDay, string soPhieuLS, string soHDLS, int khLS, int hhLS)
+    {
+      DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      ViewBag.fromDay = fromDay;
+      ViewBag.toDay = toDay;
+      MedicalShopContext context = new MedicalShopContext();
+      List<PhieuXuat> listPhieu = context.PhieuXuat.Where(x => x.CreatedDate.Value.Date >= FromDay
+                                          && x.CreatedDate.Value.Date <= ToDay
+                                          && x.Active == true)
+                                          .Include(x => x.IdkhNavigation)
+                                          .Include(x => x.IdnvNavigation)
+                                          .Include(x => x.ChiTietPhieuXuat)
+                                          .OrderByDescending(x => x.Id)
+                                          .ToList();
+      if (khLS == 0 && hhLS == 0)
+      {
+
+        return View("BaoCaoPhieuXuatPDF", listPhieu.Where(x => (soHDLS == null ? true : (x.SoHd?.Contains(soHDLS) ?? false))
+        && (soPhieuLS == null ? true : x.SoPx.Contains(soPhieuLS.ToUpper()))).ToList());
+      }
+      else
+      {
+        return View("BaoCaoPhieuXuatPDF", listPhieu.Where(x => (hhLS == 0 ? true : (x.ChiTietPhieuXuat.Where(y => y.Idhh == hhLS).Count() > 0 ? true : false))
+        && (khLS == 0 ? true : x.Idkh == khLS)
+        && (soPhieuLS == null ? true : x.SoPx.Contains(soPhieuLS.ToUpper()))
+        && (soHDLS == null ? true : (x.SoHd?.Contains(soHDLS.ToUpper()) ?? false))).ToList());
+      }
+
+    }
 
 
 

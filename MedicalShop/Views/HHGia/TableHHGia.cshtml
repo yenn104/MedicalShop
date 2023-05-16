@@ -32,7 +32,6 @@
     font-weight: bold;
     color: #0d6efd;
   }
-
 </style>
 
 
@@ -64,9 +63,9 @@
       </div>
 
     </div>
-    <div class="m-1" style="display: flex; flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-evenly; ">
-      <div id="table1" class="col-lg-7 border-dark table-responsive-lg">
-        <table class="table table-bordered table-hover nowrap" id="example">
+    <div class="mc-23" style="display: flex; flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-between; ">
+      <div id="table1" class=" table-responsive-lg">
+        <table class="table table-bordered table-hover" id="example" >
           <thead>
             <tr style="background: #e9ecef;">
               @*<th style="width:15px">STT</th>*@
@@ -84,11 +83,11 @@
                   <span>@hh.TenHh</span>
                   <input type="hidden" value="@hh.Id" id="idvt" />
                 </td>
-                <td style="width:10rem;">
+                <td style="width:6rem;">
                   <input type="text" class="form-control tile text-right" value="@getGia(@hh.Id).TiLe">
                 </td>
-                <td style="width:10rem;">
-                  <input type="text" class="form-control gia text-right" value="@getGia(@hh.Id).Price" />
+                <td style="width:6rem;">
+                  <input style=" min-width: max-content;" type="text" class="form-control gia text-right" value="@getGia(@hh.Id).Price" />
                 </td>
               </tr>
             }
@@ -96,8 +95,8 @@
         </table>
       </div>
       @*<input type="hidden" id="idvt" />*@
-      <div class="col-lg-5 border-dark table-responsive" style="overflow-x: auto">
-        <table class="table tablee table-bordered  flex-wrap: wrap;  mb-0  text-center bg-light" id="example2">
+      <div class="border-dark table-responsive-lg" style="overflow-x: auto">
+        <table class="table table-bordered  tablee mb-0  text-center bg-light" style="white-space: nowrap; " id="example2">
           <thead>
             <tr style="background: #e9ecef;">
               @*<th class="text-center" style="vertical-align : middle;text-align:center;">STT</th>*@
@@ -141,7 +140,33 @@
     });
 
 
+    $('#switch-1').on('change', function () {
+      if ($(this).is(':checked')) {
+        loadTableNV(1);
+      } else {
+        loadTableNV(0);
+      }
+    });
+
+
   });
+
+
+
+  function loadTableNV(checked) {
+    $.ajax({
+      type: "POST",
+      url: "/loadGiaLT",
+      data: "check=" + checked,
+      success: function (result) {
+        $('#table_nv').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
+    });
+  }
+
 
 
   //ok
@@ -236,7 +261,7 @@
 
   }
 
- 
+
 
   //$("#example").on("change", ".gia, .tile", function () {
   //  var gia = $(this).val();
@@ -247,13 +272,13 @@
   //});
 
 
- 
+
 
 
   //$('.tile').on('blur', setval);
 
   //function setval() {
-    
+
   //}
 
   //ok
@@ -290,7 +315,7 @@
       $(this).val(toDecimal(val1));
     } else if ($(this).hasClass("tile") && val1 != 0) {
       $(this).val(toDecimal(val1));
-    } 
+    }
   });
 
 

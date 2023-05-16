@@ -78,7 +78,7 @@
   </div>
   <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
     <div style="display: flex">
-      <div class="dropdown" style="margin-right:10px">
+      <div class="dropdown" style="margin-right: 10px; width: -webkit-fill-available; max-width: fit-content;">
         <select id="active" onchange="changeHH()" class="custom-select">
           <option value="true" selected>Hiện tại</option>
           <option value="false">Tất cả</option>
@@ -98,9 +98,9 @@
     </div>
   </div>
 </div>
-<div id="tableHH" class="table-responsive-lg" style="margin-bottom: 5rem">
+<div id="tableHH" class="table-responsive-lg" style="margin-bottom: 5rem;  ">
   <table id="example" class="table table-striped" style="width: 100%; white-space: initial;">
-    <thead>
+    <thead style="position: sticky; top: 0; background: #f6f9ff;">
       <tr>
         <th>
           Mã HH
@@ -120,7 +120,7 @@
         <th>Tùy chọn</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody style="overflow-y: scroll; overflow-x: scroll; ">
       @foreach (var item in listHH())
       {
         <tr>

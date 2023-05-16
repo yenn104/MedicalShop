@@ -176,18 +176,6 @@
   })
 
 
-  function initDataTableSearch() {
-    var dataTableSearch = $('#example_filter').find('input');
-    var dataTableSearch2 = $('#table2_filter').find('input');
-    var mySearch = $('#timkiem');
-
-    mySearch.on('keyup', function () {
-      dataTableSearch.val($(this).val()).keyup();
-      dataTableSearch2.val($(this).val()).keyup();
-    });
-  }
-
-
 
 
   function loadTableNV(checked) {

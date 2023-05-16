@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using SelectPdf;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -137,6 +138,98 @@ namespace MedicalShop.Controllers
                                               .ToList();
       return PartialView("TableLichSuNhap");
     }
+
+
+
+
+
+
+
+    [Route("/download/phieunhap/{id:int}")]
+    public IActionResult downloadPhieuNhap(int id)
+    {
+      var fullView = new HtmlToPdf();
+      fullView.Options.WebPageWidth = 1280;
+      fullView.Options.PdfPageSize = PdfPageSize.A4;
+      fullView.Options.MarginTop = 20;
+      fullView.Options.MarginBottom = 20;
+      fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+
+      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+
+      var pdf = fullView.ConvertUrl(currentUrl + "/PhieuNhapPDF/" + id);
+
+      var pdfBytes = pdf.Save();
+      return File(pdfBytes, "application/pdf", "PhieuNhap.pdf");
+    }
+
+
+    [Route("/PhieuNhapPDF/{id:int}")]
+    public IActionResult viewPDF(int id)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+      var phieu = context.PhieuNhap
+          .Include(x => x.IdnccNavigation)
+          .Include(x => x.ChiTietPhieuNhap)
+          .Where(x => x.Id == id).FirstOrDefault();
+      return View("PhieuNhapPDF", phieu);
+    }
+
+
+
+
+    [HttpPost("/download/BaoCaoPhieuNhap")]
+    public IActionResult downloadBaoCaoPhieuNhap(string fromDay, string toDay, string soPhieuLS, string soHDLS, int nhaCC, int hhLS)
+    {
+      var fullView = new HtmlToPdf();
+      fullView.Options.WebPageWidth = 1280;
+      fullView.Options.PdfPageSize = PdfPageSize.A4;
+      fullView.Options.MarginTop = 20;
+      fullView.Options.MarginBottom = 20;
+      fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+
+      var url = Url.Action("viewBaoCaoPhieuNhapPDF", "PhieuNhapKho", new { fromDay = fromDay, toDay = toDay, soPhieuLS = soPhieuLS, soHDLS = soHDLS, nhaCC = nhaCC, hhLS = hhLS });
+
+      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + url;
+
+      var pdf = fullView.ConvertUrl(currentUrl);
+
+      var pdfBytes = pdf.Save();
+      return File(pdfBytes, "application/pdf", "BaoCaoPhieuNhap.pdf");
+    }
+    public IActionResult viewBaoCaoPhieuNhapPDF(string fromDay, string toDay, string soPhieuLS, string soHDLS, int nhaCC, int hhLS)
+    {
+      DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      ViewBag.fromDay = fromDay;
+      ViewBag.toDay = toDay;
+      MedicalShopContext context = new MedicalShopContext();
+      List<PhieuNhap> listPhieu = context.PhieuNhap
+      .Where(x => x.CreatedDate.Value.Date >= FromDay
+      && x.CreatedDate.Value.Date <= ToDay
+      && x.Active == true)
+      .Include(x => x.IdnccNavigation)
+      .Include(x => x.IdnvNavigation)
+      .Include(x => x.ChiTietPhieuNhap)
+      .OrderByDescending(x => x.Id)
+      .ToList();
+      if (nhaCC == 0 && hhLS == 0)
+      {
+
+        return View("BaoCaoPhieuNhapPDF", listPhieu.Where(x => (soHDLS == null ? true : (x.SoHd?.Contains(soHDLS) ?? false))
+        && (soPhieuLS == null ? true : x.SoPn.Contains(soPhieuLS.ToUpper()))).ToList());
+      }
+      else
+      {
+        return View("BaoCaoPhieuNhapPDF", listPhieu.Where(x => (hhLS == 0 ? true : (x.ChiTietPhieuNhap.Where(y => y.Idhh == hhLS).Count() > 0 ? true : false))
+        && (nhaCC == 0 ? true : x.Idncc == nhaCC)
+        && (soPhieuLS == null ? true : x.SoPn.Contains(soPhieuLS.ToUpper()))
+        && (soHDLS == null ? true : (x.SoHd?.Contains(soHDLS.ToUpper()) ?? false))).ToList());
+      }
+
+    }
+
+
 
 
 

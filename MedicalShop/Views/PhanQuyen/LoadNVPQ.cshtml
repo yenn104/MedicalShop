@@ -10,10 +10,6 @@
     else return null;
   }
 
-  List<NhanVien> ListNV()
-  {
-    return context.NhanVien.Where(z => z.Active == true).ToList();
-  }
 
 }
 <script src="~/admin/js/datatable-custom2.js"></script>

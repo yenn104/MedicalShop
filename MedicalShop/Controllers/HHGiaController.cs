@@ -1,6 +1,7 @@
 ﻿using MedicalShop.Models;
 using MedicalShop.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +40,34 @@ namespace MedicalShop.Controllers
     public IActionResult loadDSNhap(int idhh)
     {
       MedicalShopContext context = new MedicalShopContext();
-      List<ChiTietPhieuNhap> listctnk = context.ChiTietPhieuNhap.Where(x => x.Idhh == idhh).OrderByDescending(x => x.Hsd).ToList();
+      //List<ChiTietPhieuNhap> listctnk = context.ChiTietPhieuNhap.Where(x => x.Idhh == idhh).OrderBy(x => x.Hsd).ToList();
+
+      List<ChiTietPhieuNhap> listctnk = context.TonKho.Include(x => x.IdctpnNavigation)
+        .Where(x => x.IdctpnNavigation.Idhh == idhh).Select(x => x.IdctpnNavigation)
+        .OrderBy(x => x.Hsd).ToList();
+
+
       ViewBag.ListCTNK = listctnk;
       ViewBag.IDHH = idhh;
       return PartialView();
+    }
+
+
+
+    [Route("/loadGiaLT")]
+    public IActionResult loadGiaLT(int check)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+
+      var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true)).ToList();
+
+      ViewBag.ListNV = results;
+
+      return PartialView("loadNVPQ");
+
+      //return Ok(results);
+
+
     }
 
 
