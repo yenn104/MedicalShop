@@ -915,17 +915,17 @@ namespace MedicalShop.Models.Entities
 
             modelBuilder.Entity<NvImage>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("NV_Image");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Idcn).HasColumnName("IDCN");
 
@@ -940,7 +940,7 @@ namespace MedicalShop.Models.Entities
                 entity.Property(e => e.Type).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdnvNavigation)
-                    .WithMany()
+                    .WithMany(p => p.NvImage)
                     .HasForeignKey(d => d.Idnv)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_NV_Image_NhanVien");

@@ -160,7 +160,7 @@ namespace MedicalShop.Controllers
       dv.Cccd = nv.Cccd;
       dv.HomeTown = nv.HomeTown;
       dv.Sex = nv.Sex;
-      dv.DateOfBirth = DateTime.ParseExact(DateOfBirth, "dd-MM-yyyy", CultureInfo.InvariantCulture); ;
+      dv.DateOfBirth = DateTime.ParseExact(DateOfBirth, "dd-MM-yyyy", CultureInfo.InvariantCulture);
       if (avt != null)
       {
         dv.Image = UploadedFile(nv, avt);

@@ -83,6 +83,18 @@
     display: flex !important;
   }
 
+  .form-select3 .selectize-input > div {
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .form-select3 .selectize-input.has-items {
+    display: flex !important;
+  }
+
 
 /*  table.dataTable thead th {
     position: sticky;
@@ -111,14 +123,15 @@
     </ul>
     <div class="tab-content pt-2">
       @*<form onsubmit="return confirm('Bạn có muốn tạo phiếu nhập kho?')"  class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
-      <div class="tab-pane fade active show" id="borderedTabJustifiedContent">
+      <form action="/download/tonkhotonghop" method="post" class="tab-pane fade active show" id="borderedTabJustifiedContent">
+      @*<div class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
         <div id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
           <section class="section" style="background-color:white;" >
             <div class="card p-0" style="box-shadow:none">
               <div class="card-body">
                 <div class="row" >
                   <div class="col-sm-1 col-lg-3">
-                    <select id="nhomNHH" class="form-select3">
+                    <select id="nhomNHH" name="idnhh" class="form-select3">
                       <option selected disabled value=""></option>
                       <option value="0">Tất cả</option>
                       @foreach (NhomHangHoa n in ViewBag.getListNHH1)
@@ -128,7 +141,7 @@
                     </select>
                   </div>
                   <div class="col-sm-1 col-lg-3">
-                    <select id="hanghoa" class="form-select4">
+                    <select id="hanghoa" name="idhh" class="form-select4">
                       <option selected disabled value=""></option>
                       <option value="0">Tất cả</option>
                       @foreach (HangHoa n in ViewBag.getListHH)
@@ -147,10 +160,10 @@
                   </div>
                   <div class="col-sm-1 col-lg-2" style=" display: flex; flex-direction: row; justify-content: space-between;">
                     <button type="button" class="btn btn-secondary" onclick="loadTable()"><i class="fas fa-search fa-sm"></i></button>
-                    <a href="/download/phieuxuat" class="btn btn-outline-danger">PDF</a>
-                    <a href="/download/phieuxuat" class="btn btn-outline-success">Excel</a>
+                    <button class="btn btn-outline-danger" type="submit">PDF</button>
+                      <a href="/download/phieuxuat" class="btn btn-outline-success">Excel</a>
                   </div>
-                 
+
 
                 </div>
                 <br />
@@ -181,8 +194,9 @@
             </div>
           </section>
         </div>
-
+        </form>
       </div>
+    
       @*</form>*@
     </div>
 

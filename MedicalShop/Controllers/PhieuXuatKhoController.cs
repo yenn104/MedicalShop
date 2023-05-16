@@ -32,6 +32,7 @@ namespace MedicalShop.Controllers
     [HttpPost("/getDonViTinhPX")]
     public IActionResult getDonViTinhPX(int idHH)
     {
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
       MedicalShopContext context = new MedicalShopContext();
       // double? GiaBan;
       //KhachHang kh = context.KhachHang.Find(idKH);
@@ -51,15 +52,39 @@ namespace MedicalShop.Controllers
 
       //int ListCTPNT = (int)context.ChiTietPhieuNhap.Where(x => x.Idhh == idHH).Select(x => x.Quantity).Sum();
       // var slCon = ListCTPNT.Sum(x => x.Slg * x.DonGia);
+      string message = "";
       Dvt dvt = context.Dvt.Find(hh.Iddvtc);
+      HhGia gia = context.HhGia.FirstOrDefault(y => y.Idhh == idHH);
+
+      //var giaa = context.TonKho
+      //                  .Include(x => x.IdctpnNavigation)
+      //                  .Include(x => x.IdctpnNavigation.IdhhNavigation)
+      //                  .Join(
+      //                      context.HhGia,
+      //                      tk => tk.IdctpnNavigation.IdhhNavigation.Id,
+      //                      hhgia => hhgia.Idhh,
+      //                      (tk, hhgia) => new
+      //                      {
+      //                        TonKho = tk,
+      //                        HhGia = hhgia
+      //                      })
+      //                  .Where(x => x.HhGia.Price > (x.TonKho.IdctpnNavigation.Price*1.05) && x.TonKho.IdctpnNavigation.IdhhNavigation.Id == idHH)
+      //                  .Select(x => x.TonKho.IdctpnNavigation.IdhhNavigation)
+      //                  /*.ToList()*/;
+      
+
+
+
+
+
+
 
       return Json(new
       {
         dvt = hh.Iddvtc == null ? 0 : hh.Iddvtc,
         tenDVT = dvt == null ? "" : dvt.TenDvt,
-        //giaBan = GiaBan,
         slCon = getSLCon(idHH),
-        //hinhAnh = hh.Image
+        setgia = gia == null ? false : true,
       });
 
     
@@ -394,6 +419,45 @@ namespace MedicalShop.Controllers
     }
 
 
+
+    //public ActionResult ExportToExcel()
+    //{
+    //  MedicalShopContext context = new MedicalShopContext();
+
+    //  List<SP_TonKhoResult> list = context.SP_TonKho().ToList();
+
+    //  using (var workbook = new XLWorkbook())
+    //  {
+    //    var worksheet = workbook.Worksheets.Add("Danh sách sản phẩm tồn kho");
+    //    var currentRow = 1;
+    //    worksheet.Cell(currentRow, 1).Value = "Mã sản phẩm";
+    //    worksheet.Cell(currentRow, 2).Value = "Tên sản phẩm";
+    //    worksheet.Cell(currentRow, 3).Value = "Số lượng nhập";
+    //    worksheet.Cell(currentRow, 4).Value = "Số lượng xuất";
+    //    worksheet.Cell(currentRow, 5).Value = "Số lượng tồn kho";
+
+
+
+    //    foreach (var nv in list)
+    //    {
+    //      currentRow++;
+    //      worksheet.Cell(currentRow, 1).Value = nv.MaSP;
+    //      worksheet.Cell(currentRow, 2).Value = nv.TenSP;
+    //      worksheet.Cell(currentRow, 3).Value = nv._Số_lượng_xuất;
+    //      worksheet.Cell(currentRow, 4).Value = nv._Số_lượng_xuất;
+    //      worksheet.Cell(currentRow, 5).Value = nv.Số_lượng_tồn;
+
+
+
+
+    //    }
+    //    using (var stream = new MemoryStream())
+    //    {
+    //      workbook.SaveAs(stream);
+    //      var content = stream.ToArray();
+    //      return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Danhsachtonkho.xlsx");
+    //    }
+    //  }
 
 
     string getSoPhieu()

@@ -55,16 +55,53 @@ namespace MedicalShop.Controllers
 
 
     [Route("/loadGiaLT")]
+    //public IActionResult loadGiaLT(int check)
+    //{
+    //  MedicalShopContext context = new MedicalShopContext();
+
+    //  var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true)).ToList();
+
+    //  ViewBag.ListNV = results;
+
+    //  return PartialView("loadNVPQ");
+
+    //  //return Ok(results);
+
+
+    //}
+    
+    
+    [Route("/loadGiaLT")]
     public IActionResult loadGiaLT(int check)
     {
       MedicalShopContext context = new MedicalShopContext();
 
-      var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true)).ToList();
+      var results = context.HhGia.Where(x => (check == 1 ? x.Price == null : true) || (check == 1 ? x.TiLe == null : true)).ToList();
 
-      ViewBag.ListNV = results;
 
-      return PartialView("loadNVPQ");
+      //var giaLT = context.TonKho
+      //          .Include(x => x.IdctpnNavigation)
+      //          .Include(x => x.IdctpnNavigation.IdhhNavigation)
+      //          .Include(x => x.IdctpnNavigation.IdhhNavigation.HhGia)
+      //          .AsEnumerable()
+      //          .GroupBy(x => x.IdctpnNavigation.IdhhNavigation.HhGia)
+      //          .Where(x => x.Key.)
+      //          ;
 
+
+
+      //HhGia giaLT = (HhGia)(from tk in context.TonKho
+      //join ctn in context.ChiTietPhieuNhap on tk.Idctpn equals ctn.Id
+      //join hh in context.HangHoa on ctn.Idhh equals hh.Id
+      //join hg in context.HhGia on hh.Id equals hg.Idhh
+      //where hg.Price > 0 && hg.Price < (from c in context.ChiTietPhieuNhap
+      //                                  where c.Idhh == hh.Id
+      //                                  select c.Price).Max() * 1.05
+      //select new { TonKho = tk, HH_Gia = hg });
+
+
+      //ViewBag.GiaLT = giaLT;
+      return PartialView("table1");
       //return Ok(results);
 
 

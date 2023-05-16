@@ -141,7 +141,7 @@ namespace MedicalShop.Controllers
 
 
     [Route("/download/tonkhotonghop/")]
-    public IActionResult downloadPhieuXuat(int id)
+    public IActionResult downloadPhieuXuat(int idnhh, int idhh, string fromDay, string toDay)
     {
       var fullView = new HtmlToPdf();
       fullView.Options.WebPageWidth = 1280;
@@ -150,9 +150,11 @@ namespace MedicalShop.Controllers
       fullView.Options.MarginBottom = 20;
       fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
 
-      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+      var url = Url.Action("viewPDF", "TonKho", new { fromDay = fromDay, toDay = toDay, idnhh = idnhh, idhh = idhh});
 
-      var pdf = fullView.ConvertUrl(currentUrl + "/TKTongHopPDF/");
+      var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + url;
+
+      var pdf = fullView.ConvertUrl(currentUrl);
 
       var pdfBytes = pdf.Save();
       return File(pdfBytes, "application/pdf", "BCaoTonKho.pdf");
@@ -169,24 +171,30 @@ namespace MedicalShop.Controllers
       int index = 0;
       DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
       DateTime ToDay = DateTime.ParseExact(toDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+      ViewBag.fromDay = fromDay;
+      ViewBag.toDay = toDay;
+      ViewBag.nhomhh = idnhh == 0 ? "Tất cả" : context.NhomHangHoa.Find(idnhh).TenNhh;
+      ViewBag.hanghoa = idhh == 0 ? "Tất cả" : context.HangHoa.Find(idhh).TenHh;
+
+      
 
       var results = context.TonKho
-         .Join(context.ChiTietPhieuNhap, tk => tk.Idctpn, ctn => ctn.Id, (tk, ctn) => new { tk, ctn })
-         .Join(context.HangHoa.Where(hh => (idnhh == 0 ? true : hh.Idnhh == idnhh) && (idhh == 0 ? true : hh.Id == idhh)), x => x.ctn.Idhh, hh => hh.Id, (x, hh) => new { x.tk, x.ctn, hh })
-          .Where(tk => tk.tk.NgayNhap >= FromDay && tk.tk.NgayNhap <= ToDay)
-         .GroupBy(x => new { x.hh.MaHh, x.hh.TenHh })
-         .Select(g => new TonKhoModel
-         {
-           STT = index + 1,
-           MaHH = g.Key.MaHh,
-           TenHH = g.Key.TenHh,
-           SL = (double)g.Sum(tk => tk.tk.SoLuong),
-           Gia = (double)g.Sum(x => x.tk.SoLuong * (x.ctn.Price * (1 + x.ctn.Thue / 100)))
-         })
-         .OrderBy(r => r.TenHH)
-         .ToList();
+          .Join(context.ChiTietPhieuNhap, tk => tk.Idctpn, ctn => ctn.Id, (tk, ctn) => new { tk, ctn })
+          .Join(context.HangHoa.Where(hh => (idnhh == 0 ? true : hh.Idnhh == idnhh) && (idhh == 0 ? true : hh.Id == idhh)), x => x.ctn.Idhh, hh => hh.Id, (x, hh) => new { x.tk, x.ctn, hh })
+           .Where(tk => tk.tk.NgayNhap >= FromDay && tk.tk.NgayNhap <= ToDay)
+          .GroupBy(x => new { x.hh.MaHh, x.hh.TenHh })
+          .Select(g => new TonKhoModel
+          {
+            STT = index + 1,
+            MaHH = g.Key.MaHh,
+            TenHH = g.Key.TenHh,
+            SL = (double)g.Sum(tk => tk.tk.SoLuong),
+            Gia = (double)g.Sum(x => x.tk.SoLuong * (x.ctn.Price * (1 + x.ctn.Thue / 100)))
+          })
+          .OrderBy(r => r.TenHH)
+          .ToList();
 
-      return View("TKTongHopPDF", results);
+      return View("TonKhoTHPDF", results);
     }
 
 

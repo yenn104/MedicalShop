@@ -9,6 +9,11 @@
     return context.HangHoa.Where(x => x.Active == true).ToList();
   }
 
+  //string getDVT(int? id)
+  //{
+  //  return context.Dvt.Find(id).TenDvt;
+  //}
+
   var a = context.ChiTietPhieuNhap.Select(x => x.SoLo).Distinct().ToList();
 
   //string format(Double? a)
@@ -342,7 +347,7 @@
     $("#tableChiTietPhieuXuat").on("click", ".edit", function () {
       var index = $(this).closest('tr').attr('id');
       var idHH = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-      var dvt = $(this).parents('tr').find("td:eq(1)").html();
+      var dvt = $(this).parents('tr').find("td:eq(1)").text();
       var SL = $(this).parents('tr').find("td:eq(2)").html();
       var DonGia = $(this).parents('tr').find("td:eq(3)").html();
       var ThanhTien = $(this).parents('tr').find("td:eq(4)").html();
@@ -462,7 +467,14 @@
         success: function (result) {
           $('#donvitinh').val(result.dvt);
           $('#DVT').val(result.tenDVT);
-          $('#SLcon').val(toDecimal(result.slCon));       
+          $('#SLcon').val(toDecimal(result.slCon));
+          $('#SLHH').prop('readonly', false);
+          if (result.setgia == 1 || result.setgia == 2) {
+            $('#DonGia').addClass('is-invalid');
+            $('#ThanhTien').addClass('is-invalid');
+            alert("Hàng hóa chưa được áp đặt giá bán!");
+            $('#SLHH').prop('readonly', true);
+          }
         },
         error: function () {
           alert("Lỗi");
@@ -630,7 +642,6 @@
     var tenHH = $("#selectHHX option:selected").text();
 
     var idDVT = $('#DVT').val();
-  /*  <input type="hidden" id="IDDVT">*/
     var dvt = $('#donvitinh').val();
 
     var ThueXuat = $('#ThueXuat').val();
@@ -694,7 +705,6 @@
       var index = $(this).closest('tr').attr('id');
       var idHH = $(this).find("td:eq(0) input[type='hidden']").val();
       var IDDVT = $(this).find("td:eq(1) input[type='hidden']").val();
-      alert(IDDVT);
       var SL = $(this).find("td:eq(2)").text();
       var DonGia = $(this).find("td:eq(3)").text();
       //alert(DonGia);
