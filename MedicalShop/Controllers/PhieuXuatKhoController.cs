@@ -418,48 +418,6 @@ namespace MedicalShop.Controllers
 
     }
 
-
-
-    //public ActionResult ExportToExcel()
-    //{
-    //  MedicalShopContext context = new MedicalShopContext();
-
-    //  List<SP_TonKhoResult> list = context.SP_TonKho().ToList();
-
-    //  using (var workbook = new XLWorkbook())
-    //  {
-    //    var worksheet = workbook.Worksheets.Add("Danh sách sản phẩm tồn kho");
-    //    var currentRow = 1;
-    //    worksheet.Cell(currentRow, 1).Value = "Mã sản phẩm";
-    //    worksheet.Cell(currentRow, 2).Value = "Tên sản phẩm";
-    //    worksheet.Cell(currentRow, 3).Value = "Số lượng nhập";
-    //    worksheet.Cell(currentRow, 4).Value = "Số lượng xuất";
-    //    worksheet.Cell(currentRow, 5).Value = "Số lượng tồn kho";
-
-
-
-    //    foreach (var nv in list)
-    //    {
-    //      currentRow++;
-    //      worksheet.Cell(currentRow, 1).Value = nv.MaSP;
-    //      worksheet.Cell(currentRow, 2).Value = nv.TenSP;
-    //      worksheet.Cell(currentRow, 3).Value = nv._Số_lượng_xuất;
-    //      worksheet.Cell(currentRow, 4).Value = nv._Số_lượng_xuất;
-    //      worksheet.Cell(currentRow, 5).Value = nv.Số_lượng_tồn;
-
-
-
-
-    //    }
-    //    using (var stream = new MemoryStream())
-    //    {
-    //      workbook.SaveAs(stream);
-    //      var content = stream.ToArray();
-    //      return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Danhsachtonkho.xlsx");
-    //    }
-    //  }
-
-
     string getSoPhieu()
     {
       MedicalShopContext context = new MedicalShopContext();

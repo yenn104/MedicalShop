@@ -376,9 +376,8 @@
               <div class="bg-xx py-2 collapse-inner rounded">
                 @*<h6 class="collapse-header">Thống kê kho</h6>*@
                 <a class="collapse-item" href="/BaoCaoTonKho">Thống kê tồn kho</a>
-                <a class="collapse-item" href="/TonKho/LoadTonKho">Thống kê tồn kho</a>
-                <a class="collapse-item" href="/Report/ReportHHN">Thống kê hàng hóa đã nhập</a>
-                <a class="collapse-item" href="/Report/ReportHHX">Thống kê hàng hóa đã xuất</a>
+                <a class="collapse-item" href="/Report/ReportHHN">Hàng hóa đã nhập</a>
+                <a class="collapse-item" href="/Report/ReportHHX">Hàng hóa đã xuất</a>
                 <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
                 @*<a class="collapse-item" href="utilities-other.html">Other</a>*@
               </div>
@@ -601,6 +600,10 @@
         placeholder: "Nhóm hàng hóa"
       });
 
+      $('.form-select5').selectize({
+        placeholder: "Nhà cung cấp"
+      });
+
       $('.form-select4').selectize({
         placeholder: "Hàng hóa",
         //onChange: function () {
@@ -709,7 +712,7 @@
 
 
 
-      $('#HanDung,#NgayHD,#NgaySX,#toDay,#fromDay').datetimepicker({
+      $('#HanDung,#NgayHD,#NgaySX,#toDay,#fromDay,#toDay1,#fromDay1,#dateDay1').datetimepicker({
         locale: 'vi',
         useStrict: true,
         format: "DD-MM-yyyy",

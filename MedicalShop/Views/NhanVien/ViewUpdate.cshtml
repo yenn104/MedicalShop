@@ -67,7 +67,7 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">CCCD</label>
-            <input asp-for="@Model.Cccd" type="text" class="form-control" required>
+            <input asp-for="@Model.Cccd" type="text" required  maxlength="12" value="@Model.Cccd" class="cccd-input input-text qty text form-control" onkeypress="return isCCCDNumber(event)">
           </div>
         </div>
 
@@ -112,7 +112,7 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">Mail</label>
-            <input asp-for="@Model.Mail" type="text" class="form-control" required>
+            <input asp-for="@Model.Mail" type="email" class="form-control" required>
           </div>
         </div>
       </div>
@@ -134,9 +134,19 @@
     $('.quantity-input').bind("cut copy paste drag drop", function (e) {
       e.preventDefault();
     });
+    $('.cccd-input').bind("cut copy paste drag drop", function (e) {
+      e.preventDefault();
+    });
 
   });
   function isNumberKey(e) {
+    var charCode = (e.which) ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 43)
+      return false;
+    return true;
+  }
+
+  function isCCCDNumber(e) {
     var charCode = (e.which) ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57) /*&& charCode != 43*/)
       return false;

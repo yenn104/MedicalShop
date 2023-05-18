@@ -36,6 +36,18 @@
   }
 
 
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm:ss");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
 }
 
 <div class="row" style="margin-bottom: 70px;">
@@ -93,7 +105,7 @@
                 Ngày tạo
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CreatedDate)
+                @formatDay(Model.CreatedDate)
               </dd>
 
               <dt class="col-sm-2">
@@ -107,7 +119,7 @@
                 Ngày sửa
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ModifiedDate)
+                @formatDay(Model.ModifiedDate)
               </dd>
 
               <dt class="col-sm-2">

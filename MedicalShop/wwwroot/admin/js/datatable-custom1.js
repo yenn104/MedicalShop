@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-  $('#example').DataTable({
+  $('#example1').DataTable({
     lengthChange: false,
     pageLength: 5,
     info: false,
@@ -18,7 +18,7 @@ $(document).ready(function () {
   $('.dataTables_filter').hide();
 
 
-  var dataTableSearch = $('#example_filter').find('input');
+  var dataTableSearch = $('#example1_filter').find('input');
 
 
   // Lấy đối tượng ô tìm kiếm của bạn
