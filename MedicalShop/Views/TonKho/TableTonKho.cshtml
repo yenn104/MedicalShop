@@ -97,6 +97,7 @@
     display: none;
   }
 
+
 </style>
 
 <div class="card" style="margin-bottom: 5rem">
@@ -111,14 +112,14 @@
         <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Chi tiết</button>
       </li>
     </ul>
-    <div class="tab-content pt-2">
+    <div class="tab-content">
       @*<form onsubmit="return confirm('Bạn có muốn tạo phiếu nhập kho?')"  class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
       <form method="post" class="tab-pane fade active show" id="borderedTabJustifiedContent">
         @*<div class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
         <div id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
           <section class="section" style="background-color:white;">
             <div class="card p-0" style="box-shadow:none">
-              <div class="card-body">
+              <div class="card-body" style="padding: 1rem 1.25rem !important;">
                 <div class="row">
                   <div class="col-sm-1 col-lg-3">
                     <select id="nhomNHH" name="idnhh" class="form-select3">
@@ -141,12 +142,14 @@
                     </select>
                   </div>
                   <div class="col-sm-1 col-lg-2">
-                    <input type="text" required name="fromDay" value="@DateTime.Now.AddMonths(-1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">
+                    <input type="hidden" value="@ViewBag.minCreateDay.ToString("dd-MM-yyyy")" id="mindate"/>
+                    <input type="text" required name="fromDay" title="Từ ngày" value="@ViewBag.minCreateDay.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay2" data-date-format="DD-MM-yyyy" data-min-date="@ViewBag.minCreateDay.ToString("dd-MM-yyyy")">
+
                     @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
                   </div>
 
                   <div class="col-sm-1 col-lg-2">
-                    <input type="text" required name="toDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="toDay">
+                    <input type="text" required name="toDay"  title="Đến ngày" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="toDay2">
                   </div>
                   <div class="col-sm-1 col-lg-2" style=" display: flex; flex-direction: row; justify-content: space-between;">
                     <button type="button" class="btn btn-secondary" onclick="loadTable()"><i class="fas fa-search fa-sm"></i></button>
@@ -191,70 +194,76 @@
 
 
   @* content bên lịch sử phiếu nhập kho  *@
-  <div class="tab-content pt-2">
+  <div class="tab-content">
     <form method="post" class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
       <div class="row justify-content-start" >
         <section class="section" style="background-color:white;">
           <div class="card p-0" style="box-shadow:none">
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-1 col-lg-4">
-                  <select id="nhomNCC1" name="idncc" class="form-select5">
-                    <option selected disabled value=""></option>
-                    <option value="0">Tất cả</option>
-                    @foreach (NhaCungCap n in ViewBag.getListNCC1)
-                    {
-                      <option value="@n.Id">@n.TenNcc</option>
-                    }
-                  </select>
+                <div class=" row mb-2 pr-0">
+                  <div class="col-sm-1 col-lg-4">
+                    <select id="nhomNCC1" name="idncc" class="form-select5">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (NhaCungCap n in ViewBag.getListNCC1)
+                      {
+                        <option value="@n.Id">@n.TenNcc</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="col-sm-1 col-lg-4">
+                    <select id="nhomNHH1" name="idnhh1" class="form-select3">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (NhomHangHoa n in ViewBag.getListNHH1)
+                      {
+                        <option value="@n.Id">@n.TenNhh</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="col-sm-1 col-lg-4">
+                    <select id="hanghoa1" name="idhh1" class="form-select4">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (HangHoa n in ViewBag.getListHH)
+                      {
+                        <option value="@n.Id">@n.TenHh</option>
+                      }
+                    </select>
+                  </div>
                 </div>
-                <div class="col-sm-1 col-lg-4">
-                  <select id="nhomNHH1" name="idnhh1" class="form-select3">
-                    <option selected disabled value=""></option>
-                    <option value="0">Tất cả</option>
-                    @foreach (NhomHangHoa n in ViewBag.getListNHH1)
-                    {
-                      <option value="@n.Id">@n.TenNhh</option>
-                    }
-                  </select>
-                </div>
-                <div class="col-sm-1 col-lg-4">
-                  <select id="hanghoa1" name="idhh1" class="form-select4">
-                    <option selected disabled value=""></option>
-                    <option value="0">Tất cả</option>
-                    @foreach (HangHoa n in ViewBag.getListHH)
-                    {
-                      <option value="@n.Id">@n.TenHh</option>
-                    }
-                  </select>
-                </div>
-                <div class="col-sm-1 col-lg-10 d-flex">
-                  <div class="col-sm-1 col-lg-3 d-flex" style="align-items: center;">
-                    Từ:
-                    <input type="text" required name="fromDay1" value="@DateTime.Now.AddMonths(-1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay1">
+                <div class="row pr-0">
+                  @*<div class="col-sm-1 col-lg-1 d-flex pr-0" style="align-items: center;">
+                  
+                  </div>*@
+                  <div class="col-sm-1 col-lg-3 d-flex ">
+                    <input type="text" required name="fromDay1"  title="Từ ngày" value="@DateTime.Now.AddMonths(-1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay1">
                     @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
                   </div>
 
-                  <div class="col-sm-1 col-lg-3 d-flex" style="align-items: center;">
-                    Đến:
-                    <input type="text" required name="toDay1" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="toDay1">
+                  
+                  <div class="col-sm-1 col-lg-3 d-flex ">
+                    <input type="text" required name="toDay1"  title="Đến ngày" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="toDay1">
                   </div>
-                  <div class="col-sm-1 col-lg-3 d-flex" style="align-items: center;">
-                    HSD:
-                    <input type="text" required name="dateDay1" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="dateDay1">
+                  
+                  <div class="col-sm-1 col-lg-3 d-flex ">
+                    <input type="text" required name="dateDay1" title="Hạn sử dụng đến.."  value="@DateTime.Now.AddYears(1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="dateDay1">
                     @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
                   </div>
-                </div>
-                  <div class="col-sm-1 col-lg-2" style=" display: flex; flex-direction: row; justify-content: space-between;">
-                    <button type="button" class="btn btn-secondary" onclick="loadTable1()"><i class="fas fa-search fa-sm"></i></button>
-                    <button class="btn btn-outline-danger" type="submit" formaction="/download/tonkhochitiet">PDF</button>
-                    <button class="btn btn-outline-success" type="submit" formaction="/download/tonkhochitietexcel">Excel</button>
+
+                  <div class="col-sm-1 col-lg-3" style=" display: flex; flex-direction: row; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary ml-1" onclick="loadTable1()"><i class="fas fa-search fa-sm"></i></button>
+                    <button class="btn btn-outline-danger ml-1" type="submit" formaction="/download/tonkhochitiet">PDF</button>
+                    <button class="btn btn-outline-success ml-1" type="submit" formaction="/download/tonkhochitietexcel/">Excel</button>
                   </div>
-                
-                
+                </div>
+                  
 
 
-              </div>
+
+
+                </div>
               <br />
               <article>
 
@@ -322,7 +331,7 @@
 </div>
 </div>
 
-  <script>
+<script>
 
     //ok
     $(document).ready(function () {
@@ -338,7 +347,7 @@
       //});
       $('.dataTables_filter').hide();
 
-      
+
       $('#table2').on('order.dt', function () {
         if ($("#table2").DataTable().rows().count() == 0) {
           return;
@@ -346,11 +355,27 @@
           updateTable2();
         }
         });
-     
 
+
+      var minDate = moment($('#mindate').val(), 'DD-MM-yyyy');
+      var maxDate = new Date();
+
+       $('#fromDay2').datetimepicker({
+         format: 'DD-MM-yyyy',
+         minDate: minDate.toDate(),
+         maxDate: maxDate,
+       });
+
+
+      $('#toDay2').datetimepicker({
+        format: 'DD-MM-yyyy',
+        minDate: minDate.toDate(),
+        maxDate: maxDate,
+      });
 
 
     });
+
 
 
 
@@ -376,8 +401,18 @@
     function loadTable() {
       var nhomNHH = $('#nhomNHH').val();
       var hanghoa = $('#hanghoa').val();
-      var toDay = $('#toDay').val();
-      var fromDay = $('#fromDay').val();
+      var toDay = $('#toDay2').val();
+      var fromDay = $('#fromDay2').val();
+
+      var x = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+      var y = new Date(toDay.substring(3, 5) + "-" + toDay.substring(0, 2) + "-" + toDay.substring(6, 10));
+
+      if (x > y) {
+        alert('Giới hạn từ ngày đến ngày không hợp lý!');
+        $('#table2').DataTable().clear().draw();
+        return;
+      }
+
 
       /*var index = 0;*/
       $.ajax({
@@ -395,7 +430,7 @@
             paginate: false,
             info: false,
             language: {
-              emptyTable: "Chưa có dữ liệu.",
+              emptyTable: "Không có dữ liệu.",
             },
             data: result,
             columns: [
@@ -437,6 +472,18 @@
       var fromDay = $('#fromDay1').val();
       var dateDay = $('#dateDay1').val();
 
+
+      var x = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+      var y = new Date(toDay.substring(3, 5) + "-" + toDay.substring(0, 2) + "-" + toDay.substring(6, 10));
+
+      if (x > y) {
+        alert('Giới hạn từ ngày đến ngày không hợp lý!');
+        $('#table3').DataTable().clear().draw();
+        return;
+      }
+
+
+
       /*var index = 0;*/
       $.ajax({
         type: "POST",
@@ -459,7 +506,7 @@
             columns: [
               { data: 'stt', title: 'STT', className: 'text-center' },
               { data: 'ngayNhap', title: 'Ngày nhập', className: 'text-left' },
-              { data: 'ncc', title: 'NCC', className: 'text-left' },
+              { data: 'ncc', title: 'Nhà cung cấp', className: 'text-left' },
               { data: 'maHH', title: 'Mã hàng', className: 'text-left' },
               { data: 'tenHH', title: 'Tên hàng', className: 'text-left' },
               { data: 'soLo', title: 'Số lô', className: 'text-left' },
@@ -586,7 +633,7 @@
         var hsd = $(this).find("td:eq(6)");
         date2 = moment(hsd.text()).format('DD-MM-YYYY');
         hsd.text(date2);
-       
+
 
 
       });
@@ -693,4 +740,4 @@
       });
     }
 
-  </script>
+</script>

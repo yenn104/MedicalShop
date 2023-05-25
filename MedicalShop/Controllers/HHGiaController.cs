@@ -53,23 +53,6 @@ namespace MedicalShop.Controllers
     }
 
 
-
-    [Route("/loadGiaLT")]
-    //public IActionResult loadGiaLT(int check)
-    //{
-    //  MedicalShopContext context = new MedicalShopContext();
-
-    //  var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true)).ToList();
-
-    //  ViewBag.ListNV = results;
-
-    //  return PartialView("loadNVPQ");
-
-    //  //return Ok(results);
-
-
-    //}
-    
     
     [Route("/loadGiaLT")]
     public IActionResult loadGiaLT(int check)
@@ -78,30 +61,51 @@ namespace MedicalShop.Controllers
 
       var results = context.HhGia.Where(x => (check == 1 ? x.Price == null : true) || (check == 1 ? x.TiLe == null : true)).ToList();
 
+     var hh1 = context.HangHoa
+        .Where(hh => (check == 1 ? !hh.HhGia.Any() : true))
+        .ToList();
 
-      //var giaLT = context.TonKho
-      //          .Include(x => x.IdctpnNavigation)
-      //          .Include(x => x.IdctpnNavigation.IdhhNavigation)
-      //          .Include(x => x.IdctpnNavigation.IdhhNavigation.HhGia)
-      //          .AsEnumerable()
-      //          .GroupBy(x => x.IdctpnNavigation.IdhhNavigation.HhGia)
-      //          .Where(x => x.Key.)
-      //          ;
 
+      //ViewBag.Loithoi = context.
+      // var results = context.TonKho
+
+      //.Join(context.ChiTietPhieuNhap, tk => tk.Idctpn, ctn => ctn.Id, (tk, ctn) => new { tk, ctn })
+      //.Join(context.HangHoa.Include(hh => hh.IddvtcNavigation).Where(hh => (idnhh == 0 ? true : hh.Idnhh == idnhh) && (idhh == 0 ? true : hh.Id == idhh)), x => x.ctn.Idhh, hh => hh.Id, (x, hh) => new { x.tk, x.ctn, hh })
+      //.Join(context.PhieuNhap, x => x.ctn.Idpn, pn => pn.Id, (x, pn) => new { x.tk, x.ctn, x.hh, pn })
+      //.Join(context.NhaCungCap.Where(ncc => (idncc == 0 ? true : ncc.Id == idncc)), x => x.pn.Idncc, ncc => ncc.Id, (x, ncc) => new { x.tk, x.ctn, x.hh, x.pn, ncc })
+      //.Where(tk => tk.tk.NgayNhap >= FromDay && tk.tk.NgayNhap <= ToDay && tk.ctn.Hsd <= DateDay)
+      //.AsEnumerable()
+      //.GroupBy(x => new { x.hh.MaHh, x.hh.TenHh, x.ncc.TenNcc })
+      //.Select(g => new TonKhoChiTietModel
+
+      //sai
+      //.Where(x => x.IdctpnNavigation.IdhhNavigation.HhGia.Select(x => x.Price) <= (x.IdctpnNavigation.Price * 1.05))
+
+      var hh2 = context.TonKho
+                  .Include(x => x.IdctpnNavigation)
+                  .Include(x => x.IdctpnNavigation.IdhhNavigation)
+                  .Include(x => x.IdctpnNavigation.IdhhNavigation.HhGia)
+                  .Where(x => x.IdctpnNavigation.IdhhNavigation.HhGia.Any(hg => hg.Price <= (x.IdctpnNavigation.Price * 1.05)))
+                  .Select(x => x.IdctpnNavigation.IdhhNavigation)
+                  .Distinct()
+                  .ToList();
+
+
+      ViewBag.Load = hh1.Union(hh2).ToList();
 
 
       //HhGia giaLT = (HhGia)(from tk in context.TonKho
-      //join ctn in context.ChiTietPhieuNhap on tk.Idctpn equals ctn.Id
-      //join hh in context.HangHoa on ctn.Idhh equals hh.Id
-      //join hg in context.HhGia on hh.Id equals hg.Idhh
-      //where hg.Price > 0 && hg.Price < (from c in context.ChiTietPhieuNhap
-      //                                  where c.Idhh == hh.Id
-      //                                  select c.Price).Max() * 1.05
-      //select new { TonKho = tk, HH_Gia = hg });
+      //                      join ctn in context.ChiTietPhieuNhap on tk.Idctpn equals ctn.Id
+      //                      join hh in context.HangHoa on ctn.Idhh equals hh.Id
+      //                      join hg in context.HhGia on hh.Id equals hg.Idhh
+      //                      where hg.Price > 0 && hg.Price < (from c in context.ChiTietPhieuNhap
+      //                                                        where c.Idhh == hh.Id
+      //                                                        select c.Price).Max() * 1.05
+      //                      select new { TonKho = tk, HH_Gia = hg });
 
 
       //ViewBag.GiaLT = giaLT;
-      return PartialView("table1");
+      return PartialView("LoadGiaLT");
       //return Ok(results);
 
 

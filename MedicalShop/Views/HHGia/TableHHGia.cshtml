@@ -65,7 +65,7 @@
     </div>
     <div class="mc-23" style="display: flex; flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-between; ">
       <div id="table1" class=" table-responsive-lg">
-        <table class="table table-bordered table-hover" id="example" >
+        <table class="table table-striped" id="example" >
           <thead>
             <tr style="background: #e9ecef;">
               @*<th style="width:15px">STT</th>*@
@@ -159,7 +159,8 @@
       url: "/loadGiaLT",
       data: "check=" + checked,
       success: function (result) {
-        $('#table_nv').replaceWith(result);
+       // console.log(result);
+        $('#table1').replaceWith(result);
       },
       error: function () {
         alert("Failed");
