@@ -1,4 +1,4 @@
-﻿@model MedicalShop.Models.Entities.Dvt
+﻿@model IEnumerable<MedicalShop.Models.Entities.Dvt>
 
 @{
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
@@ -54,11 +54,11 @@
 }
 
 @*<style>
-  .dataTables_filter {
-    display: none;
-  }
+    .dataTables_filter {
+      display: none;
+    }
 
-</style>*@
+  </style>*@
 
 
 @*@section Scripts{
@@ -117,7 +117,7 @@
           NV tạo
         </th>
         <th class="text-center">
-         Ngày sửa
+          Ngày sửa
         </th>
         <th class="text-center">
           NV sửa
@@ -126,7 +126,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach (Dvt item in listDVT())
+      @foreach (Dvt item in Model)
       {
         <tr>
           <td>

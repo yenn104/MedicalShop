@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class KhachHangController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
@@ -100,14 +102,17 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableKH")]
     public IActionResult loadTableKH(bool active)
     {
-      if (active)
-      {
-        ViewBag.KH = context.KhachHang.Where(x => x.Active == true).ToList();
-      }
-      else
-      {
-        ViewBag.KH = context.KhachHang.ToList();
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.KH = context.KhachHang
+        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenKh)
+        .ToList();
       return PartialView();
     }
 

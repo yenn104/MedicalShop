@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class NSXController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
@@ -17,7 +19,16 @@ namespace MedicalShop.Controllers
       ViewData["Title"] = "Danh mục nước sản xuất";
       TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NSX" && x.Active == true).FirstOrDefault().Id;
       //ViewBag.nuocsx = context.Nsx.ToList();
-      return View("TableNSX");
+
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+      List<Nsx> listNSX = context.Nsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+
+      return View("TableNSX", listNSX);
     }
 
     //hiển thị view thêm nhà sản xuất

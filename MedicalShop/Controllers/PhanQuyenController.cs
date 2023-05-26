@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace MedicalShop.Controllers
 {
   //sua lai cho datetime.now
+  [Authorize(Roles = "NV")]
   public class PhanQuyenController : Controller
   {
     public IActionResult Table()

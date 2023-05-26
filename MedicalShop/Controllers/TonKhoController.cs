@@ -2,6 +2,7 @@
 using ClosedXML.Excel;
 using MedicalShop.Models;
 using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ using System.Linq;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
+
   public class TonKhoController : Controller
   {
     private readonly ILogger<TonKhoController> _logger;

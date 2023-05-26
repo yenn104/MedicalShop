@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models;
 using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class PhieuNhapKhoController : Controller
   {
 

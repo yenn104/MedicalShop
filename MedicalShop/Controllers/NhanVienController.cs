@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class NhanVienController : Controller
   {
     public IActionResult Index()
@@ -177,28 +179,17 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableNV")]
     public IActionResult loadTable(bool active, int nhomNV)
     {
-      if (active)
-      {
-        if (nhomNV != 0)
-        {
-          ViewBag.ListNV = context.NhanVien.Where(x => x.Active == active && x.Idnnv == nhomNV).OrderBy(x => x.TenNv).ToList();
-        }
-        else
-        {
-          ViewBag.ListNV = context.NhanVien.Where(x => x.Active == active).OrderBy(x => x.TenNv).ToList();
-        }
-      }
-      else
-      {
-        if (nhomNV != 0)
-        {
-          ViewBag.ListNV = context.NhanVien.Where(x => x.Idnnv == nhomNV).OrderBy(x => x.TenNv).ToList();
-        }
-        else
-        {
-          ViewBag.ListNV = context.NhanVien.OrderBy(x => x.TenNv).ToList();
-        }
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.ListNV = context.NhanVien
+        .Where(x => (active == false ? true : x.Active == true) && (nhomNV == 0 ? true : x.Idnnv == nhomNV) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenNv)
+        .ToList();
       return PartialView("LoadTableNV");
     }
 

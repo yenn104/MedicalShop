@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-
 namespace MedicalShop.Controllers
 {
   [Authorize(Roles ="NV")]

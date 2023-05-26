@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models;
 using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SelectPdf;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class PhieuXuatKhoController : Controller
   {
 

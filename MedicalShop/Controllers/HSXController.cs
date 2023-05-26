@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class HSXController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
@@ -102,14 +104,19 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableHSX")]
     public IActionResult loadTableHSX(bool active)
     {
-      if (active)
-      {
-        ViewBag.HSX = context.Hsx.Where(x => x.Active == true).ToList();
-      }
-      else
-      {
-        ViewBag.HSX = context.Hsx.ToList();
-      }
+
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.HSX = context.Hsx
+        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenHsx)
+        .ToList();
+
       return PartialView();
     }
 

@@ -30,11 +30,13 @@ namespace MedicalShop.Controllers
 
 
     [Authorize(Roles = "NV")]
-    public IActionResult ViewSelector()
+    public IActionResult ViewSelector(string returnUrl)
     {
-      
-    //  ViewBag.PhanQuyen = TempData["PhanQuyen"];
-     // string tk = ViewBag.TaiKhoan;
+
+      returnUrl = (string)TempData["returnUrl"];
+      TempData["ReturnUrl"] = returnUrl;
+      //  ViewBag.PhanQuyen = TempData["PhanQuyen"];
+      // string tk = ViewBag.TaiKhoan;
       string user = User.Claims.ElementAt(0).Value;
       ViewBag.TaiKhoan = user;
 
@@ -49,8 +51,10 @@ namespace MedicalShop.Controllers
 
     [HttpPost]
     [Authorize(Roles = "NV")]
-    public async Task<IActionResult> SelectorAsync(PhanQuyen pq)
+    public async Task<IActionResult> SelectorAsync(PhanQuyen pq, string returnUrl)
     {
+      returnUrl = (string)TempData["returnUrl"];
+
       var identity = new ClaimsIdentity(User.Identity);
 
       var vaiTroClaim = identity.FindFirst("VaiTro");
@@ -71,7 +75,17 @@ namespace MedicalShop.Controllers
       var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
       await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-      return RedirectToAction("QuanLy", "QuanLy");
+
+      if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                                && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+      {
+        return Redirect(returnUrl);
+      }
+      else
+      {
+        return RedirectToAction("QuanLy", "QuanLy");
+      }
+
     }
 
 
@@ -99,7 +113,6 @@ namespace MedicalShop.Controllers
 
 
     [HttpPost]
-    
     public ActionResult LogIn(TaiKhoan account, string returnUrl)
     {
       if (ModelState.IsValid)
@@ -140,7 +153,12 @@ namespace MedicalShop.Controllers
             if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                                 && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
             {
-              return Redirect(returnUrl);
+              //return Redirect(returnUrl);
+              TempData["ReturnUrl"] = returnUrl;
+              return RedirectToAction("ViewSelector");
+
+
+
             }
             else
             {
