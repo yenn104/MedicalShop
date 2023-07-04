@@ -75,7 +75,7 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">CCCD</label>
-            <input asp-for="@Model.Cccd" type="text" class="form-control cccd-input input-text qty text" required maxlength="12"  onkeypress="return isCCCDNumber(event)">
+            <input asp-for="@Model.Cccd" type="text" id="Cccd" onblur="Check()" class="form-control cccd-input input-text qty text" required maxlength="12"  onkeypress="return isCCCDNumber(event)">
           </div>
         </div>
 
@@ -203,5 +203,22 @@
 
 
 
-
+  function Check() {
+    var idnv = $('#Cccd').val();
+    $.ajax({
+      type: "post",
+      url: "/check",
+      data: "&IDNV=" + idnv,
+      success: function (result) {
+        if (result.exists) {
+          alert("Căn cước công dân đã tồn tại!");
+          $('#Cccd').val("");
+        } else {
+        }
+      },
+      error: function () {
+        alert("Căn cước công dân đã tồn tại!");
+      }
+    });
+  }
 </script>

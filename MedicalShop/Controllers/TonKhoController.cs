@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace MedicalShop.Controllers
 {
-  [Authorize(Roles = "NV")]
+  
 
   public class TonKhoController : Controller
   {
@@ -415,7 +415,7 @@ namespace MedicalShop.Controllers
 
 
     [Route("/download/tonkhochitiet/")]
-    public IActionResult downloadPDFChiTiet(int idncc, int idnhh, int idhh, string fromDay, string toDay, string dateDay)
+    public IActionResult downloadPDFChiTiet(int idncc, int idnhh1, int idhh1, string fromDay1, string toDay1, string dateDay1)
     {
       var fullView = new HtmlToPdf();
       fullView.Options.WebPageWidth = 1280;
@@ -424,7 +424,7 @@ namespace MedicalShop.Controllers
       fullView.Options.MarginBottom = 20;
       fullView.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
 
-      var url = Url.Action("viewCTPDF", "TonKho", new { fromDay = fromDay, toDay = toDay, idnhh = idnhh, idhh = idhh, idncc = idncc, dateDay = dateDay });
+      var url = Url.Action("viewCTPDF", "TonKho", new { fromDay = fromDay1, toDay = toDay1, idnhh = idnhh1, idhh = idhh1, idncc = idncc, dateDay = dateDay1 });
 
       var currentUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}" + url;
 
@@ -438,7 +438,7 @@ namespace MedicalShop.Controllers
 
 
 
-    [Route("/TonKhoCTPDF/{idnhh:int}/{idhh:int}/{fromDay}/{toDay}/{dateDay}/{idncc:int}")]
+    //[Route("/TonKhoChiTietPDF/{idnhh:int}/{idhh:int}/{fromDay}/{toDay}/{dateDay}/{idncc:int}")]
     public IActionResult viewCTPDF(int idncc, int idnhh, int idhh, string fromDay, string toDay, string dateDay)
     {
       MedicalShopContext context = new MedicalShopContext();
@@ -482,7 +482,7 @@ namespace MedicalShop.Controllers
       .OrderBy(r => r.TenHH)
       .ToList();
 
-      return View("TonKhoTHPDF", results);
+      return View("TonKhoChiTietPDF", results);
     }
 
 

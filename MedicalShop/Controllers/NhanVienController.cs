@@ -243,7 +243,27 @@ namespace MedicalShop.Controllers
 
 
 
+    [HttpPost("/Check")]
+    public IActionResult Check(string IDNV)
+    {
+      // Kiểm tra mã nhân viên đã tồn tại hay chưa
+      bool exists = CheckIfEmployeeExists(IDNV);
 
+      // Tạo một object JSON để trả về kết quả
+      var result = new { exists = exists };
+
+      return Json(result);
+    }
+
+    private bool CheckIfEmployeeExists(string id)
+    {
+      // Thực hiện kiểm tra mã nhân viên trong cơ sở dữ liệu
+      MedicalShopContext context = new MedicalShopContext();
+      NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Cccd == id);
+
+      // Trả về kết quả kiểm tra
+      return (nv != null);
+    }
 
   }
 }

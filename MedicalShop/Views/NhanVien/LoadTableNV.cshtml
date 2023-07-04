@@ -88,8 +88,15 @@
             <td>
               @Html.DisplayFor(modelItem => item.Cccd)
             </td>
-            <td id="imageHH" class="side-picture">
-              <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+            <td id="imageHH" class="side-picture text-center">
+              @if (@item.Image != null && @item.Image != "")
+              {
+                <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              }
+              else
+              {
+                <img src="~/lib/imagesNV/Unone.jpg" alt="@item.TenNv" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              }
             </td>
             <td>
               @if (item.Sex == true)
@@ -102,7 +109,7 @@
               }
             </td>
             <td>
-              @Html.DisplayFor(modelItem => item.DateOfBirth)
+              @formatDay(item.DateOfBirth)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.Phone)
@@ -136,7 +143,14 @@
               @Html.DisplayFor(modelItem => item.Cccd)
             </td>
             <td id="imageHH" class="side-picture text-center">
-              <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              @if (@item.Image != null && @item.Image != "")
+              {
+                <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              }
+              else
+              {
+                <img src="~/lib/imagesNV/Unone.jpg" alt="@item.TenNv" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              }
             </td>
             <td class="text-left">
               @if (item.Sex == true)

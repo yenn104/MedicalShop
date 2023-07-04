@@ -5,7 +5,7 @@
   MedicalShopContext context = new MedicalShopContext();
   List<VaiTro> listvt()
   {
-    return context.VaiTro.Where(x => x.Active == true).OrderBy(x => x.TenVt).ToList();
+    return context.VaiTro.Where(x => x.Active == true && x.Type == false).OrderBy(x => x.TenVt).ToList();
   }
 }
  
@@ -94,7 +94,6 @@
               <th class="text-center">Xóa</th>
               <th class="text-center">In</th>
               <th class="text-center">Xuất</th>
-              <th class="text-center" rowspan="2" style="writing-mode:vertical-rl">Tất cả</th>
             </tr>
             <tr>
               <th class="text-center"><input type="checkbox" id="checkAllNhap" style="width: 17px; height: 17px"></th>
@@ -130,6 +129,7 @@
         $("#checkAllNhap").removeAttr("checked");
       }
     });
+
   
 
     $("#checkAllSua").click(function () {

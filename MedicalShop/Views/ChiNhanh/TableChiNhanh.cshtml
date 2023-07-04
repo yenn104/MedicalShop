@@ -1,0 +1,160 @@
+﻿@model IEnumerable<MedicalShop.Models.Entities.ChiNhanh>
+
+@{
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+
+
+  var acc = User.FindFirst("VaiTro");
+  // int abc = (int)TempData["Menu"]; ViewBag.Menu;
+  int idmenu = (int)TempData.Peek("Menu");
+
+  // int idmenu = (int)TempData["Menu"];
+
+  // TempData.Keep("Menu");
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+      }
+    }
+  }
+
+
+}
+
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+                            window.onload = function () {
+                                alert("@Html.Raw(@TempData["ThongBao"])");
+                        };
+  </script>
+}
+
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div style="margin-bottom: 20px">
+    @if (nhap == true)
+    {
+      <a href="/ChiNhanh/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+    }
+    else
+    {
+      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+    }
+  </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tableChiNhanh" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
+    <thead>
+      <tr>
+        <th>
+          Mã CN
+        </th>
+        <th>
+          Tên CN
+        </th>
+        <th>
+          Địa chỉ
+        </th>
+        <th>
+          SĐT
+        </th>
+        <th>
+          Mail
+        </th>
+        <th>
+          Ghi chú
+        </th>
+        <th>Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in Model)
+      {
+      <tr>
+        <td>
+          @Html.DisplayFor(modelItem => item.MaCn)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.TenCn)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Mail)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Note)
+        </td>
+        <td>
+          @if (sua == true)
+          {
+            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+          }
+          @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+          @if (xoa == true)
+          {
+            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+          }
+          else
+          {
+            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+  $('#active').on('change', function () {
+    var a = $(this).val();
+    $.ajax({
+      type: "post",
+      url: "/loadTableChiNhanh",
+      data: "active=" + a,
+      success: function (result) {
+        $('#tableChiNhanh').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
+    });
+  });
+</script>
+

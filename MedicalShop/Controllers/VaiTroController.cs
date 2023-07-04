@@ -97,7 +97,7 @@ namespace MedicalShop.Controllers
     public IActionResult loadTableVT()
     {
       MedicalShopContext context = new MedicalShopContext();
-      ViewBag.loadTableVT = context.VaiTro.Where(x => x.Active == true).OrderBy(x => x.TenVt).ToList();
+      ViewBag.loadTableVT = context.VaiTro.Where(x => x.Active == true && x.Type == false).OrderBy(x => x.TenVt).ToList();
       return PartialView();
     }
 

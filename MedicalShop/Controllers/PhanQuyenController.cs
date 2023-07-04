@@ -227,7 +227,7 @@ namespace MedicalShop.Controllers
       //hh.Idnhh == idnhh
 
 
-      var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true)).ToList();
+      var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true) && x.Active == true).ToList();
 
       ViewBag.ListNV = results;
 

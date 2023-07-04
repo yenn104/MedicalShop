@@ -25,21 +25,37 @@
     <form enctype="multipart/form-data" action="/NhanVien/updateNhanVien" method="post">
       <div class="forms-body">
         <div class="form-group" style="display: flex; ">
-          <div>
-            <label style="margin-bottom: 70px;">Hình ảnh</label>
-            <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
-          </div>
-          <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
+          <div class="d-flex align-items-start align-items-sm-center gap-4">
             @if (Model.Image != null)
             {
-              <img alt="" src="~/lib/imagesNV/@Model.Image" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+              <img alt="" src="~/lib/imagesNV/@Model.Image" class="d-block rounded" height="100" width="100" id="image1">
             }
             else
             {
-              <img alt="" src="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+              <img alt="" class="d-block rounded" height="100" width="100" id="image1">
             }
+            
+            <div class="button-wrapper">
+              <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                <span class="d-none d-sm-block">Tải ảnh mới</span>
+                <i class="fa fa-thin fa-upload d-block d-sm-none" style="color: #ffffff;"></i>
+                <input name="Avt" type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+              </label>
+              <p class="text-muted mb-0" style="font-size:1rem !important">Cho phép JPG or PNG.</p>
+            </div>
           </div>
+
+
+
+          @*<div>
+        <label style="margin-bottom: 70px;">Hình ảnh</label>
+        <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
+      </div>
+      <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
+        <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+      </div>*@
         </div>
+       
         <div class="form-group" style="display:flex">
           <div class="group-left">
             <label style="margin:7px 0;">Nhóm NV</label>
@@ -67,7 +83,7 @@
           </div>
           <div class="group-right">
             <label style="margin:7px 0;">CCCD</label>
-            <input asp-for="@Model.Cccd" type="text" required  maxlength="12" value="@Model.Cccd" class="cccd-input input-text qty text form-control" onkeypress="return isCCCDNumber(event)">
+            <input asp-for="@Model.Cccd" id="Cccd" onblur="Check()" type="text" required maxlength="12" value="@Model.Cccd" class="cccd-input input-text qty text form-control" onkeypress="return isCCCDNumber(event)">
           </div>
         </div>
 
@@ -75,7 +91,7 @@
           <div class="group-left">
             <label style="margin:7px 0; width:100%">Giới tính</label>
             <div class="form-group" style="display:flex;">
-              <input asp-for="@Model.Sex" type="radio" id="male"  value="true" checked>
+              <input asp-for="@Model.Sex" type="radio" id="male" value="true" checked>
               <label for="male" style="margin-bottom: 0rem; padding: 0rem 10% 0rem 3%; align-self: center;">Nam</label><br>
               <input asp-for="@Model.Sex" type="radio" id="female" value="false">
               <label for="female" style="margin-bottom: 0rem; padding: 0rem 10% 0rem 3%; align-self: center; ">Nữ</label><br>
@@ -167,5 +183,26 @@
             $("#Fileimage").change(function() {
                 readURL(this, '#image1');
             });
+
+
+
+  function Check() {
+    var idnv = $('#Cccd').val();
+    $.ajax({
+      type: "post",
+      url: "/check",
+      data: "&IDNV=" + idnv,
+      success: function (result) {
+        if (result.exists) {
+          alert("Căn cước công dân đã tồn tại!");
+          $('#Cccd').val("");
+        } else {
+        }
+      },
+      error: function () {
+        alert("Căn cước công dân đã tồn tại!");
+      }
+    });
+  }
 
 </script>

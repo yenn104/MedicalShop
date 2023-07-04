@@ -146,7 +146,7 @@ namespace MedicalShop.Controllers
 
 
 
-
+    [AllowAnonymous]
     [Route("/download/phieunhap/{id:int}")]
     public IActionResult downloadPhieuNhap(int id)
     {
@@ -165,6 +165,7 @@ namespace MedicalShop.Controllers
       return File(pdfBytes, "application/pdf", "PhieuNhap.pdf");
     }
 
+    [AllowAnonymous]
 
     [Route("/PhieuNhapPDF/{id:int}")]
     public IActionResult viewPDF(int id)
@@ -179,6 +180,7 @@ namespace MedicalShop.Controllers
 
 
 
+    [AllowAnonymous]
 
     [HttpPost("/download/BaoCaoPhieuNhap")]
     public IActionResult downloadBaoCaoPhieuNhap(string fromDay, string toDay, string soPhieuLS, string soHDLS, int nhaCC, int hhLS)
@@ -199,6 +201,9 @@ namespace MedicalShop.Controllers
       var pdfBytes = pdf.Save();
       return File(pdfBytes, "application/pdf", "BaoCaoPhieuNhap.pdf");
     }
+
+    [AllowAnonymous]
+
     public IActionResult viewBaoCaoPhieuNhapPDF(string fromDay, string toDay, string soPhieuLS, string soHDLS, int nhaCC, int hhLS)
     {
       DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);

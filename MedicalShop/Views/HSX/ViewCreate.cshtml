@@ -9,11 +9,11 @@
     <form action="/HSX/insert" method="post">
       <div class="forms-body">
         <div class="form-group">
-          <label style="margin:7px 0;">Mã HSX</label>
+          <label style="margin:7px 0;">Mã hãng sản xuất</label>
           <input asp-for="@Model.MaHsx" type="text" class="form-control" required>
         </div>
         <div class="form-group">
-          <label style="margin:7px 0;">Tên HSX</label>
+          <label style="margin:7px 0;">Tên hãng sản xuất</label>
           <input asp-for="@Model.TenHsx" type="text" class="form-control" required>
         </div>
         <div class="form-group">
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
           <label style="margin:7px 0;">Mail</label>
-          <input asp-for="@Model.Mail" type="text" class="form-control" required>
+          <input asp-for="@Model.Mail" type="email" class="form-control" required>
         </div>
       </div>
 

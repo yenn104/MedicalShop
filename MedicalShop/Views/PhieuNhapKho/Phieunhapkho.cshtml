@@ -808,7 +808,12 @@
   function loadTableLichSuNhap() {
     var toDay = $('#toDay').val();
     var fromDay = $('#fromDay').val();
-
+    var x = new Date(toDay.substring(3, 5) + "-" + toDay.substring(0, 2) + "-" + toDay.substring(6, 10));
+    var y = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+    if (x < y) {
+      alert('Giới hạn ngày không hợp lệ!');
+      return;
+    }
     $.ajax({
       type: "post",
       url: "/loadTableLichSuNhap",

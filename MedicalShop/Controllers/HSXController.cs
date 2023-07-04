@@ -41,7 +41,7 @@ namespace MedicalShop.Controllers
       return View(hsx);
     }
 
-
+    [HttpPost]
     //thêm hãng sản xuất
     public IActionResult Insert(Hsx hsx)
     {

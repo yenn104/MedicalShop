@@ -375,9 +375,11 @@
                  data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
                 @*<h6 class="collapse-header">Thống kê kho</h6>*@
-                <a class="collapse-item" href="/BaoCaoTonKho">Thống kê tồn kho</a>
-                <a class="collapse-item" href="/Report/ReportHHN">Hàng hóa đã nhập</a>
-                <a class="collapse-item" href="/Report/ReportHHX">Hàng hóa đã xuất</a>
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 3).OrderBy(x => x.IdmenuNavigation.Stt))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu">@cn.IdmenuNavigation.TenMenu</a>
+                }
+              <a class="collapse-item" href="/QuanLy/Test">Trực quan</a>
                 <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
                 @*<a class="collapse-item" href="utilities-other.html">Other</a>*@
               </div>
@@ -396,8 +398,10 @@
                 <a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>
                 @*<a class="collapse-item" href="utilities-color.html">Khách hàng cá nhân</a>*@
                 <a class="collapse-item disabled" style="color:red">Nhập - Xuất dữ liệu</a>
-                <a class="collapse-item" href="/PhanQuyen/Table">Phân quyền</a>
-                <a class="collapse-item" href="/VaiTro/Table">Vai trò</a>
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 4).OrderBy(x => x.IdmenuNavigation.Stt))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
+                }
                 @*<a class="collapse-item" href="utilities-color.html">Xuất dữ liệu</a>*@
               </div>
             </div>
@@ -447,7 +451,7 @@
       <div class="content main" style="overflow: auto; max-height: calc(100vh - 4.375rem); " > @*style="overflow-x: hidden;"*@
 
         @* NỘI DUNG TRONG NÀY *@
-        <div class="main-content">  @*style="padding: 20px; height: 38.3rem;"*@
+        <div class="main-content" style="margin-top: 1rem;">  @*style="padding: 20px; height: 38.3rem;"*@
             <div class="pagetitle container-fluid">
               <h1>@ViewData["Title"]</h1>
 
@@ -577,6 +581,7 @@
   <!-- Page level custom scripts -->
   <script src="~/admin/js/demo/chart-area-demo.js"></script>
   <script src="~/admin/js/demo/chart-pie-demo.js"></script>
+  <script src="~/admin/js/demo/chart-bar-demo.js"></script>
   @* Thêm sau *@
   <script src="~/admin/js/jquery.elevatezoom.min.js"></script>
   <!--Table-->
