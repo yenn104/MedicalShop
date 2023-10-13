@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class DVTController : Controller
   {
 
@@ -15,7 +17,17 @@ namespace MedicalShop.Controllers
     {
       ViewData["Title"] = "Danh mục đơn vị tính";
       TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "DVT" && x.Active == true).FirstOrDefault().Id;
-      return View("TableDVT");
+
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+      List<Dvt> listDVT = context.Dvt.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+
+      return View("TableDVT", listDVT);
+
     }
 
 
@@ -30,14 +42,17 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableDVT")]
     public IActionResult loadTableDVT(bool active)
     {
-      if (active)
-      {
-        ViewBag.DVT = context.Dvt.Where(x => x.Active == true).ToList();
-      }
-      else
-      {
-        ViewBag.DVT = context.Dvt.ToList();
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.DVT = context.Dvt
+        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenDvt)
+        .ToList();
       return PartialView();
     }
 

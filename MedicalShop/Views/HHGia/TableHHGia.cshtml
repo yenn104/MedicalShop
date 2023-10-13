@@ -1,0 +1,372 @@
+﻿@{
+  ViewData["Title"] = "Giá bán";
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+  MedicalShopContext context = new MedicalShopContext();
+  List<HangHoa> listHH()
+  {
+    return context.HangHoa.Where(x => x.Active == true).OrderBy(x => x.TenHh).ToList();
+  }
+
+  HhGia getGia(int? id)
+  {
+    HhGia giahh = context.HhGia.FirstOrDefault(x => x.Idhh == id);
+    if (giahh != null) return giahh;
+    else return new HhGia();
+  }
+
+
+}
+
+<link href="~/admin/css/switch.css" rel="stylesheet" />
+
+<style>
+
+  .wh-input input {
+    width: 17px;
+    height: 17px;
+  }
+
+  .color-clicked {
+    background-color: #f5f8fe;
+    font-weight: bold;
+    color: #0d6efd;
+  }
+</style>
+
+
+@if (TempData["ThongBao"] != null)
+{
+  <script type="text/javascript" charset="utf-8">
+        window.onload = function () {
+            alert("@Html.Raw(@TempData["ThongBao"])");
+    };
+  </script>
+}
+
+<div class="card mb-0" style=" margin-bottom: 5rem !important ">
+  <div class="" style="overflow-x:auto">
+    <div class="mc-13" style=" display: flex; align-items: flex-start; justify-content: space-between;">
+      <div class="switch">
+        <div class="switch__1">
+          <input id="switch-1" type="checkbox" >
+          <label for="switch-1" title="Lọc giá lỗi thời"></label>
+        </div>
+      </div>
+      <div class="group-btn">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary" style="border-radius:unset ; width: 5rem ;" type="button" id="btn-save">
+            @*border-radius: 3px;*@
+            <span>Lưu</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <div class="mc-23" style="display: flex; flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-between; ">
+      <div id="table1" class=" table-responsive-lg">
+        <table class="table table-striped" id="example" >
+          <thead>
+            <tr style="background: #e9ecef;">
+              @*<th style="width:15px">STT</th>*@
+              <th class="text-center">Danh sách hàng hóa</th>
+              <th>Tỉ lệ (%)</th>
+              <th>Giá</th>
+            </tr>
+          </thead>
+          <tbody id="giaban">
+            @foreach (HangHoa hh in listHH())
+            {
+              <tr onclick="loadDSNhap(@hh.Id)">
+                @*<td id="stt"></td>*@
+                <td class="text-left" style="width:20rem;">
+                  <span>@hh.TenHh</span>
+                  <input type="hidden" value="@hh.Id" id="idvt" />
+                </td>
+                <td style="width:6rem;">
+                  <input type="text" class="form-control tile text-right" value="@getGia(@hh.Id).TiLe">
+                </td>
+                <td style="width:6rem;">
+                  <input style=" min-width: max-content;" type="text" class="form-control gia text-right" value="@getGia(@hh.Id).Price" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @*<input type="hidden" id="idvt" />*@
+      <div class="border-dark table-responsive-lg" style="overflow-x: auto">
+        <table class="table table-bordered  tablee mb-0  text-center bg-light" style="white-space: nowrap; " id="example2">
+          <thead>
+            <tr style="background: #e9ecef;">
+              @*<th class="text-center" style="vertical-align : middle;text-align:center;">STT</th>*@
+              <th class="text-center">Ngày nhập</th>
+              <th class="text-center">HSD</th>
+              <th class="text-center">Đang tồn</th>
+              <th class="text-center">Giá nhập</th>
+            </tr>
+          </thead>
+          <tbody id="gianhap">
+            <tr>
+              <td>..</td>
+              <td>..</td>
+              <td>..</td>
+              <td>..</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/admin/js/switch.js"></script>
+
+<script>
+
+  $(document).ready(function () {
+
+    $("#btn-save").click(function () {
+      updatePrices();
+    });
+
+    //ok
+    $(".gia, .tile").each(function () {
+      var gia = $(this).val();
+
+      if (gia != 0) {
+        $(this).val(toDecimal(getValue(gia)));
+      }
+    });
+
+
+    $('#switch-1').on('change', function () {
+      if ($(this).is(':checked')) {
+        loadTableNV(1);
+      } else {
+        loadTableNV(0);
+      }
+    });
+
+
+  });
+
+
+  function loadTableNV(checked) {
+    $.ajax({
+      type: "POST",
+      url: "/loadGiaLT",
+      data: "check=" + checked,
+      success: function (result) {
+       // console.log(result);
+        $('#table1').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
+    });
+  }
+
+
+
+  //ok
+  function getValue(str) {
+    return Number(str.replace(/[^0-9.-]+/g, ""));
+  }
+
+
+  //ok
+  function updatePrices() {
+    var listOfPriceModel = new Array();
+    $("#example").find("tr:gt(1)").each(function () {
+      var idhh = $(this).find("td:eq(0) input[type='hidden']").val();
+      //var idvt = $(this).find("td:eq(1) input[type='hidden']").val();
+      var tile = getValue($(this).find("td:eq(1) input[type='text'] ").val());
+      var gia = getValue($(this).find("td:eq(2) input[type='text'] ").val());
+
+      //alert(gia);
+      var PriceModel = {};
+      PriceModel.Idhh = Number(idhh);
+      PriceModel.TiLe = Number(tile);
+      PriceModel.Price = Number(gia);
+
+
+      listOfPriceModel.push(PriceModel);
+    });
+
+    $.ajax({
+      url: '/updatePrices',
+      type: 'POST',
+      dataType: 'JSON',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(listOfPriceModel),
+      success: function (result) {
+        alert(result);
+      },
+      error: function () {
+        alert("Loix");
+      }
+    });
+  }
+
+
+
+  //ok
+  var lastClickedTr;
+
+  $("input").click(function (event) {
+    event.stopPropagation();
+    var tr = $(this).closest("tr");
+    if (lastClickedTr) {
+      lastClickedTr.removeClass("color-clicked");
+    }
+    tr.addClass("color-clicked");
+    lastClickedTr = tr;
+  });
+
+  $("#giaban tr").click(function () {
+    if (lastClickedTr && lastClickedTr != $(this)) {
+      lastClickedTr.removeClass("color-clicked");
+    }
+    $(this).addClass("color-clicked");
+    lastClickedTr = $(this);
+  });
+
+
+
+  //ok
+  function loadDSNhap(id) {
+    $('#giaban').val(id);
+    $.ajax({
+      type: "post",
+      url: "/loadDSNhap", // loadTableCN
+      data: "idhh=" + id,
+      success: function (result) {
+        $('#gianhap').replaceWith(result);
+        updateDouble();
+      },
+      error: function () {
+        alert("Failhuhu");
+      }
+    });
+  }
+
+  //ok
+  function updateDouble() {
+    $("#example2").find("tr:gt(0)").each(function () {
+      var gia = $(this).find("td:eq(2)").text();
+      /* $(this).text(toDecimal(gia));*/
+      $(this).find("td:eq(2)").text(toDecimal(gia));
+    });
+
+  }
+
+
+
+  //$("#example").on("change", ".gia, .tile", function () {
+  //  var gia = $(this).val();
+  //  if (gia != 0) {
+  //    /* $(this).text(toDecimal(gia));*/
+  //    $(this).val(toDecimal(gia));
+  //  }
+  //});
+
+
+
+
+
+  //$('.tile').on('blur', setval);
+
+  //function setval() {
+
+  //}
+
+  //ok
+
+  $(".form-control.gia").on("keydown keyup", function (e) {
+    var inputValue = $(this).val();
+    inputValue = inputValue.replace(/[^0-9\.]/g, '');
+    $(this).val(inputValue);
+  });
+
+
+  //ok
+
+  $(".form-control.tile").on("keydown keyup", function (e) {
+    var inputValue = $(this).val();
+    // Loại bỏ các ký tự không phải số hoặc nằm ngoài khoảng 0-9
+    inputValue = inputValue.replace(/[^0-9\.]/g, '');
+    // Giới hạn giá trị nhập vào trong khoảng từ 0-100
+    if (parseInt(inputValue) > 100) {
+      inputValue = 100;
+    } else if (parseInt(inputValue) < 0) {
+      inputValue = 0;
+    }
+    // Cập nhật giá trị của input
+    $(this).val(inputValue);
+  });
+
+
+
+
+  $("#example").on("change", ".gia, .tile", function () {
+    var val1 = $(this).val();
+    if ($(this).hasClass("gia") && val1 != 0) {
+      $(this).val(toDecimal(val1));
+    } else if ($(this).hasClass("tile") && val1 != 0) {
+      $(this).val(toDecimal(val1));
+    }
+  });
+
+
+
+
+  //$("#example").on("load", ".gia", function () {
+  //  var idvt = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
+  //  var tenvt = $(this).parents('tr').find("td:eq(0) input[type='text']").val();
+
+  //});
+
+
+
+
+  $('.form-control').on('change', select1in2);
+
+  function select1in2() {
+    var val1 = $(this).val();
+    if (val1 >= 0) {
+      var parentTr = $(this).closest('tr');
+      parentTr.find('.form-control').not(this).val('');
+    }
+
+  }
+
+
+
+
+  function toDecimal(str) {
+    return parseFloat(str).toLocaleString('en-US', {
+      style: 'decimal',
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    });
+  }
+
+
+  //$('.giadouble').on('blur', format);
+
+  //function format() {
+  //  if (checkNumber(this.value)) {
+  //    const value = this.value.replace(/,/g, '');
+  //    this.value = parseFloat(value).toLocaleString('en-US', {
+  //      style: 'decimal',
+  //      maximumFractionDigits: 2,
+  //      minimumFractionDigits: 2
+  //    })
+  //  }
+  //}
+
+
+
+
+</script>

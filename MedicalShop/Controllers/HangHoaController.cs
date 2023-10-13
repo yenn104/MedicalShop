@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class HangHoaController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
@@ -25,7 +27,18 @@ namespace MedicalShop.Controllers
     {
       ViewData["Title"] = "Danh mục hàng hoá";
       TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "HangHoa" && x.Active == true).FirstOrDefault().Id;
-      return View("TableHangHoa");
+
+
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+      List<HangHoa> listHH = context.HangHoa.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+
+      return View("TableHangHoa", listHH);
+
     }
 
 
@@ -166,59 +179,20 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableHH")]
     public IActionResult loadTable(bool active, int nhomHH)
     {
-      if (active)
-      {
-        if (nhomHH != 0)
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).OrderBy(x => x.TenHh).ToList();
-        }
-        else
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).OrderBy(x => x.TenHh).ToList();
-        }
-      }
-      else
-      {
-        if (nhomHH != 0)
-        {
-          ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).OrderBy(x => x.TenHh).ToList();
-        }
-        else
-        {
-          ViewBag.ListHH = context.HangHoa.OrderBy(x => x.TenHh).ToList();
-        }
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.ListHH = context.HangHoa
+        .Where(x => (active == false ? true : x.Active == true) && (nhomHH == 0 ? true : x.Idnhh == nhomHH) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenHh)
+        .ToList();
+
       return PartialView("LoadTableHH");
     }
-
-
-    //[HttpPost("/loadMoreTableHH")]
-    //public IActionResult loadMoreTableHH(bool active, int nhomHH, int SL)
-    //{
-    //  if (active)
-    //  {
-    //    if (nhomHH != 0)
-    //    {
-    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active && x.Idnhh == nhomHH).Take(SL + 9).ToList();
-    //    }
-    //    else
-    //    {
-    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Active == active).Take(SL + 9).ToList();
-    //    }
-    //  }
-    //  else
-    //  {
-    //    if (nhomHH != 0)
-    //    {
-    //      ViewBag.ListHH = context.HangHoa.Where(x => x.Idnhh == nhomHH).Take(SL + 9).ToList();
-    //    }
-    //    else
-    //    {
-    //      ViewBag.ListHH = context.HangHoa.Take(SL + 9).ToList();
-    //    }
-    //  }
-    //  return PartialView("LoadTableHH");
-    //}
 
 
 

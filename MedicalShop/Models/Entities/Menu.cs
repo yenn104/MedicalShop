@@ -18,6 +18,7 @@ namespace MedicalShop.Models.Entities
         public string MaMenu { get; set; }
         public string TenMenu { get; set; }
         public int? Index { get; set; }
+        public int? Stt { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

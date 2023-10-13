@@ -1,4 +1,4 @@
-﻿@model MedicalShop.Models.Entities.Dvt
+﻿@model IEnumerable<MedicalShop.Models.Entities.Dvt>
 
 @{
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
@@ -8,6 +8,18 @@
   List<Dvt> listDVT()
   {
     return context.Dvt.Where(a => a.Active == true).ToList();
+  }
+
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
   }
 
   NhanVien getNV(int? id)
@@ -21,7 +33,7 @@
   int idmenu = (int)TempData.Peek("Menu");
 
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -35,12 +47,23 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
 
 }
+
+@*<style>
+    .dataTables_filter {
+      display: none;
+    }
+
+  </style>*@
+
+
+@*@section Scripts{
+    <script src="~/admin/js/datatable-custom.js"></script>
+  }*@
 
 @if (TempData["ThongBao"] != null)
 {
@@ -63,65 +86,67 @@
       <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
     }
   </div>
-    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-      <div style="display: flex">
-        <div class="dropdown" style="margin-right:10px">
-          <select id="active" onchange="changeHH()" class="custom-select">
-            <option value="true" selected>Hiện tại</option>
-            <option value="false">Tất cả</option>
-          </select>
-        </div>
+  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div style="display: flex">
+      <div class="dropdown" style="margin-right:10px">
+        <select id="active" onchange="changeHH()" class="custom-select">
+          <option value="true" selected>Hiện tại</option>
+          <option value="false">Tất cả</option>
+        </select>
       </div>
     </div>
   </div>
+</div>
 
-  <div id="tableDVT" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-    <table class="table">
-      <thead>
+@*<div class="table-responsive" style="white-space:nowrap;overflow-y: auto;">
+  <table id="example" class="table table-striped table-hover text-center display nowrap" style="width:100%">*@
+<div id="tableDVT" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
+    <thead>
+      <tr>
+        <th>
+          Mã DVT
+        </th>
+        <th>
+          Tên DVT
+        </th>
+        <th class="text-center">
+          Ngày tạo
+        </th>
+        <th class="text-center">
+          NV tạo
+        </th>
+        <th class="text-center">
+          Ngày sửa
+        </th>
+        <th class="text-center">
+          NV sửa
+        </th>
+        <th class="text-center">Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (Dvt item in Model)
+      {
         <tr>
-          <th>
-            @Html.DisplayNameFor(model => model.MaDvt)
-          </th>
-          <th>
-            @Html.DisplayNameFor(model => model.TenDvt)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-          </th>
-          <th class="text-center">
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-          </th>
-          <th class="text-center">Tùy chọn</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach (Dvt item in listDVT())
-        {
-          <tr>
-            <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
-            </td>
-            <td class="text-center">
-              @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.CreatedBy).TenNv
-            </td>
-            <td class="text-center">
-              @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.ModifiedBy).TenNv
-            </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.MaDvt)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.TenDvt)
+          </td>
+          <td class="text-center">
+            @formatDay(item.CreatedDate)
+          </td>
+          <td class="text-center">
+            @getNV(item.CreatedBy).TenNv
+          </td>
+          <td class="text-center">
+            @formatDay(item.ModifiedDate)
+          </td>
+          <td class="text-center">
+            @getNV(item.ModifiedBy).TenNv
+          </td>
           <td class="text-center">
             @if (sua == true)
             {
@@ -140,26 +165,36 @@
               <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
             }
           </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
 
 
-  <script>
-    $('#active').on('change', function () {
-      var a = $(this).val();
-      $.ajax({
-        type: "post",
-        url: "/loadTableDVT",
-        data: "active=" + a,
-        success: function (result) {
-          $('#tableDVT').replaceWith(result);
-        },
-        error: function () {
-          alert("Failed");
-        }
-      });
+
+@*<script src="~/admin/js/datatable-custom.js"></script>*@
+<script>
+
+
+
+  $(document).ready(function () {
+
+  });
+
+
+  $('#active').on('change', function () {
+    var a = $(this).val();
+    $.ajax({
+      type: "post",
+      url: "/loadTableDVT",
+      data: "active=" + a,
+      success: function (result) {
+        $('#tableDVT').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
     });
-  </script>
+  });
+</script>

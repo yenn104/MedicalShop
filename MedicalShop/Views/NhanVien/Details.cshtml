@@ -34,12 +34,29 @@
     else return new Nsx();
   }
 
-  //Dvt getDVT(int? id)
-  //{
-  //  Dvt dvt = context.Dvt.Find(id);
-  //  if (dvt != null) return dvt;
-  //  else return new Dvt();
-  //}
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  string formatDay1(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
 
   NhanVien getNV(int? id)
   {
@@ -112,28 +129,28 @@
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MaNv)
+                Tên NV
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.TenNv)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Idnnv)
+               Nhóm NV
               </dt>
               <dd class="col-sm-10">
                 @getNNV(Model.Idnnv).TenNnv
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MaNv)
+                Mã NV
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MaNv)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Sex)
+                Giới tính
               </dt>
               <dd class="col-sm-10">
                 @if (Model.Sex == true)
@@ -147,69 +164,69 @@
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DateOfBirth)
+                Ngày sinh
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DateOfBirth)
+                @formatDay(Model.DateOfBirth)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Address)
+                Địa chỉ
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Address)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.HomeTown)
+               Quê quán
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.HomeTown)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Phone)
+                SĐT
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Phone)
               </dd>
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Mail)
+                Mail
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Mail)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreatedBy)
+                NV tạo
               </dt>
               <dd class="col-sm-10">
                 @getNV(Model.CreatedBy).TenNv
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreatedDate)
+                Ngày tạo
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CreatedDate)
+                @formatDay1(Model.CreatedDate)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ModifiedBy)
+                NV sửa
               </dt>
               <dd class="col-sm-10">
                 @getNV(Model.ModifiedBy).TenNv
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ModifiedDate)
+                Ngày sửa
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ModifiedDate)
+                @formatDay1(Model.ModifiedDate)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Idcn)
+                Chi nhánh
               </dt>
               <dd class="col-sm-10">
                 @getCN(Model.Idcn).TenCn

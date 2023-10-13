@@ -1,6 +1,6 @@
 ﻿@model MedicalShop.Models.Entities.NhaCungCap
 
-@{ 
+@{
   MedicalShopContext context = new MedicalShopContext();
 
   var acc = User.FindFirst("VaiTro");
@@ -8,7 +8,7 @@
   int idmenu = (int)TempData.Peek("Menu");
   // TempData.Keep("Menu");
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -22,30 +22,32 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
 }
 
-<div id="tableNCC" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<script src="~/admin/js/datatable-custom.js"></script>
+
+
+<div id="tableNCC" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaNcc)
+          Mã NCC
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenNcc)
+          Tên NCC
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Address)
+          Địa chỉ
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Phone)
+          SĐT
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Mail)
+          Mail
         </th>
         <th>Tùy chọn</th>
       </tr>

@@ -1,0 +1,743 @@
+﻿@model List<TonKhoModel>
+@{
+  MedicalShopContext context = new MedicalShopContext();
+  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+
+  List<HangHoa> getListHH()
+  {
+    return context.HangHoa.Where(x => x.Active == true).OrderBy(x => x.TenHh).ToList();
+  }
+
+  //List<NhomHangHoa> getListNHH()
+  //{
+  //  return context.NhomHangHoa.Where(x => x.Active == true).ToList();
+  //}
+
+
+  //lịch sử lọc theo ngày tạo
+  List<PhieuNhap> getListPhieuNhap()
+  {
+    var list = context.PhieuNhap
+    .FromSqlRaw("select*from PhieuNhap where CONVERT(date,CreatedDate) = '" + DateTime.Now.ToString("yyyy-MM-dd") + "' and Active = 1")
+    .Include(x => x.IdnccNavigation)
+    .Include(x => x.IdnvNavigation)
+    .OrderByDescending(x => x.Id)
+    .ToList();
+    return list;
+  }
+
+
+  string dayToString(DateTime? a)
+  {
+    if (a == null)
+    {
+      return "";
+    }
+    return a.Value.ToString("dd-MM-yyyy");
+  }
+
+
+
+  // var ListCTPNT = Model.ChiTietPhieuXuat.ToList();
+  //var TienHang = ListCTPNT.Sum(x => x.Quantity * x.Price);
+  //var TienCK = ListCTPNT.Sum(x => (x.Quantity * x.Price * x.Cktm) / 100);
+  //var TienThue = ListCTPNT.Sum(x => (((x.Quantity * x.Price) - ((x.Quantity * x.Price * x.Cktm) / 100)) * x.Thue) / 100);
+  //var TienThanhToan = TienHang - TienCK + TienThue;
+  HangHoa getHH(int? id)
+  {
+
+    return context.HangHoa.Find(id);
+  }
+  Dvt getDVt(int? id)
+  {
+    return context.Dvt.Find(id);
+  }
+
+  string toDecimal(double? d)
+  {
+    return d.Value.ToString("#,##0.00");
+  }
+  string toDecimal2(double? d)
+  {
+    return d.Value.ToString("#,##0");
+  }
+  TtdoanhNghiep dn = context.TtdoanhNghiep.Find(1);
+
+}
+
+<style>
+  .hide-empty-table .dataTables_empty {
+    display: none;
+  }
+
+
+
+  .selectize-input > div {
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+  .selectize-input.has-items {
+      display: flex !important;
+    }
+
+
+/*  table.dataTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+  }*/
+
+
+  .dataTables_filter {
+    display: none;
+  }
+
+
+</style>
+
+<div class="card" style="margin-bottom: 5rem">
+  <div class="card-body" style="margin-bottom: .8rem">
+
+    <!-- Bordered Tabs Justified -->
+    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+      <li class="nav-item flex-fill" role="presentation">
+        <button class="nav-link w-100 active" id="home-tab" onclick="offTabNhap()" data-bs-toggle="tab" data-bs-target="#borderedTabJustifiedContent" type="button" role="tab" aria-controls="home" aria-selected="true">Tổng hợp</button>
+      </li>
+      <li class="nav-item flex-fill" role="presentation">
+        <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Chi tiết</button>
+      </li>
+    </ul>
+    <div class="tab-content">
+      @*<form onsubmit="return confirm('Bạn có muốn tạo phiếu nhập kho?')"  class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
+      <form method="post" class="tab-pane fade active show" id="borderedTabJustifiedContent">
+        @*<div class="tab-pane fade active show" id="borderedTabJustifiedContent">*@
+        <div id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+          <section class="section" style="background-color:white;">
+            <div class="card p-0" style="box-shadow:none">
+              <div class="card-body" style="padding: 1rem 1.25rem !important;">
+                <div class="row">
+                  <div class="col-sm-1 col-lg-3">
+                    <select id="nhomNHH" name="idnhh" class="form-select3">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (NhomHangHoa n in ViewBag.getListNHH1)
+                      {
+                        <option value="@n.Id">@n.TenNhh</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="col-sm-1 col-lg-3">
+                    <select id="hanghoa" name="idhh" class="form-select4">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (HangHoa n in ViewBag.getListHH)
+                      {
+                        <option value="@n.Id">@n.TenHh</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="col-sm-1 col-lg-2">
+                    <input type="hidden" value="@ViewBag.minCreateDay.ToString("dd-MM-yyyy")" id="mindate"/>
+                    <input type="text" required name="fromDay" title="Từ ngày" value="@ViewBag.minCreateDay.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay2" data-date-format="DD-MM-yyyy" data-min-date="@ViewBag.minCreateDay.ToString("dd-MM-yyyy")">
+
+                    @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
+                  </div>
+
+                  <div class="col-sm-1 col-lg-2">
+                    <input type="text" required name="toDay"  title="Đến ngày" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="toDay2">
+                  </div>
+                  <div class="col-sm-1 col-lg-2" style=" display: flex; flex-direction: row; justify-content: space-between;">
+                    <button type="button" class="btn btn-secondary" onclick="loadTable()"><i class="fas fa-search fa-sm"></i></button>
+                    <button class="btn btn-outline-danger" type="submit" formaction="/download/tonkhotonghop">PDF</button>
+                    <button class="btn btn-outline-success" type="submit" formaction="/download/tonkhotonghopexcel">Excel</button>
+                  </div>
+
+
+                </div>
+                <br />
+                <article>
+
+
+                  <div class="table-responsive" style="height: 20rem; overflow-y: auto; ">
+                    <table id="table2" class="table table-striped hide-empty-table" style="width:100%">
+                      <thead style="position: sticky; top: 0;">
+                        <tr style="background: #e9ecef;">
+                          <th class="text-center">STT</th>
+                          <th class="text-center">Mã hàng</th>
+                          <th class="text-center">Tên hàng</th>
+                          <th class="text-center">Tổng tồn</th>
+                          <th class="text-center">Trị giá tồn</th>
+                        </tr>
+                      </thead>
+                      <tbody id="BCTK">
+                        @*<tr>
+                            <td colspan="5"></td>
+                          </tr>*@
+                      </tbody>
+                    </table>
+                  </div>
+
+                </article>
+              </div>
+            </div>
+          </section>
+        </div>
+      </form>
+    </div>
+
+    @*</form>*@
+
+
+  @* content bên lịch sử phiếu nhập kho  *@
+  <div class="tab-content">
+    <form method="post" class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="row justify-content-start" >
+        <section class="section" style="background-color:white;">
+          <div class="card p-0" style="box-shadow:none">
+            <div class="card-body">
+              <div class="row">
+                <div class=" row mb-2 pr-0">
+                  <div class="col-sm-1 col-lg-4">
+                    <select id="nhomNCC1" name="idncc" class="form-select5">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (NhaCungCap n in ViewBag.getListNCC1)
+                      {
+                        <option value="@n.Id">@n.TenNcc</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="col-sm-1 col-lg-4">
+                    <select id="nhomNHH1" name="idnhh1" class="form-select3">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (NhomHangHoa n in ViewBag.getListNHH1)
+                      {
+                        <option value="@n.Id">@n.TenNhh</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="col-sm-1 col-lg-4">
+                    <select id="hanghoa1" name="idhh1" class="form-select4">
+                      <option selected disabled value=""></option>
+                      <option value="0">Tất cả</option>
+                      @foreach (HangHoa n in ViewBag.getListHH)
+                      {
+                        <option value="@n.Id">@n.TenHh</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div class="row pr-0">
+                  @*<div class="col-sm-1 col-lg-1 d-flex pr-0" style="align-items: center;">
+                  
+                  </div>*@
+                  <div class="col-sm-1 col-lg-3 d-flex ">
+                    <input type="text" required name="fromDay1"  title="Từ ngày" value="@DateTime.Now.AddMonths(-1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay1">
+                    @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
+                  </div>
+
+                  
+                  <div class="col-sm-1 col-lg-3 d-flex ">
+                    <input type="text" required name="toDay1"  title="Đến ngày" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="toDay1">
+                  </div>
+                  
+                  <div class="col-sm-1 col-lg-3 d-flex ">
+                    <input type="text" required name="dateDay1" title="Hạn sử dụng đến.."  value="@DateTime.Now.AddYears(1).ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="dateDay1">
+                    @*<input type="text" required name="fromDay" value="@DateTime.Now.ToString("dd-MM-yyyy")" placeholder="dd-MM-yyyy" class="form-control" id="fromDay">*@
+                  </div>
+
+                  <div class="col-sm-1 col-lg-3" style=" display: flex; flex-direction: row; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary ml-1" onclick="loadTable1()"><i class="fas fa-search fa-sm"></i></button>
+                    <button class="btn btn-outline-danger ml-1" type="submit" formaction="/download/tonkhochitiet">PDF</button>
+                    <button class="btn btn-outline-success ml-1" type="submit" formaction="/download/tonkhochitietexcel/">Excel</button>
+                  </div>
+                </div>
+                  
+
+
+
+
+                </div>
+              <br />
+              <article>
+
+
+
+                @*<h3 class="text-center" style="color: black">
+                    <b>BÁO CÁO TỔNG HỢP TỒN KHO</b>
+                  </h3>
+                  <h4 class="text-center" style="color: black">@DateTime.Now.ToString("dd-MM-yyyy")</h4>
+                  <br /><br />*@
+
+                <div class="table-responsive" style="height: 20rem; overflow-y: auto; ">
+                  <table id="table3" class="table table-striped hide-empty-table" style="width:100%">
+                    <thead style="position: sticky; top: 0;">
+                      <tr style="background: #e9ecef;">
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Ngày nhập</th>
+                        <th class="text-center">Nhà cung cấp</th>
+                        <th class="text-center">Mã hàng</th>
+                        <th class="text-center">Tên hàng</th>
+                        <th class="text-center">Số lô</th>
+                        <th class="text-center">Hạn dùng</th>
+                        <th class="text-center">Slg nhập</th>
+                        <th class="text-center">Slg xuất</th>
+                        <th class="text-center">Slg tồn</th>
+                        <th class="text-center">ĐVT</th>
+                        <th class="text-center">ĐG.nhập</th>
+                        <th class="text-center">Thành tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody id="BCCT" style=" white-space: nowrap;">
+                      @*@foreach (var result in ViewBag.TonKhoCT)
+      {
+        //index1++;
+        //var hh = getHH(ct.Idhh);
+        <tr>
+          <td class="text-center">@result.STT</td>
+          <td class="text-center">@result.NgayNhap</td>
+          <td class="text-center">@result.NCC</td>
+          <td class="text-center">@result.MaHH</td>
+          <td class="text-start">@result.TenHH</td>
+          <td class="text-center">@result.SoLo</td>
+          <td class="text-center">@result.HSD</td>
+          <td class="text-center">@result.SLNhap</td>
+          <td class="text-center">@result.SLXuat</td>
+          <td class="text-start">@result.SLTon</td>
+          <td class="text-end">@result.DVT</td>
+          <td class="text-end">@result.DonGia</td>
+          <td class="text-end">@result.ThanhTien</td>
+        </tr>
+      }*@
+                    </tbody>
+                  </table>
+                </div>
+
+              </article>
+            </div>
+          </div>
+        </section>
+      </div>
+    </form>
+  </div>
+  <div class="d-lg-none" id="tabXemPhieu">
+  </div>
+</div>
+</div>
+
+<script>
+
+    //ok
+    $(document).ready(function () {
+
+      //$('.form-select4')[0].selectize.on('dropdown_open', function () {
+      //  $(this.$control[0]).find('.selectize-input').css('display', 'flex');
+      //});
+
+      //$('.form-select4').selectize({
+      //  onInitialize: function () {
+      //    this.$control_input.parent().css('display', 'flex');
+      //  }
+      //});
+      $('.dataTables_filter').hide();
+
+
+      $('#table2').on('order.dt', function () {
+        if ($("#table2").DataTable().rows().count() == 0) {
+          return;
+        } else {
+          updateTable2();
+        }
+        });
+
+
+      var minDate = moment($('#mindate').val(), 'DD-MM-yyyy');
+      var maxDate = new Date();
+
+       $('#fromDay2').datetimepicker({
+         format: 'DD-MM-yyyy',
+         minDate: minDate.toDate(),
+         maxDate: maxDate,
+       });
+
+
+      $('#toDay2').datetimepicker({
+        format: 'DD-MM-yyyy',
+        minDate: minDate.toDate(),
+        maxDate: maxDate,
+      });
+
+
+    });
+
+
+
+
+    function initDataTableSearch() {
+      var dataTableSearch = $('#table3_filter').find('input');
+      var dataTableSearch2 = $('#table2_filter').find('input');
+      var mySearch = $('#timkiem');
+
+      mySearch.on('keyup', function () {
+        dataTableSearch.val($(this).val()).keyup();
+        dataTableSearch2.val($(this).val()).keyup();
+        //if ($("#table2").DataTable().rows().count() == 0) {
+        //  return;
+        //} else {
+        //  updateTable2();
+        //}
+      });
+    }
+
+
+
+
+    function loadTable() {
+      var nhomNHH = $('#nhomNHH').val();
+      var hanghoa = $('#hanghoa').val();
+      var toDay = $('#toDay2').val();
+      var fromDay = $('#fromDay2').val();
+
+      var x = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+      var y = new Date(toDay.substring(3, 5) + "-" + toDay.substring(0, 2) + "-" + toDay.substring(6, 10));
+
+      if (x > y) {
+        alert('Giới hạn từ ngày đến ngày không hợp lý!');
+        $('#table2').DataTable().clear().draw();
+        return;
+      }
+
+
+      /*var index = 0;*/
+      $.ajax({
+        type: "POST",
+        url: "/loadTonKhoTH",
+        data: "idnhh=" + nhomNHH + "&idhh=" + hanghoa + "&toDay=" + toDay + "&fromDay=" + fromDay,
+        success: function (result) {
+          console.log(result)
+          $('#table2').removeClass('hide-empty-table');
+          $('#table2').DataTable({
+            destroy: true,
+            /*searching: false,*/
+            lengthChange: false,
+            pageLength: false,
+            paginate: false,
+            info: false,
+            language: {
+              emptyTable: "Không có dữ liệu.",
+            },
+            data: result,
+            columns: [
+              { data: 'stt', title: 'STT', className: 'text-center', style: 'width:fit-content' },
+              { data: 'maHH', title: 'Mã hàng', className: 'text-left' },
+              { data: 'tenHH', title: 'Tên hàng', className: 'text-left' },
+              { data: 'sl', title: 'Tổng tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+              { data: 'gia', title: 'Trị giá tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') }
+            ],
+            columnDefs: [
+              {
+                targets: 0, // cột STT nằm ở cột đầu tiên (index 0)
+                title: 'STT',
+                render: function (data, type, row, meta) {
+                  return meta.row + 1;
+                }
+              }
+            ]
+          });
+
+         /* updateTable2();*/
+          initDataTableSearch();
+          //$('#example').DataTable().clear().rows.add(result).draw();
+          //index = $('#example').DataTable().rows().count();
+          // $('#BCTK').replaceWith(result);
+        },
+        error: function () {
+          alert("Failed");
+        }
+      });
+    }
+
+
+    function loadTable1() {
+      var nhomNHH = $('#nhomNHH1').val();
+      var nhacc = $('#nhomNCC1').val();
+      var hanghoa = $('#hanghoa1').val();
+      var toDay = $('#toDay1').val();
+      var fromDay = $('#fromDay1').val();
+      var dateDay = $('#dateDay1').val();
+
+
+      var x = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+      var y = new Date(toDay.substring(3, 5) + "-" + toDay.substring(0, 2) + "-" + toDay.substring(6, 10));
+
+      if (x > y) {
+        alert('Giới hạn từ ngày đến ngày không hợp lý!');
+        $('#table3').DataTable().clear().draw();
+        return;
+      }
+
+
+
+      /*var index = 0;*/
+      $.ajax({
+        type: "POST",
+        url: "/loadTonKhoCT",
+        data: "idncc=" + nhacc + "&idnhh=" + nhomNHH + "&idhh=" + hanghoa + "&toDay=" + toDay + "&fromDay=" + fromDay + "&dateDay=" + dateDay,
+        success: function (result) {
+          console.log(result)
+          $('#table3').removeClass('hide-empty-table');
+          $('#table3').DataTable({
+            destroy: true,
+            /*searching: false,*/
+            lengthChange: false,
+            pageLength: false,
+            paginate: false,
+            info: false,
+            language: {
+              emptyTable: "Chưa có dữ liệu.",
+            },
+            data: result,
+            columns: [
+              { data: 'stt', title: 'STT', className: 'text-center' },
+              { data: 'ngayNhap', title: 'Ngày nhập', className: 'text-left' },
+              { data: 'ncc', title: 'Nhà cung cấp', className: 'text-left' },
+              { data: 'maHH', title: 'Mã hàng', className: 'text-left' },
+              { data: 'tenHH', title: 'Tên hàng', className: 'text-left' },
+              { data: 'soLo', title: 'Số lô', className: 'text-left' },
+              { data: 'hsd', title: 'HSD', className: 'text-right' },
+              { data: 'slNhap', title: 'Slg nhập', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+              { data: 'slXuat', title: 'Slg xuất', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+              { data: 'slTon', title: 'Slg tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+              { data: 'dvt', title: 'ĐVT', className: 'text-left' },
+              { data: 'donGia', title: 'ĐG.nhập', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+              { data: 'thanhTien', title: 'Thành tiền', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+            ],
+            columnDefs: [
+              {
+                targets: 0, // cột STT nằm ở cột đầu tiên (index 0)
+                title: 'STT',
+                render: function (data, type, row, meta) {
+                  return meta.row + 1;
+                }
+              }
+            ]
+          });
+          updateDate3();
+          updateTable3();
+          initDataTableSearch();
+          //$('#example').DataTable().clear().rows.add(result).draw();
+          //index = $('#example').DataTable().rows().count();
+          // $('#BCTK').replaceWith(result);
+        },
+        error: function () {
+          alert("Failed");
+        }
+      });
+    }
+
+    function updateTable3() {
+      //11111111111111111111111111
+      var sumNhap = 0;
+      var sumXuat = 0;
+      var sumTon = 0;
+      var sumTT = 0;
+      var sumTGT = 0;
+
+      if ($("#table3").DataTable().rows().count() == 0) {
+        return;
+      }
+
+      $("#table3").find("tr:gt(0)").each(function () {
+        var nhap = $(this).find("td:eq(7)").text();
+        nhap = parseFloat(nhap.replace(/,/g, '').replace(/\.00$/, ''));
+        var xuat = $(this).find("td:eq(8)").text();
+        xuat = parseFloat(xuat.replace(/,/g, '').replace(/\.00$/, ''));
+        var ton = $(this).find("td:eq(9)").text();
+        ton = parseFloat(ton.replace(/,/g, '').replace(/\.00$/, ''));
+        var sl = $(this).find("td:eq(11)").text();
+        sl = parseFloat(sl.replace(/,/g, '').replace(/\.00$/, ''));
+        var Gia = $(this).find("td:eq(12)").text();
+        Gia = parseFloat(Gia.replace(/,/g, '').replace(/\.00$/, ''));
+
+        sumNhap = sumNhap + nhap;
+        sumXuat = sumXuat + xuat;
+        sumTon = sumTon + ton;
+        sumTT = sumTT + sl;
+        sumTGT = sumTGT + Gia;
+      });
+      sumNhap = toDecimal(sumNhap);
+      sumXuat = toDecimal(sumXuat);
+      sumTon = toDecimal(sumTon);
+      sumTT = toDecimal(sumTT);
+      sumTGT = toDecimal(sumTGT);
+
+      var ChitietRecord = '<tr style="font-weight: bold;"><td colspan="8" class="text-right">'
+        + sumNhap + '</td><td class="text-right">'
+        + sumXuat + '</td><td class="text-right">'
+        + sumTon + '</td><td></td><td class="text-right">'
+        + sumTT + '</td><td class="text-right">'
+        + sumTGT + '</td></tr>'
+
+      $('#BCCT').append(ChitietRecord);
+    }
+
+    function updateTable2() {
+      //11111111111111111111111111
+      var sumTT = 0;
+      var sumTGT = 0;
+
+      if ($("#table2").DataTable().rows().count() == 0) {
+        return;
+      }
+
+      $("#table2").find("tr:gt(0)").each(function () {
+        var SL = $(this).find("td:eq(3)").text();
+        SL = parseFloat(SL.replace(/,/g, '').replace(/\.00$/, ''));
+        var Gia = $(this).find("td:eq(4)").text();
+        Gia = parseFloat(Gia.replace(/,/g, '').replace(/\.00$/, ''));
+
+        sumTT = sumTT + SL;
+        sumTGT = sumTGT + Gia;
+      });
+      sumTT = toDecimal(sumTT);
+      sumTGT = toDecimal(sumTGT);
+
+      var ChitietRecord = '<tr style="font-weight: bold;"><td colspan="4" class="text-right">' + sumTT + '</td><td class="text-right">' + sumTGT + '</td></tr>'
+
+      $('#BCTK').append(ChitietRecord);
+    }
+
+    function toDecimal(str) {
+      return parseFloat(str).toLocaleString('en-US', {
+        style: 'decimal',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2
+      });
+    }
+
+
+
+    function updateDate3() {
+
+      $("#table3").find("tr:gt(0)").each(function () {
+        var nhap = $(this).find("td:eq(1)");
+        date = moment(nhap.text()).format('DD-MM-YYYY HH:mm');
+        nhap.text(date);
+
+        var hsd = $(this).find("td:eq(6)");
+        date2 = moment(hsd.text()).format('DD-MM-YYYY');
+        hsd.text(date2);
+
+
+
+      });
+
+    }
+
+
+    //thay đổi nhóm
+    function changeNHH() {
+      var nhomNHH = $('#nhomNHH').val();
+      /*var index = 0;*/
+      $.ajax({
+        type: "POST",
+        url: "/loadTonKhoTH",
+        data: "id=" + nhomNHH,
+        success: function (result) {
+          console.log(result)
+          $('#table2').DataTable({
+            destroy: true,
+            searching: false,
+            lengthChange: false,
+            pageLength: 5,
+            info: false,
+            "language": {
+              "emptyTable": "Không có dữ liệu.",
+              "paginate": {
+                "previous": "Trước",
+                "next": "Sau"
+              }
+            },
+            data: result,
+            columns: [
+              { data: 'stt', title: 'STT', className: 'text-center' },
+              { data: 'maHH', title: 'Mã hàng hóa', className: 'text-left' },
+              { data: 'tenHH', title: 'Tên hàng hóa', className: 'text-left' },
+              { data: 'sl', title: 'Tổng tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') },
+              { data: 'gia', title: 'Trị giá tồn', className: 'text-right', render: $.fn.dataTable.render.number(',', '.', 2, '') }
+            ],
+            columnDefs: [
+              {
+                targets: 0, // cột STT nằm ở cột đầu tiên (index 0)
+                title: 'STT',
+                render: function (data, type, row, meta) {
+                  return meta.row + 1;
+                }
+              }
+            ]
+          });
+          //$('#example').DataTable().clear().rows.add(result).draw();
+          //index = $('#example').DataTable().rows().count();
+          // $('#BCTK').replaceWith(result);
+        },
+        error: function () {
+          alert("Failed");
+        }
+      });
+    }
+
+
+    //xem chi tiết phiếu nhập (lịch sử)
+    function ViewPhieuNhap(idPhieuNhap) {
+      $('#bordered-justified-profile').removeClass('active');
+      $('#bordered-justified-profile').removeClass('show');
+      $('#tabXemPhieu').removeClass('d-lg-none');
+
+      $.ajax({
+        type: "post",
+        url: "/ViewThongTinPhieuNhap",
+        data: "idPN=" + idPhieuNhap,
+        success: function (result) {
+          $('#tabXemPhieu').replaceWith(result);
+        },
+        error: function () {
+          alert("Fail Loading + Chi tiet lich su phieu nhap");
+        }
+      });
+    }
+
+
+    function offTabNhap() {
+      $('#tabXemPhieu').addClass('d-lg-none');
+    }
+    function cancelXemPhieu() {
+      $('#tabXemPhieu').addClass('d-lg-none');
+      $('#bordered-justified-profile').addClass('active');
+      $('#bordered-justified-profile').addClass('show');
+    }
+
+
+    function loadTableLichSuNhap() {
+      var toDay = $('#toDay').val();
+      var fromDay = $('#fromDay').val();
+
+      $.ajax({
+        type: "post",
+        url: "/loadTableLichSuNhap",
+        data: "toDay=" + toDay + "&fromDay=" + fromDay,
+        success: function (result) {
+          $('#tableLichSuNhap').replaceWith(result);
+        },
+        error: function () {
+          alert("Fail");
+        }
+      });
+    }
+
+</script>

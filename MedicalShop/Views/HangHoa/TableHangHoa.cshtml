@@ -11,14 +11,14 @@
 
   List<NhomHangHoa> getListNHH()
   {
-    return context.NhomHangHoa.ToList();
+    return context.NhomHangHoa.Where(x => x.Active == true).ToList();
   }
 
   var acc = User.FindFirst("VaiTro");
   int idmenu = (int)TempData.Peek("Menu");
 
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -32,12 +32,28 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
 
 }
+
+<style>
+/*  .dataTables_wrapper table thead {
+    background-color: white;
+    color: white;
+  }
+
+  table.dataTable tbody tr:nth-child(even) {
+    background-color: transparent;
+  }
+
+  table.dataTable tbody tr:nth-child(odd) {
+    background-color: white;
+  }*/
+
+  /*style="white-space: initial;"*/
+</style>
 
 @if (TempData["ThongBao"] != null)
 {
@@ -62,7 +78,7 @@
   </div>
   <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
     <div style="display: flex">
-      <div class="dropdown" style="margin-right:10px">
+      <div class="dropdown" style="margin-right: 10px; width: -webkit-fill-available; max-width: fit-content;">
         <select id="active" onchange="changeHH()" class="custom-select">
           <option value="true" selected>Hiện tại</option>
           <option value="false">Tất cả</option>
@@ -70,7 +86,8 @@
       </div>
       <div class="dropdown">
         <select id="nhomHH" onchange="changeHH()" class="custom-select" aria-label="Default select example">
-          <option selected disabled value="0">Nhóm hàng hoá</option>
+          <option selected disabled hidden>Nhóm hàng hoá</option>
+          <option value="0">Tất cả</option>
           @foreach (NhomHangHoa n in getListNHH())
           {
             <option value="@n.Id">@n.TenNhh</option>
@@ -81,50 +98,57 @@
     </div>
   </div>
 </div>
-<div id="tableHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <input type="hidden" id="SL" value="9" />
-  <table class="table" id="example">
-    <thead>
+<div id="tableHH" class="table-responsive-lg" style="margin-bottom: 5rem;  ">
+  <table id="example" class="table table-striped" style="width: 100%; white-space: initial;">
+    <thead style="position: sticky; top: 0; background: #f6f9ff;">
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaHh)
+          Mã HH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenHh)
+          Tên HH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.BarCode)
+          BarCode
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Image)
+          Hình ảnh
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Detail)
+          Ghi chú
         </th>
         <th>Tùy chọn</th>
       </tr>
     </thead>
-    <tbody>
-      @foreach (var item in listHH())
+    <tbody style="overflow-y: scroll; overflow-x: scroll; ">
+      @foreach (var item in Model)
       {
         <tr>
           <td>
             @Html.DisplayFor(modelItem => item.MaHh)
           </td>
-          <td style="max-width: 14rem;">
+          <td>
             @Html.DisplayFor(modelItem => item.TenHh)
           </td>
           <td>
             @Html.DisplayFor(modelItem => item.BarCode)
           </td>
-          <td id="imageHH" class="side-picture">
-            <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;"  id="zoom_01" class="img-fluid">
+          <td id="imageHH" class="side-picture text-center">
+            @if (@item.Image != null && @item.Image != "")
+            {
+              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+
+            }
+            else
+            {
+              <img src="~/lib/imagesHH/HHnone.jpg" alt="@item.TenHh" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+            }
           </td>
-          <td style="max-width: 14rem; ">
+          <td>
             @Html.DisplayFor(modelItem => item.Detail)
           </td>
           <td>
-            @if(sua == true)
+            @if (sua == true)
             {
               @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
             }
@@ -133,7 +157,7 @@
               <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
             }
             @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-            @if(xoa == true)
+            @if (xoa == true)
             {
               @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
             }
@@ -157,11 +181,10 @@
   function changeHH() {
     var active = $('#active').val();
     var nhomHH = $('#nhomHH').val();
-    var sl = $('#tableHH ul').length;
     $.ajax({
       type: "post",
       url: "/loadTableHH",
-      data: "active=" + active + "&nhomHH=" + nhomHH + "&SL=" + sl,
+      data: "active=" + active + "&nhomHH=" + nhomHH,
       success: function (result) {
         $('#tableHH').replaceWith(result);
       },

@@ -14,11 +14,23 @@
     return context.NhomNhanVien.ToList();
   }
 
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   var acc = User.FindFirst("VaiTro");
   int idmenu = (int)TempData.Peek("Menu");
 
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -32,7 +44,6 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
@@ -70,7 +81,8 @@
       </div>
       <div class="dropdown">
         <select id="nhomNV" onchange="changeHH()" class="custom-select" aria-label="Default select example">
-          <option selected disabled value="0">Nhóm nhân viên</option>
+          <option selected disabled hidden>Nhóm nhân viên</option>
+          <option value="0">Tất cả</option>
           @foreach (NhomNhanVien n in getListNNV())
           {
             <option value="@n.Id">@n.TenNnv</option>
@@ -81,36 +93,34 @@
     </div>
   </div>
 </div>
-<div id="tableNV" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <input type="hidden" id="SL" value="9" />
-  <table class="table" id="example">
+<div id="tableNV" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width: 100%; white-space: initial;">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaNv)
+          Mã NV
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenNv)
+          Tên NV
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Cccd)
+          CCCD
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Image)
+          Hình ảnh
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Sex)
+          G.T
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.DateOfBirth)
+          Ngày sinh
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Phone)
+          SĐT
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Address)
+          Địa chỉ
         </th>
-
         <th>Tùy chọn</th>
       </tr>
     </thead>
@@ -121,16 +131,23 @@
         <td>
           @Html.DisplayFor(modelItem => item.MaNv)
         </td>
-        <td style="max-width: 14rem;">
+        <td>
           @Html.DisplayFor(modelItem => item.TenNv)
         </td>
-        <td style="max-width: 14rem;">
+        <td>
           @Html.DisplayFor(modelItem => item.Cccd)
         </td>
-        <td id="imageHH" class="side-picture">
-          <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+        <td id="imageHH" class="side-picture text-center">
+          @if (@item.Image != null && @item.Image != "")
+          {
+            <img src="~/lib/imagesNV/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+          }
+          else
+          {
+            <img src="~/lib/imagesNV/Unone.jpg" alt="@item.TenNv" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+          }
         </td>
-        <td>
+        <td class="text-left">
           @if (item.Sex == true)
           {
             <p>Nam</p>
@@ -140,13 +157,13 @@
             <p>Nữ</p>
           }
         </td>
-        <td style="max-width: 14rem; ">
-          @Html.DisplayFor(modelItem => item.DateOfBirth)
+        <td>
+          @formatDay(item.DateOfBirth)
         </td>
-        <td style="max-width: 14rem; ">
+        <td>
           @Html.DisplayFor(modelItem => item.Phone)
         </td>
-        <td style="max-width: 14rem; ">
+        <td>
           @Html.DisplayFor(modelItem => item.Address)
         </td>
         <td>

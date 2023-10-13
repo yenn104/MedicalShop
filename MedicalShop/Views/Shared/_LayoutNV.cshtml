@@ -1,6 +1,9 @@
 ﻿@{
+  MedicalShopContext context = new MedicalShopContext();
+
   var acc = User.FindFirst("VaiTro");
   string name = null, staff = null, vaitro = null, username = null;
+  string img = null, image = null;
   //int active = 0;
   if (acc != null)
   {
@@ -8,13 +11,13 @@
     username = acc.Subject.Name;
     staff = User.Claims.ElementAt(2).Type;
     name = User.Claims.ElementAt(2).Value;
+    img = context.NhanVien.FirstOrDefault(x => x.UserName == username).Image;
+    image = img != null ? img : "Unone.jpg" ;
   }
-
-  MedicalShopContext context = new MedicalShopContext();
 
   List<ChucNang> getListMenu = context.ChucNang
   .Include(x => x.IdmenuNavigation)
-  .Where(x => x.Idvt == int.Parse(vaitro) && (x.Person == true || x.Import == true || x.Export == true || x.Delete == true || x.Update == true || x.Print == true))
+  .Where(x => x.Idvt == int.Parse(vaitro) && (x.Import == true || x.Export == true || x.Delete == true || x.Update == true || x.Print == true))
   .ToList();
 
 
@@ -33,261 +36,295 @@
   <meta name="author" content="">
 
   <title>@ViewData["Title"] - MedicalShop Admin</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+  <link href="~/admin/css/sb-admin-2.min.css" rel="stylesheet" />
+  <script src="~/jquery-3.6.1.min.js"></script>
+  <link href="~/admin/select/css/selectize.bootstrap5.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+          integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
   <!-- Custom fonts for this template-->
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link rel="shortcut icon " href="~/medical.ico">
+
   <link href="~/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
-  <link href="~/admin/css/sb-admin-2.min.css" rel="stylesheet" />
+
+
+  <script src="~/admin/js/datatable-custom.js"></script>
+
+
+
+
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
   <link href="~/admin/css/style.css" rel="stylesheet" />
   <link href="~/admin/css/hh.css" rel="stylesheet" />
   <link href="~/admin/css/slideimg.css" rel="stylesheet" />
 
-  <script src="~/jquery-3.6.1.min.js"></script>
+
+
   <script src="~/admin/moment.js/moment.min.js"></script>
   <script src="~/admin/umd/popper.min.js"></script>
   <link href="~/admin/bootstrap-datetimepicker.css" rel="stylesheet" />
-  <link href="~/admin/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-  <script src="~/admin/select/js/selectize.min.js"></script>
+  <script src="~/admin/bootstrap-datetimepicker.min.js"></script>
+  @*<link href="~/admin/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
 
+  <style>
 
-  <link href="~/admin/select/css/selectize.bootstrap4.min.css" rel="stylesheet" />
+    @@media (min-width:573px) {
+      .dashboard {
+        height: calc(100vh - 4.375rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-right: 3px solid #36b9cc2b;
+      }
+    }
 
+  </style>
 
 </head>
-
 <body id="page-top">
   <div class="layout-medical">
     @* HEADER IN HERE *@
-    <div class="header-medical flex-column d-flex fixed-top header">
-      <!-- Topbar -->
-      <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r fixed-top">
-        @* mb-4 *@
-        <a class="sidebar-brand d-flex align-items-center justify-content-center medical-title" href="/QuanLy">
-          <div class="sidebar-brand-text mx-3 d-none d-lg-block"><span>Medical Admin</span></div>
-        </a>
+    <div>
 
-        <!-- Sidebar Toggle (Topbar) -->
-        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle">
-          <i class="fa fa-bars"></i>
-        </button>
 
-        <div class="center">
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                     aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
+      <div class="header-medical flex-column d-flex fixed-top header">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mg-r fixed-top">
+          @* mb-4 *@
+          <a class="sidebar-brand d-flex align-items-center justify-content-center medical-title" href="/QuanLy">
+            <div class="sidebar-brand-text mx-3 d-none d-lg-block"><span>Medical Admin</span></div>
+          </a>
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <div class="center">
+            <!-- Topbar Search -->
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+              <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small" id="timkiem" placeholder="Tìm kiếm..."
+                       aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
 
 
-        <!-- Topbar Navbar -->
-        <ul class="navbar-nav ml-auto">
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
 
-          <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-          <li class="nav-item dropdown no-arrow d-sm-none">
-            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-search fa-fw"></i>
-            </a>
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                   aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light small" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <!-- Nav Item - Alerts -->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-danger badge-counter">3+</span>
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                   aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                  Alerts Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                      <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 12, 2019</div>
+                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-success">
+                      <i class="fas fa-donate text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 7, 2019</div>
+                    $290.29 has been deposited into your account!
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 2, 2019</div>
+                    Spending Alert: We've noticed unusually high spending for your account.
+                  </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+              </div>
+            </li>
+
+            <!-- Nav Item - Messages -->
+            <!--<li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-envelope fa-fw"></i>-->
+            <!-- Counter - Messages -->
+            <!--<span class="badge badge-danger badge-counter">7</span>
+        </a>-->
             <!-- Dropdown - Messages -->
-            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                 aria-labelledby="searchDropdown">
-              <form class="form-inline mr-auto w-100 navbar-search">
-                <div class="input-group">
-                  <input type="text" class="form-control bg-light small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                  <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                      <i class="fas fa-search fa-sm"></i>
-                    </button>
-                  </div>
+            <!--<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+               aria-labelledby="messagesDropdown">
+            <h6 class="dropdown-header">
+              Message Center
+            </h6>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+              <div class="dropdown-list-image mr-3">
+                <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                     alt="...">
+                <div class="status-indicator bg-success"></div>
+              </div>
+              <div class="font-weight-bold">
+                <div class="text-truncate">
+                  Hi there! I am wondering if you can help me with a
+                  problem I've been having.
                 </div>
-              </form>
-            </div>
-          </li>
-
-          <!-- Nav Item - Alerts -->
-          <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-bell fa-fw"></i>
-              <!-- Counter - Alerts -->
-              <span class="badge badge-danger badge-counter">3+</span>
+                <div class="small text-gray-500">Emily Fowler · 58m</div>
+              </div>
             </a>
-            <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="alertsDropdown">
-              <h6 class="dropdown-header">
-                Alerts Center
-              </h6>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle bg-primary">
-                    <i class="fas fa-file-alt text-white"></i>
-                  </div>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+              <div class="dropdown-list-image mr-3">
+                <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                     alt="...">
+                <div class="status-indicator"></div>
+              </div>
+              <div>
+                <div class="text-truncate">
+                  I have the photos that you ordered last month, how
+                  would you like them sent to you?
                 </div>
-                <div>
-                  <div class="small text-gray-500">December 12, 2019</div>
-                  <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle bg-success">
-                    <i class="fas fa-donate text-white"></i>
-                  </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500">December 7, 2019</div>
-                  $290.29 has been deposited into your account!
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle bg-warning">
-                    <i class="fas fa-exclamation-triangle text-white"></i>
-                  </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500">December 2, 2019</div>
-                  Spending Alert: We've noticed unusually high spending for your account.
-                </div>
-              </a>
-              <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-            </div>
-          </li>
-
-          <!-- Nav Item - Messages -->
-          <!--<li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-envelope fa-fw"></i>-->
-          <!-- Counter - Messages -->
-          <!--<span class="badge badge-danger badge-counter">7</span>
-          </a>-->
-          <!-- Dropdown - Messages -->
-          <!--<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="messagesDropdown">
-              <h6 class="dropdown-header">
-                Message Center
-              </h6>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                       alt="...">
-                  <div class="status-indicator bg-success"></div>
-                </div>
-                <div class="font-weight-bold">
-                  <div class="text-truncate">
-                    Hi there! I am wondering if you can help me with a
-                    problem I've been having.
-                  </div>
-                  <div class="small text-gray-500">Emily Fowler · 58m</div>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                       alt="...">
-                  <div class="status-indicator"></div>
-                </div>
-                <div>
-                  <div class="text-truncate">
-                    I have the photos that you ordered last month, how
-                    would you like them sent to you?
-                  </div>
-                  <div class="small text-gray-500">Jae Chun · 1d</div>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                       alt="...">
-                  <div class="status-indicator bg-warning"></div>
-                </div>
-                <div>
-                  <div class="text-truncate">
-                    Last month's report looks great, I am very happy with
-                    the progress so far, keep up the good work!
-                  </div>
-                  <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                       alt="...">
-                  <div class="status-indicator bg-success"></div>
-                </div>
-                <div>
-                  <div class="text-truncate">
-                    Am I a good boy? The reason I ask is because someone
-                    told me that people say this to all dogs, even if they aren't good...
-                  </div>
-                  <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                </div>
-              </a>
-              <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-            </div>
-          </li>-->
-          @*<div class="topbar-divider d-none d-sm-block"></div>*@
-
-          <!-- Nav Item - User Information -->
-          <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="mr-2 d-none d-lg-inline text-gray-600 small">@name</span>
-              <img class="img-profile rounded-circle" src="~/lib/imagesNV/NV000001.jpg" />
+                <div class="small text-gray-500">Jae Chun · 1d</div>
+              </div>
             </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="userDropdown">
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                Thông tin cá nhân
-              </a>
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                Lịch sử
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changeModal">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                Chuyển vai trò
-              </a>
-              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                Đăng xuất
-              </a>
-            </div>
-          </li>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+              <div class="dropdown-list-image mr-3">
+                <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                     alt="...">
+                <div class="status-indicator bg-warning"></div>
+              </div>
+              <div>
+                <div class="text-truncate">
+                  Last month's report looks great, I am very happy with
+                  the progress so far, keep up the good work!
+                </div>
+                <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+              </div>
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+              <div class="dropdown-list-image mr-3">
+                <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                     alt="...">
+                <div class="status-indicator bg-success"></div>
+              </div>
+              <div>
+                <div class="text-truncate">
+                  Am I a good boy? The reason I ask is because someone
+                  told me that people say this to all dogs, even if they aren't good...
+                </div>
+                <div class="small text-gray-500">Chicken the Dog · 2w</div>
+              </div>
+            </a>
+            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+          </div>
+        </li>-->
+            @*<div class="topbar-divider d-none d-sm-block"></div>*@
 
-        </ul>
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@name</span>
+                <img class="img-profile rounded-circle" src="~/lib/imagesNV/@image" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                   aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Thông tin cá nhân
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Lịch sử
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changeModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Chuyển vai trò
+                </a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Đăng xuất
+                </a>
+              </div>
+            </li>
 
-      </nav>
-      <!-- End of Topbar -->
+          </ul>
 
+        </nav>
+        <!-- End of Topbar -->
+
+
+      </div>
 
     </div>
-
-
-    <div class="content-medical">
+    <div class="content-medical" style="position: relative; top: 4.375rem;  overflow: hidden; height:fit-content">
       @* DASHBOARD IN HERE *@
       <div class="dashboard">
+        @*<div class="chuabiet">*@
+
+
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
           <!--<li class="nav-item active">-->
           @*<hr class="sidebar-divider">*@
           <!--<div class="sidebar-heading">
-              Quản lý
-            </div>
-          </li>-->
+        Quản lý
+      </div>
+    </li>-->
           <!-- Nav Item - Pages Collapse Menu -->
           <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
@@ -297,19 +334,7 @@
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
-                @*<a class="collapse-item" href="/DVVC/Table">Dịch vụ vận chuyển</a>
-                  <a class="collapse-item" href="/DVT/Table">Đơn vị tính</a>
-                  <a class="collapse-item" href="/HangHoa/Table">Hàng hóa</a>
-                  <a class="collapse-item" href="/HSX/Table">Hãng sản xuất</a>
-                  <a class="collapse-item" href="/KhachHang/Table">Khách hàng</a>
-                  <a class="collapse-item" href="/NhaCungCap/Table">Nhà cung cấp</a>
-                  <a class="collapse-item" href="/NhanVien/Table">Nhân viên</a>
-                  <a class="collapse-item" href="/NhomHangHoa/Table">Nhóm hàng hóa</a>
-                  <a class="collapse-item" href="/NhomNhanVien/Table">Nhóm nhân viên</a>
-                  <a class="collapse-item" href="/NSX/Table">Nước sản xuất</a>*@
-
-
-                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.TenMenu))
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.Stt))
                 {
                   <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
                 }
@@ -350,9 +375,11 @@
                  data-parent="#accordionSidebar">
               <div class="bg-xx py-2 collapse-inner rounded">
                 @*<h6 class="collapse-header">Thống kê kho</h6>*@
-                <a class="collapse-item" href="/Report/ReportTon">Thống kê tồn kho</a>
-                <a class="collapse-item" href="/Report/ReportHHN">Thống kê hàng hóa đã nhập</a>
-                <a class="collapse-item" href="/Report/ReportHHX">Thống kê hàng hóa đã xuất</a>
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 3).OrderBy(x => x.IdmenuNavigation.Stt))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu">@cn.IdmenuNavigation.TenMenu</a>
+                }
+              <a class="collapse-item" href="/QuanLy/Test">Trực quan</a>
                 <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
                 @*<a class="collapse-item" href="utilities-other.html">Other</a>*@
               </div>
@@ -371,8 +398,10 @@
                 <a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>
                 @*<a class="collapse-item" href="utilities-color.html">Khách hàng cá nhân</a>*@
                 <a class="collapse-item disabled" style="color:red">Nhập - Xuất dữ liệu</a>
-                <a class="collapse-item" href="/PhanQuyen/Table">Phân quyền</a>
-                <a class="collapse-item" href="/VaiTro/Table">Vai trò</a>
+                @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 4).OrderBy(x => x.IdmenuNavigation.Stt))
+                {
+                  <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
+                }
                 @*<a class="collapse-item" href="utilities-color.html">Xuất dữ liệu</a>*@
               </div>
             </div>
@@ -384,51 +413,50 @@
 
             <!-- Heading -->
             @*<div class="sidebar-heading">
-                Quản lý trang
-              </div>*@
+          Quản lý trang
+        </div>*@
           </li>
 
 
 
           <!-- Nav Item - Pages Collapse Menu -->
           @*<li class="nav-item">
-              <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                 aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Cài Đặt Cá Nhân</span>
-              </a>
-              <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-xx py-2 collapse-inner rounded">
-                  <h6 class="collapse-header">Tài khoản:</h6>
-                  <a class="collapse-item" href="login.html">Hồ sơ</a>
-                  <a class="collapse-item" href="register.html">Đổi mật khẩu</a>
-                  <div class="collapse-divider"></div>
-                  <h6 class="collapse-header">Chế độ xem:</h6>
-                  <a class="collapse-item" href="404.html">Phân trang</a>
-                  <a class="collapse-item" href="blank.html">Blank Page</a>
-                </div>
-              </div>
-            </li>*@
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Cài Đặt Cá Nhân</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-xx py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Tài khoản:</h6>
+            <a class="collapse-item" href="login.html">Hồ sơ</a>
+            <a class="collapse-item" href="register.html">Đổi mật khẩu</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">Chế độ xem:</h6>
+            <a class="collapse-item" href="404.html">Phân trang</a>
+            <a class="collapse-item" href="blank.html">Blank Page</a>
+          </div>
+        </div>
+      </li>*@
 
           <!-- Sidebar Toggler (Sidebar) -->
           <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
           </div>
         </ul>
-
+        @*</div>*@
 
       </div>
       @* CONTENT IN HERE *@
-      <div class="content main">
+      <div class="content main" style="overflow: auto; max-height: calc(100vh - 4.375rem); " > @*style="overflow-x: hidden;"*@
 
         @* NỘI DUNG TRONG NÀY *@
-        <div class="main-content">
-          <div id="content-wrapper" class="">
+        <div class="main-content" style="margin-top: 1rem;">  @*style="padding: 20px; height: 38.3rem;"*@
             <div class="pagetitle container-fluid">
               <h1>@ViewData["Title"]</h1>
 
             </div>
-            <div id="content">
+            <div id="content" style=" ">
               <div class="container-fluid">
                 @*<div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
@@ -437,23 +465,25 @@
                     </a>
                   </div>*@
 
-                @RenderBody()
+                <section class="section">
+                  @RenderBody()
+                </section>
 
               </div>
             </div>
-          </div>
         </div>
 
         @* FOOTER IN HERE *@
-        <div class="footer bg-white d-flex flex-column">
-          <footer class="sticky-footer">
-            <div class="container my-auto">
-              <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2022</span>
-              </div>
+      <div class="footer bg-white d-flex flex-column" style="position: fixed; bottom: 0;  z-index: 9999;">
+        @*width: 100%;*@
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; Y'Medical 2022</span>
             </div>
-          </footer>
-        </div>
+          </div>
+        </footer>
+      </div>
       </div>
     </div>
   </div>
@@ -536,14 +566,14 @@
 
 
   <!-- Bootstrap core JavaScript-->
-  <script src="~/admin/vendor/jquery/jquery.min.js"></script>
+  @*<script src="~/admin/vendor/jquery/jquery.min.js"></script>*@
   <script src="~/admin/vendor/bootstrap/js/bootstrap.bundle.js"></script>
   <script src="~/admin/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="~/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
   <!-- Custom scripts for all pages-->
   <script src="~/admin/js/sb-admin-2.min.js"></script>
+
 
   <!-- Page level plugins -->
   <script src="~/admin/vendor/chart.js/Chart.min.js"></script>
@@ -551,17 +581,47 @@
   <!-- Page level custom scripts -->
   <script src="~/admin/js/demo/chart-area-demo.js"></script>
   <script src="~/admin/js/demo/chart-pie-demo.js"></script>
+  <script src="~/admin/js/demo/chart-bar-demo.js"></script>
   @* Thêm sau *@
   <script src="~/admin/js/jquery.elevatezoom.min.js"></script>
   <!--Table-->
   @*<script src="~/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/admin/vendor/datatables/jquery.dataTables.min.js"></script>*@
 
-  <script>
+<script>
 
 
     $(document).ready(function () {
 
+      $('.form-select1').selectize({
+        create: true,
+        sortField: {
+          field: 'text',
+          direction: 'asc'
+        }
+      });
+
+      $('.form-select3').selectize({
+        placeholder: "Nhóm hàng hóa"
+      });
+
+      $('.form-select5').selectize({
+        placeholder: "Nhà cung cấp"
+      });
+
+      $('.form-select4').selectize({
+        placeholder: "Hàng hóa",
+        //onChange: function () {
+        //  $('.form-select4 .selectize-input').addClass('selected');
+        //}
+      });
+
+      $('.form-select2').selectize({
+        sortField: {
+          field: 'text',
+          direction: 'asc'
+        }
+      });
 
       $(function () {
         $('.tungay input').datepicker({
@@ -573,33 +633,26 @@
 
 
 
-      $.fn.DataTable.ext.pager.numbers_length = 2;
-      $("#example").dataTable({
-        "scrollY": "400px",
-        "scrollCollapse": true,
-        bLengthChange: false,
-        bInfo: false,
-        scrollX: true,
-        fixedHeader: true,
-        language: {
-          paginate: {
-            previous: "Trước",
-            next: "Sau",
-          },
-        },
-      });
+
+      //$('#example').DataTable({
+      //  searching: false,
+      //  lengthChange: false,
+      //  pageLength: 5,
+      //  info: false,
+      //  "language": {
+      //    "paginate": {
+      //      "previous": "Trước",
+      //      "next": "Sau"
+      //    }
+      //  }
+      //});
 
 
-      $('.custom-select').selectize({
-        dataAttr: 'data-extra',
-        searchField: ['value', 'text', 'label']
-      });
-
-      $('#SoLo,#ThueXuat').selectize({
-        create: true,
-        dataAttr: 'data-extra',
-        searchField: ['value', 'text', 'label']
-      });
+      //$('#SoLo,#ThueXuat').selectize({
+      //  create: true,
+      //  dataAttr: 'data-extra',
+      //  searchField: ['value', 'text', 'label']
+      //});
 
 
 
@@ -616,10 +669,56 @@
       //$.datetimepicker.setLocale('vi');
 
 
+      $('#NgayNhap').datetimepicker({
+        locale: 'vi',
+        useStrict: true,
+        format: "DD-MM-yyyy HH:mm",
+        icons: {
+          date: "bi bi-calendar2-date",
+          up: "bi bi-chevron-up",
+          down: "bi bi-chevron-down",
+          previous: 'bi bi-chevron-left',
+          next: 'bi bi-chevron-right',
+          time: "bi bi-clock"
+        }
+      });
 
 
+      var maxDate = moment().subtract(18, 'years').startOf('day');
+      var minDate = moment().subtract(60, 'years').add(1, 'day').startOf('day');
+      /* var defaultDate = moment('06-04-2001', 'DD-MM-yyyy');*/
 
-      $('#HanDung,#NgayHD,#NgaySX,#toDayy,#fromDayy').datetimepicker({
+      /*var defaultDate = moment(inputValue, 'DD-MM-yyyy');*/
+      var defaultDate = moment($('#DateOfBirth').val(), 'DD-MM-yyyy');
+
+      //var dateOfBirth = moment("#DateOfBirth").format("DD-MM-yyyy");
+      //$('#DateOfBirth').val(dateOfBirth);
+
+
+   /*   .val(defaultDate.format("DD-MM-yyyy"));*/
+      // Thiết lập minDate cho datetimepicker
+
+
+      $('#DateOfBirth').datetimepicker({
+        maxDate: maxDate.toDate(),
+        minDate: minDate.toDate(),
+        locale: 'vi',
+        useStrict: true,
+        format: "DD-MM-yyyy",
+        icons: {
+          date: "bi bi-calendar2-date",
+          up: "bi bi-chevron-up",
+          down: "bi bi-chevron-down",
+          previous: 'bi bi-chevron-left',
+          next: 'bi bi-chevron-right',
+          time: "bi bi-clock"
+        }
+      }).val(defaultDate.format("DD-MM-yyyy"));
+
+     
+
+
+      $('#HanDung,#NgayHD,#NgaySX,#toDay,#fromDay,#toDay1,#fromDay1,#dateDay1').datetimepicker({
         locale: 'vi',
         useStrict: true,
         format: "DD-MM-yyyy",
@@ -635,18 +734,14 @@
 
 
 
-
-
     })
 
 
-  </script>
+</script>
 
+  
 
-
-  <script src="~/admin/bootstrap-datetimepicker.min.js"></script>
-
-
+  @RenderSection("Scripts", required: false)
 
 </body>
 
