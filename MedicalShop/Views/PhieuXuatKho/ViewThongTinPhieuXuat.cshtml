@@ -57,11 +57,11 @@
         <div class="col-sm-2 col-lg-2">
           <input type="text" value="@Model.SoPx" readonly class="form-control">
         </div>
-        <label class="col-sm-1 col-lg-1 col-form-label">Nhà CC</label>
+        <label class="col-sm-1 col-lg-1 col-form-label">Kh.Hàng</label>
         <div class="col-sm-5 col-lg-5">
           <input type="text" value="@Model.IdkhNavigation.TenKh" readonly class="form-control">
         </div>
-        <label class="col-sm-1 col-lg-1 col-form-label">Ng.Nhập</label>
+        <label class="col-sm-1 col-lg-1 col-form-label">Ng.Xuất</label>
         <div class="col-sm-2 col-lg-2">
           <input type="text" value="@Model.CreatedDate.Value.ToString("dd-MM-yyyy HH:mm")" readonly class="form-control">
         </div>
@@ -141,7 +141,7 @@
   <div class="row" style="padding: 0.8rem;">
     <div class="w-100 d-flex" style="justify-content: space-between;">
       <button class="btn btn-secondary" style="min-width:20%" onclick="cancelXemPhieu()" type="button">Quay lại</button>
-      <button class="btn btn-success" style="min-width:20%" type="button">In</button>
+      <button class="btn btn-success" onclick="window.location.href ='/download/phieuxuat/@Model.Id'" style="min-width:20%" type="button">In</button>
     </div>
   </div>
 </div>

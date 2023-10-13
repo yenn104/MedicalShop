@@ -6,6 +6,18 @@
 
   MedicalShopContext context = new MedicalShopContext();
 
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   NhomHangHoa getNHH(int? id)
   {
     NhomHangHoa nhh = context.NhomHangHoa.Find(id);
@@ -82,7 +94,15 @@
 
     <div class="card zoomContainer" style="width: 100%">
       <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 40px; margin-bottom: 20px; height: 20rem; justify-content: center;">
-        <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+        @if (@Model.Image != null && @Model.Image != "")
+        {
+          <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+        }
+        else
+        {
+          <img src="/lib/imagesHH/HHnone.jpg" alt="@Model.TenHh" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+        }
+
       </div>
 
 
@@ -132,90 +152,91 @@
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.TenHh)
+                Tên HH
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.TenHh)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Idnhh)
+                Nhóm HH
               </dt>
               <dd class="col-sm-10">
                 @getNHH(Model.Idnhh).TenNhh
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MaHh)
+               Mã HH
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MaHh)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.BarCode)
+                BarCode
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.BarCode)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Iddvtc)
+                DVT
               </dt>
               <dd class="col-sm-10">
                 @getDVT(Model.Iddvtc).TenDvt
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Idhsx)
+                HSX
               </dt>
               <dd class="col-sm-10">
                 @getHSX(Model.Idhsx).TenHsx
               </dd>
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Idnsx)
+                NSX
               </dt>
               <dd class="col-sm-10">
                 @getNSX(Model.Idnsx).TenNsx
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Detail)
+                Ghi chú
               </dt>
               <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Detail)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreatedBy)
+                NV tạo
               </dt>
               <dd class="col-sm-10">
                 @getNV(Model.CreatedBy).TenNv
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreatedDate)
+                Ngày tạo
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CreatedDate)
+                @formatDay(Model.CreatedDate)
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ModifiedBy)
+               NV sửa
               </dt>
               <dd class="col-sm-10">
                 @getNV(Model.ModifiedBy).TenNv
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ModifiedDate)
+                Ngày sửa
               </dt>
               <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ModifiedDate)
+                @formatDay(Model.ModifiedDate)
+
               </dd>
 
               <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Idcn)
+                Chi nhánh
               </dt>
               <dd class="col-sm-10">
                 @getCN(Model.Idcn).TenCn

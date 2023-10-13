@@ -17,11 +17,23 @@
     else return new NhanVien();
   }
 
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   var acc = User.FindFirst("VaiTro");
   int idmenu = (int)TempData.Peek("Menu");
 
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -35,7 +47,6 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
@@ -75,27 +86,27 @@
   </div>
 </div>
 
-<div id="tableNHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<div id="tableNHH" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaNhh)
+          Mã NHH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenNhh)
+          Tên NHH
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.CreatedDate)
+          Ngày tạo
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.CreatedBy)
+          NV tạo
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.ModifiedDate)
+          Ngày sửa
         </th>
         <th class="text-center">
-          @Html.DisplayNameFor(model => model.ModifiedBy)
+          NV sửa
         </th>
         <th class="text-center">Tùy chọn</th>
       </tr>
@@ -111,13 +122,13 @@
             @Html.DisplayFor(modelItem => item.TenNhh)
           </td>
           <td class="text-center">
-            @Html.DisplayFor(modelItem => item.CreatedDate)
+            @formatDay(item.CreatedDate)
           </td>
           <td class="text-center">
             @getNV(item.CreatedBy).TenNv
           </td>
           <td class="text-center">
-            @Html.DisplayFor(modelItem => item.ModifiedDate)
+            @formatDay(item.ModifiedDate)
           </td>
           <td class="text-center">
             @getNV(item.ModifiedBy).TenNv

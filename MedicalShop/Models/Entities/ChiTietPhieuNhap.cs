@@ -24,7 +24,6 @@ namespace MedicalShop.Models.Entities
         public string SoLo { get; set; }
         public double? Cktm { get; set; }
         public double? Thue { get; set; }
-        public double? SalePrice { get; set; }
         public int? Tgbh { get; set; }
         public DateTime? Nsx { get; set; }
         public DateTime? Hsd { get; set; }

@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class KhachHangController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
@@ -14,7 +16,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục khách hàng";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "KH" && x.Active == true).FirstOrDefault().Id;
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "KhachHang" && x.Active == true).FirstOrDefault().Id;
 
 
       //TempData["Menu"] = context.Menu.Where( menu => EF.Functions.Like( menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Select(menu => menu.Id);
@@ -24,7 +26,7 @@ namespace MedicalShop.Controllers
 
     public IActionResult Details(int id)
     {
-      ViewData["Title"] = "Chi tiết nhà cung cấp";
+      ViewData["Title"] = "Chi tiết khách hàng";
       KhachHang kh = context.KhachHang.FirstOrDefault(x => x.Id == id);
       return View(kh);
     }
@@ -34,7 +36,7 @@ namespace MedicalShop.Controllers
     //hiển thị view insert
     public IActionResult ViewCreate()
     {
-      ViewData["Title"] = "Thêm nhà cung cấp";
+      ViewData["Title"] = "Thêm khách hàng";
       return View();
     }
 
@@ -61,7 +63,7 @@ namespace MedicalShop.Controllers
 
     {
       KhachHang kh = context.KhachHang.Find(id);
-      ViewData["Title"] = "Sửa nhà cung cấp";
+      ViewData["Title"] = "Sửa khách hàng";
       return View(kh);
     }
 
@@ -100,14 +102,17 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableKH")]
     public IActionResult loadTableKH(bool active)
     {
-      if (active)
-      {
-        ViewBag.KH = context.KhachHang.Where(x => x.Active == true).ToList();
-      }
-      else
-      {
-        ViewBag.KH = context.KhachHang.ToList();
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.KH = context.KhachHang
+        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenKh)
+        .ToList();
       return PartialView();
     }
 
@@ -141,7 +146,7 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadDetailKH")]
     public IActionResult LoadDetailKH(int id)
     {
-      ViewData["Title"] = "Chi tiết nhà cung cấp";
+      ViewData["Title"] = "Chi tiết khách hàng";
       KhachHang kh = context.KhachHang.FirstOrDefault(x => x.Id == id);
       return View(kh);
     }

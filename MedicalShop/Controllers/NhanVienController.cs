@@ -1,15 +1,18 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class NhanVienController : Controller
   {
     public IActionResult Index()
@@ -102,6 +105,7 @@ namespace MedicalShop.Controllers
       //MedicalShopContext context = new MedicalShopContext();
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
       int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+      var abc = nv.DateOfBirth;
       nv.Idcn = idcn;
       nv.Image = UploadedFile(nv, Avt);
       nv.CreatedBy = idUser;
@@ -144,7 +148,7 @@ namespace MedicalShop.Controllers
 
     //update hh
     [HttpPost]
-    public IActionResult updateNhanVien(NhanVien nv, IFormFile avt)
+    public IActionResult updateNhanVien(NhanVien nv, IFormFile avt, string DateOfBirth)
     {
       NhanVien dv = context.NhanVien.Find(nv.Id);
       int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -158,7 +162,7 @@ namespace MedicalShop.Controllers
       dv.Cccd = nv.Cccd;
       dv.HomeTown = nv.HomeTown;
       dv.Sex = nv.Sex;
-      dv.DateOfBirth = nv.DateOfBirth;
+      dv.DateOfBirth = DateTime.ParseExact(DateOfBirth, "dd-MM-yyyy", CultureInfo.InvariantCulture);
       if (avt != null)
       {
         dv.Image = UploadedFile(nv, avt);
@@ -175,28 +179,17 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableNV")]
     public IActionResult loadTable(bool active, int nhomNV)
     {
-      if (active)
-      {
-        if (nhomNV != 0)
-        {
-          ViewBag.ListNV = context.NhanVien.Where(x => x.Active == active && x.Idnnv == nhomNV).OrderBy(x => x.TenNv).ToList();
-        }
-        else
-        {
-          ViewBag.ListNV = context.NhanVien.Where(x => x.Active == active).OrderBy(x => x.TenNv).ToList();
-        }
-      }
-      else
-      {
-        if (nhomNV != 0)
-        {
-          ViewBag.ListNV = context.NhanVien.Where(x => x.Idnnv == nhomNV).OrderBy(x => x.TenNv).ToList();
-        }
-        else
-        {
-          ViewBag.ListNV = context.NhanVien.OrderBy(x => x.TenNv).ToList();
-        }
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.ListNV = context.NhanVien
+        .Where(x => (active == false ? true : x.Active == true) && (nhomNV == 0 ? true : x.Idnnv == nhomNV) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenNv)
+        .ToList();
       return PartialView("LoadTableNV");
     }
 
@@ -250,7 +243,27 @@ namespace MedicalShop.Controllers
 
 
 
+    [HttpPost("/Check")]
+    public IActionResult Check(string IDNV)
+    {
+      // Kiểm tra mã nhân viên đã tồn tại hay chưa
+      bool exists = CheckIfEmployeeExists(IDNV);
 
+      // Tạo một object JSON để trả về kết quả
+      var result = new { exists = exists };
+
+      return Json(result);
+    }
+
+    private bool CheckIfEmployeeExists(string id)
+    {
+      // Thực hiện kiểm tra mã nhân viên trong cơ sở dữ liệu
+      MedicalShopContext context = new MedicalShopContext();
+      NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Cccd == id);
+
+      // Trả về kết quả kiểm tra
+      return (nv != null);
+    }
 
   }
 }

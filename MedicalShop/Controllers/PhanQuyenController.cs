@@ -1,14 +1,17 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
   //sua lai cho datetime.now
+  [Authorize(Roles = "NV")]
   public class PhanQuyenController : Controller
   {
     public IActionResult Table()
@@ -148,22 +151,23 @@ namespace MedicalShop.Controllers
       return PartialView();
     }
 
-    ///search nhan vien okk
-    [HttpPost("/searchTableNV")]
-    public IActionResult searchTableNV(string key)
-    {
-      MedicalShopContext context = new MedicalShopContext();
-      if (key == "" || key == null)
-      {
-        ViewBag.loadTableNV = context.NhanVien.Where(x => x.Active == true).ToList();
-        return PartialView("LoadTableNV");
-      }
-      else
-      {
-        ViewBag.loadTableNV = context.NhanVien.FromSqlRaw("SELECT * FROM NhanVien WHERE concat_ws(' ',TenNV,MaNV) LIKE N'%" + key + "%';").ToList();
-        return PartialView("LoadTableNV");
-      }
-    }
+    /////search nhan vien okk
+    //[HttpPost("/searchTableNV")]
+    //public IActionResult searchTableNV(string key)
+    //{
+    //  MedicalShopContext context = new MedicalShopContext();
+    //  if (key == "" || key == null)
+    //  {
+    //    ViewBag.loadTableNV = context.NhanVien.Where(x => x.Active == true).ToList();
+    //    return PartialView("LoadTableNV");
+    //  }
+    //  else
+    //  {
+    //    ViewBag.loadTableNV = context.NhanVien.FromSqlRaw("SELECT * FROM NhanVien WHERE concat_ws(' ',TenNV,MaNV) LIKE N'%" + key + "%';").ToList();
+    //    return PartialView("LoadTableNV");
+    //  }
+    //}
+
 
 
 
@@ -199,5 +203,43 @@ namespace MedicalShop.Controllers
       context.SaveChanges();
       return "Sửa thành công";
     }
+
+
+
+
+
+
+    //ok  return Json(results);
+    [Route("/loadNVPQ")]
+    public IActionResult loadNVPQ(int check)
+    {
+      MedicalShopContext context = new MedicalShopContext();
+
+      //var hangTons = await _dACNPMContext.HangTonKhos
+      //              .Include(x => x.IdhhNavigation)
+      //              .Include(x => x.IdhhNavigation.IdnhhNavigation)
+      //              .Where(x => (idNhh == 0 ? true : x.IdhhNavigation.Idnhh == idNhh)
+      //              && (idHh == 0 ? true : x.Idhh == idHh)
+      //              && x.NgayNhap.Value.Date >= FromDay
+      //              && x.NgayNhap.Value.Date <= ToDay
+      //              && x.Idcn == idCn)
+      //              .ToListAsync();
+      //hh.Idnhh == idnhh
+
+
+      var results = context.NhanVien.Where(x => (check == 1 ? x.UserName == null : true) && x.Active == true).ToList();
+
+      ViewBag.ListNV = results;
+
+      return PartialView("loadNVPQ");
+
+      //return Ok(results);
+
+
+    }
+
+
+
+
   }
 }

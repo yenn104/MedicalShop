@@ -24,8 +24,8 @@
 else
 {
   <td class="p-0 vaitro">
-    <select id="idvt" onchange="" class="w-100 form-select" style="height: 38px;">
-      <option selected disabled>---Chọn vai trò---</option>
+    <select id="idvt" onchange="" class="form-select">
+      <option selected disabled value=""></option>
       @foreach (VaiTro vt in ViewBag.ListPQCN)
       {
         <option value="@vt.Id">@vt.TenVt</option>

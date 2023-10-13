@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models;
 using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 namespace MedicalShop.Controllers
 {
   //Đooir lại datetime.now
+  [Authorize(Roles = "NV")]
+
   public class VaiTroController : Controller
   {
     public IActionResult Table()
@@ -49,7 +52,6 @@ namespace MedicalShop.Controllers
           cnn.Delete = item.Delete;
           cnn.Export = item.Export;
           cnn.Print = item.Print;
-          cnn.Person = item.Person;
           cnn.CreatedBy = idUser;
           cnn.CreatedDate = DateTime.Now;
           cnn.ModifiedBy = idUser;
@@ -64,7 +66,6 @@ namespace MedicalShop.Controllers
           cn.Delete = item.Delete;
           cn.Export = item.Export;
           cn.Print = item.Print;
-          cn.Person = item.Person;
           cn.ModifiedBy = idUser;
           cn.ModifiedDate = DateTime.Now;
           context.ChucNang.Update(cn);
@@ -96,7 +97,7 @@ namespace MedicalShop.Controllers
     public IActionResult loadTableVT()
     {
       MedicalShopContext context = new MedicalShopContext();
-      ViewBag.loadTableVT = context.VaiTro.Where(x => x.Active == true).OrderBy(x => x.TenVt).ToList();
+      ViewBag.loadTableVT = context.VaiTro.Where(x => x.Active == true && x.Type == false).OrderBy(x => x.TenVt).ToList();
       return PartialView();
     }
 

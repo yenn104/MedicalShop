@@ -18,6 +18,7 @@ namespace MedicalShop.Models.Entities
         public int Id { get; set; }
         public string MaVt { get; set; }
         public string TenVt { get; set; }
+        public bool? Type { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

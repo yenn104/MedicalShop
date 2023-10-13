@@ -1,24 +1,55 @@
 ﻿@model MedicalShop.Models.Entities.HangHoa
 
-<div id="tableHH" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <input type="hidden" id="SL" value="9" />
-  <table class="table" id="example">
+@{
+
+  MedicalShopContext context = new MedicalShopContext();
+
+
+  var acc = User.FindFirst("VaiTro");
+  int idmenu = (int)TempData.Peek("Menu");
+
+  string vaitro = null;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
+  if (acc != null)
+  {
+    vaitro = acc.Value;
+    if (vaitro != null && vaitro != "")
+    {
+      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+      if (cn != null)
+      {
+        nhap = (bool)cn.Import;
+        sua = (bool)cn.Update;
+        xoa = (bool)cn.Delete;
+        print = (bool)cn.Print;
+        xuat = (bool)cn.Export;
+      }
+    }
+  }
+
+}
+
+
+<script src="~/admin/js/datatable-custom.js"></script>
+
+<div id="tableHH" class="table-responsive-lg" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width: 100%; white-space: initial;">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaHh)
+          Mã HH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenHh)
+          Tên HH
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.BarCode)
+          BarCode
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Image)
+          Hình ảnh
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.Detail)
+          Ghi chú
         </th>
         <th>Tùy chọn</th>
       </tr>
@@ -28,25 +59,40 @@
       {
         @if (item.Active == false)
         {
-          <tr style="background-color: #0000000a; ">
+          <tr style="background-color: #0000000a;">
             <td>
               @Html.DisplayFor(modelItem => item.MaHh)
             </td>
-            <td style="max-width: 14rem;">
+            <td>
               @Html.DisplayFor(modelItem => item.TenHh)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.BarCode)
             </td>
             <td class="side-picture">
-              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              @if (@item.Image != null && @item.Image != "")
+              {
+                <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+
+              }
+              else
+              {
+                <img src="~/lib/imagesHH/HHnone.jpg" alt="@item.TenHh" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              }
             </td>
-            <td style="max-width: 14rem;">
+            <td>
               @Html.DisplayFor(modelItem => item.Detail)
             </td>
             <td>
-              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
-              @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục hàng hóa này?')" })
+              @if (sua == true)
+              {
+                @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục hàng hóa này?')" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
+              }
+              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
             </td>
           </tr>
         }
@@ -56,22 +102,44 @@
             <td>
               @Html.DisplayFor(modelItem => item.MaHh)
             </td>
-            <td style="max-width: 14rem;">
+            <td>
               @Html.DisplayFor(modelItem => item.TenHh)
             </td>
             <td>
               @Html.DisplayFor(modelItem => item.BarCode)
             </td>
             <td class="side-picture">
-              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="60" width="60" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              @if (@item.Image != null && @item.Image != "")
+              {
+                <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+
+              }
+              else
+              {
+                <img src="~/lib/imagesHH/HHnone.jpg" alt="@item.TenHh" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+              }
             </td>
-            <td style="max-width: 14rem;">
+            <td>
               @Html.DisplayFor(modelItem => item.Detail)
             </td>
             <td>
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })|
-              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" }) |
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+              @if (sua == true)
+              {
+                @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+              }
+              @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+              @if (xoa == true)
+              {
+                @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá hàng hóa này?')" })
+              }
+              else
+              {
+                <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+              }           
             </td>
           </tr>
         }

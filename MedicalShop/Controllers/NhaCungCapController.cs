@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+  [Authorize(Roles = "NV")]
   public class NhaCungCapController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
@@ -15,7 +17,7 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục nhà cung cấp";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NCC" && x.Active == true).FirstOrDefault().Id;
+      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NhaCungCap" && x.Active == true).FirstOrDefault().Id;
 
 
       //TempData["Menu"] = context.Menu.Where( menu => EF.Functions.Like( menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Select(menu => menu.Id);
@@ -101,16 +103,17 @@ namespace MedicalShop.Controllers
     [HttpPost("/loadTableNCC")]
     public IActionResult loadTableNCC(bool active)
     {
-      if (active)
-      {
-        ViewBag.NCC = context.NhaCungCap.Where(x => x.Active == true).ToList();
-      }
-      else
-      {
-        ViewBag.NCC = context.NhaCungCap.ToList();
-      }
+      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
 
-      //TempData["Menu"] = context.Menu.FirstOrDefault(menu => EF.Functions.Like(menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Id;
+      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+      ViewBag.NCC = context.NhaCungCap
+        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .OrderBy(x => x.TenNcc)
+        .ToList();
       return PartialView();
     }
 

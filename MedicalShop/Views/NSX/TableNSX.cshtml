@@ -1,4 +1,4 @@
-﻿@model MedicalShop.Models.Entities.Nsx
+﻿@model IEnumerable<MedicalShop.Models.Entities.Nsx>
 
 @{
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
@@ -24,6 +24,20 @@
     else return new ChiNhanh();
   }
 
+
+  string formatDay(DateTime? date)
+  {
+    if (date != null)
+    {
+      return date.Value.ToString("dd-MM-yyyy HH:mm");
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+
   var acc = User.FindFirst("VaiTro");
   // int abc = (int)TempData["Menu"]; ViewBag.Menu;
   int idmenu = (int)TempData.Peek("Menu");
@@ -32,7 +46,7 @@
 
   // TempData.Keep("Menu");
   string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false, canhan = false;
+  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
   if (acc != null)
   {
     vaitro = acc.Value;
@@ -46,7 +60,6 @@
         xoa = (bool)cn.Delete;
         print = (bool)cn.Print;
         xuat = (bool)cn.Export;
-        canhan = (bool)cn.Person;
       }
     }
   }
@@ -65,7 +78,7 @@
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
   <div style="margin-bottom: 20px">
-    
+
     @if (nhap == true)
     {
       <a href="/NSX/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
@@ -87,36 +100,36 @@
   </div>
 </div>
 
-<div id="tableNSX" style="overflow-x: auto; overflow-y: hidden; width: 100%;">
-  <table class="table">
+<div id="tableNSX" class="table-responsive" style="margin-bottom: 5rem">
+  <table id="example" class="table table-striped" style="width:100%">
     <thead>
       <tr>
         <th>
-          @Html.DisplayNameFor(model => model.MaNsx)
+          Mã NSX
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.TenNsx)
+          Tên NSX
+        </th>
+        <th class="text-center">
+          Ngày tạo
+        </th>
+        <th class="text-center">
+          NV tạo
+        </th>
+        <th class="text-center">
+          Ngày sửa
+        </th>
+        <th class="text-center">
+          NV sửa
         </th>
         <th>
-          @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.ModifiedDate)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.ModifiedBy)
-        </th>
-        <th>
-          @Html.DisplayNameFor(model => model.Idcn)
+          Chi nhánh
         </th>
         <th>Tùy chọn</th>
       </tr>
     </thead>
     <tbody>
-      @foreach (Nsx item in listNSX())
+      @foreach (Nsx item in Model)
       {
         <tr>
           <td>
@@ -126,13 +139,13 @@
             @Html.DisplayFor(modelItem => item.TenNsx)
           </td>
           <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
+            @formatDay(item.CreatedDate)
           </td>
           <td>
             @getNV(item.CreatedBy).TenNv
           </td>
           <td>
-            @Html.DisplayFor(modelItem => item.ModifiedDate)
+            @formatDay(item.ModifiedDate)
           </td>
           <td>
             @getNV(item.ModifiedBy).TenNv
@@ -166,18 +179,18 @@
 
 
 <script>
-    $('#active').on('change', function () {
-      var a = $(this).val();
-      $.ajax({
-        type: "post",
-        url: "/loadTableNSX",
-        data: "active=" + a,
-        success: function (result) {
-          $('#tableNSX').replaceWith(result);
-        },
-        error: function () {
-          alert("Failed");
-        }
-      });
+  $('#active').on('change', function () {
+    var a = $(this).val();
+    $.ajax({
+      type: "post",
+      url: "/loadTableNSX",
+      data: "active=" + a,
+      success: function (result) {
+        $('#tableNSX').replaceWith(result);
+      },
+      error: function () {
+        alert("Failed");
+      }
     });
+  });
 </script>
