@@ -1,0 +1,118 @@
+﻿@model MedicalShop.Models.Entities.ChiNhanh
+
+@{
+  Layout = null;
+
+  MedicalShopContext context = new MedicalShopContext();
+
+}
+
+
+<div class="card" id="heredetail">
+  <div class="card-body pt-3 pl-5 pr-5" style="padding: 0;">
+    <!-- Bordered Tabs -->
+    <div class="tab-content pt-2">
+      <div id="Detail">
+        <dl class="row">
+          <dt class="col-sm-2">
+            @Html.HiddenFor(model => model.Id)
+          </dt>
+          <dd class="col-sm-10">
+            @Html.HiddenFor(model => model.Id)
+          </dd>
+
+          <dt class="col-sm-2">
+            Mã CN
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaCn)
+          </dd>
+
+          <dt class="col-sm-2">
+            Tên CN
+          </dt>
+          <dd class="col-sm-10">
+             @Html.DisplayFor(model => model.TenCn)
+          </dd>
+
+          <dt class="col-sm-2">
+            SĐT
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+          </dd>
+
+          <dt class="col-sm-2">
+            Mail
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mail)
+          </dd>
+
+          <dt class="col-sm-2">
+            Địa chỉ
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+          </dd>
+
+          <dt class="col-sm-2">
+            Ghi chú
+          </dt>
+          <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+          </dd>
+        
+          <dt class="col-sm-2">
+            NV tạo
+          </dt>
+          <dd class="col-sm-10">
+            @CommonServices.getTenNhanVien(Model.CreatedBy)
+          </dd>
+
+          <dt class="col-sm-2">
+            Ngày tạo
+          </dt>
+          <dd class="col-sm-10">
+            @CommonServices.formatDateTimeShort(Model.CreatedDate)
+          </dd>
+
+          <dt class="col-sm-2">
+            NV sửa
+          </dt>
+          <dd class="col-sm-10">
+            @CommonServices.getTenNhanVien(Model.ModifiedBy)
+          </dd>
+
+          <dt class="col-sm-2">
+            Ngày sửa
+          </dt>
+          <dd class="col-sm-10">
+            @CommonServices.formatDateTimeShort(Model.ModifiedDate)
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 0px 50px 20px 50px; ">
+
+    <a asp-action="Table">
+      <input type="button" class="btn btn-secondary" value="Quay lại">
+    </a>
+    @if (Model.Active == true)
+    {
+      <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+        <input type="button" class="btn btn-primary" value="Chỉnh sửa">
+      </a>
+    }
+    else
+    {
+      <button class="btn btn-primary" style="" id="btn_khoiphuc">
+        <span>Khôi phục</span>
+      </button>
+
+    }
+  </div>
+
+</div>

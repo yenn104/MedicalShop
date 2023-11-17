@@ -144,7 +144,7 @@ namespace MedicalShop.Controllers
     //[Route("/HangHoa/ViewUpdateHangHoa/{id}")]
     public IActionResult ViewUpdate(int id)
     {
-      ViewData["Title"] = "Sửa hàng hoá";
+      ViewData["Title"] = "Cập nhật hàng hoá";
       HangHoa hh = context.HangHoa.Find(id);
       return View(hh);
     }
@@ -226,16 +226,16 @@ namespace MedicalShop.Controllers
       return "Khôi phục thành công!";
     }
 
-    [HttpPost("/loadDetailHH")]
-    public IActionResult LoadDetail(int id)
-    {
-      ViewData["Title"] = "Chi tiết hàng hóa";
-      HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
-      return View(hh);
+        [HttpPost("/loadDetailHH")]
+        public IActionResult LoadDetail(int id)
+        {
+            ViewData["Title"] = "Chi tiết hàng hóa";
+            HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
+            return View(hh);
+        }
+
+
+
+
     }
-
-
-
-
-  }
 }

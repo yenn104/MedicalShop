@@ -1,196 +1,161 @@
 ﻿@model IEnumerable<MedicalShop.Models.Entities.Nsx>
 
 @{
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
-  MedicalShopContext context = new MedicalShopContext();
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    MedicalShopContext context = new MedicalShopContext();
 
 
-  List<Nsx> listNSX()
-  {
-    return context.Nsx.Where(a => a.Active == true).ToList();
-  }
-
-  NhanVien getNV(int? id)
-  {
-    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
-    if (nv != null) return nv;
-    else return new NhanVien();
-  }
-
-  ChiNhanh getCN(int? id)
-  {
-    ChiNhanh cn = context.ChiNhanh.Find(id);
-    if (cn != null) return cn;
-    else return new ChiNhanh();
-  }
-
-
-  string formatDay(DateTime? date)
-  {
-    if (date != null)
+    List<Nsx> listNSX()
     {
-      return date.Value.ToString("dd-MM-yyyy HH:mm");
+        return context.Nsx.Where(a => a.Active == true).ToList();
     }
-    else
+
+
+
+
+    var acc = User.FindFirst("VaiTro");
+    // int abc = (int)TempData["Menu"]; ViewBag.Menu;
+    int idmenu = (int)TempData.Peek("Menu");
+
+    // int idmenu = (int)TempData["Menu"];
+
+    // TempData.Keep("Menu");
+    string vaitro = null;
+    bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
+    if (acc != null)
     {
-      return null;
+        vaitro = acc.Value;
+        if (vaitro != null && vaitro != "")
+        {
+            ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
+            if (cn != null)
+            {
+                nhap = (bool)cn.Import;
+                sua = (bool)cn.Update;
+                xoa = (bool)cn.Delete;
+                print = (bool)cn.Print;
+                xuat = (bool)cn.Export;
+            }
+        }
     }
-  }
-
-
-  var acc = User.FindFirst("VaiTro");
-  // int abc = (int)TempData["Menu"]; ViewBag.Menu;
-  int idmenu = (int)TempData.Peek("Menu");
-
-  // int idmenu = (int)TempData["Menu"];
-
-  // TempData.Keep("Menu");
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
-    }
-  }
 
 }
-
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-                        window.onload = function () {
-                            alert("@Html.Raw(@TempData["ThongBao"])");
-                    };
-  </script>
-}
-
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <div style="margin-bottom: 20px">
+    <div style="margin-bottom: 20px">
 
-    @if (nhap == true)
-    {
-      <a href="/NSX/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
-    }
-    else
-    {
-      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
-    }
-  </div>
-  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-    <div style="display: flex">
-      <div class="dropdown" style="margin-right:10px">
-        <select id="active" onchange="changeHH()" class="custom-select">
-          <option value="true" selected>Hiện tại</option>
-          <option value="false">Tất cả</option>
-        </select>
-      </div>
+        @if (nhap == true)
+        {
+            <a href="/NSX/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+        }
+        else
+        {
+            <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+        }
     </div>
-  </div>
+    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+        <div style="display: flex">
+            <div class="dropdown" style="margin-right:10px">
+                <select id="active" onchange="changeHH()" class="custom-select">
+                    <option value="true" selected>Hiện tại</option>
+                    <option value="false">Tất cả</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="tableNSX" class="table-responsive" style="margin-bottom: 5rem">
-  <table id="example" class="table table-striped" style="width:100%">
-    <thead>
-      <tr>
-        <th>
-          Mã NSX
-        </th>
-        <th>
-          Tên NSX
-        </th>
-        <th class="text-center">
-          Ngày tạo
-        </th>
-        <th class="text-center">
-          NV tạo
-        </th>
-        <th class="text-center">
-          Ngày sửa
-        </th>
-        <th class="text-center">
-          NV sửa
-        </th>
-        <th>
-          Chi nhánh
-        </th>
-        <th>Tùy chọn</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (Nsx item in Model)
-      {
-        <tr>
-          <td>
-            @Html.DisplayFor(modelItem => item.MaNsx)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.TenNsx)
-          </td>
-          <td>
-            @formatDay(item.CreatedDate)
-          </td>
-          <td>
-            @getNV(item.CreatedBy).TenNv
-          </td>
-          <td>
-            @formatDay(item.ModifiedDate)
-          </td>
-          <td>
-            @getNV(item.ModifiedBy).TenNv
-          </td>
-          <td>
-            @getCN(item.Idcn).TenCn
-          </td>
-          <td>
-            @if (sua == true)
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Mã NSX
+                </th>
+                <th>
+                    Tên NSX
+                </th>
+                <th class="text-center">
+                    Ngày tạo
+                </th>
+                <th class="text-center">
+                    NV tạo
+                </th>
+                <th class="text-center">
+                    Ngày sửa
+                </th>
+                <th class="text-center">
+                    NV sửa
+                </th>
+                <th>
+                    Chi nhánh
+                </th>
+                <th>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Nsx item in Model)
             {
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaNsx)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenNsx)
+                    </td>
+                    <td>
+                        @CommonServices.formatDateTimeShort(item.CreatedDate)
+                    </td>
+                    <td>
+                        @CommonServices.getTenNhanVien(item.CreatedBy)
+                    </td>
+                    <td>
+                        @CommonServices.formatDateTimeShort(item.ModifiedDate)
+                    </td>
+                    <td>
+                        @CommonServices.getTenNhanVien(item.ModifiedBy)
+                    </td>
+                    <td>
+                        @CommonServices.getTenChiNhanh(item.Idcn)
+                    </td>
+                    <td>
+                        @if (sua == true)
+                        {
+                            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+                        }
+                        @if (xoa == true)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+                        }
+                    </td>
+                </tr>
             }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-            }
-            @if (xoa == true)
-            {
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-            }
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </div>
 
 
 <script>
-  $('#active').on('change', function () {
-    var a = $(this).val();
-    $.ajax({
-      type: "post",
-      url: "/loadTableNSX",
-      data: "active=" + a,
-      success: function (result) {
-        $('#tableNSX').replaceWith(result);
-      },
-      error: function () {
-        alert("Failed");
-      }
+    $('#active').on('change', function () {
+        var a = $(this).val();
+        $.ajax({
+            type: "post",
+            url: "/loadTableNSX",
+            data: "active=" + a,
+            success: function (result) {
+                $('#tableNSX').replaceWith(result);
+            },
+            error: function () {
+                showToast("Thất bại", 500);
+            }
+        });
     });
-  });
 </script>

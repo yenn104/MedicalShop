@@ -36,15 +36,6 @@
 }
 
 
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-                            window.onload = function () {
-                                alert("@Html.Raw(@TempData["ThongBao"])");
-                        };
-  </script>
-}
-
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
   <div style="margin-bottom: 20px">
     @if (nhap == true)

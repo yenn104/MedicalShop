@@ -1,7 +1,7 @@
-﻿@model MedicalShop.Models.Entities.Hsx
+﻿@model MedicalShop.Models.Entities.ChiNhanh
 
 @{
-    ViewData["Title"] = "Chi tiết hãng sản xuất";
+    ViewData["Title"] = "Chi tiết chi nhánh";
     Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
     MedicalShopContext context = new MedicalShopContext();
@@ -21,6 +21,19 @@
         }
     }
 
+
+    string formatDay(DateTime? date)
+    {
+        if (date != null)
+        {
+            return date.Value.ToString("dd-MM-yyyy HH:mm:ss");
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }
 
 <div class="row" style="margin-bottom: 70px;">
@@ -36,35 +49,47 @@
                         <dd class="col-sm-10">
                             @Html.HiddenFor(model => model.Id)
                         </dd>
+
                         <dt class="col-sm-2">
-                            Mã HSX
+                            Mã CN
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.MaHsx)
+                            @Html.DisplayFor(model => model.MaCn)
                         </dd>
+
                         <dt class="col-sm-2">
-                            Tên HSX
+                            Tên CN
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.TenHsx)
+                            @Html.DisplayFor(model => model.TenCn)
                         </dd>
-                        <dt class="col-sm-2">
-                            Địa chỉ
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Address)
-                        </dd>
+
                         <dt class="col-sm-2">
                             SĐT
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Phone)
                         </dd>
+
                         <dt class="col-sm-2">
                             Mail
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Mail)
+                        </dd>
+
+                        <dt class="col-sm-2">
+                            Địa chỉ
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Address)
+                        </dd>
+
+                        <dt class="col-sm-2">
+                            Ghi chú
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Note)
                         </dd>
 
                         <dt class="col-sm-2">
@@ -93,26 +118,6 @@
                         </dt>
                         <dd class="col-sm-10">
                             @CommonServices.formatDateTimeShort(Model.ModifiedDate)
-                        </dd>
-
-                        <dt class="col-sm-2">
-                            Chi nhánh
-                        </dt>
-                        <dd class="col-sm-10">
-                            @CommonServices.getTenChiNhanh(Model.Idcn)
-                        </dd>
-                        <dt class="col-sm-2">
-                            Trạng thái
-                        </dt>
-                        <dd class="col-sm-10">
-                            @if (Model.Active == true)
-                            {
-                                <p>Đang hoạt động</p>
-                            }
-                            else
-                            {
-                                <p>Ngừng hoạt động</p>
-                            }
                         </dd>
                     </dl>
                 </div>
@@ -170,13 +175,13 @@
         var id = $('#Id').val();
         $.ajax({
             type: "post",
-            url: "/loadDetailHSX",
+            url: "/loadDetailChiNhanh",
             data: "id=" + id,
             success: function (result) {
                 $("#heredetail").replaceWith(result)
             },
             error: function () {
-                console.log("Lỗi");
+                console.log("Thất bại!");
             }
         });
     }
@@ -185,16 +190,16 @@
         var id = $('#Id').val();
         $.ajax({
             type: "post",
-            url: "/restoreHSX",
+            url: "/restoreChiNhanh",
             data: "id=" + id,
             success: function (result) {
-                console.log(result);
+                alert(result);
                 loadAgain();
                 //  $("#Detail").replaceWith(result)
 
             },
             error: function () {
-                console.log("Lỗi");
+                console.log("Thất bại!");
             }
         });
     })

@@ -97,7 +97,7 @@ namespace MedicalShop.Controllers
       h.ModifiedDate = DateTime.Now;
       context.Hsx.Update(h);
       context.SaveChanges();
-      TempData["ThongBao"] = "Sửa thành công!";
+      TempData["ThongBao"] = "Cập nhật thành công!";
       return RedirectToAction("table");
     }
 
@@ -130,7 +130,7 @@ namespace MedicalShop.Controllers
       hsx.Active = true;
       context.Hsx.Update(hsx);
       context.SaveChanges();
-      //TempData["ThongBao"] = "Khôi phục thành công!";
+      TempData["ThongBao"] = "Khôi phục thành công!";
       return RedirectToAction("Table");
     }
 

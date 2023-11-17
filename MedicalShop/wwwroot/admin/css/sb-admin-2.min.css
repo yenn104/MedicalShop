@@ -2445,9 +2445,12 @@ a.btn.disabled, fieldset:disabled a.btn {
   }
 
   .btn-primary.disabled, .btn-primary:disabled {
-    color: #fff;
+    /*color: #fff;
     background-color: #4e73df;
-    border-color: #4e73df
+    border-color: #4e73df*/
+    color: #fff;
+    background-color: #979797;
+    border-color: #000000
   }
 
   .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
@@ -5577,7 +5580,7 @@ a.close.disabled {
   pointer-events: none
 }
 
-.toast {
+/*.toast {
   flex-basis: 350px;
   max-width: 350px;
   font-size: .875rem;
@@ -5620,7 +5623,7 @@ a.close.disabled {
 
 .toast-body {
   padding: .75rem
-}
+}*/
 
 .modal-open {
   overflow: hidden
@@ -8121,9 +8124,9 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
   margin-left: -3rem !important
 }
 
-.m-auto {
+/*.m-auto {
   margin: auto !important
-}
+}*/
 
 .mt-auto, .my-auto {
   margin-top: auto !important

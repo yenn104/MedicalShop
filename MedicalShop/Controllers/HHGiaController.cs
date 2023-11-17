@@ -16,7 +16,7 @@ namespace MedicalShop.Controllers
   {
     public IActionResult Table()
     {
-      ViewData["Title"] = "Cài đặt giá bán";
+      ViewData["Title"] = "Thiết lập giá bán";
       return View("TableHHGia");
     }
 

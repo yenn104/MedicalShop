@@ -11,15 +11,6 @@
 
 }
 
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-                        window.onload = function () {
-                            alert("@Html.Raw(@TempData["ThongBao"])");
-                    };
-  </script>
-}
-
 <div class="card" style=" margin-bottom: 70px;">
   <div class="card-body">
     <form enctype="multipart/form-data" action="/NhanVien/insertNhanVien" method="post">
@@ -36,16 +27,6 @@
               <p class="text-muted mb-0" style="font-size:1rem !important">Cho phép JPG or PNG.</p>
             </div>
           </div>
-
-
-
-          @*<div>
-        <label style="margin-bottom: 70px;">Hình ảnh</label>
-        <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/gif image/png image/jpeg">
-      </div>
-      <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
-        <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
-      </div>*@
         </div>
 
 

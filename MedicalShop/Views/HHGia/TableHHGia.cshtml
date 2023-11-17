@@ -1,5 +1,4 @@
 ﻿@{
-  ViewData["Title"] = "Giá bán";
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
   MedicalShopContext context = new MedicalShopContext();
@@ -35,15 +34,6 @@
 </style>
 
 
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-        window.onload = function () {
-            alert("@Html.Raw(@TempData["ThongBao"])");
-    };
-  </script>
-}
-
 <div class="card mb-0" style=" margin-bottom: 5rem !important ">
   <div class="" style="overflow-x:auto">
     <div class="mc-13" style=" display: flex; align-items: flex-start; justify-content: space-between;">
@@ -56,7 +46,6 @@
       <div class="group-btn">
         <div class="d-flex justify-content-end">
           <button class="btn btn-primary" style="border-radius:unset ; width: 5rem ;" type="button" id="btn-save">
-            @*border-radius: 3px;*@
             <span>Lưu</span>
           </button>
         </div>
