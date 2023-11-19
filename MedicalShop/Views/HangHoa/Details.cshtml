@@ -1,354 +1,281 @@
 ﻿@model MedicalShop.Models.Entities.HangHoa
 
 @{
-  ViewData["Title"] = "Chi tiết hàng hóa";
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    ViewData["Title"] = "Chi tiết hàng hóa";
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
-  MedicalShopContext context = new MedicalShopContext();
+    MedicalShopContext context = new MedicalShopContext();
 
-  string formatDay(DateTime? date)
-  {
-    if (date != null)
+    List<HhImage> listIMG(int? id)
     {
-      return date.Value.ToString("dd-MM-yyyy HH:mm");
+        return context.HhImage.Where(y => y.Idhh == id && y.Active == true).ToList();
     }
-    else
-    {
-      return null;
-    }
-  }
 
-  NhomHangHoa getNHH(int? id)
-  {
-    NhomHangHoa nhh = context.NhomHangHoa.Find(id);
-    if (nhh != null) return nhh;
-    else return new NhomHangHoa();
-  }
-
-  ChiNhanh getCN(int? id)
-  {
-    ChiNhanh cn = context.ChiNhanh.Find(id);
-    if (cn != null) return cn;
-    else return new ChiNhanh();
-  }
-
-  Hsx getHSX(int? id)
-  {
-    Hsx hsx = context.Hsx.Find(id);
-    if (hsx != null) return hsx;
-    else return new Hsx();
-  }
-
-  Nsx getNSX(int? id)
-  {
-    Nsx nsx = context.Nsx.Find(id);
-    if (nsx != null) return nsx;
-    else return new Nsx();
-  }
-
-  Dvt getDVT(int? id)
-  {
-    Dvt dvt = context.Dvt.Find(id);
-    if (dvt != null) return dvt;
-    else return new Dvt();
-  }
-
-  NhanVien getNV(int? id)
-  {
-    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
-    if (nv != null) return nv;
-    else return new NhanVien();
-  }
-
-
-  List<HhImage> listIMG(int? id)
-  {
-    return context.HhImage.Where(y => y.Idhh == id && y.Active == true).ToList();
-  }
-
-
-  var acc = User.FindFirst("VaiTro");
-  // int abc = (int)TempData["Menu"]; ViewBag.Menu;
-  int idmenu = (int)TempData.Peek("Menu");
-
-  // int idmenu = (int)TempData["Menu"];
-
-  // TempData.Keep("Menu");
-  string vaitro = null;
-  bool sua = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      sua = (bool)cn.Update;
-    }
-  }
-
+    var quyen = ViewBag.Quyen;
+    bool sua = (bool)quyen.Update == true ? true : false;
 
 }
 
 <div class="row" style=" margin-bottom: 70px;">
-  <div class="col-xl-4">
+    <div class="col-xl-4">
 
-    <div class="card zoomContainer" style="width: 100%">
-      <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 40px; margin-bottom: 20px; height: 20rem; justify-content: center;">
-        @if (@Model.Image != null && @Model.Image != "")
-        {
-          <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
-        }
-        else
-        {
-          <img src="/lib/imagesHH/HHnone.jpg" alt="@Model.TenHh" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
-        }
+        <div class="card zoomContainer" style="width: 100%">
+            <div class=" profile-card d-flex flex-column align-items-center  zoomLens" style="margin-top: 40px; margin-bottom: 20px; height: 20rem; justify-content: center;">
+                @if (@Model.Image != null && @Model.Image != "")
+                {
+                    <img src="/lib/imagesHH/@Model.Image" alt="@Model.Image" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+                }
+                else
+                {
+                    <img src="/lib/imagesHH/HHnone.jpg" alt="@Model.TenHh" data-zoom-image="/lib/imagesHH/@Model.Image" max-height="400px" width="300px" @*style=" width: 85%;"*@ id="zoom_01">
+                }
 
-      </div>
-
-
-      <!--Slide img -->
-
-      <div class="slide-holder" style="display: flex; align-items: center;">
-        <div class="slide-pager" style="left: -10px;">
-          <div class="slide-control-prev">«</div>
-        </div>
-        <div class="slide-container">
-          <div class="slide-stage">
-            <div class="slide-image side-picture center-imgdiv active" height="80" width="80" role="button" data-target="side-1">
-              <img src="/lib/imagesHH/@Model.Image" id="zoom_01" class="img-fluid" />
             </div>
-            @foreach (HhImage anh in listIMG(@Model.Id))
-            {
-              <div class="slide-image side-picture center-imgdiv" height="80" width="80" role="button" data-target="side-2">
-                <img src="/lib/imagesHH/@anh.Name" id="zoom_02" class="img-fluid" />
-              </div>
-            }
-          </div>
-        </div>
-        <div class="slide-pager" style="right: -10px;">
-          <div class="slide-control-next">»</div>
-        </div>
-      </div>
 
-      <!--End slide img -->
 
+            <!--Slide img -->
+
+            <div class="slide-holder" style="display: flex; align-items: center;">
+                <div class="slide-pager" style="left: -10px;">
+                    <div class="slide-control-prev">«</div>
+                </div>
+                <div class="slide-container">
+                    <div class="slide-stage">
+                        <div class="slide-image side-picture center-imgdiv active" height="80" width="80" role="button" data-target="side-1">
+                            <img src="/lib/imagesHH/@Model.Image" id="zoom_01" class="img-fluid" />
+                        </div>
+                        @foreach (HhImage anh in listIMG(@Model.Id))
+                        {
+                            <div class="slide-image side-picture center-imgdiv" height="80" width="80" role="button" data-target="side-2">
+                                <img src="/lib/imagesHH/@anh.Name" id="zoom_02" class="img-fluid" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="slide-pager" style="right: -10px;">
+                    <div class="slide-control-next">»</div>
+                </div>
+            </div>
+
+            <!--End slide img -->
+
+        </div>
     </div>
-  </div>
 
 
-  <div class="col-xl-8">
+    <div class="col-xl-8">
 
-    <div class="card" id="heredetail">
-      <div class="card-body pt-3 pl-5 pr-5" style="padding: 0;">
-        <!-- Bordered Tabs -->
-        <div class="tab-content pt-2">
-          <div id="Detail">
-            <dl class="row">
-              <dt class="col-sm-2">
-                @Html.HiddenFor(model => model.Id)
-              </dt>
-              <dd class="col-sm-10">
-                @Html.HiddenFor(model => model.Id)
-              </dd>
+        <div class="card" id="heredetail">
+            <div class="card-body pt-3 pl-5 pr-5" style="padding: 0;">
+                <!-- Bordered Tabs -->
+                <div class="tab-content pt-2">
+                    <div id="Detail">
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                @Html.HiddenFor(model => model.Id)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.HiddenFor(model => model.Id)
+                            </dd>
 
-              <dt class="col-sm-2">
-                Tên HH
-              </dt>
-              <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.TenHh)
-              </dd>
+                            <dt class="col-sm-2">
+                                Tên HH
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.TenHh)
+                            </dd>
 
-              <dt class="col-sm-2">
-                Nhóm HH
-              </dt>
-              <dd class="col-sm-10">
-                @getNHH(Model.Idnhh).TenNhh
-              </dd>
+                            <dt class="col-sm-2">
+                                Nhóm HH
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenNhomHangHoa(Model.Idnhh)
+                            </dd>
 
-              <dt class="col-sm-2">
-               Mã HH
-              </dt>
-              <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MaHh)
-              </dd>
+                            <dt class="col-sm-2">
+                                Mã HH
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.MaHh)
+                            </dd>
 
-              <dt class="col-sm-2">
-                BarCode
-              </dt>
-              <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.BarCode)
-              </dd>
+                            <dt class="col-sm-2">
+                                Mã vạch
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.BarCode)
+                            </dd>
 
-              <dt class="col-sm-2">
-                DVT
-              </dt>
-              <dd class="col-sm-10">
-                @getDVT(Model.Iddvtc).TenDvt
-              </dd>
+                            <dt class="col-sm-2">
+                                DVT
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenDonViTinh(Model.Iddvtc)
+                            </dd>
 
-              <dt class="col-sm-2">
-                HSX
-              </dt>
-              <dd class="col-sm-10">
-                @getHSX(Model.Idhsx).TenHsx
-              </dd>
-              <dt class="col-sm-2">
-                NSX
-              </dt>
-              <dd class="col-sm-10">
-                @getNSX(Model.Idnsx).TenNsx
-              </dd>
+                            <dt class="col-sm-2">
+                                HSX
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenHangSanXuat(Model.Idhsx)
+                            </dd>
+                            <dt class="col-sm-2">
+                                NSX
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenNuocSanXuat(Model.Idnsx)
+                            </dd>
 
-              <dt class="col-sm-2">
-                Ghi chú
-              </dt>
-              <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Detail)
-              </dd>
+                            <dt class="col-sm-2">
+                                Ghi chú
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.Detail)
+                            </dd>
 
-              <dt class="col-sm-2">
-                NV tạo
-              </dt>
-              <dd class="col-sm-10">
-                @getNV(Model.CreatedBy).TenNv
-              </dd>
+                            <dt class="col-sm-2">
+                                NV tạo
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenNhanVien(Model.CreatedBy)
+                            </dd>
 
-              <dt class="col-sm-2">
-                Ngày tạo
-              </dt>
-              <dd class="col-sm-10">
-                @formatDay(Model.CreatedDate)
-              </dd>
+                            <dt class="col-sm-2">
+                                Ngày tạo
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.formatDateTimeShort(Model.CreatedDate)
+                            </dd>
 
-              <dt class="col-sm-2">
-               NV sửa
-              </dt>
-              <dd class="col-sm-10">
-                @getNV(Model.ModifiedBy).TenNv
-              </dd>
+                            <dt class="col-sm-2">
+                                NV sửa
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenNhanVien(Model.ModifiedBy)
+                            </dd>
 
-              <dt class="col-sm-2">
-                Ngày sửa
-              </dt>
-              <dd class="col-sm-10">
-                @formatDay(Model.ModifiedDate)
+                            <dt class="col-sm-2">
+                                Ngày sửa
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.formatDateTimeShort(Model.ModifiedDate)
 
-              </dd>
+                            </dd>
 
-              <dt class="col-sm-2">
-                Chi nhánh
-              </dt>
-              <dd class="col-sm-10">
-                @getCN(Model.Idcn).TenCn
-              </dd>
-            </dl>
-          </div>
+                            <dt class="col-sm-2">
+                                Chi nhánh
+                            </dt>
+                            <dd class="col-sm-10">
+                                @CommonServices.getTenChiNhanh(Model.Idcn)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 0px 50px 20px 50px; ">
+
+                <a asp-action="Table">
+                    <input type="button" class="btn btn-secondary" value="Quay lại">
+                </a>
+                @if (Model.Active == true)
+                {
+                    if (sua == true)
+                    {
+                        <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
+                            <input type="button" class="btn btn-primary" value="Chỉnh sửa">
+                        </a>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary disabled">
+                            <span>Chỉnh sửa</span>
+                        </button>
+                    }
+
+                }
+                else
+                {
+                    if (sua == true)
+                    {
+                        //thêm ajax
+                        <button class="btn btn-primary" style="" id="btn_khoiphuc">
+                            <span>Khôi phục</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary disabled">
+                            <span>Khôi phục</span>
+                        </button>
+                    }
+                }
+            </div>
+
         </div>
-      </div>
-
-      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 0px 50px 20px 50px; ">
-
-        <a asp-action="Table">
-          <input type="button" class="btn btn-secondary" value="Quay lại">
-        </a>
-        @if (Model.Active == true)
-        {
-          if (sua == true)
-          {
-            <a asp-action="ViewUpdate" asp-route-id="@Model.Id">
-              <input type="button" class="btn btn-primary" value="Chỉnh sửa">
-            </a>
-          }
-          else
-          {
-            <button class="btn btn-primary disabled">
-              <span>Chỉnh sửa</span>
-            </button>
-          }
-
-        }
-        else
-        {
-          if (sua == true)
-          {
-            //thêm ajax
-            <button class="btn btn-primary" style="" id="btn_khoiphuc">
-              <span>Khôi phục</span>
-            </button>
-          }
-          else
-          {
-            <button class="btn btn-primary disabled">
-              <span>Khôi phục</span>
-            </button>
-          }
-        }
-      </div>
-
     </div>
-  </div>
 </div>
 
 <script>
 
-  window.addEventListener('load', function () {
+    window.addEventListener('load', function () {
 
-    $("#zoom_01").elevateZoom({
-      scrollZoom: true
-    });
-
-    $('.side-picture').click(function () {
-      var showing = $(this).find("img").attr("src");
-      $('.side-picture').removeClass('active');
-      $('.side-picture').removeData();
-      $(this).addClass('active');
-
-      $('#zoom_01').fadeOut(function () {
-        $(this).attr('src', showing);
-        $(this).fadeIn();
-        $("#zoom_01").data('zoom-image', showing).elevateZoom({
-          scrollZoom: true,
+        $("#zoom_01").elevateZoom({
+            scrollZoom: true
         });
-      });
+
+        $('.side-picture').click(function () {
+            var showing = $(this).find("img").attr("src");
+            $('.side-picture').removeClass('active');
+            $('.side-picture').removeData();
+            $(this).addClass('active');
+
+            $('#zoom_01').fadeOut(function () {
+                $(this).attr('src', showing);
+                $(this).fadeIn();
+                $("#zoom_01").data('zoom-image', showing).elevateZoom({
+                    scrollZoom: true,
+                });
+            });
+        });
     });
-  });
 
 
-  function loadAgain() {
-    var id = $('#Id').val();
-    $.ajax({
-      type: "post",
-      url: "/loadDetailHH",
-      data: "id=" + id,
-      success: function (result) {
-        $("#heredetail").replaceWith(result)
-      },
-      error: function () {
-        alert("Lỗi");
-      }
-    });
-  }
+    function loadAgain() {
+        var id = $('#Id').val();
+        $.ajax({
+            type: "post",
+            url: "/loadDetailHH",
+            data: "id=" + id,
+            success: function (result) {
+                $("#heredetail").replaceWith(result)
+            },
+            error: function () {
+                console.log("Lỗi");
+            }
+        });
+    }
 
 
-  $("#btn_khoiphuc").click(function () {
-    var id = $('#Id').val();
-    $.ajax({
-      type: "post",
-      url: "/restoreHH",
-      data: "id=" + id,
-      success: function (result) {
-        alert(result);
-        loadAgain();
-        //  $("#Detail").replaceWith(result)
+    $("#btn_khoiphuc").click(function () {
+        var id = $('#Id').val();
+        $.ajax({
+            type: "post",
+            url: "/restoreHH",
+            data: "id=" + id,
+            success: function (result) {
+                console.log(result);
+                loadAgain();
+                //  $("#Detail").replaceWith(result)
 
-      },
-      error: function () {
-        alert("Lỗi");
-        alert(id);
+            },
+            error: function () {
+                console.log("Lỗi");
+                console.log(id);
 
-      }
-    });
-  })
+            }
+        });
+    })
 
 
 

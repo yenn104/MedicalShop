@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,19 +11,15 @@ namespace MedicalShop.Controllers
     public class ChiNhanhController : Controller
     {
         private MedicalShopContext context = new MedicalShopContext();
+        private string _maChucNang = "ChiNhanh";
         public IActionResult Table()
         {
             ViewData["Title"] = "Danh mục chi nhánh";
-            TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "ChiNhanh" && x.Active == true).FirstOrDefault().Id;
-
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
-
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             List<ChiNhanh> listChiNhanh = context.ChiNhanh.Where(x => x.Active == true && (type == true ? true : x.Id == idcn)).ToList();
-
             return View("TableChiNhanh", listChiNhanh);
         }
 
@@ -30,6 +27,8 @@ namespace MedicalShop.Controllers
         public IActionResult ViewCreate()
         {
             ViewData["Title"] = "Thêm chi nhánh";
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             return View();
         }
 
@@ -39,7 +38,7 @@ namespace MedicalShop.Controllers
         public IActionResult Insert(ChiNhanh cn)
         {
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+            //int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             cn.CreatedBy = idUser;
             cn.ModifiedBy = idUser;
             cn.CreatedDate = DateTime.Now;
@@ -48,12 +47,10 @@ namespace MedicalShop.Controllers
             context.ChiNhanh.Add(cn);
             context.SaveChanges();
             TempData["ThongBao"] = "Thêm thành công!";
-
             return RedirectToAction("Table");
         }
 
         public IActionResult Delete(int id)
-
         {
             ChiNhanh cn = context.ChiNhanh.Find(id);
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -87,7 +84,7 @@ namespace MedicalShop.Controllers
             cn.ModifiedDate = DateTime.Now;
             context.ChiNhanh.Update(cn);
             context.SaveChanges();
-            TempData["ThongBao"] = "Sửa thành công!";
+            TempData["ThongBao"] = "Thành công!";
             return RedirectToAction("table");
         }
 
@@ -98,7 +95,6 @@ namespace MedicalShop.Controllers
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
             ViewBag.ChiNhanh = context.ChiNhanh
               .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Id == idcn))
               .OrderBy(x => x.TenCn)
@@ -123,6 +119,8 @@ namespace MedicalShop.Controllers
         public IActionResult Details(int id)
         {
             MedicalShopContext context = new MedicalShopContext();
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             ChiNhanh hh = context.ChiNhanh.FirstOrDefault(x => x.Id == id);
             return View(hh);
         }
@@ -131,6 +129,8 @@ namespace MedicalShop.Controllers
         public IActionResult LoadDetail(int id)
         {
             ViewData["Title"] = "Chi tiết chi nhánh";
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             ChiNhanh hh = context.ChiNhanh.FirstOrDefault(x => x.Id == id);
             return View(hh);
         }

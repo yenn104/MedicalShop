@@ -1,175 +1,145 @@
 ﻿@model IEnumerable<MedicalShop.Models.Entities.HangHoa>
 
 @{
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
-  MedicalShopContext context = new MedicalShopContext();
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    MedicalShopContext context = new MedicalShopContext();
 
-  List<HangHoa> listHH()
-  {
-    return context.HangHoa.Where(a => a.Active == true).OrderBy(a => a.TenHh).ToList();
-  }
-
-  List<NhomHangHoa> getListNHH()
-  {
-    return context.NhomHangHoa.Where(x => x.Active == true).ToList();
-  }
-
-  var acc = User.FindFirst("VaiTro");
-  int idmenu = (int)TempData.Peek("Menu");
-
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
+    List<NhomHangHoa> getListNHH()
     {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
+        return context.NhomHangHoa.Where(x => x.Active == true).ToList();
     }
-  }
+
+    var quyen = ViewBag.Quyen;
+    bool nhap = (bool)quyen.Import;
+    bool sua = (bool)quyen.Update;
+    bool xoa = (bool)quyen.Delete;
+    bool print = (bool)quyen.Print;
+    bool xuat = (bool)quyen.Export;
 
 }
 
 <style>
-/*  .dataTables_wrapper table thead {
-    background-color: white;
-    color: white;
-  }
+    /*  .dataTables_wrapper table thead {
+        background-color: white;
+        color: white;
+      }
 
-  table.dataTable tbody tr:nth-child(even) {
-    background-color: transparent;
-  }
+      table.dataTable tbody tr:nth-child(even) {
+        background-color: transparent;
+      }
 
-  table.dataTable tbody tr:nth-child(odd) {
-    background-color: white;
-  }*/
+      table.dataTable tbody tr:nth-child(odd) {
+        background-color: white;
+      }*/
 
-  /*style="white-space: initial;"*/
+    /*style="white-space: initial;"*/
 </style>
-
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-                        window.onload = function () {
-                            alert("@Html.Raw(@TempData["ThongBao"])");
-                    };
-  </script>
-}
 
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <div style="margin-bottom: 20px">
-    @if (nhap == true)
-    {
-      <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
-    }
-    else
-    {
-      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
-    }
-  </div>
-  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-    <div style="display: flex">
-      <div class="dropdown" style="margin-right: 10px; width: -webkit-fill-available; max-width: fit-content;">
-        <select id="active" onchange="changeHH()" class="custom-select">
-          <option value="true" selected>Hiện tại</option>
-          <option value="false">Tất cả</option>
-        </select>
-      </div>
-      <div class="dropdown">
-        <select id="nhomHH" onchange="changeHH()" class="custom-select" aria-label="Default select example">
-          <option selected disabled hidden>Nhóm hàng hoá</option>
-          <option value="0">Tất cả</option>
-          @foreach (NhomHangHoa n in getListNHH())
-          {
-            <option value="@n.Id">@n.TenNhh</option>
-          }
-        </select>
-      </div>
-
+    <div style="margin-bottom: 20px">
+        @if (nhap == true)
+        {
+            <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+        }
+        else
+        {
+            <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+        }
     </div>
-  </div>
+    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+        <div style="display: flex">
+            <div class="dropdown" style="margin-right: 10px; width: -webkit-fill-available; max-width: fit-content;">
+                <select id="active" onchange="changeHH()" class="custom-select">
+                    <option value="true" selected>Hiện tại</option>
+                    <option value="false">Tất cả</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <select id="nhomHH" onchange="changeHH()" class="custom-select" aria-label="Default select example">
+                    <option selected disabled hidden>Nhóm hàng hoá</option>
+                    <option value="0">Tất cả</option>
+                    @foreach (NhomHangHoa n in getListNHH())
+                    {
+                        <option value="@n.Id">@n.TenNhh</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="tableHH" class="table-responsive-lg" style="margin-bottom: 5rem;  ">
-  <table id="example" class="table table-striped" style="width: 100%; white-space: initial;">
-    <thead style="position: sticky; top: 0; background: #f6f9ff;">
-      <tr>
-        <th>
-          Mã HH
-        </th>
-        <th>
-          Tên HH
-        </th>
-        <th>
-          BarCode
-        </th>
-        <th>
-          Hình ảnh
-        </th>
-        <th>
-          Ghi chú
-        </th>
-        <th>Tùy chọn</th>
-      </tr>
-    </thead>
-    <tbody style="overflow-y: scroll; overflow-x: scroll; ">
-      @foreach (var item in Model)
-      {
-        <tr>
-          <td>
-            @Html.DisplayFor(modelItem => item.MaHh)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.TenHh)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.BarCode)
-          </td>
-          <td id="imageHH" class="side-picture text-center">
-            @if (@item.Image != null && @item.Image != "")
+    <table id="example" class="table table-striped" style="width: 100%; white-space: initial;">
+        <thead style="position: sticky; top: 0; background: #f6f9ff;">
+            <tr>
+                <th>
+                    Mã HH
+                </th>
+                <th>
+                    Tên HH
+                </th>
+                <th>
+                    Mã vạch
+                </th>
+                <th>
+                    Hình ảnh
+                </th>
+                <th>
+                    Ghi chú
+                </th>
+                <th>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody style="overflow-y: scroll; overflow-x: scroll; ">
+            @foreach (var item in Model)
             {
-              <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaHh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenHh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BarCode)
+                    </td>
+                    <td id="imageHH" class="side-picture text-center">
+                        @if (@item.Image != null && @item.Image != "")
+                        {
+                            <img src="~/lib/imagesHH/@item.Image" alt="@item.Image" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
 
+                        }
+                        else
+                        {
+                            <img src="~/lib/imagesHH/HHnone.jpg" alt="@item.TenHh" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Detail)
+                    </td>
+                    <td>
+                        @if (sua == true)
+                        {
+                            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+                        }
+                        @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+                        @if (xoa == true)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+                        }
+                    </td>
+                </tr>
             }
-            else
-            {
-              <img src="~/lib/imagesHH/HHnone.jpg" alt="@item.TenHh" height="50" width="50" style="border-radius: 5px;" id="zoom_01" class="img-fluid">
-            }
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-          </td>
-          <td>
-            @if (sua == true)
-            {
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-            }
-            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-            @if (xoa == true)
-            {
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-            }
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </div>
 @*<div id="imageModal" class="imageModal">
   <span class="closeImageModal">&times;</span>
@@ -178,104 +148,104 @@
 </div>*@
 <script>
 
-  function changeHH() {
-    var active = $('#active').val();
-    var nhomHH = $('#nhomHH').val();
-    $.ajax({
-      type: "post",
-      url: "/loadTableHH",
-      data: "active=" + active + "&nhomHH=" + nhomHH,
-      success: function (result) {
-        $('#tableHH').replaceWith(result);
-      },
-      error: function () {
-        alert("Failed");
-      }
+    function changeHH() {
+        var active = $('#active').val();
+        var nhomHH = $('#nhomHH').val();
+        $.ajax({
+            type: "post",
+            url: "/loadTableHH",
+            data: "active=" + active + "&nhomHH=" + nhomHH,
+            success: function (result) {
+                $('#tableHH').replaceWith(result);
+            },
+            error: function () {
+                console.log("Thất bại!");
+            }
+        });
+    }
+
+    $('.side-picture').hover(function () {
+        var showing = $(this).find("img").attr("src");
+        $('.side-picture').find("img").removeAttr('id');
+        $(this).find("img").attr('id', 'zoom_01');
+        $("#zoom_01").data('zoom-image', showing).elevateZoom({
+            scrollZoom: true,
+        });
+
     });
-  }
-
-  $('.side-picture').hover(function () {
-    var showing = $(this).find("img").attr("src");
-    $('.side-picture').find("img").removeAttr('id');
-    $(this).find("img").attr('id', 'zoom_01');
-    $("#zoom_01").data('zoom-image', showing).elevateZoom({
-      scrollZoom: true,
-    });
-
-  });
 
 
 
-  //// Get the modal
-  //var modal = document.getElementById("imageModal");
+      //// Get the modal
+      //var modal = document.getElementById("imageModal");
 
-  //// Get the image and insert it inside the modal - use its "alt" text as a caption
-  //var img = document.getElementById("imageHH");
-  //var modalImg = document.getElementById("imageHHModal");
-  //var captionText = document.getElementById("imageModelCaption");
-  //img.onclick = function () {
-  //  modal.style.display = "block";
-  //  modalImg.src = this.src;
-  //  captionText.innerHTML = this.alt;
-  //}
+      //// Get the image and insert it inside the modal - use its "alt" text as a caption
+      //var img = document.getElementById("imageHH");
+      //var modalImg = document.getElementById("imageHHModal");
+      //var captionText = document.getElementById("imageModelCaption");
+      //img.onclick = function () {
+      //  modal.style.display = "block";
+      //  modalImg.src = this.src;
+      //  captionText.innerHTML = this.alt;
+      //}
 
-  //// Get the <span> element that closes the modal
-  //var span = document.getElementsByClassName("closeImageModal")[0];
+      //// Get the <span> element that closes the modal
+      //var span = document.getElementsByClassName("closeImageModal")[0];
 
-  //// When the user clicks on <span> (x), close the modal
-  //span.onclick = function () {
-  //  modal.style.display = "none";
-  //}
+      //// When the user clicks on <span> (x), close the modal
+      //span.onclick = function () {
+      //  modal.style.display = "none";
+      //}
 
 
 
 
 
-  //window.addEventListener('load', function () {
+      //window.addEventListener('load', function () {
 
-  //  //$('.side-picture').hover(function () {
-  //  //  var showing = $(this).find("img").attr("src");
-  //  //  $('.side-picture').find("img").removeAttr('id');
-  //  //  $(this).find("img").attr('id', 'zoom_01');
-  //  //  $("#zoom_01").data('zoom-image', showing).elevateZoom({
-  //  //    scrollZoom: true,
-  //  //  });
+      //  //$('.side-picture').hover(function () {
+      //  //  var showing = $(this).find("img").attr("src");
+      //  //  $('.side-picture').find("img").removeAttr('id');
+      //  //  $(this).find("img").attr('id', 'zoom_01');
+      //  //  $("#zoom_01").data('zoom-image', showing).elevateZoom({
+      //  //    scrollZoom: true,
+      //  //  });
 
-  //  //});
-
-
-  //});
+      //  //});
 
 
-  //function loadMore() {
-  //  var active = $('#active').val();
-  //  var nhomHH = $('#nhomHH').val();
-  //  var sl = $('#tableHH tr').length;
-  //  $.ajax({
-  //    type: "post",
-  //    url: "/loadMoreTableHH",
-  //    data: "active=" + active + "&nhomHH=" + nhomHH + "&SL=" + sl,
-  //    success: function (result) {
-  //      $('#tableHH').replaceWith(result);
-  //    },
-  //    error: function () {
-  //      alert("Fail to delete");
-  //    }
-  //  });
-  //}
-  //$('#search').keyup(function (e) {
-  //  var key = $(this).val();
-  //  $.ajax({
-  //    type: "post",
-  //    url: "/searchHH",
-  //    data: "key=" + key,
-  //    success: function (result) {
-  //      $('#tableHH').replaceWith(result);
-  //    },
-  //    error: function () {
-  //      alert("Fail");
-  //    }
-  //  });
-  //});
+      //});
+
+
+      //function loadMore() {
+      //  var active = $('#active').val();
+      //  var nhomHH = $('#nhomHH').val();
+      //  var sl = $('#tableHH tr').length;
+      //  $.ajax({
+      //    type: "post",
+      //    url: "/loadMoreTableHH",
+      //    data: "active=" + active + "&nhomHH=" + nhomHH + "&SL=" + sl,
+      //    success: function (result) {
+      //      $('#tableHH').replaceWith(result);
+      //    },
+      //    error: function () {
+      //      alert("Fail to delete");
+      //    }
+      //  });
+      //}
+      //$('#search').keyup(function (e) {
+      //  var key = $(this).val();
+      //  $.ajax({
+      //    type: "post",
+      //    url: "/searchHH",
+      //    data: "key=" + key,
+      //    success: function (result) {
+      //      $('#tableHH').replaceWith(result);
+      //    },
+      //    error: function () {
+      //      alert("Fail");
+      //    }
+      //  });
+      //});
 
 </script>

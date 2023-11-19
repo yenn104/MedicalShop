@@ -138,11 +138,14 @@ namespace MedicalShop.Controllers
           if (acc.Staff == true)
           {
             NhanVien nv = context.NhanVien.FirstOrDefault(n => n.UserName.Equals(acc.UserName));
+            PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
+
             var claims = new List<Claim>
               {
                 new Claim(ClaimTypes.Name, account.UserName),
                 new Claim(ClaimTypes.Role, "NV"),
-                new Claim(nv.Id.ToString(), nv.TenNv), 
+                new Claim(nv.Id.ToString(), nv.TenNv),
+                new Claim("VaiTro", vaitro.Idvt.ToString()),
                 // new Claim("VaiTro", vaitro.Idvt.ToString()),
                 //new Claim(acc.Staff.ToString(), "Nhân viên"),
                 // new Claim("ChiNhanh", vaitro.Idcn.ToString()),
@@ -169,13 +172,12 @@ namespace MedicalShop.Controllers
           else
           {
             KhachHang kh = context.KhachHang.FirstOrDefault(s => s.UserName.Equals(acc.UserName));
-            PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
             var claims = new List<Claim>
               {
                   new Claim(ClaimTypes.Name, account.UserName),
                   new Claim(ClaimTypes.Role, "KH"),
                   new Claim(kh.Id.ToString(), kh.TenKh),
-                  new Claim("VaiTro", vaitro.Idvt.ToString()),
+                  //new Claim("VaiTro", vaitro.Idvt.ToString()),
               };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));

@@ -14,6 +14,8 @@
 
     var a = context.ChiTietPhieuNhap.Select(x => x.SoLo).Distinct().ToList();
 
+    var idChiNhanh = int.Parse(User.Claims.ElementAt(4).Value);
+
     //string format(Double? a)
     //{
     //  return a?.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
@@ -230,7 +232,7 @@
                 </div>
                 <div class="table-responsive" style="max-height: 8rem; overflow-x: auto; white-space: nowrap; margin: 0.5rem 0; border: 1px solid black; ">
                     <table class="table table-bordered table-hover table-striped text-center" id="tableChiTietPhieuNhap">
-                        <thead style="position: sticky; top: 0;">
+                        <thead style="position: sticky; top: 0; background-color: white;">
                             <tr>
                                 <th>Tên hàng hóa</th>
                                 <th>ĐVT</th>
@@ -239,26 +241,13 @@
                                 <th>Đơn giá</th>
                                 <th>Thành tiền</th>
                                 <th>%CK</th>
-                                <th>Thuế suất</th>
+                                <th>VAT</th>
                                 <th>NSX</th>
                                 <th>HSD</th>
-                                <th>Thao tác</th>
+                                <th class="last-th-column">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody id="body_ctpn">
-                            @*<tr id="temp_ct">
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            </tr>*@
                         </tbody>
                     </table>
                 </div>
@@ -351,3 +340,4 @@
 </div>
 
 <script src="~/admin/customjs/phieunhapkho.js" defer asp-append-version="true"></script>
+

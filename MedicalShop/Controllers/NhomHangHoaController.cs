@@ -29,11 +29,8 @@ namespace MedicalShop.Controllers
     public IActionResult loadTableNHH(bool active)
     {
       int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-
       int idvt = int.Parse(User.Claims.ElementAt(3).Value);
-
       var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
 
       ViewBag.NHH = context.NhomHangHoa
         .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
@@ -45,7 +42,7 @@ namespace MedicalShop.Controllers
 
     public IActionResult ViewUpdate(int id)
     {
-      ViewData["Title"] = "Sửa nhóm hàng hóa";
+      ViewData["Title"] = "Cập nhật nhóm hàng hóa";
       NhomHangHoa nhh = context.NhomHangHoa.Find(id);
       return View(nhh);
     }
@@ -80,7 +77,7 @@ namespace MedicalShop.Controllers
 
       context.NhomHangHoa.Update(nh);
       context.SaveChanges();
-      TempData["ThongBao"] = "Sửa thành công!";
+      TempData["ThongBao"] = "Cập nhật thành công!";
       return RedirectToAction("Table");
     }
 

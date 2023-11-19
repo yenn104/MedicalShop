@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models;
 using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -41,7 +42,7 @@ namespace MedicalShop.Controllers
                 phieuNhap.SoHd = pn.SoHd;
                 phieuNhap.Idncc = pn.NCC;
                 phieuNhap.NgayHd = DateTime.ParseExact(pn.NgayHd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-                phieuNhap.CreatedDate = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                phieuNhap.CreatedDate = DateTime.Now;//DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 phieuNhap.Active = true;
                 phieuNhap.Idcn = idCN;
                 phieuNhap.Idnv = idUser;
@@ -86,10 +87,14 @@ namespace MedicalShop.Controllers
                 context.SoThuTu.Update(stt);
                 context.SaveChanges();
                 tran.Commit();
+
+                var soPhieuMoi = CommonServices.getSoPhieu(idCN, context);
+
                 var response = new
                 {
                     statusCode = 200,
-                    message = "Thành công!"
+                    message = "Thành công!",
+                    data = soPhieuMoi
 
                 };
                 return Json(data: response);

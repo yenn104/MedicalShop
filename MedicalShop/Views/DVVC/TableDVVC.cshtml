@@ -1,150 +1,116 @@
 ﻿@model MedicalShop.Models.Entities.Dvvc
 
 @{
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
-  MedicalShopContext context = new MedicalShopContext();
-
-  List<Dvvc> listDVVC()
-  {
-    return context.Dvvc.Where(x => x.Active == true).ToList();
-  }
-
-  var acc = User.FindFirst("VaiTro");
-  // int abc = (int)TempData["Menu"]; ViewBag.Menu;
-  int idmenu = (int)TempData.Peek("Menu");
-
-  // int idmenu = (int)TempData["Menu"];
-
-  // TempData.Keep("Menu");
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
+    MedicalShopContext context = new MedicalShopContext();
+    List<Dvvc> listDVVC()
     {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
+        return context.Dvvc.Where(x => x.Active == true).ToList();
     }
-  }
 
-
+    var quyen = ViewBag.Quyen;
+    bool nhap = (bool)quyen.Import;
+    bool sua = (bool)quyen.Update;
+    bool xoa = (bool)quyen.Delete;
+    bool print = (bool)quyen.Print;
+    bool xuat = (bool)quyen.Export;
 
 }
-
-
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-        window.onload = function () {
-            alert("@Html.Raw(@TempData["ThongBao"])");
-    };
-  </script>
-}
-
-
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <div style="margin-bottom: 20px">
-    @if (nhap == true)
-    {
-      <a href="/DVVC/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
-    }
-    else
-    {
-      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
-    }
+    <div style="margin-bottom: 20px">
+        @if (nhap == true)
+        {
+            <a href="/DVVC/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+        }
+        else
+        {
+            <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+        }
 
-  </div>
-  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-    <div style="display: flex">
-      <div class="dropdown" style="margin-right:10px">
-        <select id="active" onchange="changeHH()" class="custom-select">
-          <option value="true" selected>Hiện tại</option>
-          <option value="false">Tất cả</option>
-        </select>
-      </div>
     </div>
-  </div>
+    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+        <div style="display: flex">
+            <div class="dropdown" style="margin-right:10px">
+                <select id="active" onchange="changeHH()" class="custom-select">
+                    <option value="true" selected>Hiện tại</option>
+                    <option value="false">Tất cả</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="tableDVVC" class="table-responsive" style="margin-bottom: 5rem">
-  <table id="example" class="table table-striped" style="width:100%">
-    <thead>
-      <tr>
-        <th class="col-sm-2">
-          Mã DVVC
-        </th>
-        <th class="col-sm-3">
-          Tên DVVC
-        </th>
-        <th class="col-sm-5">
-          Ghi chú
-        </th>
-        <th class="col-sm-2 text-center">Tùy chọn</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (Dvvc item in listDVVC())
-      {
-        <tr>
-          <td>
-            @Html.DisplayFor(modelItem => item.MaDvvc)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.TenDvvc)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.Note)
-          </td>
-          <td class="text-center">
-            @if (sua == true)
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th class="col-sm-2">
+                    Mã DVVC
+                </th>
+                <th class="col-sm-3">
+                    Tên DVVC
+                </th>
+                <th class="col-sm-5">
+                    Ghi chú
+                </th>
+                <th class="col-sm-2 text-center">Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Dvvc item in listDVVC())
             {
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaDvvc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenDvvc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td class="text-center">
+                        @if (sua == true)
+                        {
+                            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
+                        }
+                        @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
+                        @if (xoa == true)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+                        }
+                    </td>
+                </tr>
             }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="far fa-edit"></i></button>
-            }
-            @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fas fa-eye lighter" })
-            @if (xoa == true)
-            {
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-            }
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </div>
 
 
 <script>
-  $('#active').on('change', function () {
-    var a = $(this).val();
-    $.ajax({
-      type: "post",
-      url: "/loadTableDVVC",
-      data: "active=" + a,
-      success: function (result) {
-        $('#tableDVVC').replaceWith(result);
-      },
-      error: function () {
-        alert("Failed");
-      }
+    $('#active').on('change', function () {
+        var a = $(this).val();
+        $.ajax({
+            type: "post",
+            url: "/loadTableDVVC",
+            data: "active=" + a,
+            success: function (result) {
+                $('#tableDVVC').replaceWith(result);
+            },
+            error: function () {
+                alert("Failed");
+            }
+        });
     });
-  });
 </script>
 

@@ -4,36 +4,10 @@
     ViewData["Title"] = "Chi tiết chi nhánh";
     Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
-    MedicalShopContext context = new MedicalShopContext();
+   //int idmenu = (int)TempData.Peek("Menu");
 
-    var acc = User.FindFirst("VaiTro");
-    int idmenu = (int)TempData.Peek("Menu");
-
-    string vaitro = null;
-    bool sua = false;
-    if (acc != null)
-    {
-        vaitro = acc.Value;
-        if (vaitro != null && vaitro != "")
-        {
-            ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-            sua = (bool)cn.Update;
-        }
-    }
-
-
-    string formatDay(DateTime? date)
-    {
-        if (date != null)
-        {
-            return date.Value.ToString("dd-MM-yyyy HH:mm:ss");
-        }
-        else
-        {
-            return null;
-        }
-    }
-
+    var quyen = ViewBag.Quyen;
+    bool sua = (bool)quyen.Update == true ? true : false;
 }
 
 <div class="row" style="margin-bottom: 70px;">

@@ -148,13 +148,13 @@ function loadDVT() {
         $('#donvitinh').val(result.dvt);
         $('#DVT').val(result.tenDVT);
         $('#SLcon').val(toDecimal(result.slCon));
-        $('#SLHH').prop('readonly', false);
-        if (result.setgia == 1 || result.setgia == 2) {
-          $('#DonGia').addClass('is-invalid');
-          $('#ThanhTien').addClass('is-invalid');
-          alert("Hàng hóa chưa được áp đặt giá bán!");
-          $('#SLHH').prop('readonly', true);
-        }
+        //$('#SLHH').prop('readonly', false);
+        //if (result.setgia == 1 || result.setgia == 2) {
+        //  $('#DonGia').addClass('is-invalid');
+        //  $('#ThanhTien').addClass('is-invalid');
+        //  alert("Hàng hóa chưa được áp đặt giá bán!");
+        //  $('#SLHH').prop('readonly', true);
+        //}
       },
       error: function () {
         showToast("Thất bại!", 500);
@@ -177,7 +177,7 @@ function inputSLHH() {
   // alert(SLcon)
   var idHH = $('#selectHHX').val();
 
-  //var idDVT = $('#selectDVT').val();
+  var idDVT = $('#selectDVT').val();
   if (idHH != "" && SL > 0) {
     $.ajax({
       type: "post",
@@ -190,9 +190,10 @@ function inputSLHH() {
             $('#DonGia').val("");
             $('#ThanhTien').val("");
           } else {
+            var model = result.model;
             // $('#SLHH').addClass('is-invalid');
-            $('#DonGia').val(toDecimal(result.donGia));
-            $('#ThanhTien').val(toDecimal(result.thanhTien));
+            $('#DonGia').val(toDecimal(model.donGia));
+            $('#ThanhTien').val(toDecimal(model.thanhTien));
             //alert(result.thanhTien);
           }
           //$('#ThemChiTietPX').prop("disabled", false);

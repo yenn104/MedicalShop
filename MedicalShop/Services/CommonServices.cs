@@ -1,9 +1,14 @@
-﻿using DocumentFormat.OpenXml.InkML;
+﻿using AspNetCore.ReportingServices.ReportProcessing.ReportObjectModel;
+using DocumentFormat.OpenXml.InkML;
 using MedicalShop.Models.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MedicalShop.Services
 {
@@ -85,7 +90,74 @@ namespace MedicalShop.Services
         {
             return _context.Nsx.Where(x => x.Id == id).Select(x => x.TenNsx).FirstOrDefault();
         }
-     
+
+        public static ChucNang getVaiTroPhanQuyen(int? idVaiTro, string maMenu)
+        {
+            int idMenu = _context.Menu.Where(x => x.MaMenu == maMenu && x.Active == true).FirstOrDefault().Id;
+            
+            if (idVaiTro > 0 && idMenu > 0)
+            {
+                return _context.ChucNang
+                    .Where(c => c.Idvt.Equals(idVaiTro) && c.Idmenu.Equals(idMenu))
+                    .AsEnumerable()
+                    .Select(x => new ChucNang
+                    {
+                        Import = x.Import ?? false,
+                        Update = x.Update ?? false,
+                        Delete = x.Delete ?? false,
+                        Print = x.Print ?? false,
+                        Export = x.Export ?? false
+                    })
+                    .FirstOrDefault();
+            } 
+            else
+            {
+                return new ChucNang()
+                {
+                    Import = false,
+                    Update = false,
+                    Delete = false,
+                    Print = false,
+                    Export = false
+                };
+            }
+        }
+
+
+        public static string getSoPhieu(int? idChiNhanh, MedicalShopContext context)
+        {
+            QuyDinhMa qd = context.QuyDinhMa.Find(1);
+            //ID chi nhánh
+            //string cn = User.Claims.ElementAt(4).Value;
+
+            DateTime d = DateTime.Now;
+            string ngayThangNam = d.ToString("yyMMdd");
+            string SoPhieu = idChiNhanh + "-" + qd.TiepDauNgu + ngayThangNam;
+            var list = context.SoThuTu.FromSqlRaw("select * from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,date) and type = 'NhapKho'").FirstOrDefault();
+            int stt;
+            if (list == null)
+            {
+                SoThuTu sttt = new SoThuTu();
+                sttt.Date = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                sttt.Stt = 0;
+                sttt.Type = "NhapKho";
+                context.SoThuTu.Add(sttt);
+                context.SaveChanges();
+                stt = 1;
+            }
+            else
+            {
+                stt = (Int32)list.Stt + 1;
+            }
+            SoPhieu += stt;
+            while (true)
+            {
+                if (qd.DoDai == SoPhieu.Length) break;
+                SoPhieu = SoPhieu.Insert(SoPhieu.Length - stt.ToString().Length, "0");
+            }
+            return SoPhieu;
+        }
+
 
     }
 }

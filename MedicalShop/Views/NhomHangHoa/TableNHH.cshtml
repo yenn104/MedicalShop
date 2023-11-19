@@ -1,176 +1,141 @@
 ﻿@model MedicalShop.Models.Entities.NhomHangHoa
 
 @{
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
-  MedicalShopContext context = new MedicalShopContext();
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    MedicalShopContext context = new MedicalShopContext();
 
-
-  List<NhomHangHoa> listNHH()
-  {
-    return context.NhomHangHoa.Where(a => a.Active == true).ToList();
-  }
-
-  NhanVien getNV(int? id)
-  {
-    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
-    if (nv != null) return nv;
-    else return new NhanVien();
-  }
-
-  string formatDay(DateTime? date)
-  {
-    if (date != null)
+    List<NhomHangHoa> listNHH()
     {
-      return date.Value.ToString("dd-MM-yyyy HH:mm");
+        return context.NhomHangHoa.Where(a => a.Active == true).ToList();
     }
-    else
-    {
-      return null;
-    }
-  }
-
-  var acc = User.FindFirst("VaiTro");
-  int idmenu = (int)TempData.Peek("Menu");
-
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
-    }
-  }
+    var quyen = ViewBag.Quyen;
+    bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
+    nhap = (bool)quyen.Import;
+    sua = (bool)quyen.Update;
+    xoa = (bool)quyen.Delete;
+    print = (bool)quyen.Print;
+    xuat = (bool)quyen.Export;
 
 }
 
 @if (TempData["ThongBao"] != null)
 {
-  <script type="text/javascript" charset="utf-8">
-                        window.onload = function () {
-                            alert("@Html.Raw(@TempData["ThongBao"])");
-                    };
-  </script>
+    <script type="text/javascript" charset="utf-8">
+        window.onload = function () {
+            alert("@Html.Raw(@TempData["ThongBao"])");
+        };
+    </script>
 }
 
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-  <div style="margin-bottom: 20px">
-    @if (nhap == true)
-    {
-      <a href="/NhomHangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
-    }
-    else
-    {
-      <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
-    }
-  </div>
-  <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-    <div style="display: flex">
-      <div class="dropdown" style="margin-right:10px">
-        <select id="active" onchange="changeHH()" class="custom-select">
-          <option value="true" selected>Hiện tại</option>
-          <option value="false">Tất cả</option>
-        </select>
-      </div>
+    <div style="margin-bottom: 20px">
+        @if (nhap == true)
+        {
+            <a href="/NhomHangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
+        }
+        else
+        {
+            <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
+        }
     </div>
-  </div>
+    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+        <div style="display: flex">
+            <div class="dropdown" style="margin-right:10px">
+                <select id="active" onchange="changeHH()" class="custom-select">
+                    <option value="true" selected>Hiện tại</option>
+                    <option value="false">Tất cả</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="tableNHH" class="table-responsive" style="margin-bottom: 5rem">
-  <table id="example" class="table table-striped" style="width:100%">
-    <thead>
-      <tr>
-        <th>
-          Mã NHH
-        </th>
-        <th>
-          Tên NHH
-        </th>
-        <th class="text-center">
-          Ngày tạo
-        </th>
-        <th class="text-center">
-          NV tạo
-        </th>
-        <th class="text-center">
-          Ngày sửa
-        </th>
-        <th class="text-center">
-          NV sửa
-        </th>
-        <th class="text-center">Tùy chọn</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (NhomHangHoa item in listNHH())
-      {
-        <tr>
-          <td>
-            @Html.DisplayFor(modelItem => item.MaNhh)
-          </td>
-          <td>
-            @Html.DisplayFor(modelItem => item.TenNhh)
-          </td>
-          <td class="text-center">
-            @formatDay(item.CreatedDate)
-          </td>
-          <td class="text-center">
-            @getNV(item.CreatedBy).TenNv
-          </td>
-          <td class="text-center">
-            @formatDay(item.ModifiedDate)
-          </td>
-          <td class="text-center">
-            @getNV(item.ModifiedBy).TenNv
-          </td>
-          <td class="text-center">
-            @if (sua == true)
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Mã NHH
+                </th>
+                <th>
+                    Tên NHH
+                </th>
+                <th class="text-center">
+                    Ngày tạo
+                </th>
+                <th class="text-center">
+                    NV tạo
+                </th>
+                <th class="text-center">
+                    Ngày sửa
+                </th>
+                <th class="text-center">
+                    NV sửa
+                </th>
+                <th class="text-center">Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (NhomHangHoa item in listNHH())
             {
-              @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaNhh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenNhh)
+                    </td>
+                    <td class="text-center">
+                        @CommonServices.formatDateTimeShort(item.CreatedDate)
+                    </td>
+                    <td class="text-center">
+                        @CommonServices.getTenNhanVien(item.CreatedBy)
+                    </td>
+                    <td class="text-center">
+                        @CommonServices.formatDateTimeShort(item.ModifiedDate)
+                    </td>
+                    <td class="text-center">
+                        @CommonServices.getTenNhanVien(item.ModifiedBy)
+                    </td>
+                    <td class="text-center">
+                        @if (sua == true)
+                        {
+                            @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
+                        }
+                        @if (xoa == true)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+                        }
+                        else
+                        {
+                            <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+                        }
+                    </td>
+                </tr>
             }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
-            }
-            @if (xoa == true)
-            {
-              @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-            }
-            else
-            {
-              <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-            }
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </div>
 
 
 <script>
-  $('#active').on('change', function () {
-    var a = $(this).val();
-    $.ajax({
-      type: "post",
-      url: "/loadTableNHH",
-      data: "active=" + a,
-      success: function (result) {
-        $('#tableNHH').replaceWith(result);
-      },
-      error: function () {
-        alert("Failed");
-      }
+    $('#active').on('change', function () {
+        var a = $(this).val();
+        $.ajax({
+            type: "post",
+            url: "/loadTableNHH",
+            data: "active=" + a,
+            success: function (result) {
+                $('#tableNHH').replaceWith(result);
+            },
+            error: function () {
+                alert("Failed");
+            }
+        });
     });
-  });
 </script>

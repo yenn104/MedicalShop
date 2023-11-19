@@ -19,16 +19,10 @@ namespace MedicalShop.Controllers
         {
             ViewData["Title"] = "Danh mục nước sản xuất";
             TempData["Menu"] = _context.Menu.Where(x => x.MaMenu == "NSX" && x.Active == true).FirstOrDefault().Id;
-            //ViewBag.nuocsx = _context.Nsx.ToList();
-
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
-
             var type = _context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
             List<Nsx> listNSX = _context.Nsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
-
             return View("TableNSX", listNSX);
         }
 
@@ -53,7 +47,7 @@ namespace MedicalShop.Controllers
             nsx.Active = true;
             _context.Add(nsx);
             _context.SaveChanges();
-            TempData["ThongBao"] = "Thêm thành công";
+            TempData["ThongBao"] = "Thêm thành công!";
             return RedirectToAction("Table");
 
         }
@@ -69,7 +63,7 @@ namespace MedicalShop.Controllers
             nsx.Active = false;
             _context.Nsx.Update(nsx);
             _context.SaveChanges();
-            TempData["ThongBao"] = "Thành công";
+            TempData["ThongBao"] = "Thành công!";
 
             return RedirectToAction("Table");
         }

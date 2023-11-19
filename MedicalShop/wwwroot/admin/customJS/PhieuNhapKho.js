@@ -1,5 +1,10 @@
 ﻿  //ok
-  $(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
+  $('#ChietKhau').on('focus', function (event) {
+    this.select();
+  });
+  //configDateDefault();
+  //configDateLongMask();
 
     //document.getElementById("temp_ct").remove();
     $("#ThemChiTiet").click(function () {
@@ -31,7 +36,7 @@
       var HanDung = $(this).parents('tr').find("td:eq(9)").html();
       var ngaySX = $(this).parents('tr').find("td:eq(8)").html();
       var ThueXuat = Number($(this).parents('tr').find("td:eq(7)").html());
-      console.log(ThanhTien);
+      console.log(ThueXuat);
 
       //$('#selectHH').val(idHH);
       ($('#selectHH')[0].selectize).setValue(idHH);
@@ -96,7 +101,7 @@
     var off = '<button class="btn btn-primary" id="ThemChiTiet" onclick="onemoretime()" type="button">Thêm</button>';
     $('#areabtn').html(off);
     $('#selectHH')[0].selectize.clear();
-    ($('#ThueXuat')[0].selectize).setValue(0);
+    $('#ThueXuat')[0].selectize.setValue(0);
     $('#DVT').val("");
     $('#SoLo')[0].selectize.clear();
     $('#ThueXuat').val("");
@@ -132,8 +137,8 @@
     var tenHH = $("#selectHH option:selected").text();
     var dvt = $('#DVT').val();
     var SoLo = $('#SoLo').val();
-    console.log(SoLo);
-    var ThueXuat = $('#ThueXuat').val();
+    //var ThueXuat = $('#ThueXuat ').val();
+    var ThueXuat = $('#ThueXuat')[0].selectize.getValue();
     var SL = getValueNumbers($('#SLHH').val());
     var DonGia = getValueNumbers($('#DonGia').val());
     var ThanhTien = getValue($('#ThanhTien').val());
@@ -187,9 +192,9 @@
     else
     {
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
-        + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + formatNumbers(SL) + '</td><td class="text-right">' + formatNumbers(DonGia) 
-        + '</td><td class="text-right">' + formatNumbers(ThanhTien) + '</td><td class="text-right">' + formatNumbers(ChietKhau) + '</td><td class="text-right">' + formatNumbers(ThueXuat)  + '</td><td>' + ngaySX + '</td><td>'
-        + HanDung + '</td><td> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+        + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + toDecimal(SL) + '</td><td class="text-right">' + toDecimal(DonGia) 
+        + '</td><td class="text-right">' + toDecimal(ThanhTien) + '</td><td class="text-right">' + toDecimal(ChietKhau) + '</td><td class="text-right">' + toDecimal(ThueXuat)  + '</td><td>' + ngaySX + '</td><td>'
+        + HanDung + '</td><td class="last-td-column"> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
       //onclick="UpdateRow(' + index + ')"
       $('#body_ctpn').prepend(ChitietRecord);
 
@@ -256,9 +261,9 @@
 
     else {
       var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
-        + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + formatNumbers(SL) + '</td><td class="text-right">' + formatNumbers(DonGia)
-        + '</td><td class="text-right">' + formatNumbers(ThanhTien) + '</td><td class="text-right">' + formatNumbers(ChietKhau) + '</td><td class="text-right">' + formatNumbers(ThueXuat) + '</td><td>' + ngaySX +  '</td><td>'
-        + HanDung + '</td><td> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+        + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + toDecimal(SL) + '</td><td class="text-right">' + toDecimal(DonGia)
+        + '</td><td class="text-right">' + toDecimal(ThanhTien) + '</td><td class="text-right">' + toDecimal(ChietKhau) + '</td><td class="text-right">' + toDecimal(ThueXuat) + '</td><td>' + ngaySX +  '</td><td>'
+        + HanDung + '</td><td class="last-td-column"> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
 
       $("tr#" + index).replaceWith(ChitietRecord);
     }
@@ -281,7 +286,7 @@
       var DonGia = getValueNumbers($(this).find("td:eq(4)").text());
       var ChietKhau = getValueNumbers($(this).find("td:eq(6)").text());
       var ThueXuat = getValueNumbers($(this).find("td:eq(7)").text());
-      console.log(SL, DonGia, ChietKhau, ThueXuat);
+      //console.log(SL, DonGia, ChietKhau, ThueXuat);
 
       tienhang = tienhang + (SL * DonGia);
       tienck = tienck + ((SL * DonGia * ChietKhau) / 100);
@@ -289,10 +294,10 @@
     });
 
     var tienthanhtoan = tienhang - tienck + tienthue;
-    $('#TienHang').val(formatNumbers(tienhang));
-    $('#TienCK').val(formatNumbers(tienck));
-    $('#TienThue').val(formatNumbers(tienthue));
-    $('#TienThanhToan').val(formatNumbers(tienthanhtoan));
+    $('#TienHang').val(toDecimal(tienhang));
+    $('#TienCK').val(toDecimal(tienck));
+    $('#TienThue').val(toDecimal(tienthue));
+    $('#TienThanhToan').val(toDecimal(tienthanhtoan));
 
   }
 
@@ -312,7 +317,7 @@ function CreatePN() {
     var Note = $('#Note').val();
 
     $("#tableChiTietPhieuNhap").find("tr:gt(0)").each(function () {
-      var index = $(this).closest('tr').attr('id');
+     // var index = $(this).closest('tr').attr('id');
       var idHH = $(this).find("td:eq(0) input[type='hidden']").val();
       var SoLo = $(this).find("td:eq(2)").text();
       var SL = $(this).find("td:eq(3)").text();
@@ -324,13 +329,13 @@ function CreatePN() {
       var ThueXuat = $(this).find("td:eq(7)").text();
 
       var ChiTietPhieuNhapTam = {};
-      ChiTietPhieuNhapTam.Id = Number(index);
+     // ChiTietPhieuNhapTam.Id = Number(index);
       ChiTietPhieuNhapTam.Idhh = Number(idHH);
-      ChiTietPhieuNhapTam.Slg = Number(SL);
-      ChiTietPhieuNhapTam.DonGia = Number(DonGia);
-      ChiTietPhieuNhapTam.ThanhTien = Number(ThanhTien);
-      ChiTietPhieuNhapTam.Cktm = Number(ChietKhau);
-      ChiTietPhieuNhapTam.Thue = Number(ThueXuat);
+      ChiTietPhieuNhapTam.Slg = getValue(SL);
+      ChiTietPhieuNhapTam.DonGia = getValue(DonGia);
+      ChiTietPhieuNhapTam.ThanhTien = getValue(ThanhTien);
+      ChiTietPhieuNhapTam.Cktm = getValue(ChietKhau);
+      ChiTietPhieuNhapTam.Thue = getValue(ThueXuat);
       ChiTietPhieuNhapTam.SoLo = SoLo;
       ChiTietPhieuNhapTam.Nsx = ngaySX;
       ChiTietPhieuNhapTam.Hsd = HanDung;
@@ -353,8 +358,13 @@ function CreatePN() {
       data: JSON.stringify(PhieuNhapModel),
       success: function (result) {
         showToast(result.message, result.statusCode);
+        if (result.statusCode == 200) {
+          console.log(result.data);
+          //$('#SoPN').val(result.data);
+          document.getElementById("SoPN").value = result.data;
+        }
         //showToast(result, 500);
-        location.reload();
+       // location.reload();
       },
       error: function () {
         showToast('Thất bại!', 500);
@@ -379,7 +389,7 @@ function refreshFormTaoPhieu() {
         data: "idHH=" + idHH,
         success: function (result) {
           $('#DVT').val(result.tenDVT);
-        //  $('#GiaBan').val(formatNumbers(result.giaBan));
+        //  $('#GiaBan').val(toDecimal(result.giaBan));
         },
         error: function () {
           showToast('Thất bại!', 500);
@@ -391,7 +401,7 @@ function refreshFormTaoPhieu() {
   function inputSLHH() {
     var thanhTien = $('#ThanhTien').val();
     var SL = $('#SLHH').val();
-      var DonGia = formatNumbers(getValue(thanhTien) / getValue(SL));
+      var DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
       if (checkNumber(DonGia)) {
         $('#DonGia').val(DonGia);
      }
@@ -400,7 +410,7 @@ function refreshFormTaoPhieu() {
   function inputDonGia() {
     var SL = $('#SLHH').val();
     var DonGia = $('#DonGia').val();
-    var thanhTien = formatNumbers(getValue(DonGia) * getValue(SL));
+    var thanhTien = toDecimal(getValue(DonGia) * getValue(SL));
     if (checkNumber(thanhTien)) {
       $('#ThanhTien').val(thanhTien);
     }
@@ -409,8 +419,8 @@ function refreshFormTaoPhieu() {
   function inputThanhTien() {
     var SL = $('#SLHH').val();
     var thanhTien = $('#ThanhTien').val();
-    var DonGia = formatNumbers(getValue(thanhTien) / getValue(SL));
-    console.log(SL, DonGia, thanhTien);
+    var DonGia = toDecimal(getValue(thanhTien) / getValue(SL));
+    //console.log(SL, DonGia, thanhTien);
     if (checkNumber(DonGia)) {
       $('#DonGia').val(DonGia);
     }
@@ -429,7 +439,7 @@ function refreshFormTaoPhieu() {
   function format() {
     if (checkNumber(this.value)) {
       const value = this.value.replace(/,/g, '');
-      this.value = formatNumbers(value);
+      this.value = toDecimal(value);
       //this.value = parseFloat(value).toLocaleString('en-US', {
       //  style: 'decimal',
       //  maximumFractionDigits: 2,
@@ -473,8 +483,9 @@ function refreshFormTaoPhieu() {
   function loadTableLichSuNhap() {
     var toDay = $('#toDay').val();
     var fromDay = $('#fromDay').val();
-    var x = new Date(toDay.substring(3, 5) + "-" + toDay.substring(0, 2) + "-" + toDay.substring(6, 10));
-    var y = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+    var x = formatDay(toDay);
+    //var y = new Date(fromDay.substring(3, 5) + "-" + fromDay.substring(0, 2) + "-" + fromDay.substring(6, 10));
+    var y = formatDay(fromDay);
     if (x < y) {
       showToast('Giới hạn ngày không hợp lệ!', 500);
       return;

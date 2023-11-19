@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,156 +9,147 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
-  [Authorize(Roles = "NV")]
-  public class HSXController : Controller
-  {
-    private MedicalShopContext context = new MedicalShopContext();
-    public IActionResult Table()
+    [Authorize(Roles = "NV")]
+    public class HSXController : Controller
     {
-      ViewData["Title"] = "Danh mục hãng sản xuất";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "HSX" && x.Active == true).FirstOrDefault().Id;
+        private MedicalShopContext context = new MedicalShopContext();
+        private string _maChucNang = "HSX";
+        public IActionResult Table()
+        {
+            ViewData["Title"] = "Danh mục hãng sản xuất";
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
+            List<Hsx> listHSX = context.Hsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+            return View("TableHSX", listHSX);
+        }
 
-      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+        //hiển thị view insert
+        public IActionResult ViewCreate()
+        {
+            ViewData["Title"] = "Thêm hãng sản xuất";
+            return View();
+        }
 
-      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+        public IActionResult Details(int id)
+        {
+            Hsx hsx = context.Hsx.FirstOrDefault(x => x.Id == id);
+            return View(hsx);
+        }
 
-      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+        [HttpPost]
+        //thêm hãng sản xuất
+        public IActionResult Insert(Hsx hsx)
+        {
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+            hsx.CreatedBy = idUser;
+            hsx.ModifiedBy = idUser;
+            hsx.Idcn = idcn;
+            hsx.CreatedDate = DateTime.Now;
+            hsx.ModifiedDate = DateTime.Now;
+            hsx.Active = true;
+            context.Hsx.Add(hsx);
+            context.SaveChanges();
+            TempData["ThongBao"] = "Thêm thành công!";
 
-      List<Hsx> listHSX = context.Hsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
-      
-      return View("TableHSX", listHSX);
+            return RedirectToAction("Table");
+        }
+
+        //[Route("/HangSanXuat/Delete/{id}")]
+        public IActionResult Delete(int id)
+
+        {
+            Hsx hsx = context.Hsx.Find(id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            hsx.ModifiedBy = idUser;
+            hsx.ModifiedDate = DateTime.Now;
+            hsx.Active = false;
+            context.Hsx.Update(hsx);
+            context.SaveChanges();
+            return RedirectToAction("Table");
+        }
+
+        //[Route("/HangSanXuat/Update/{id}")]
+        public IActionResult ViewUpdate(int id)
+        {
+            Hsx hsx = context.Hsx.Find(id);
+            ViewData["Title"] = "Cập nhật hãng sản xuất";
+            return View(hsx);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Hsx hsx)
+        {
+            Hsx h = context.Hsx.Find(hsx.Id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            h.MaHsx = hsx.MaHsx;
+            h.TenHsx = hsx.TenHsx;
+            h.Address = hsx.Address;
+            h.Phone = hsx.Phone;
+            h.Mail = hsx.Mail;
+            h.ModifiedBy = idUser;
+            h.ModifiedDate = DateTime.Now;
+            context.Hsx.Update(h);
+            context.SaveChanges();
+            TempData["ThongBao"] = "Cập nhật thành công!";
+            return RedirectToAction("table");
+        }
+
+        [HttpPost("/loadTableHSX")]
+        public IActionResult loadTableHSX(bool active)
+        {
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+            ViewBag.HSX = context.Hsx
+              .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+              .OrderBy(x => x.TenHsx)
+              .ToList();
+
+            return PartialView();
+        }
+
+        //[Route("/HangSanXuat/khoiphuc/{id}")]
+        public IActionResult Restore(int id)
+        {
+            Hsx hsx = context.Hsx.Find(id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            hsx.ModifiedBy = idUser;
+            hsx.ModifiedDate = DateTime.Now;
+            hsx.Active = true;
+            context.Hsx.Update(hsx);
+            context.SaveChanges();
+            TempData["ThongBao"] = "Khôi phục thành công!";
+            return RedirectToAction("Table");
+        }
+
+
+        [HttpPost("/restoreHSX")]
+        public string Restoree(int id)
+        {
+            Hsx h = context.Hsx.Find(id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            h.Active = true;
+            h.ModifiedBy = idUser;
+            h.ModifiedDate = DateTime.Now;
+            context.Hsx.Update(h);
+            context.SaveChanges();
+            return "Khôi phục thành công!";
+        }
+
+
+
+        [HttpPost("/loadDetailHSX")]
+        public IActionResult LoadDetail(int id)
+        {
+            ViewData["Title"] = "Chi tiết hãng sản xuất";
+            Hsx h = context.Hsx.FirstOrDefault(x => x.Id == id);
+            return View(h);
+        }
+
+
     }
-
-    //hiển thị view insert
-    public IActionResult ViewCreate()
-    {
-      ViewData["Title"] = "Thêm hãng sản xuất";
-      return View();
-    }
-
-    public IActionResult Details(int id)
-    {
-      Hsx hsx = context.Hsx.FirstOrDefault(x => x.Id == id);
-      return View(hsx);
-    }
-
-    [HttpPost]
-    //thêm hãng sản xuất
-    public IActionResult Insert(Hsx hsx)
-    {
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-      hsx.CreatedBy = idUser;
-      hsx.ModifiedBy = idUser;
-      hsx.Idcn = idcn;
-      hsx.CreatedDate = DateTime.Now;
-      hsx.ModifiedDate = DateTime.Now;
-      hsx.Active = true;
-      context.Hsx.Add(hsx);
-      context.SaveChanges();
-      TempData["ThongBao"] = "Thêm thành công!";
-
-      return RedirectToAction("Table");
-    }
-
-    //[Route("/HangSanXuat/Delete/{id}")]
-    public IActionResult Delete(int id)
-
-    {
-      Hsx hsx = context.Hsx.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      hsx.ModifiedBy = idUser;
-      hsx.ModifiedDate = DateTime.Now;
-      hsx.Active = false;
-      context.Hsx.Update(hsx);
-      context.SaveChanges();
-      return RedirectToAction("Table");
-    }
-
-    //[Route("/HangSanXuat/Update/{id}")]
-    public IActionResult ViewUpdate(int id)
-    {
-      Hsx hsx = context.Hsx.Find(id);
-      ViewData["Title"] = "Sửa hãng sản xuất";
-
-      return View(hsx);
-    }
-
-    [HttpPost]
-    public IActionResult Update(Hsx hsx)
-    {
-      Hsx h = context.Hsx.Find(hsx.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      h.MaHsx = hsx.MaHsx;
-      h.TenHsx = hsx.TenHsx;
-      h.Address = hsx.Address;
-      h.Phone = hsx.Phone;
-      h.Mail = hsx.Mail;
-      h.ModifiedBy = idUser;
-      h.ModifiedDate = DateTime.Now;
-      context.Hsx.Update(h);
-      context.SaveChanges();
-      TempData["ThongBao"] = "Cập nhật thành công!";
-      return RedirectToAction("table");
-    }
-
-    [HttpPost("/loadTableHSX")]
-    public IActionResult loadTableHSX(bool active)
-    {
-
-      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-
-      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
-
-      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
-
-      ViewBag.HSX = context.Hsx
-        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
-        .OrderBy(x => x.TenHsx)
-        .ToList();
-
-      return PartialView();
-    }
-
-    //[Route("/HangSanXuat/khoiphuc/{id}")]
-    public IActionResult Restore(int id)
-    {
-      Hsx hsx = context.Hsx.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      hsx.ModifiedBy = idUser;
-      hsx.ModifiedDate = DateTime.Now;
-      hsx.Active = true;
-      context.Hsx.Update(hsx);
-      context.SaveChanges();
-      TempData["ThongBao"] = "Khôi phục thành công!";
-      return RedirectToAction("Table");
-    }
-
-
-    [HttpPost("/restoreHSX")]
-    public string Restoree(int id)
-    {
-      Hsx h = context.Hsx.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      h.Active = true;
-      h.ModifiedBy = idUser;
-      h.ModifiedDate = DateTime.Now;
-      context.Hsx.Update(h);
-      context.SaveChanges();
-      return "Khôi phục thành công!";
-    }
-
-
-
-    [HttpPost("/loadDetailHSX")]
-    public IActionResult LoadDetail(int id)
-    {
-      ViewData["Title"] = "Chi tiết hãng sản xuất";
-      Hsx h = context.Hsx.FirstOrDefault(x => x.Id == id);
-      return View(h);
-    }
-
-
-  }
 }

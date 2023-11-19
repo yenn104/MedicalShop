@@ -1,205 +1,193 @@
 ﻿@model MedicalShop.Models.Entities.HangHoa
 @{
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
 
-  MedicalShopContext context = new MedicalShopContext();
-  List<Hsx> getListHSX()
-  {
-    return context.Hsx.Where(x => x.Active == true).ToList();
-  }
-  List<NhomHangHoa> getListNHH()
-  {
-    return context.NhomHangHoa.Where(x => x.Active == true).ToList();
-  }
-  List<Nsx> getListNSX()
-  {
-    return context.Nsx.Where(x => x.Active == true).ToList();
-  }
-  List<Dvt> getListDVT()
-  {
-    return context.Dvt.Where(x => x.Active == true).ToList();
-  }
+    MedicalShopContext context = new MedicalShopContext();
+    List<Hsx> getListHSX()
+    {
+        return context.Hsx.Where(x => x.Active == true).ToList();
+    }
+    List<NhomHangHoa> getListNHH()
+    {
+        return context.NhomHangHoa.Where(x => x.Active == true).ToList();
+    }
+    List<Nsx> getListNSX()
+    {
+        return context.Nsx.Where(x => x.Active == true).ToList();
+    }
+    List<Dvt> getListDVT()
+    {
+        return context.Dvt.Where(x => x.Active == true).ToList();
+    }
 }
 
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-                        window.onload = function () {
-                            alert("@Html.Raw(@TempData["ThongBao"])");
-                    };
-  </script>
-}
 
 <div class="card" style=" margin-bottom: 70px;">
-  <div class="card-body">
-    <form enctype="multipart/form-data" action="/HangHoa/insertHangHoa" method="post">
-      <div class="forms-body">
-        <div class="form-group" style="display: flex; ">
-          <div>
-            <label style="margin-bottom: 70px;">Hình ảnh</label>
-            <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/png image/jpeg" >
-            @*<input type="file" id="upload" accept="image/*" multiple>*@
-          </div>
-          <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
-            <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
-          </div>
-        </div>
-         <div class="row">
-            <div id="imageContainer"></div>
-        </div>
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">Nhóm HH</label>
-            <select required class="custom-select" asp-for="@Model.Idnhh">
-              @foreach (NhomHangHoa hh in getListNHH())
-              {
-                <option value="@hh.Id">
-                  @hh.TenNhh
-                </option>
-              }
-            </select>
-          </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">Mã HH</label>
-            <input asp-for="@Model.MaHh" type="text" class="form-control" required>
-            
-          </div>
-        </div>
+    <div class="card-body">
+        <form enctype="multipart/form-data" action="/HangHoa/insertHangHoa" method="post">
+            <div class="forms-body">
+                <div class="form-group" style="display: flex; ">
+                    <div>
+                        <label style="margin-bottom: 70px;">Hình ảnh</label>
+                        <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/png image/jpeg">
+                        @*<input type="file" id="upload" accept="image/*" multiple>*@
+                    </div>
+                    <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
+                        <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="imageContainer"></div>
+                </div>
+                <div class="form-group" style="display:flex">
+                    <div class="group-left">
+                        <label style="margin:7px 0;">Nhóm HH</label>
+                        <select required class="custom-select" asp-for="@Model.Idnhh">
+                            @foreach (NhomHangHoa hh in getListNHH())
+                            {
+                                <option value="@hh.Id">
+                                    @hh.TenNhh
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="group-right">
+                        <label style="margin:7px 0;">Mã HH</label>
+                        <input asp-for="@Model.MaHh" type="text" class="form-control" required>
 
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">Tên HH</label>
-            <input asp-for="@Model.TenHh" type="text" class="form-control" required>
-          </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">DVT</label>
-            <select required class="custom-select" asp-for="@Model.Iddvtc">
-              @foreach (Dvt hh in getListDVT())
-              {
-                <option value="@hh.Id">
-                  @hh.TenDvt
-                </option>
-              }
-            </select>
-          </div>
+                    </div>
+                </div>
 
-        </div>
+                <div class="form-group" style="display:flex">
+                    <div class="group-left">
+                        <label style="margin:7px 0;">Tên HH</label>
+                        <input asp-for="@Model.TenHh" type="text" class="form-control" required>
+                    </div>
+                    <div class="group-right">
+                        <label style="margin:7px 0;">DVT</label>
+                        <select required class="custom-select" asp-for="@Model.Iddvtc">
+                            @foreach (Dvt hh in getListDVT())
+                            {
+                                <option value="@hh.Id">
+                                    @hh.TenDvt
+                                </option>
+                            }
+                        </select>
+                    </div>
 
+                </div>
+                <div class="form-group" style="display:flex">
+                    <div class="group-left">
+                        <label style="margin:7px 0;">Mã vạch</label>
+                        <input asp-for="@Model.BarCode" type="text" class="form-control" required>
 
+                    </div>
+                    <div class="group-right">
+                        <label style="margin:7px 0;">NSX</label>
+                        <select required class="custom-select" asp-for="@Model.Idnsx">
+                            @foreach (Nsx hh in getListNSX())
+                            {
+                                <option value="@hh.Id">
+                                    @hh.TenNsx
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
 
+                <div class="form-group" style="display:flex">
+                    <div class="group-left">
+                        <label style="margin:7px 0;">HSX</label>
+                        <select required class="custom-select" asp-for="@Model.Idhsx">
+                            @foreach (Hsx hh in getListHSX())
+                            {
+                                <option value="@hh.Id">
+                                    @hh.TenHsx
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="group-right">
+                        <label style="margin:7px 0;">Chi tiết</label>
+                        <input asp-for="@Model.Detail" type="text" class="form-control" required>
+                    </div>
+                </div>
 
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">Barcode</label>
-            <input asp-for="@Model.BarCode" type="text" class="form-control" required>
-           
-          </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">NSX</label>
-            <select required class="custom-select" asp-for="@Model.Idnsx">
-              @foreach (Nsx hh in getListNSX())
-              {
-                <option value="@hh.Id">
-                  @hh.TenNsx
-                </option>
-              }
-            </select>
-          </div>
-        </div>
+            </div>
 
-        <div class="form-group" style="display:flex">
-          <div class="group-left">
-            <label style="margin:7px 0;">HSX</label>
-            <select required class="custom-select" asp-for="@Model.Idhsx">
-              @foreach (Hsx hh in getListHSX())
-              {
-                <option value="@hh.Id">
-                  @hh.TenHsx
-                </option>
-              }
-            </select>
-          </div>
-          <div class="group-right">
-            <label style="margin:7px 0;">Chi tiết</label>
-            <input asp-for="@Model.Detail" type="text" class="form-control" required>
-          </div>
-        </div>
+            <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
+                <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+                <input type="submit" class="btn btn-primary" value="Thêm">
 
-      </div>
+            </div>
 
-      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
-        <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
-        <input type="submit" class="btn btn-primary" value="Thêm">
-        
-      </div>
+        </form>
 
-    </form>
-
-  </div>
+    </div>
 </div>
 <script>
     function readURL(input, previewId) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-              $(previewId).attr('src', e.target.result);
-              $(previewId).hide();
-              $(previewId).fadeIn(650);
+                $(previewId).attr('src', e.target.result);
+                $(previewId).hide();
+                $(previewId).fadeIn(650);
             }
             reader.readAsDataURL(input.files[0]);
         }
     }
     $("#Fileimage").change(function () {
-      readURL(this, '#image1');
+        readURL(this, '#image1');
     });
 
-    //$("#Fileimage").change(function () {
-    //    // Lấy danh sách tất cả các files
-    //    var files = this.files;
+        //$("#Fileimage").change(function () {
+        //    // Lấy danh sách tất cả các files
+        //    var files = this.files;
 
-    //    // Lặp qua từng file
-    //    for (var i = 0; i < files.length; i++) {
-    //        // Kiểm tra nếu file là hình ảnh
-    //        if (files[i].type.startsWith("image/")) {
-    //            // Tạo đối tượng FileReader để đọc nội dung của file
-    //            var reader = new FileReader();
+        //    // Lặp qua từng file
+        //    for (var i = 0; i < files.length; i++) {
+        //        // Kiểm tra nếu file là hình ảnh
+        //        if (files[i].type.startsWith("image/")) {
+        //            // Tạo đối tượng FileReader để đọc nội dung của file
+        //            var reader = new FileReader();
 
-    //            // Xử lý sự kiện "load" của đối tượng FileReader
-    //            reader.addEventListener("load", function () {
-    //                // Tạo một ArrayBuffer từ chuỗi dữ liệu base64
-    //                var buffer = dataURItoBuffer(reader.result);
+        //            // Xử lý sự kiện "load" của đối tượng FileReader
+        //            reader.addEventListener("load", function () {
+        //                // Tạo một ArrayBuffer từ chuỗi dữ liệu base64
+        //                var buffer = dataURItoBuffer(reader.result);
 
-    //                // Tạo blob từ ArrayBuffer
-    //                var blob = new Blob([buffer], { type: files[i].type });
+        //                // Tạo blob từ ArrayBuffer
+        //                var blob = new Blob([buffer], { type: files[i].type });
 
-    //                // Tạo URL cho blob
-    //                var url = URL.createObjectURL(blob);
+        //                // Tạo URL cho blob
+        //                var url = URL.createObjectURL(blob);
 
-    //                // Tạo thẻ hình mới và gán đường dẫn
-    //                var img = $("<img>").attr("src", url);
+        //                // Tạo thẻ hình mới và gán đường dẫn
+        //                var img = $("<img>").attr("src", url);
 
-    //                // Giới hạn chiều cao của hình ảnh
-    //                img.css("max-height", "100px");
+        //                // Giới hạn chiều cao của hình ảnh
+        //                img.css("max-height", "100px");
 
-    //                // Thêm hình ảnh vào container
-    //                $("#imageContainer").append(img);
-    //            });
+        //                // Thêm hình ảnh vào container
+        //                $("#imageContainer").append(img);
+        //            });
 
-    //            // Đọc nội dung của file dưới dạng ArrayBuffer
-    //            reader.readAsArrayBuffer(files[i]);
-    //        }
-    //    }
-    //});
+        //            // Đọc nội dung của file dưới dạng ArrayBuffer
+        //            reader.readAsArrayBuffer(files[i]);
+        //        }
+        //    }
+        //});
 
-    //// Chuyển đổi chuỗi dữ liệu base64 sang ArrayBuffer
-    //function dataURItoBuffer(dataURI) {
-    //    var binaryString = window.atob(dataURI.split(',')[1]);
-    //    var len = binaryString.length;
-    //    var bytes = new Uint8Array(len);
-    //    for (var i = 0; i < len; i++) {
-    //        bytes[i] = binaryString.charCodeAt(i);
-    //    }
-    //    return bytes.buffer;
-    //}
+        //// Chuyển đổi chuỗi dữ liệu base64 sang ArrayBuffer
+        //function dataURItoBuffer(dataURI) {
+        //    var binaryString = window.atob(dataURI.split(',')[1]);
+        //    var len = binaryString.length;
+        //    var bytes = new Uint8Array(len);
+        //    for (var i = 0; i < len; i++) {
+        //        bytes[i] = binaryString.charCodeAt(i);
+        //    }
+        //    return bytes.buffer;
+        //}
 
 </script>

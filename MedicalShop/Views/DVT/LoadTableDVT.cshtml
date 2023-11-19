@@ -1,155 +1,119 @@
 ﻿@model MedicalShop.Models.Entities.Dvt
 
 @{
-  MedicalShopContext context = new MedicalShopContext();
-
-  string formatDay(DateTime? date)
-  {
-    if (date != null)
-    {
-      return date.Value.ToString("dd-MM-yyyy HH:mm");
-    }
-    else
-    {
-      return null;
-    }
-  }
-
-  NhanVien getNV(int? id)
-  {
-    NhanVien nv = context.NhanVien.FirstOrDefault(x => x.Id == id);
-    if (nv != null) return nv;
-    else return new NhanVien();
-  }
-
-  var acc = User.FindFirst("VaiTro");
-  int idmenu = (int)TempData.Peek("Menu");
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
-    }
-  }
+    var quyen = ViewBag.Quyen;
+    bool nhap = (bool)quyen.Import;
+    bool sua = (bool)quyen.Update;
+    bool xoa = (bool)quyen.Delete;
+    bool print = (bool)quyen.Print;
+    bool xuat = (bool)quyen.Export;
 }
 
 <script src="~/admin/js/datatable-custom.js"></script>
 
-
 <div id="tableDVT" class="table-responsive" style="margin-bottom: 5rem">
-  <table id="example" class="table table-striped" style="width:100%">
-    <thead>
-      <tr>
-        <th>
-          Mã DVT
-        </th>
-        <th>
-          Tên DVT
-        </th>
-        <th class="text-center">
-          Ngày tạo
-        </th>
-        <th class="text-center">
-          NV tạo
-        </th>
-        <th class="text-center">
-          Ngày sửa
-        </th>
-        <th class="text-center">
-          NV sửa
-        </th>
-        <th class="text-center">Tùy chọn</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (Dvt item in ViewBag.DVT)
-      {
-        @if (item.Active == false)
-        {
-          <tr style="background-color: #0000000a;">
-            <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
-            </td>
-            <td class="text-center">
-              @formatDay(item.CreatedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.CreatedBy).TenNv
-            </td>
-            <td class="text-center">
-              @formatDay(item.ModifiedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.ModifiedBy).TenNv
-            </td>
-            <td class="text-center pr-2rem">
-              @if (sua == true)
-              {
-                @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
-              }
-              else
-              {
-                <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
-              }
-            </td>
-          </tr>
-        }
-        else
-        {
-          <tr>
-            <td>
-              @Html.DisplayFor(modelItem => item.MaDvt)
-            </td>
-            <td>
-              @Html.DisplayFor(modelItem => item.TenDvt)
-            </td>
-            <td class="text-center">
-              @formatDay(item.CreatedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.CreatedBy).TenNv
-            </td>
-            <td class="text-center">
-              @formatDay(item.ModifiedDate)
-            </td>
-            <td class="text-center">
-              @getNV(item.ModifiedBy).TenNv
-            </td>
-            <td class="text-center">
-              @if (sua == true)
-              {
-                @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
-              }
-              else
-              {
-                <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
-              }
-              @if (xoa == true)
-              {
-                @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
-              }
-              else
-              {
-                <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
-              }
-            </td>
-          </tr>
-        }
-      }
-    </tbody>
-  </table>
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Mã DVT
+                </th>
+                <th>
+                    Tên DVT
+                </th>
+                <th class="text-center">
+                    Ngày tạo
+                </th>
+                <th class="text-center">
+                    NV tạo
+                </th>
+                <th class="text-center">
+                    Ngày sửa
+                </th>
+                <th class="text-center">
+                    NV sửa
+                </th>
+                <th class="text-center">Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Dvt item in ViewBag.DVT)
+            {
+                @if (item.Active == false)
+                {
+                    <tr style="background-color: #0000000a;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaDvt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenDvt)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.formatDateTimeShort(item.CreatedDate)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.getTenNhanVien(item.CreatedBy)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.formatDateTimeShort(item.ModifiedDate)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.getTenNhanVien(item.ModifiedBy)
+                        </td>
+                        <td class="text-center pr-2rem">
+                            @if (sua == true)
+                            {
+                                @Html.ActionLink(" ", "Restore", new { id = item.Id }, new { @class = "fas fa-reply color-black", onclick = "return confirm('Bạn muốn khôi phục đối tượng này?')" })
+                            }
+                            else
+                            {
+                                <button class=" btn p-0 disabled"><i class="fas fa-reply "></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaDvt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenDvt)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.formatDateTimeShort(item.CreatedDate)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.getTenNhanVien(item.CreatedBy)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.formatDateTimeShort(item.ModifiedDate)
+                        </td>
+                        <td class="text-center">
+                            @CommonServices.getTenNhanVien(item.ModifiedBy)
+                        </td>
+                        <td class="text-center">
+                            @if (sua == true)
+                            {
+                                @Html.ActionLink(" ", "ViewUpdate", new { id = item.Id }, new { @class = "far fa-edit lighter pr-2" })
+                            }
+                            else
+                            {
+                                <button class=" btn p-0 disabled"><i class="far fa-edit pr-2"></i></button>
+                            }
+                            @if (xoa == true)
+                            {
+                                @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "fas fa-trash-alt lighter", onclick = "return confirm('Bạn muốn xoá đối tượng này?')" })
+                            }
+                            else
+                            {
+                                <button class=" btn p-0 disabled"><i class="fas fa-trash-alt"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>

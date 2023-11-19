@@ -27,8 +27,6 @@ namespace MedicalShop.Controllers
       return View(dvvc);
     }
 
-
-
     //hiển thị view insert
     public IActionResult ViewCreate()
     {
@@ -59,7 +57,7 @@ namespace MedicalShop.Controllers
 
     {
       Dvvc dvvc = context.Dvvc.Find(id);
-      ViewData["Title"] = "Sửa dịch vụ vận chuyển";
+      ViewData["Title"] = "Cập nhật dịch vụ vận chuyển";
       return View(dvvc);
     }
 
@@ -74,7 +72,7 @@ namespace MedicalShop.Controllers
       n.Note = dvvc.Note;
       context.Dvvc.Update(n);
       context.SaveChanges();
-      TempData["ThongBao"] = "Sửa thành công!";
+      TempData["ThongBao"] = "Cập nhật thành công!";
       return RedirectToAction("Table");
     }
 
@@ -96,12 +94,8 @@ namespace MedicalShop.Controllers
     public IActionResult loadTableDVVC(bool active)
     {
       int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-
       int idvt = int.Parse(User.Claims.ElementAt(3).Value);
-
       var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
-
       ViewBag.DVVC = context.Dvvc
         .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
         .OrderBy(x => x.TenDvvc)

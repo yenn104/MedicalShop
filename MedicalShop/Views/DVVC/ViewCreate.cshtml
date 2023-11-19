@@ -1,33 +1,41 @@
 ﻿@model MedicalShop.Models.Entities.Dvvc
 @{
-  Layout = "~/Views/Shared/_LayoutNV.cshtml";
-
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    var quyen = ViewBag.Quyen;
+    bool nhap = (bool)quyen.Import;
 }
 
 <div class="card" style=" margin-bottom: 70px;">
-  <div class="card-body">
-    <form action="/DVVC/Insert" method="post">
-      <div class="forms-body">
-        <div class="form-group">
-          <label style="margin:7px 0;">Mã DVVC</label>
-          <input asp-for="@Model.MaDvvc" type="text" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label style="margin:7px 0;">Tên DVVC</label>
-          <input asp-for="@Model.TenDvvc" type="text" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label style="margin:7px 0;">Ghi chú</label>
-          <input asp-for="@Model.Note" type="text" class="form-control" required>
-        </div>
-      </div>
+    <div class="card-body">
+        <form action="/DVVC/Insert" method="post">
+            <div class="forms-body">
+                <div class="form-group">
+                    <label style="margin:7px 0;">Mã DVVC</label>
+                    <input asp-for="@Model.MaDvvc" type="text" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label style="margin:7px 0;">Tên DVVC</label>
+                    <input asp-for="@Model.TenDvvc" type="text" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label style="margin:7px 0;">Ghi chú</label>
+                    <input asp-for="@Model.Note" type="text" class="form-control" required>
+                </div>
+            </div>
 
-      <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
-        <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
-        <input type="submit" class="btn btn-primary" value="Thêm">
-      </div>
+            <div class="forms-footer" style="justify-content: space-between; display: flex; padding: 10px 0px; ">
+                <a asp-action="Table"><input type="button" class="btn btn-secondary" value="Quay lại"></a>
+                @if (nhap == true)
+                {
+                    <input type="submit" class="btn btn-primary" value="Thêm">
+                }
+                else
+                {
+                    <input type="button" class="btn btn-primary disabled" value="Thêm">
+                }
+            </div>
 
-    </form>
+        </form>
 
-  </div>
+    </div>
 </div>
