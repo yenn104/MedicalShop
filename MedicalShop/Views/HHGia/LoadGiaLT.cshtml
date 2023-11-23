@@ -1,48 +1,33 @@
-﻿@{
+﻿@*<script src="~/admin/js/datatable-custom.js"></script>*@
 
-  MedicalShopContext context = new MedicalShopContext();
+@{
+    MedicalShopContext context = new MedicalShopContext();
 
-  HhGia getGia(int? id)
-  {
-    HhGia giahh = context.HhGia.FirstOrDefault(x => x.Idhh == id);
-    if (giahh != null) return giahh;
-    else return new HhGia();
-  }
+    HhGia getGia(int? id)
+    {
+        HhGia giahh = context.HhGia.FirstOrDefault(x => x.Idhh == id);
+        if (giahh != null) return giahh;
+        else return new HhGia();
+    }
 
 
 }
 
-
-<script src="~/admin/js/datatable-custom.js"></script>
-
-
-<div id="table1" class=" table-responsive-lg">
-  <table class="table table-striped" id="example">
-    <thead>
-      <tr style="background: #e9ecef;">
-        @*<th style="width:15px">STT</th>*@
-        <th class="text-center">Danh sách hàng hóa</th>
-        <th>Tỉ lệ (%)</th>
-        <th>Giá</th>
-      </tr>
-    </thead>
-    <tbody id="giaban">
-      @foreach (HangHoa hh in ViewBag.Load)
-      {
-        <tr onclick="loadDSNhap(@hh.Id)">
-          @*<td id="stt"></td>*@
-          <td class="text-left" style="width:20rem;">
-            <span>@hh.TenHh</span>
-            <input type="hidden" value="@hh.Id" id="idvt" />
-          </td>
-          <td style="width:6rem;">
-            <input type="text" class="form-control tile text-right" value="@getGia(@hh.Id).TiLe">
-          </td>
-          <td style="width:6rem;">
-            <input style=" min-width: max-content;" type="text" class="form-control gia text-right" value="@getGia(@hh.Id).Price" />
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-</div>
+<tbody id="giaban">
+  @foreach (HangHoa hh in ViewBag.Load)
+  {
+    <tr onclick="loadDSNhap(@hh.Id)">
+      @*<td id="stt"></td>*@
+      <td class="text-left" style="width:20rem;">
+        <span>@hh.TenHh</span>
+        <input type="hidden" value="@hh.Id" class="idvt" />
+      </td>
+      <td style="width:6rem;">
+         <input type="text" class="form-control tile text-right formatted-number-float" value="@getGia(@hh.Id).TiLe">
+      </td>
+      <td style="width:6rem;">
+        <input style=" min-width: max-content;" type="text" class="form-control gia text-right formatted-number-float" value="@getGia(@hh.Id).Price" />
+      </td>
+    </tr>
+  }
+</tbody>

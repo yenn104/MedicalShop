@@ -52,8 +52,21 @@ function toDecimal(str) {
   return formattedNumber;
 }
 
+//function toDecimal(str) {
+//  return parseFloat(str).toLocaleString('en-US', {
+//    style: 'decimal',
+//    maximumFractionDigits: 2,
+//    minimumFractionDigits: 2
+//  });
+//}
+
 
 function formatDay(data) {
+  return new Date(data.substring(3, 5) + "-" + data.substring(0, 2) + "-" + data.substring(6, 10));
+}
+
+
+function formatDateTimeShort(data) {
   return new Date(data.substring(3, 5) + "-" + data.substring(0, 2) + "-" + data.substring(6, 10));
 }
 
@@ -72,6 +85,9 @@ function getValueNumbers(str) {
   return Number(str.replace(/,/g, ''));
 }
 
+function getValue(str) {
+  return Number(str.replace(/[^0-9.-]+/g, ""));
+}
 
 
 function configDateDefault() {
@@ -82,6 +98,28 @@ function configDateDefault() {
     defaultDate: today,
     format: "DD-MM-yyyy",
     extraFormats: ["DD-MM-yyyy", "DD/MM/yyyy", "yyyy"],
+    icons: {
+      date: "ti ti-calendar",
+      up: "ti ti-chevron-up",
+      down: "ti ti-chevron-down",
+      previous: 'ti ti-chevron-left',
+      next: 'ti ti-chevron-right',
+      time: "ti ti-alarm"
+    },
+    keyBinds: {
+      left: null,
+      right: null,
+    }
+  });
+}
+
+
+function configDateTime() {
+  $('.input-date-time').datetimepicker({
+    locale: 'vi',
+    useStrict: true,
+    format: "DD-MM-yyyy HH:mm",
+    extraFormats: ["DD-MM-yyyy HH:mm", "DD/MM/yyyy HH:mm", "yyyy"],
     icons: {
       date: "ti ti-calendar",
       up: "ti ti-chevron-up",
@@ -167,4 +205,178 @@ $(document).on('keydown', '.input-date-default, .input-date, .input-date-long-ma
 })
 
 
+function formatDate(inputDate) {
+  // Tạo một đối tượng Date từ chuỗi ngày tháng
+  const date = new Date(inputDate);
 
+  // Lấy các thành phần ngày, tháng, năm
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Tháng bắt đầu từ 0
+  const year = date.getFullYear();
+  // Định dạng lại thành chuỗi "dd-mm-yyyy"
+  const formattedDate = `${formatNumber(day)}-${formatNumber(month)}-${year}`;
+  return formattedDate;
+}
+
+// Hàm để thêm số 0 phía trước nếu số chỉ có một chữ số
+function formatNumber(number) {
+  return number.toString().padStart(2, '0');
+}
+
+
+
+//function formatNumberInput() {
+//  // Áp dụng inputmask cho các phần tử có lớp 'formatted-number' và giá trị khác 0
+//  $(".formatted-number").each(function () {
+//    var value = $(this).val();
+//    console.log(value);
+//    $(this).inputmask({
+//      alias: "numeric",
+//      groupSeparator: ",",
+//      autoGroup: true,
+//      digits: 0,
+//      allowMinus: false,
+//      digitsOptional: false,
+//      // Định dạng đặc biệt nếu giá trị là 0
+//      onBeforeMask: function (value, opts) {
+//        if (value === "0") {
+//          return "0\\";
+//        }
+//        return value;
+//      },
+//    });
+
+//  });
+//}
+
+
+
+function formatNumberInput() {
+  // Áp dụng inputmask cho các phần tử có lớp 'formatted-number' và giá trị khác 0
+  $(".formatted-number").each(function () {
+    var value = $(this).val();
+
+    $(this).inputmask({
+      alias: "numeric",
+      groupSeparator: ",",
+      autoGroup: true,
+      digits: 0,
+      allowMinus: false,
+      digitsOptional: false,
+      // Định dạng đặc biệt nếu giá trị là 0
+      onBeforeMask: function (value, opts) {
+        if (value === "0") {
+          return "0\\";
+        }
+        return value;
+      },
+    });
+
+  });
+}
+
+
+function formatFloat() {
+  $(".formatted-number-float").inputmask({
+    alias: "numeric",
+    radixPoint: ".",
+    groupSeparator: ",",
+    autoGroup: true,
+    digits: 2,
+    digitsOptional: true,
+    allowMinus: false,
+    prefix: "",
+  });
+}
+function formatFloatInput() {
+  $(".formatted-number-float").each(function () {
+    var value = $(this).val();
+    if (value !== "0") {
+      $(this).inputmask({
+        alias: "numeric",
+        groupSeparator: ",",
+        autoGroup: true,
+        digits: 2,
+        allowMinus: false,
+        placeholder: '0',
+        digitsOptional: true,
+        // Định dạng đặc biệt nếu giá trị là 0
+        onBeforeMask: function (value, opts) {
+          if (value === "0") {
+            return "0\\";
+          }
+          console.log(value);
+          return value;
+        },
+      });
+    }
+  });
+}
+
+
+function formatNumberFloatWithElement(inputs) {
+  inputs.each(function () {
+    var value = $(this).val();
+    if (value !== "0") {
+      $(this).inputmask({
+        alias: "numeric",
+        groupSeparator: ",",
+        autoGroup: true,
+        digits: 0,
+        allowMinus: false,
+        placeholder: '0',
+        digitsOptional: false,
+        // Định dạng đặc biệt nếu giá trị là 0
+        onBeforeMask: function (value, opts) {
+          if (value === "0") {
+            return "0\\";
+          }
+          return value;
+        },
+      });
+    }
+  });
+}
+// format lại số lúc nhập thành dạng 100,000,000.00
+function formatNumberWithElement(inputs) {
+  inputs.each(function () {
+    var min = $(this).attr('min');
+    var input = $(this).inputmask({
+      alias: "numeric",
+      radixPoint: ".",
+      groupSeparator: ",",
+      autoGroup: true,
+      digits: 2,
+      digitsOptional: true,
+      allowMinus: false,
+      prefix: "",
+      min: min ? parseFloat(min) : 0
+    });
+    input.on("blur", function () {
+      $(this).trigger('keyup');
+    });
+  });
+}
+
+function formatNumberWithElementDk(inputs) {
+  inputs.each(function () {
+
+    $(this).inputmask({
+      alias: "numeric",
+      radixPoint: ".",
+      groupSeparator: ",",
+      autoGroup: true,
+      digits: 2,
+      digitsOptional: true,
+      allowMinus: false,
+      prefix: "",
+      placeholder: '0',
+      min: 100
+    });
+  });
+}
+// 1,000,000
+function formatEvenNumber(number) {
+  if (number == null) return "";
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

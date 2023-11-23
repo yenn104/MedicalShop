@@ -42,10 +42,10 @@
   {
     <tr>
       <td class="text-center">
-        @ctpn.CreatedDate?.ToString("dd-MM-yyyy")
+        @CommonServices.formatDay(ctpn.CreatedDate)
       </td>
       <td class="text-center">
-        @ctpn.Hsd?.ToString("dd-MM-yyyy")
+        @CommonServices.formatDay(ctpn.Hsd)
       </td>
       <td class="text-right">
         @toDecimal(@getTK(@ctpn.Id))

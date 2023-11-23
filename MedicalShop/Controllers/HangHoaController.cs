@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
@@ -70,6 +71,8 @@ namespace MedicalShop.Controllers
         {
             MedicalShopContext context = new MedicalShopContext();
             HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             return View(hh);
         }
 
@@ -98,8 +101,13 @@ namespace MedicalShop.Controllers
 
 
         [HttpPost]
-        public IActionResult insertHangHoa(HangHoa hh, IFormFile Avt)
+        public IActionResult insertHangHoa(HangHoa hh, IFormFile Avt, List<IFormFile> imgList)
+        //public IActionResult insertHangHoa([FromForm] HangHoaModelMap modelMap)
         {
+            //HangHoa hh = modelMap.HangHoa;
+            //IFormFile Avt = modelMap.ImgAvt;
+            //List<IFormFile> imgList = modelMap.ImgList;
+
             //MedicalShopContext context = new MedicalShopContext();
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
@@ -112,6 +120,7 @@ namespace MedicalShop.Controllers
             hh.ModifiedDate = DateTime.Now;
             context.HangHoa.Add(hh);
             context.SaveChanges();
+            UploadedListFile(hh.MaHh, imgList);
             TempData["ThongBao"] = "Thêm thành công!";
             return RedirectToAction("ViewCreate");
         }
@@ -120,11 +129,10 @@ namespace MedicalShop.Controllers
         private string UploadedFile(HangHoa model, IFormFile avt)
         {
             string uniqueFileName = null;
-
             if (avt != null)
             {
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "lib/imagesHH");
-                uniqueFileName = model.MaHh + ".png";
+                uniqueFileName = model.MaHh + DateTime.Now.ToString("yyMMddHHssfff") + ".png";
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -133,6 +141,25 @@ namespace MedicalShop.Controllers
             }
             return uniqueFileName;
         }
+
+
+        private void UploadedListFile(string maHH, List<IFormFile> imgList)
+        {
+            if (imgList.Count > 0)
+            {
+                foreach (IFormFile img in imgList)
+                {
+                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "lib/imagesHH");
+                    string uniqueFileName = maHH + DateTime.Now.ToString("yyMMddHHssfff") + ".png";
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        img.CopyTo(fileStream);
+                    }
+                }
+            }
+        }
+
 
         //Trả về view Cập nhật hàng hoá
         //[Route("/HangHoa/ViewUpdateHangHoa/{id}")]
@@ -222,6 +249,14 @@ namespace MedicalShop.Controllers
             ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == id);
             return View(hh);
+        }
+
+
+        public class HangHoaModelMap
+        {
+            public HangHoa? HangHoa { get; set; }
+            public IFormFile? ImgAvt { get; set; }
+            public List<IFormFile>? ImgList { get; set; }
         }
 
     }

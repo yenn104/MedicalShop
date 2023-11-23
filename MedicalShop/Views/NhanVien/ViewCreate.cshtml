@@ -192,13 +192,13 @@
       data: "&IDNV=" + idnv,
       success: function (result) {
         if (result.exists) {
-          alert("Căn cước công dân đã tồn tại!");
+          showToast("Căn cước công dân đã tồn tại!", 100);
           $('#Cccd').val("");
         } else {
         }
       },
       error: function () {
-        alert("Căn cước công dân đã tồn tại!");
+        showToast("Căn cước công dân đã tồn tại!", 100);
       }
     });
   }

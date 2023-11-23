@@ -1,0 +1,138 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+
+    MedicalShopContext context = new MedicalShopContext();
+    List<HangHoa> listHH()
+    {
+        return context.HangHoa.Where(x => x.Active == true).OrderBy(x => x.TenHh).ToList();
+    }
+
+    HhGia getGia(int? id)
+    {
+        HhGia giahh = context.HhGia.FirstOrDefault(x => x.Idhh == id);
+        if (giahh != null) return giahh;
+        else return new HhGia();
+    }
+
+
+}
+
+
+@*<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row d-flex justify-content-end">
+            <div class="col-auto mb-2 p-0">
+                <div class="btn-list">
+                    <button class="btn btn-primary d-none d-md-inline-block" @(quyen.Them == true ? "onclick=executeFunction()" : "disabled") data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Thêm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 5l0 14"></path>
+                            <path d="M5 12l14 0"></path>
+                        </svg>
+                        Thêm mới
+                    </button>
+                    <a href="#" class="btn btn-primary d-md-none btn-icon" @(quyen.Them == true ? "onclick=executeFunction()" : "disabled")>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 5l0 14"></path>
+                            <path d="M5 12l14 0"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body mb-1">
+    <div class="container-xl">
+        <div class="card">
+            <div class="table-responsive" style="height: 550px;">
+                <table class="table tabler-vendors table-bordered card-table" id="tableCTG">
+                    <thead class="border-top border-1">
+                        <tr>
+                            <th class="text-center">Giờ bắt đầu</th>
+                            <th class="text-center">Giờ kết thúc</th>
+                            <th class="text-center">Giá trong giờ</th>
+                            <th class="text-center">Giá ngoài giờ</th>
+                            <th class="text-center">Giá ban đêm</th>
+                            <th class="text-center pe-0">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBodyCTG">
+                        @foreach (HtCachTinhGium item in tinhGias)
+                        {
+                            <tr data-id-ctg="@item.Id">
+                                <td class="text-center p-1">
+                                    <div class="input-icon">
+                                        <input type="text" autocomplete="off" class="form-control input-time GioBatDau" name="GioBatDau" value="@formatDay(item.GioBatDau)"><span class="input-icon-addon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                                <path d="M12 12l3 2"></path>
+                                                <path d="M12 7v5"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="text-center p-1">
+                                    <div class="input-icon">
+                                        <input type="text" autocomplete="off" class="form-control input-time GioKetThuc" value="@formatDay(item.GioKetThuc)"><span class="input-icon-addon">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                                <path d="M12 12l3 2"></path>
+                                                <path d="M12 7v5"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="GiaTrongGio" class="form-check-input row-checkbox"
+                                           value="@(item.GiaTrongGio.HasValue ? (item.GiaTrongGio.Value ? "true": "false") : "false")"
+                                    @(item.GiaTrongGio.HasValue ? (item.GiaTrongGio.Value ? "checked" : "") : "")>
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="GiaNgoaiGio" class="form-check-input row-checkbox"
+                                           value="@(item.GiaNgoaiGio.HasValue ? (item.GiaNgoaiGio.Value ? "true": "false") : "false")"
+                                    @(item.GiaNgoaiGio.HasValue ? (item.GiaNgoaiGio.Value ? "checked" : "") : "")>
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="GiaBanDem" class="form-check-input row-checkbox"
+                                           value="@(item.GiaBanDem.HasValue ? (item.GiaBanDem.Value ? "true": "false") : "false")"
+                                    @(item.GiaBanDem.HasValue ? (item.GiaBanDem.Value ? "checked" : "") : "")>
+                                </td>
+                                <td class="text-center p-0 pt-1">
+                                    <a href="#" class="btn btn-icon list-group-item-actions text-red@(quyen.Xoa == true ? "" : "disabled")" @(quyen.Xoa == true ? $"onclick=deleteModel({@item.Id})" : "")>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M18 6l-12 12"></path>
+                                            <path d="M6 6l12 12"></path>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row g-2 align-items-center p-2">
+                <div class="col-auto ms-auto d-print-none">
+                    <button class="btn btn-primary btnCapNhat btn-save">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                            <path d="M12 17v-6"></path>
+                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                        </svg>
+                        Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<script src="~/admin/customjs/hanghoagia.js"></script>

@@ -46,6 +46,10 @@ namespace MedicalShop
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddHttpContextAccessor();
             services.AddScoped<CommonServices>();
+            services.AddControllersWithViews()
+                            .AddNewtonsoftJson(options =>
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

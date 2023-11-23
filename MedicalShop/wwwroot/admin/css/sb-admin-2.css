@@ -563,11 +563,17 @@ pre code {
   .container, .container-sm {
     max-width: 540px;
   }
+  .dashboard {
+    overflow-y: visible;
+  }
 }
 
 @media (min-width: 768px) {
   .container, .container-sm, .container-md {
     max-width: 720px;
+  }
+  .dashboard {
+    overflow-y: visible;
   }
 }
 

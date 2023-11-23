@@ -65,6 +65,8 @@ namespace MedicalShop.Controllers
         public IActionResult ViewUpdate(int id)
         {
             ChiNhanh cn = context.ChiNhanh.Find(id);
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             ViewData["Title"] = "Cập nhật chi nhánh";
             return View(cn);
         }

@@ -20,24 +20,186 @@
         return context.Dvt.Where(x => x.Active == true).ToList();
     }
 }
+<style>
+    :root {
+        --primary-color: #396ce8;
+        --primary-dark-color: #1544b7;
+        --white-color: #fff;
+        --black-10-color: rgba(0, 0, 0, 0.1);
+        --black-20-color: rgba(0, 0, 0, 0.1);
+        --black-50-color: rgba(0, 0, 0, 0.5);
+        --transition: all 300ms ease-in-out;
+    }
 
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+
+    .wrapper {
+        /*min-height: 100vh;*/
+        width: 100%;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary-color);
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .upload {
+        background-color: var(--white-color);
+        border-radius: 10px;
+        /*box-shadow: rgb(21, 68, 183) 0px 8px 24px;*/
+        width: 100%;
+        height: 7rem;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .upload-info p {
+        opacity: 0.6;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    .upload-wrapper {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .upload-img {
+        /*display: flex;
+        max-height: 300px;
+        overflow-y: scroll;*/
+        display: flex;
+        /*max-height: 260px;*/
+        width: 100px;
+        overflow-y: scroll;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+        .upload-img::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px var(--black-20-color);
+            border-radius: 6px;
+        }
+
+        .upload-img::-webkit-scrollbar-thumb {
+            background-color: var(--black-10-color);
+            border-radius: 6px;
+        }
+
+        .upload-img::-webkit-scrollbar {
+            width: 5px;
+        }
+
+    .upload-area {
+        width: 20%;
+        /*padding: 20px;*/
+        border: 2px dashed var(--black-20-color);
+        border-radius: 8px;
+        /*margin-top: 20px;*/
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+        .upload-area:hover {
+            background-color: rgba(176, 196, 246, 0.1);
+        }
+
+    .upload-area-img img {
+        max-width: 80px;
+    }
+
+    .upload-area-text {
+        font-weight: 700;
+        color: var(--black-50-color);
+    }
+
+        .upload-area-text span {
+            color: var(--primary-color);
+        }
+
+    .visually-hidden {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .upload-img {
+        width: 79%;
+    }
+
+    .uploaded-img {
+        margin: 10px;
+        width: 100px;
+        padding: 4px 0;
+        position: relative;
+    }
+
+
+    /* remove image button */
+    .remove-btn {
+        width: 22px;
+        height: 22px;
+        background-color: var(--white-color);
+        border: 1px solid var(--primary-color);
+        border-radius: 50%;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -5px;
+        right: -8px;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+        .remove-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+</style>
 
 <div class="card" style=" margin-bottom: 70px;">
     <div class="card-body">
-        <form enctype="multipart/form-data" action="/HangHoa/insertHangHoa" method="post">
+        @*<form enctype="multipart/form-data" action="/HangHoa/insertHangHoa" method="post" id="FormCreate">*@
+        <form id="FormCreate">
             <div class="forms-body">
                 <div class="form-group" style="display: flex; ">
-                    <div>
-                        <label style="margin-bottom: 70px;">Hình ảnh</label>
-                        <input name="Avt" class="form-control" type="file" id="Fileimage" accept="image/png image/jpeg">
-                        @*<input type="file" id="upload" accept="image/*" multiple>*@
+                    <div class='wrapper'>
+                        <div class="upload">
+                            <div class="upload-wrapper">
+                                <div class="upload-area">
+                                    <div class="upload-area-img">
+                                        <img src="assets/upload.png" alt="">
+                                    </div>
+                                    <p class="upload-area-text">Chọn <span>hình ảnh</span>.</p>
+                                    <div class="upload-info">
+                                        <p>
+                                            <span class="upload-info-value">0</span> tệp đã chọn.
+                                        </p>
+                                    </div>
+                                </div>
+                                <input style="width:1px !important" type="file" class="visually-hidden" id="upload-input" multiple accept="image/png, image/jpeg">
+                                <div class="upload-img">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="max-width: 300px; max-height:250px; margin-left: 40px;">
-                        <img alt="" style="object-fit: cover; width: auto; height: 150px;" id="image1">
-                    </div>
-                </div>
-                <div class="row">
-                    <div id="imageContainer"></div>
                 </div>
                 <div class="form-group" style="display:flex">
                     <div class="group-left">
@@ -141,53 +303,54 @@
         readURL(this, '#image1');
     });
 
-        //$("#Fileimage").change(function () {
-        //    // Lấy danh sách tất cả các files
-        //    var files = this.files;
+                //$("#Fileimage").change(function () {
+                //    // Lấy danh sách tất cả các files
+                //    var files = this.files;
 
-        //    // Lặp qua từng file
-        //    for (var i = 0; i < files.length; i++) {
-        //        // Kiểm tra nếu file là hình ảnh
-        //        if (files[i].type.startsWith("image/")) {
-        //            // Tạo đối tượng FileReader để đọc nội dung của file
-        //            var reader = new FileReader();
+                //    // Lặp qua từng file
+                //    for (var i = 0; i < files.length; i++) {
+                //        // Kiểm tra nếu file là hình ảnh
+                //        if (files[i].type.startsWith("image/")) {
+                //            // Tạo đối tượng FileReader để đọc nội dung của file
+                //            var reader = new FileReader();
 
-        //            // Xử lý sự kiện "load" của đối tượng FileReader
-        //            reader.addEventListener("load", function () {
-        //                // Tạo một ArrayBuffer từ chuỗi dữ liệu base64
-        //                var buffer = dataURItoBuffer(reader.result);
+                //            // Xử lý sự kiện "load" của đối tượng FileReader
+                //            reader.addEventListener("load", function () {
+                //                // Tạo một ArrayBuffer từ chuỗi dữ liệu base64
+                //                var buffer = dataURItoBuffer(reader.result);
 
-        //                // Tạo blob từ ArrayBuffer
-        //                var blob = new Blob([buffer], { type: files[i].type });
+                //                // Tạo blob từ ArrayBuffer
+                //                var blob = new Blob([buffer], { type: files[i].type });
 
-        //                // Tạo URL cho blob
-        //                var url = URL.createObjectURL(blob);
+                //                // Tạo URL cho blob
+                //                var url = URL.createObjectURL(blob);
 
-        //                // Tạo thẻ hình mới và gán đường dẫn
-        //                var img = $("<img>").attr("src", url);
+                //                // Tạo thẻ hình mới và gán đường dẫn
+                //                var img = $("<img>").attr("src", url);
 
-        //                // Giới hạn chiều cao của hình ảnh
-        //                img.css("max-height", "100px");
+                //                // Giới hạn chiều cao của hình ảnh
+                //                img.css("max-height", "100px");
 
-        //                // Thêm hình ảnh vào container
-        //                $("#imageContainer").append(img);
-        //            });
+                //                // Thêm hình ảnh vào container
+                //                $("#imageContainer").append(img);
+                //            });
 
-        //            // Đọc nội dung của file dưới dạng ArrayBuffer
-        //            reader.readAsArrayBuffer(files[i]);
-        //        }
-        //    }
-        //});
+                //            // Đọc nội dung của file dưới dạng ArrayBuffer
+                //            reader.readAsArrayBuffer(files[i]);
+                //        }
+                //    }
+                //});
 
-        //// Chuyển đổi chuỗi dữ liệu base64 sang ArrayBuffer
-        //function dataURItoBuffer(dataURI) {
-        //    var binaryString = window.atob(dataURI.split(',')[1]);
-        //    var len = binaryString.length;
-        //    var bytes = new Uint8Array(len);
-        //    for (var i = 0; i < len; i++) {
-        //        bytes[i] = binaryString.charCodeAt(i);
-        //    }
-        //    return bytes.buffer;
-        //}
+                //// Chuyển đổi chuỗi dữ liệu base64 sang ArrayBuffer
+                //function dataURItoBuffer(dataURI) {
+                //    var binaryString = window.atob(dataURI.split(',')[1]);
+                //    var len = binaryString.length;
+                //    var bytes = new Uint8Array(len);
+                //    for (var i = 0; i < len; i++) {
+                //        bytes[i] = binaryString.charCodeAt(i);
+                //    }
+                //    return bytes.buffer;
+                //}
 
 </script>
+<script src="~/admin/customjs/hanghoa.js"></script>

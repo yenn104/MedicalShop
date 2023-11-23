@@ -158,6 +158,13 @@ namespace MedicalShop.Services
             return SoPhieu;
         }
 
+        public static HhGia getGia(int? id)
+        {
+            HhGia giahh = _context.HhGia.FirstOrDefault(x => x.Idhh == id);
+            return giahh != null ? giahh : new HhGia();
+            
+        }
+
 
     }
 }

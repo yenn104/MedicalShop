@@ -51,9 +51,9 @@
 
     <link href="~/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
 
+    <link href="~/admin/css/demo.min.css" rel="stylesheet" />
 
     <script src="~/admin/js/datatable-custom.js"></script>
-
 
 
 
@@ -78,7 +78,6 @@
             .dashboard {
                 height: calc(100vh - 4.375rem);
                 overflow-y: auto;
-                overflow-x: hidden;
                 border-right: 3px solid #36b9cc2b;
             }
         }
@@ -487,7 +486,7 @@
                 </div>
 
                 @* FOOTER IN HERE *@
-                <div class="footer bg-white d-flex flex-column" style="position: fixed; bottom: 0;  z-index: 9999;">
+                <div class="footer bg-white d-flex flex-column h-405" style="position: fixed; bottom: 0;  z-index: 9999;">
                     @*width: 100%;*@
                     <footer class="sticky-footer">
                         <div class="container my-auto">
@@ -589,15 +588,16 @@
     <script src="~/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="~/admin/js/sb-admin-2.min.js"></script>
-
-
+    <script src="~/admin/chartjs/apexcharts.custom.js"></script>
+    <script src="~/admin/chartjs/apexcharts.min.js"></script>
+    <script src="~/admin/js/jquery.inputmask.js"></script>
     <!-- Page level plugins -->
-    <script src="~/admin/vendor/chart.js/Chart.min.js"></script>
+    @*<script src="~/admin/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script src="~/admin/js/demo/chart-area-demo.js"></script>
     <script src="~/admin/js/demo/chart-pie-demo.js"></script>
-    <script src="~/admin/js/demo/chart-bar-demo.js"></script>
+    <script src="~/admin/js/demo/chart-bar-demo.js"></script>*@
     @* Thêm sau *@
     <script src="~/admin/js/jquery.elevatezoom.min.js"></script>
     <script src="~/common.js" defer asp-append-version="true"></script>
@@ -753,7 +753,20 @@
 
 
         })
-
+        $('#sidebarToggle').on('click', function () {
+            var hienthi = $('#accordionSidebar').hasClass('toggled');
+            if (hienthi) {
+                $('.dashboard').css('overflow-y', 'visible');
+            } else {
+                $('.dashboard').css('overflow-y', 'auto');
+            }
+        });
+        $('#sidebarToggleTop').on('click', function () {
+            var hienthi = $('#accordionSidebar').hasClass('toggled');
+            if (!hienthi) {
+                $('.dashboard').css('overflow-y', 'visible');
+            } 
+        });
 
     </script>
 

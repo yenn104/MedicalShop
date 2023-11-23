@@ -1,7 +1,7 @@
 ﻿var _myChart = null;
 $(document).ready(function () {
   baoCaoLoiNhuan();
-  formatNumberInput();
+  //formatNumberInput();
 
 });
 function baoCaoLoiNhuan() {
@@ -85,7 +85,7 @@ function buildBarChart(doanhThuData, giaVonData) {
         ticks: {
           callback: function (value, index, values) {
             // Định dạng giá trị thành kiểu tiền
-            return '$' + value.toLocaleString();
+            return value.toLocaleString();
           }
         }
       },
@@ -96,7 +96,7 @@ function buildBarChart(doanhThuData, giaVonData) {
         align: 'end',
         formatter: function (value, context) {
           // Định dạng giá trị thành kiểu tiền
-          return '$' + value.toLocaleString();
+          return value.toLocaleString();
         }
       }
     }
@@ -115,13 +115,12 @@ function addRowTableBCLN(data, i) {
   var stt = i + 1;
   var newRow = $(`<tr>
                 <td>${stt}</td>
-                <td>${data.ngay}</td>
-                <td><input type="text" readonly class="form-control formatted-number" name="doanhThu" value="${data.doanhThu}" /></td>
-                <td><input type="text" readonly class="form-control formatted-number" name="giaVon" value="${data.giaVon}" /></td>
-                <td><input type="text" readonly class="form-control formatted-number" name="loiNhuan" value="${data.doanhThu - data.giaVon}" /></td>
+                <td>${formatDate(data.ngay)}</td>
+                <td><input type="text" readonly class="form-control formatted-number" name="doanhThu" value="${toDecimal(data.doanhThu)}" /></td>
+                <td><input type="text" readonly class="form-control formatted-number" name="giaVon" value="${toDecimal(data.giaVon)}" /></td>
+                <td><input type="text" readonly class="form-control formatted-number" name="loiNhuan" value="${toDecimal(data.doanhThu - data.giaVon)}" /></td>
     </tr>`)
   $('#tbodyBaoCaoLoiNhuan').append(newRow);
-  formatNumberInput();
 }
 function TinhTongDoanhThu() {
   var tongTien = 0;
@@ -132,7 +131,7 @@ function TinhTongDoanhThu() {
     }
 
   });
-  $('#doanhThu').val(formatTotal(tongTien));
+  $('#doanhThu').val(toDecimal(tongTien));
 }
 function TinhTongGiaVon() {
   var tongTien = 0;
@@ -143,7 +142,7 @@ function TinhTongGiaVon() {
     }
 
   });
-  $('#giaVon').val(formatTotal(tongTien));
+  $('#giaVon').val(toDecimal(tongTien));
 }
 function TinhTongLoiNhuan() {
   var tongTien = 0;
@@ -154,5 +153,5 @@ function TinhTongLoiNhuan() {
     }
 
   });
-  $('#loiNhuan').val(formatTotal(tongTien));
+  $('#loiNhuan').val(toDecimal(tongTien));
 }

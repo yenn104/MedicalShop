@@ -34,9 +34,9 @@
 </style>
 
 
-<div class="card mb-0" style=" margin-bottom: 5rem !important ">
-    <div class="" style="overflow-x:auto">
-        <div class="mc-13" style=" display: flex; align-items: flex-start; justify-content: space-between;">
+<div class="card mb-0" style=" margin-bottom: 4rem !important ">
+    <div class="h-80" style="overflow-x:auto; margin-bottom: 1rem;">
+        <div class="mc-13 d-flex align-items-start justify-content-between">
             <div class="switch">
                 <div class="switch__1">
                     <input id="switch-1" type="checkbox">
@@ -52,10 +52,11 @@
             </div>
 
         </div>
-        <div class="mc-23" style="display: flex; flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-between; ">
-            <div id="table1" class=" table-responsive-lg">
-                <table class="table table-striped" id="example">
-                    <thead>
+        @*flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-between;*@
+        <div class="row col-md-12 d-flex align-items-start" style="">
+            <div id="table1" class="col-md-7 table-responsive" style="height: 25rem">
+                <table class="table table-striped" id="table2" >
+                    <thead style="position: sticky; top: 0; ">
                         <tr style="background: #e9ecef;">
                             @*<th style="width:15px">STT</th>*@
                             <th class="text-center">Danh sách hàng hóa</th>
@@ -70,13 +71,13 @@
                                 @*<td id="stt"></td>*@
                                 <td class="text-left" style="width:20rem;">
                                     <span>@hh.TenHh</span>
-                                    <input type="hidden" value="@hh.Id" id="idvt" />
+                                    <input type="hidden" value="@hh.Id" class="idvt" />
                                 </td>
                                 <td style="width:6rem;">
-                                    <input type="text" class="form-control tile text-right" value="@getGia(@hh.Id).TiLe">
+                                    <input type="text" class="form-control tile text-right formatted-number-float" value="@getGia(@hh.Id).TiLe">
                                 </td>
                                 <td style="width:6rem;">
-                                    <input style=" min-width: max-content;" type="text" class="form-control gia text-right" value="@getGia(@hh.Id).Price" />
+                                    <input style=" min-width: max-content;" type="text" class="form-control gia text-right formatted-number-float" value="@getGia(@hh.Id).Price" />
                                 </td>
                             </tr>
                         }
@@ -84,9 +85,9 @@
                 </table>
             </div>
             @*<input type="hidden" id="idvt" />*@
-            <div class="border-dark table-responsive-lg" style="overflow-x: auto">
-                <table class="table table-bordered  tablee mb-0  text-center bg-light" style="white-space: nowrap; " id="example2">
-                    <thead>
+            <div class="col-md-5 border-dark table-responsive" style="height: 25rem">
+                <table class="table table-striped d-none" style="white-space: nowrap;" id="table3">
+                    <thead style="position: sticky; top: 0; ">
                         <tr style="background: #e9ecef;">
                             @*<th class="text-center" style="vertical-align : middle;text-align:center;">STT</th>*@
                             <th class="text-center">Ngày nhập</th>
@@ -111,251 +112,4 @@
 
 <script src="~/admin/js/switch.js"></script>
 
-<script>
-
-    $(document).ready(function () {
-
-        $("#btn-save").click(function () {
-            updatePrices();
-        });
-
-        //ok
-        $(".gia, .tile").each(function () {
-            var gia = $(this).val();
-
-            if (gia != 0) {
-                $(this).val(toDecimal(getValue(gia)));
-            }
-        });
-
-
-        $('#switch-1').on('change', function () {
-            if ($(this).is(':checked')) {
-                loadTableNV(1);
-            } else {
-                loadTableNV(0);
-            }
-        });
-
-
-    });
-
-
-    function loadTableNV(checked) {
-        $.ajax({
-            type: "POST",
-            url: "/loadGiaLT",
-            data: "check=" + checked,
-            success: function (result) {
-                // console.log(result);
-                $('#table1').replaceWith(result);
-            },
-            error: function () {
-                alert("Failed");
-            }
-        });
-    }
-
-
-
-    //ok
-    function getValue(str) {
-        return Number(str.replace(/[^0-9.-]+/g, ""));
-    }
-
-
-    //ok
-    function updatePrices() {
-        var listOfPriceModel = new Array();
-        $("#example").find("tr:gt(1)").each(function () {
-            var idhh = $(this).find("td:eq(0) input[type='hidden']").val();
-            //var idvt = $(this).find("td:eq(1) input[type='hidden']").val();
-            var tile = getValue($(this).find("td:eq(1) input[type='text'] ").val());
-            var gia = getValue($(this).find("td:eq(2) input[type='text'] ").val());
-
-            //alert(gia);
-            var PriceModel = {};
-            PriceModel.Idhh = Number(idhh);
-            PriceModel.TiLe = Number(tile);
-            PriceModel.Price = Number(gia);
-
-
-            listOfPriceModel.push(PriceModel);
-        });
-
-        $.ajax({
-            url: '/updatePrices',
-            type: 'POST',
-            dataType: 'JSON',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(listOfPriceModel),
-            success: function (result) {
-                alert(result);
-            },
-            error: function () {
-                alert("Loix");
-            }
-        });
-    }
-
-
-
-    //ok
-    var lastClickedTr;
-
-    $("input").click(function (event) {
-        event.stopPropagation();
-        var tr = $(this).closest("tr");
-        if (lastClickedTr) {
-            lastClickedTr.removeClass("color-clicked");
-        }
-        tr.addClass("color-clicked");
-        lastClickedTr = tr;
-    });
-
-    $("#giaban tr").click(function () {
-        if (lastClickedTr && lastClickedTr != $(this)) {
-            lastClickedTr.removeClass("color-clicked");
-        }
-        $(this).addClass("color-clicked");
-        lastClickedTr = $(this);
-    });
-
-
-
-    //ok
-    function loadDSNhap(id) {
-        $('#giaban').val(id);
-        $.ajax({
-            type: "post",
-            url: "/loadDSNhap", // loadTableCN
-            data: "idhh=" + id,
-            success: function (result) {
-                $('#gianhap').replaceWith(result);
-                updateDouble();
-            },
-            error: function () {
-                alert("Failhuhu");
-            }
-        });
-    }
-
-    //ok
-    function updateDouble() {
-        $("#example2").find("tr:gt(0)").each(function () {
-            var gia = $(this).find("td:eq(2)").text();
-            /* $(this).text(toDecimal(gia));*/
-            $(this).find("td:eq(2)").text(toDecimal(gia));
-        });
-
-    }
-
-
-
-    //$("#example").on("change", ".gia, .tile", function () {
-    //  var gia = $(this).val();
-    //  if (gia != 0) {
-    //    /* $(this).text(toDecimal(gia));*/
-    //    $(this).val(toDecimal(gia));
-    //  }
-    //});
-
-
-
-
-
-    //$('.tile').on('blur', setval);
-
-    //function setval() {
-
-    //}
-
-    //ok
-
-    $(".form-control.gia").on("keydown keyup", function (e) {
-        var inputValue = $(this).val();
-        inputValue = inputValue.replace(/[^0-9\.]/g, '');
-        $(this).val(inputValue);
-    });
-
-
-    //ok
-
-    $(".form-control.tile").on("keydown keyup", function (e) {
-        var inputValue = $(this).val();
-        // Loại bỏ các ký tự không phải số hoặc nằm ngoài khoảng 0-9
-        inputValue = inputValue.replace(/[^0-9\.]/g, '');
-        // Giới hạn giá trị nhập vào trong khoảng từ 0-100
-        if (parseInt(inputValue) > 100) {
-            inputValue = 100;
-        } else if (parseInt(inputValue) < 0) {
-            inputValue = 0;
-        }
-        // Cập nhật giá trị của input
-        $(this).val(inputValue);
-    });
-
-
-
-
-    $("#example").on("change", ".gia, .tile", function () {
-        var val1 = $(this).val();
-        if ($(this).hasClass("gia") && val1 != 0) {
-            $(this).val(toDecimal(val1));
-        } else if ($(this).hasClass("tile") && val1 != 0) {
-            $(this).val(toDecimal(val1));
-        }
-    });
-
-
-
-
-    //$("#example").on("load", ".gia", function () {
-    //  var idvt = $(this).parents('tr').find("td:eq(0) input[type='hidden']").val();
-    //  var tenvt = $(this).parents('tr').find("td:eq(0) input[type='text']").val();
-
-    //});
-
-
-
-
-    $('.form-control').on('change', select1in2);
-
-    function select1in2() {
-        var val1 = $(this).val();
-        if (val1 >= 0) {
-            var parentTr = $(this).closest('tr');
-            parentTr.find('.form-control').not(this).val('');
-        }
-
-    }
-
-
-
-
-    function toDecimal(str) {
-        return parseFloat(str).toLocaleString('en-US', {
-            style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
-        });
-    }
-
-
-      //$('.giadouble').on('blur', format);
-
-      //function format() {
-      //  if (checkNumber(this.value)) {
-      //    const value = this.value.replace(/,/g, '');
-      //    this.value = parseFloat(value).toLocaleString('en-US', {
-      //      style: 'decimal',
-      //      maximumFractionDigits: 2,
-      //      minimumFractionDigits: 2
-      //    })
-      //  }
-      //}
-
-
-
-
-</script>
+<script src="~/admin/customjs/hanghoagia.js"></script>
