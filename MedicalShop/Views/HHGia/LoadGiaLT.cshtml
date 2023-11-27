@@ -3,9 +3,13 @@
 @{
     MedicalShopContext context = new MedicalShopContext();
 
-    HhGia getGia(int? id)
+    int idCN = ViewBag.IdChiNhanh;
+
+   // int idCN = int.Parse(User.Claims.ElementAt(4).Value);
+
+    HhGia getGia(int? id, int? IdChiNhanh)
     {
-        HhGia giahh = context.HhGia.FirstOrDefault(x => x.Idhh == id);
+        HhGia giahh = context.HhGia.FirstOrDefault(x => x.Idhh == id && x.Idcn == IdChiNhanh);
         if (giahh != null) return giahh;
         else return new HhGia();
     }
@@ -23,10 +27,10 @@
         <input type="hidden" value="@hh.Id" class="idvt" />
       </td>
       <td style="width:6rem;">
-         <input type="text" class="form-control tile text-right formatted-number-float" value="@getGia(@hh.Id).TiLe">
+         <input type="text" class="form-control tile text-right formatted-number-float" value="@getGia(@hh.Id, idCN).TiLe">
       </td>
       <td style="width:6rem;">
-        <input style=" min-width: max-content;" type="text" class="form-control gia text-right formatted-number-float" value="@getGia(@hh.Id).Price" />
+        <input style=" min-width: max-content;" type="text" class="form-control gia text-right formatted-number-float" value="@getGia(@hh.Id, idCN).Price" />
       </td>
     </tr>
   }

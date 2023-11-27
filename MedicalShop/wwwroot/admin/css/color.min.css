@@ -549,3 +549,64 @@ table {
 .h-605 {
   height: 6.5% !important
 }
+
+
+
+.ps-405 {
+  padding-left: 2rem !important
+}
+
+.ps-6 {
+  padding-left: 3.25rem !important
+}
+
+.ps-7 {
+  padding-left: 3.5rem !important
+}
+
+.ps-8 {
+  padding-left: 4rem !important
+}
+
+.ps-9 {
+  padding-left: 4.25rem !important
+}
+
+.ps-10 {
+  padding-left: 4.5rem !important
+}
+
+
+.hide-empty-table .dataTables_empty {
+  display: none;
+}
+
+
+
+.selectize-input > div {
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.selectize-input.has-items {
+  display: flex !important;
+}
+
+
+/*  table.dataTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+  }*/
+
+
+.dataTables_filter {
+  display: none;
+}
+
+input::placeholder {
+  text-align: start;
+}

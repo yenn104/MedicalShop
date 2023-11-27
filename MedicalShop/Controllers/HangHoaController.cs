@@ -203,9 +203,9 @@ namespace MedicalShop.Controllers
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             ViewBag.ListHH = context.HangHoa
-              .Where(x => (active == false ? true : x.Active == true) && (nhomHH == 0 ? true : x.Idnhh == nhomHH) && (type == true ? true : x.Idcn == idcn))
+              .Where(x => x.Active == active && (nhomHH == 0 ? true : x.Idnhh == nhomHH) && (type == true ? true : x.Idcn == idcn))
               .OrderBy(x => x.TenHh)
               .ToList();
 

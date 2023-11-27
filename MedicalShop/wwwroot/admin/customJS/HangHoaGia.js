@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿//var _idCN = null;
+var _isCheck = 0;
+$(document).ready(function () {
 
   $("#btn-save").click(function () {
     updatePrices();
@@ -28,10 +30,11 @@
 
   $('#switch-1').on('change', function () {
     if ($(this).is(':checked')) {
-      loadTableLT(1);
+      _isCheck = 1;
     } else {
-      loadTableLT(0);
+      _isCheck = 0;
     }
+    loadTableLT();
   });
 
   var lastClickedTr;
@@ -55,7 +58,51 @@
   });
   //formatFloat();
   //formatFloatInput();
+
+
+  $("#btn-save-ctg").click(function () {
+    var id = $('#idCTG').val();
+    var isMax = $('#Max').prop('checked');
+    var isMedium = $('#Medium').prop('checked');
+    var isMin = $('#Min').prop('checked');
+    var model = {
+      Id : Number(id),
+      Max : isMax,
+      Medium : isMedium,
+      Min: isMin,
+      IdCN: _idCN
+    }
+    console.log(model);
+
+    $.ajax({
+      type: "POST",
+      url: "/updateCachTinhGia",
+      dataType: 'JSON',
+      contentType: 'application/json',
+      data: JSON.stringify(model),
+      success: function (result) {
+        showToast(result.message, result.statusCode);
+      },
+      error: function () {
+        console.log(error);
+      }
+    });
+
+
+
+  });
+  
+  //_idCN = $('#cbChiNhanhHHLT')[0].selectize.getValue();
+
+
+
 });
+
+$('#cbChiNhanhHHLT').on('change', function () {
+  _idCN = $(this).val();
+  loadTableLT();
+  console.log(_idCN);
+})
 
 
 function formatNumberFloat() {
@@ -70,11 +117,11 @@ function formatNumberFloat() {
 
 
 
-function loadTableLT(checked) {
+function loadTableLT() {
   $.ajax({
     type: "POST",
     url: "/loadGiaLT",
-    data: "check=" + checked,
+    data: "check=" + _isCheck + "&idCN=" + _idCN,
     success: function (result) {
       // console.log(result);
       $('#giaban').replaceWith(result);
@@ -97,17 +144,19 @@ function updatePrices() {
     //var idvt = $(this).find("td:eq(1) input[type='hidden']").val();
     var tile = getValue($(this).find("td:eq(1) input[type='text'] ").val());
     var gia = getValue($(this).find("td:eq(2) input[type='text'] ").val());
-
+    console.log(tile, gia);
+    if (tile == 0 && gia == 0) {
+      tile = null;
+      gia = null;
+    }
     //alert(gia);
     var PriceModel = {};
     PriceModel.Idhh = Number(idhh);
-    PriceModel.TiLe = Number(tile);
-    PriceModel.Price = Number(gia);
-
-
+    PriceModel.TiLe = tile;
+    PriceModel.Price = gia;
+    PriceModel.Idcn = Number(_idCN);
     listOfPriceModel.push(PriceModel);
   });
-
   console.log(listOfPriceModel);
 
   $.ajax({
@@ -117,10 +166,8 @@ function updatePrices() {
     contentType: 'application/json',
     data: JSON.stringify(listOfPriceModel),
     success: function (result) {
-      console.log(result);
       showToast(result.message, result.statusCode);
       if (result.statusCode == 200) {
-        console.log("123344");
       }
     },
     error: function () {

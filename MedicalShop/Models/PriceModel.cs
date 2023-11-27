@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Models
 {
-  public class PriceModel
-  {
-    public int? Idhh { get; set; }
-    public double? TiLe { get; set; }
-    public double? Price { get; set; }
-  }
+    public class PriceModel
+    {
+        public int? Idhh { get; set; }
+        public double? TiLe { get; set; }
+        public double? Price { get; set; }
+        public int? Idcn { get; set; }
+    }
 }

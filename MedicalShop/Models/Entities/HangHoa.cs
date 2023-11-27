@@ -16,6 +16,7 @@ namespace MedicalShop.Models.Entities
             HhDvt = new HashSet<HhDvt>();
             HhGia = new HashSet<HhGia>();
             HhImage = new HashSet<HhImage>();
+            TonKho = new HashSet<TonKho>();
         }
 
         public int Id { get; set; }
@@ -44,5 +45,6 @@ namespace MedicalShop.Models.Entities
         public virtual ICollection<HhDvt> HhDvt { get; set; }
         public virtual ICollection<HhGia> HhGia { get; set; }
         public virtual ICollection<HhImage> HhImage { get; set; }
+        public virtual ICollection<TonKho> TonKho { get; set; }
     }
 }

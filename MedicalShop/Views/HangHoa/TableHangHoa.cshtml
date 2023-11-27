@@ -36,8 +36,8 @@
 </style>
 
 
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-    <div style="margin-bottom: 20px">
+<div class="d-flex justify-content-between" style="flex-wrap: wrap;">
+    <div class="col-4" style="margin-bottom: 20px">
         @if (nhap == true)
         {
             <a href="/HangHoa/ViewCreate" class="btn btn-secondary"><span>Thêm mới</span></a>
@@ -47,17 +47,16 @@
             <button class="btn btn-secondary disabled"><span>Thêm mới</span></button>
         }
     </div>
-    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-        <div style="display: flex">
-            <div class="dropdown" style="margin-right: 10px; width: -webkit-fill-available; max-width: fit-content;">
+    <div class="col-7" style="margin-bottom: 20px;">
+        <div class="d-flex justify-content-end">
+            <div class="dropdown col-3 ms-2 me-2" >
                 <select id="active" onchange="changeHH()" class="custom-select">
                     <option value="true" selected>Hiện tại</option>
-                    <option value="false">Tất cả</option>
+                    <option value="false">Ngừng hoạt động</option>
                 </select>
             </div>
-            <div class="dropdown">
-                <select id="nhomHH" onchange="changeHH()" class="custom-select" aria-label="Default select example">
-                    <option selected disabled hidden>Nhóm hàng hoá</option>
+            <div class="dropdown col-9">
+                <select id="nhomHH" onchange="changeHH()" class="form-select3" aria-label="Nhóm hàng hoá">
                     <option value="0">Tất cả</option>
                     @foreach (NhomHangHoa n in getListNHH())
                     {
@@ -150,12 +149,13 @@
 
     function changeHH() {
         var active = $('#active').val();
-        var nhomHH = $('#nhomHH').val();
+        var nhomHH = $('#nhomHH')[0].selectize.getValue();
         $.ajax({
             type: "post",
             url: "/loadTableHH",
             data: "active=" + active + "&nhomHH=" + nhomHH,
             success: function (result) {
+              console.log("122233");
                 $('#tableHH').replaceWith(result);
             },
             error: function () {

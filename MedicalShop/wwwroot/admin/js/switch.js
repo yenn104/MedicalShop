@@ -41,5 +41,5 @@ dragElement = (target, btn) => {
   };
 };
 
-dragElement(container, btn);
+//dragElement(container, btn);
 

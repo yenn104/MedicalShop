@@ -11,10 +11,14 @@ namespace MedicalShop.Models.Entities
     {
         public int Id { get; set; }
         public int? Idctpn { get; set; }
+        public int? Idhh { get; set; }
         public double? SoLuong { get; set; }
+        public double? GiaNhap { get; set; }
+        public double? GiaVon { get; set; }
         public DateTime? NgayNhap { get; set; }
         public int? Idcn { get; set; }
 
         public virtual ChiTietPhieuNhap IdctpnNavigation { get; set; }
+        public virtual HangHoa IdhhNavigation { get; set; }
     }
 }

@@ -145,7 +145,7 @@ namespace MedicalShop.Controllers
                 new Claim(ClaimTypes.Name, account.UserName),
                 new Claim(ClaimTypes.Role, "NV"),
                 new Claim(nv.Id.ToString(), nv.TenNv),
-                new Claim("VaiTro", vaitro.Idvt.ToString()),
+               // new Claim("VaiTro", vaitro.Idvt.ToString()),
                 // new Claim("VaiTro", vaitro.Idvt.ToString()),
                 //new Claim(acc.Staff.ToString(), "Nhân viên"),
                 // new Claim("ChiNhanh", vaitro.Idcn.ToString()),

@@ -65,6 +65,7 @@ namespace MedicalShop.Controllers
                     ct.Nsx = DateTime.ParseExact(t.Nsx, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                     ct.Hsd = DateTime.ParseExact(t.Hsd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                     ct.SoLo = t.SoLo;
+                    ct.GiaVon = t.DonGia * (1 - t.Cktm / 100) * (1 + t.Thue / 100);
                     ct.Active = true;
                     ct.CreatedBy = idUser;
                     ct.CreatedDate = DateTime.Now;
@@ -76,7 +77,12 @@ namespace MedicalShop.Controllers
 
                     TonKho sl = new TonKho();
                     sl.Idctpn = ct.Id;
+                    sl.Idhh = ct.Idhh;
                     sl.SoLuong = Math.Round((double)ct.Quantity, 2);
+                    sl.GiaNhap = t.DonGia;
+                    //Giá vốn
+                    sl.GiaVon = t.DonGia * (1 - t.Cktm/100) * (1+ t.Thue/100);
+                        //xkct.DonGiaXuat = hangTon.DonGiaTon * (1 - hangTon.ChiecKhau / 100) * (1 + hangTon.Vat / 100);
                     sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
                     sl.NgayNhap = phieuNhap.CreatedDate;
                     context.TonKho.Add(sl);
@@ -88,7 +94,7 @@ namespace MedicalShop.Controllers
                 context.SaveChanges();
                 tran.Commit();
 
-                var soPhieuMoi = CommonServices.getSoPhieu(idCN, context);
+                var soPhieuMoi = CommonServices.getSoPhieuNhap(idCN, context);
 
                 var response = new
                 {

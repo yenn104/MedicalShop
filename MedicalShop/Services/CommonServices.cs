@@ -124,7 +124,7 @@ namespace MedicalShop.Services
         }
 
 
-        public static string getSoPhieu(int? idChiNhanh, MedicalShopContext context)
+        public static string getSoPhieuNhap(int? idChiNhanh, MedicalShopContext context)
         {
             QuyDinhMa qd = context.QuyDinhMa.Find(1);
             //ID chi nhánh
@@ -163,6 +163,41 @@ namespace MedicalShop.Services
             HhGia giahh = _context.HhGia.FirstOrDefault(x => x.Idhh == id);
             return giahh != null ? giahh : new HhGia();
             
+        }
+
+        public static string getSoPhieuXuat(int? idChiNhanh, MedicalShopContext context)
+        {
+
+            QuyDinhMa qd = context.QuyDinhMa.Find(1);
+            //ID chi nhánh
+            //string cn = User.Claims.ElementAt(4).Value;
+
+            DateTime d = DateTime.Now;
+            string ngayThangNam = d.ToString("yyMMdd");
+            string SoPhieu = idChiNhanh + "-" + qd.TiepDauNgu + ngayThangNam;
+            var list = context.SoThuTu.FromSqlRaw("select * from SoThuTu where '" + DateTime.Now.ToString("yyyy-MM-dd") + "' = Convert(date,Date) and Type = 'XuatKho'").FirstOrDefault();
+            int stt;
+            if (list == null)
+            {
+                SoThuTu sttt = new SoThuTu();
+                sttt.Date = DateTime.ParseExact(DateTime.Now.ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                sttt.Stt = 0;
+                sttt.Type = "XuatKho";
+                context.SoThuTu.Add(sttt);
+                context.SaveChanges();
+                stt = 1;
+            }
+            else
+            {
+                stt = (Int32)list.Stt + 1;
+            }
+            SoPhieu += stt;
+            while (true)
+            {
+                if (qd.DoDai == SoPhieu.Length) break;
+                SoPhieu = SoPhieu.Insert(SoPhieu.Length - stt.ToString().Length, "0");
+            }
+            return SoPhieu;
         }
 
 

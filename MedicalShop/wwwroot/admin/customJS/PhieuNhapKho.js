@@ -1,6 +1,6 @@
 ﻿//ok
 document.addEventListener("DOMContentLoaded", function () {
-  $('#ChietKhau').on('focus', function (event) {
+  $('input').on('focus', function (event) {
     this.select();
   });
   //configDateDefault();
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var HanDung = $(this).parents('tr').find("td:eq(9)").html();
     var ngaySX = $(this).parents('tr').find("td:eq(8)").html();
     var ThueXuat = Number($(this).parents('tr').find("td:eq(7)").html());
-    console.log(ThueXuat);
 
     //$('#selectHH').val(idHH);
     ($('#selectHH')[0].selectize).setValue(idHH);
@@ -64,6 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
   });
 
+formatFloat();
+      formatFloatInput();
 });
 
 
@@ -173,13 +174,14 @@ function addChiTietPhieuTam() {
   //thêm: giá tiền notnull
 
   else {
-    var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
+    var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input class="IDCT" type="hidden" value="' + idHH + '"/>' + tenHH + '</td><td class="text-left">'
       + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + toDecimal(SL) + '</td><td class="text-right">' + toDecimal(DonGia)
       + '</td><td class="text-right">' + toDecimal(ThanhTien) + '</td><td class="text-right">' + toDecimal(ChietKhau) + '</td><td class="text-right">' + toDecimal(ThueXuat) + '</td><td>' + ngaySX + '</td><td>'
       + HanDung + '</td><td class="last-td-column"> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
     //onclick="UpdateRow(' + index + ')"
     $('#body_ctpn').prepend(ChitietRecord);
-
+    ///////////////
+    clearFormChon();
     // updateTable2();
     index++;
   }
@@ -242,7 +244,7 @@ function editChiTietPhieuTam(index) {
   }
 
   else {
-    var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input id="IDCT" type="hidden" value="' + idHH + '"]/>' + tenHH + '</td><td class="text-left">'
+    var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input class="IDCT" type="hidden" value="' + idHH + '"/>' + tenHH + '</td><td class="text-left">'
       + dvt + '</td><td class="text-left">' + SoLo + '</td><td class="text-right">' + toDecimal(SL) + '</td><td class="text-right">' + toDecimal(DonGia)
       + '</td><td class="text-right">' + toDecimal(ThanhTien) + '</td><td class="text-right">' + toDecimal(ChietKhau) + '</td><td class="text-right">' + toDecimal(ThueXuat) + '</td><td>' + ngaySX + '</td><td>'
       + HanDung + '</td><td class="last-td-column"> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
@@ -336,7 +338,7 @@ function CreatePN() {
   PhieuNhapModel.NCC = Number(NCC);
   PhieuNhapModel.Note = Note;
   PhieuNhapModel.listOfCTPNT = listOfCTPNT;
-
+  console.log(PhieuNhapModel);
   $.ajax({
     url: '/listCTPNT',
     type: 'POST',
@@ -492,6 +494,10 @@ function refreshFormTaoPhieu() {
   $('#NgayNhap').val(moment().format('DD-MM-YYYY HH:mm'));
   $('#NgayHD').val(moment().format('DD-MM-YYYY'));
   $('#body_ctpn tr').remove();
+  $('#TienHang').val("");
+  $('#TienCK').val("");
+  $('#TienThue').val("");
+  $('#TienThanhToan').val("");
   clearFormChon();
 }
 

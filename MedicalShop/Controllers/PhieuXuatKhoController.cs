@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models;
 using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,19 +38,6 @@ namespace MedicalShop.Controllers
         {
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             MedicalShopContext context = new MedicalShopContext();
-            // double? GiaBan;
-            //KhachHang kh = context.KhachHang.Find(idKH);
-
-            //HangHoa hh = context.HangHoa.Include(x => x.IddvtcNavigation).FirstOrDefault(x => x.Id == idHH);
-
-            // var dvt = context.HhDvt.Include(x => x.IddvtNavigation).Where(x => x.Idhh == idHH).ToList();
-
-            //Lấy các đơn vị tính của Hàng hoá
-            //string options = "<option selected value = '" + hh.Iddvtc + "'>" + hh.IddvtcNavigation.TenDvt + "</option>";
-            //foreach (HhDvt d in dvt)
-            //{
-            //  options += "<option value = '" + d.Iddvt + "'>" + d.IddvtNavigation.TenDvt + "</option>";
-            //}
 
             HangHoa hh = context.HangHoa.FirstOrDefault(x => x.Id == idHH);
 
@@ -58,29 +46,6 @@ namespace MedicalShop.Controllers
             string message = "";
             Dvt dvt = context.Dvt.Find(hh.Iddvtc);
             HhGia gia = context.HhGia.FirstOrDefault(y => y.Idhh == idHH);
-
-            //var giaa = context.TonKho
-            //                  .Include(x => x.IdctpnNavigation)
-            //                  .Include(x => x.IdctpnNavigation.IdhhNavigation)
-            //                  .Join(
-            //                      context.HhGia,
-            //                      tk => tk.IdctpnNavigation.IdhhNavigation.Id,
-            //                      hhgia => hhgia.Idhh,
-            //                      (tk, hhgia) => new
-            //                      {
-            //                        TonKho = tk,
-            //                        HhGia = hhgia
-            //                      })
-            //                  .Where(x => x.HhGia.Price > (x.TonKho.IdctpnNavigation.Price*1.05) && x.TonKho.IdctpnNavigation.IdhhNavigation.Id == idHH)
-            //                  .Select(x => x.TonKho.IdctpnNavigation.IdhhNavigation)
-            //                  /*.ToList()*/;
-
-
-
-
-
-
-
 
             return Json(new
             {
@@ -105,7 +70,7 @@ namespace MedicalShop.Controllers
 
             //List<TonKho> tkk = context.TonKho.Where(x => x.Id == idHH).OrderBy(x => x.NgayNhap).ToList();
             List<TonKho> tkk = context.TonKho.Include(x => x.IdctpnNavigation).Where(x => x.IdctpnNavigation.Idhh == idHH).OrderBy(x => x.NgayNhap).ToList();
-
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
 
             double donGia = 0;
             double thanhTien = 0;
@@ -132,16 +97,51 @@ namespace MedicalShop.Controllers
                 }
                 if (gia.TiLe != 0 && gia.TiLe != null)
                 {
-                    var giaa = context.TonKho.Include(x => x.IdctpnNavigation)
-                                              .Where(x => x.IdctpnNavigation.Idhh == idHH)
-                                              .Max(x => x.IdctpnNavigation.Price);
+                    //var giaa = context.TonKho.Include(x => x.IdctpnNavigation)
+                    //                          .Where(x => x.IdctpnNavigation.Idhh == idHH)
+                    //                          .Max(x => x.IdctpnNavigation.Price);
 
-                    var thuee = context.TonKho.Include(x => x.IdctpnNavigation)
-                                                .Where(x => x.IdctpnNavigation.Idhh == idHH)
-                                                .Max(x => x.IdctpnNavigation.Thue);
+                    //var thuee = context.TonKho.Include(x => x.IdctpnNavigation)
+                    //                            .Where(x => x.IdctpnNavigation.Idhh == idHH)
+                    //                            .Max(x => x.IdctpnNavigation.Thue);
+                    //donGia = (double)(giaa * (1 + (gia.TiLe / 100) + (thuee / 100)));
+                    //thanhTien = donGia * SL;
 
-                    donGia = (double)(giaa * (1 + (gia.TiLe / 100) + (thuee / 100)));
-                    thanhTien = donGia * SL;
+                    var cachTinhGia = context.CachTinhGia.Where(x => x.Idcn == idcn).FirstOrDefault();
+
+                    if(cachTinhGia == null)
+                    {
+                        //lấy giá max
+                        var giaVonXuat = context.TonKho
+                        .Where(x => x.Idcn == idcn && x.Idhh == idHH)
+                        .Select(x => x.GiaVon)
+                        .Max();
+
+                        donGia = (double)(giaVonXuat);
+                        thanhTien = donGia * SL;
+                    }
+                    else
+                    {
+                        var tonKho = context.TonKho
+                         .Where(x => x.Idcn == idcn && x.Idhh == idHH)
+                         .GroupBy(x => x.Idhh)
+                         .Select(group => new
+                         {
+                             Idhh = group.Key,
+                             MaxGiaVon = group.Max(x => x.GiaVon),
+                             MinGiaVon = group.Min(x => x.GiaVon),
+                             MediumGiaVon = group.Average(x => x.GiaVon)
+                         })
+                          .FirstOrDefault();
+
+                        var giaVonXuat = cachTinhGia.Max == true ? tonKho.MaxGiaVon : cachTinhGia.Min == true ? tonKho.MinGiaVon : tonKho.MediumGiaVon;
+                        
+                        donGia = (double)(giaVonXuat);
+                        thanhTien = donGia * SL;
+
+                    }
+
+
                     //if (SL < tkk[0].SoLuong)
                     //{
                     //  donGia = (double)(tkk[0].IdctpnNavigation.Price * (1 + (gia.TiLe / 100) + ((tkk[0].IdctpnNavigation.Thue) / 100)));
@@ -308,13 +308,28 @@ namespace MedicalShop.Controllers
                 context.SoThuTu.Update(stt);
                 context.SaveChanges();
                 tran.Commit();
+
+                var soPhieuMoi = CommonServices.getSoPhieuXuat(idCN, context);
+
+                var response = new
+                {
+                    statusCode = 200,
+                    message = "Thành công!",
+                    data = soPhieuMoi
+                };
+                return Json(data: response);
+
             }
             catch (Exception e)
             {
                 tran.Rollback();
-                return Json(data: e);
+                var response = new
+                {
+                    statusCode = 500,
+                    message = "Thất bại!"
+                };
+                return Json(data: response);
             }
-            return Json(data: "Cập nhật thành công!");
         }
 
 

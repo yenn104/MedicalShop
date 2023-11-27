@@ -19,6 +19,7 @@ namespace MedicalShop.Models.Entities
         {
         }
 
+        public virtual DbSet<CachTinhGia> CachTinhGia { get; set; }
         public virtual DbSet<ChiNhanh> ChiNhanh { get; set; }
         public virtual DbSet<ChiTietPhieuNhap> ChiTietPhieuNhap { get; set; }
         public virtual DbSet<ChiTietPhieuXuat> ChiTietPhieuXuat { get; set; }
@@ -67,6 +68,13 @@ namespace MedicalShop.Models.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CachTinhGia>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Idcn).HasColumnName("IDCN");
+            });
+
             modelBuilder.Entity<ChiNhanh>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -1157,6 +1165,8 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idctpn).HasColumnName("IDCTPN");
 
+                entity.Property(e => e.Idhh).HasColumnName("IDHH");
+
                 entity.Property(e => e.NgayNhap).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdctpnNavigation)
@@ -1164,6 +1174,11 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idctpn)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_TonKho_ChiTietPhieuNhap");
+
+                entity.HasOne(d => d.IdhhNavigation)
+                    .WithMany(p => p.TonKho)
+                    .HasForeignKey(d => d.Idhh)
+                    .HasConstraintName("FK_TonKho_HangHoa");
             });
 
             modelBuilder.Entity<TrangThai>(entity =>
