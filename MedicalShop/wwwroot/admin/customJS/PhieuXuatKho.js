@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
+  $('.number-input').bind("cut copy paste drag drop", function (e) {
+    e.preventDefault();
+  });
+
 
 });
 
@@ -258,7 +262,7 @@ function loadDVT() {
         //}
       },
       error: function () {
-        showToast("Thất bại!", 500);
+        console.log("Thất bại!");
       }
     });
   }
@@ -290,14 +294,13 @@ function inputSLHH() {
             $('#SLHH').addClass('is-invalid');
             $('#DonGia').val("");
             $('#ThanhTien').val("");
+            $('#ThemChiTietPX').prop("disabled", true);
           } else {
             var model = result.model;
-            // $('#SLHH').addClass('is-invalid');
             $('#DonGia').val(toDecimal(model.donGia));
             $('#ThanhTien').val(toDecimal(model.thanhTien));
-            //alert(result.thanhTien);
+            $('#ThemChiTietPX').prop("disabled", false);
           }
-          $('#ThemChiTietPX').prop("disabled", false);
         } else {
           showToast(result.message, result.statusCode);
           $('#DonGia').val("");
@@ -307,7 +310,7 @@ function inputSLHH() {
 
       },
       error: function () {
-        showToast("Thất bại!", 500);
+        console.log("Thất bại!");
       }
     });
   }

@@ -25,6 +25,19 @@
       }
     });
 
+    $('#table4').DataTable({
+      /*searching: false,*/
+      lengthChange: false,
+      pageLength: false,
+      paginate: false,
+      info: false,
+      order: [],
+      language: {
+        emptyTable: "Không có dữ liệu.",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
+      }
+    });
+
 
     $('#example').DataTable({
       lengthChange: false,
@@ -49,6 +62,8 @@
 
     var dataTableSearch2 = $('#table3_filter').find('input');
 
+    var dataTableSearch3 = $('#table4_filter').find('input');
+
     // Lấy đối tượng ô tìm kiếm của bạn
     var mySearch = $('#timkiem');
 
@@ -57,6 +72,7 @@
       dataTableSearch1.val($(this).val()).keyup();
       dataTableSearch.val($(this).val()).keyup();
       dataTableSearch2.val($(this).val()).keyup();
+      dataTableSearch3.val($(this).val()).keyup();
     });
 
 

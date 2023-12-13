@@ -115,5 +115,52 @@ namespace MedicalShop.Controllers
             double tong = (double)chiTietPhieuNhaps.Sum(ct => ct.Price);
             return tong;
         }
+        [HttpGet("ViewBieuDoGiaNhap")]
+        public IActionResult ViewBieuDoGiaNhap()
+        {
+            return View("BieuDoGiaNhap");
+        }
+        //viết đây nè nha
+        [HttpPost("BieuDoGiaNhap")]
+        public dynamic BieuDoGiaNhap(int idHH, string TuNgay, string DenNgay)
+        {
+            DateTime tuNgay = DateTime.ParseExact(TuNgay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgay = DateTime.ParseExact(DenNgay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            var data = context.ChiTietPhieuNhap
+    .Include(x => x.IdpnNavigation)
+    .Where(x => x.IdpnNavigation.ModifiedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.ModifiedDate.Value.Date <= denNgay.Date && x.Idhh == idHH)
+    .GroupBy(x => new { x.IdpnNavigation.ModifiedDate, x.IdpnNavigation.Idncc })
+    .Select(x => new
+    {
+        label = x.Key.ModifiedDate,
+        ncc = x.Key.Idncc,
+        gia = x.Min(y => y.GiaVon)
+    })
+    .ToList()
+    .GroupBy(x => x.label)
+    .Select(x => new
+    {
+        label = x.Key,
+        nccs = x.OrderBy(y => y.gia).Take(3).Select(y => new { y.ncc, y.gia })
+    })
+    .ToList();
+            var a = new
+            {
+                label = new List<DateTime>(),
+                nccs =  new List<object>(),
+            };
+            foreach (var b in data)
+            {
+                a.label.Add((DateTime)b.label);
+                a.nccs.Add(b.nccs);
+            }
+
+            return a;
+
+        }
+        public string getTenNCC(int? idNCC)
+        {
+            return context.NhaCungCap.Find(idNCC).TenNcc;
+        }
     }
 }

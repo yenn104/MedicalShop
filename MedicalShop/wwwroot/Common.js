@@ -380,3 +380,12 @@ function formatEvenNumber(number) {
   if (number == null) return "";
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+
+function isNumber(e) {
+  var charCode = (e.which) ? e.which : e.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46 /*&& charCode != 43*/)
+    return false;
+  return true;
+}

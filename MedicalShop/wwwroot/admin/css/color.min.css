@@ -123,15 +123,9 @@
   --tblr-dark-border-subtle: #929dab;
   --tblr-white-rgb: 255, 255, 255;
   --tblr-black-rgb: 0, 0, 0;
-  --tblr-font-sans-serif: -apple-system, BlinkMacSystemFont, San Francisco,
-    Segoe UI, Roboto, Helvetica Neue, sans-serif;
-  --tblr-font-monospace: Menlo, Monaco, Consolas, Liberation Mono, Courier New,
-    monospace;
-  --tblr-gradient: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0)
-  );
+  --tblr-font-sans-serif: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+  --tblr-font-monospace: Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  --tblr-gradient: linear-gradient( 180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0) );
   --tblr-body-font-family: var(--tblr-font-sans-serif);
   --tblr-body-font-size: 0.875rem;
   --tblr-body-font-weight: 400;
@@ -180,6 +174,8 @@
   --tblr-form-valid-border-color: #2fb344;
   --tblr-form-invalid-color: #d63939;
   --tblr-form-invalid-border-color: #d63939;
+  --tblr-indigo-lt-rgb: 236,239,253;
+  --tblr-blue-fg: var(--tblr-light);
 }
 
 /*@media (prefers-reduced-motion: no-preference) {
@@ -609,4 +605,50 @@ table {
 
 input::placeholder {
   text-align: start;
+}
+
+
+.bg-indigo-lt {
+  --tblr-bg-opacity: 1;
+  --tblr-text-opacity: 1;
+  /*color: rgba(var(--tblr-indigo-rgb),var(--tblr-text-opacity)) !important;*/
+  background-color: rgba(var(--tblr-indigo-lt-rgb),var(--tblr-bg-opacity)) !important;
+}
+
+/*.bg-blue-lt{
+
+}*/
+
+
+.bg-blue-lt {
+  --tblr-bg-opacity: 1;
+  --tblr-text-opacity: 1;
+  color: rgba(var(--tblr-blue-rgb),var(--tblr-text-opacity)) !important;
+  background-color: rgba(var(--tblr-blue-lt-rgb),var(--tblr-bg-opacity)) !important;
+}
+
+
+.bg-blue {
+  --tblr-bg-opacity: 1;
+  background-color: rgba(var(--tblr-blue-rgb),var(--tblr-bg-opacity)) !important;
+}
+
+.text-blue-fg {
+  color: var(--tblr-blue-fg) !important;
+}
+
+.bg-custom-fg {
+  background-color: #d1d1d1 !important;
+}
+
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+.bg-blue-ct1 {
+  background-color: #b9e7ed !important;
+}
+
+.bg-blue-ct2 {
+  background-color: #36b9cc24 !important;
 }

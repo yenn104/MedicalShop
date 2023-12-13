@@ -166,21 +166,21 @@
                             </div>
                             <label class="col-sm-1 col-lg-1 col-form-label">Số lượng</label>
                             <div class="col-md-2 mb-2 col-lg-2">
-                                <input autocomplete="off" type="text" class="form-control" data-toggle="popover" data-content="Không được để trống" oninput="inputSLHH()" id="SLHH" placeholder="Số lượng">
+                                <input autocomplete="off" type="text" class="form-control number-input formatted-number-float" data-toggle="popover" data-content="Không được để trống" onkeypress="return isNumber(event)" oninput="inputSLHH()" id="SLHH" placeholder="Số lượng">
                             </div>
                             <label class="col-sm-1 col-lg-1 col-form-label">Đơn giá</label>
                             <div class="col-md-2 mb-2 col-lg-2">
-                                <input autocomplete="off" type="text" class="form-control" readonly id="DonGia" placeholder="Đơn giá">
+                                <input autocomplete="off" type="text" class="form-control formatted-number-float" readonly id="DonGia" placeholder="Đơn giá">
                             </div>
                             <label class="col-sm-1 col-lg-1 col-form-label">Th.Tiền</label>
                             <div class="col-md-2 mb-2 col-lg-2">
-                                <input autocomplete="off" type="text" class="form-control" id="ThanhTien" readonly placeholder="Thành tiền">
+                                <input autocomplete="off" type="text" class="form-control formatted-number-float" id="ThanhTien" readonly placeholder="Thành tiền">
                             </div>
                         </div>
                         <div class="row justify-content-between">
                             <label class="col-sm-1 col-lg-1 col-form-label">%CKTM</label>
                             <div class="col-md-2 mb-2 col-lg-2">
-                                <input autocomplete="off" type="text" class="form-control" id="ChietKhau" placeholder="Chiếc khấu">
+                                <input autocomplete="off" type="text" class="form-control number-input" id="ChietKhau" placeholder="Chiết khấu" data-toggle="popover" data-content="Không được để trống" onkeypress="return isNumber(event)">
                             </div>
                             <div class="col-md-3 mb-2 col-lg-3">
                             </div>
