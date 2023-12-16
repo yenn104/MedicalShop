@@ -78,6 +78,7 @@
             .dashboard {
                 height: calc(100vh - 4.375rem);
                 overflow-y: auto;
+                overflow-x: clip;
                 border-right: 3px solid #36b9cc2b;
             }
         }
@@ -392,8 +393,8 @@
                                 {
                                     <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu">@cn.IdmenuNavigation.TenMenu</a>
                                 }
-                                <a class="collapse-item" href="/QuanLy/Test">Trực quan</a>
-                                <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>
+                               @* <a class="collapse-item" href="/QuanLy/Test">Trực quan</a>*@
+                               @* <a class="collapse-item disabled" style="color:red">Thống kê doanh thu</a>*@
                             </div>
                         </div>
 
@@ -756,9 +757,9 @@
         $('#sidebarToggle').on('click', function () {
             var hienthi = $('#accordionSidebar').hasClass('toggled');
             if (hienthi) {
-                $('.dashboard').css('overflow-y', 'visible');
+                $('.dashboard').css('overflow', 'visible');
             } else {
-                $('.dashboard').css('overflow-y', 'auto');
+                $('.dashboard').css('overflow-y: auto', 'overflow-x: clip');
             }
         });
         $('#sidebarToggleTop').on('click', function () {

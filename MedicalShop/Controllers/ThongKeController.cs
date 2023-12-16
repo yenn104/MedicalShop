@@ -127,40 +127,46 @@ namespace MedicalShop.Controllers
             DateTime tuNgay = DateTime.ParseExact(TuNgay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
             DateTime denNgay = DateTime.ParseExact(DenNgay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
             var data = context.ChiTietPhieuNhap
-    .Include(x => x.IdpnNavigation)
-    .Where(x => x.IdpnNavigation.ModifiedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.ModifiedDate.Value.Date <= denNgay.Date && x.Idhh == idHH)
-    .GroupBy(x => new { x.IdpnNavigation.ModifiedDate, x.IdpnNavigation.Idncc })
-    .Select(x => new
-    {
-        label = x.Key.ModifiedDate,
-        ncc = x.Key.Idncc,
-        gia = x.Min(y => y.GiaVon)
-    })
-    .ToList()
-    .GroupBy(x => x.label)
-    .Select(x => new
-    {
-        label = x.Key,
-        nccs = x.OrderBy(y => y.gia).Take(3).Select(y => new { y.ncc, y.gia })
-    })
-    .ToList();
-            var a = new
+            .Include(x => x.IdpnNavigation)
+            .ThenInclude(x => x.IdnccNavigation)
+            .Where(x => x.IdpnNavigation.ModifiedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.ModifiedDate.Value.Date <= denNgay.Date && x.Idhh == idHH)
+            .GroupBy(x => x.IdpnNavigation.IdnccNavigation.TenNcc)
+            .Select(x => new
             {
-                label = new List<DateTime>(),
-                nccs =  new List<object>(),
-            };
-            foreach (var b in data)
-            {
-                a.label.Add((DateTime)b.label);
-                a.nccs.Add(b.nccs);
-            }
+                label = x.Key,
+                value = x.Min(x => x.GiaVon)
+            })
+            .ToList();
 
-            return a;
+
+            return data.OrderBy(x => x.value).Take(3);
 
         }
         public string getTenNCC(int? idNCC)
         {
             return context.NhaCungCap.Find(idNCC).TenNcc;
+        }
+        [HttpGet("ViewBieuDoKHTT")]
+        public IActionResult ViewBieuDoKHTT()
+        {
+            return View("BieuDoKHTT");
+        }
+        [HttpPost("/BieuDoKHTT")]
+        public dynamic BieuDoKHTT(string TuNgay, string DenNgay)
+        {
+            DateTime tuNgay = DateTime.ParseExact(TuNgay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgay = DateTime.ParseExact(DenNgay, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            var data = context.PhieuXuat
+                .Include(x => x.IdkhNavigation)
+                .Where(x => x.CreatedDate.Value.Date >= tuNgay.Date && x.CreatedDate.Value.Date <= denNgay.Date)
+                .GroupBy(x => x.IdkhNavigation.TenKh)
+                .Select(x => new
+                {
+                    label = x.Key,
+                    value = x.Count()
+                })
+                .ToList();
+            return data.OrderBy(x => x.value).Take(3);
         }
     }
 }

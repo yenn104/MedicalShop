@@ -1,6 +1,41 @@
-﻿<canvas id="myChart"></canvas>
+﻿@{
+    MedicalShopContext context = new MedicalShopContext();
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    List<KhachHang>
+    getListKH = context.KhachHang.Where(x => x.Active == true).ToList();
+
+    List<HangHoa>
+        getListHH()
+    {
+        return context.HangHoa.Where(x => x.Active == true).ToList();
+    }
+}
+<div class="row">
+  <label class="col-sm-auto col-lg-auto col-form-label">Tên hàng</label>
+  <div class="col-12 col-sm-3">
+    <select id="selectHHX" class="form-select2">
+        <option selected disabled value="">-- Hàng hóa --</option>
+        @foreach (HangHoa h in getListHH())
+        {
+            <option value="@h.Id" data-extra="{'Ma':'@h.MaHh'}">@h.TenHh</option>
+        }
+    </select>
+    </div>
+  <div class="col-md-2 mb-2 col-lg-2">
+      <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" id="NgaySX" autocomplete="off">
+  </div>
+    <div class="col-md-2 mb-2 col-lg-2">
+        <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" id="HanDung" autocomplete="off">
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-success" onclick="BieuDoGiaNhap()">Thống kê</button>
+    </div>
+</div>
+
+<div style="width: 70%; margin: auto;">
+    <canvas id="myChart"></canvas>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/moment"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="~/admin/customjs/bieudogianhap.js"></script>
-

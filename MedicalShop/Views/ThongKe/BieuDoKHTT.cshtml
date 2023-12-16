@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+}
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-2">
+        <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" id="NgaySX" autocomplete="off">
+    </div>
+    <div class="col-12 col-sm-2">
+        <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" id="HanDung" autocomplete="off">
+    </div>
+    <div class="col-auto col-sm-auto">
+        <button type="button" class="btn btn-primary" onclick="BieuDoKHTT()">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
+    </div>
+</div>
+
+<div style="width: 43%; margin: auto;" class="mt-4">
+    <canvas id="myPieChart"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        var _labelsTD = [];
+        var _valuesTD = [];
+        var _myChartTD = null;
+        document.addEventListener("DOMContentLoaded", function () {
+            BieuDoKHTT();
+        }); // hết hàm DOMContentLoaded
+        function BieuDoKHTT() {
+        $.ajax({
+            url: 'BieuDoKHTT',
+            method: 'POST',
+            data: "TuNgay=" + $('#NgaySX').val() + "&DenNgay=" + $('#HanDung').val(),
+            success: function (data) {
+                console.log(data);
+                _labelsTD = [];
+                _valuesTD = [];
+                // Chuyển dữ liệu từ JSON sang mảng để cấu hình đồ thị
+                data.forEach(function (item, i) {
+                    _labelsTD.push(item.label); // Định dạng ngày tháng
+                    _valuesTD.push(item.value);
+                });
+                // Xóa biểu đồ cũ trước khi vẽ biểu đồ mới
+                if (_myChartTD !== null) {
+                    _myChartTD.destroy();
+                }
+                renderDoThi(_labelsTD, _valuesTD);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+        function renderDoThi(labels, values) {
+            var data = {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                }]
+            };
+
+            var options = {
+                responsive: true,
+                plugins: {
+                    datalabels: {
+                        formatter: (value, context) => {
+                            return value + '%';
+                        },
+                        color: '#fff'
+                    }
+                }
+            };
+
+            var ctx = document.getElementById("myPieChart").getContext("2d");
+            _myChartTD = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: options
+            });
+        }
+    </script>
