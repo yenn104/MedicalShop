@@ -11,49 +11,63 @@ function BieuDoGiaNhap() {
     method: 'POST',
     data: "TuNgay=" + $('#NgaySX').val() + "&DenNgay=" + $('#HanDung').val() + "&idHH=" + $('#selectHHX').val(),
     success: function (data) {
-      console.log(data);
-      _labelsTD = [];
-      _valuesTD = [];
-      // Chuyển dữ liệu từ JSON sang mảng để cấu hình đồ thị
-      data.forEach(function (item, i) {
-        _labelsTD.push(item.label); // Định dạng ngày tháng
-        _valuesTD.push(item.value);
-      });
-      // Xóa biểu đồ cũ trước khi vẽ biểu đồ mới
       if (_myChartTD !== null) {
         _myChartTD.destroy();
       }
-      renderDoThi(_labelsTD, _valuesTD);
+      renderDoThi(data);
     },
     error: function (error) {
       console.log(error);
     }
   });
 }
+function renderDoThi(data) {
+  let formattedLabels = data.labels.map(label => moment(label).format('DD-MM-YYYY'));
+  let datasets = data.value.map((item, index) => {
+    return {
+      label: item[0].tenNCC,
+      data: item.map(i => i.gia),
+      fill: false,
+      borderColor: `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`,
+      tension: 0.1
+    };
+  });
 
-function renderDoThi(labels, values) {
-  var ctx = document.getElementById('myChart').getContext('2d');
-  console.log(labels);
-  var doanhThuData = {
-    labels: labels,
-    datasets: [{
-      label: 'Nhà cung cấp',
-      data: values,
-      backgroundColor: 'rgba(0, 128, 255, 0.8)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    }]
-  };
+  let ctx = document.getElementById('myChart').getContext('2d');
   _myChartTD = new Chart(ctx, {
-    type: 'bar',
-    data: doanhThuData,
+    type: 'line',
+    data: {
+      labels: formattedLabels,
+      datasets: datasets
+    },
     options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function (value, index, values) {
-              return value; // Định dạng các giá trị trên trục y thành kiểu tiền tệ
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Biểu đồ giá theo thời gian'
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          x: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Thời gian'
+            }
+          },
+          y: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Giá'
             }
           }
         }
@@ -61,6 +75,7 @@ function renderDoThi(labels, values) {
     }
   });
 }
+
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';

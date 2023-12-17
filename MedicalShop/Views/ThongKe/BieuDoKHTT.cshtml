@@ -52,32 +52,61 @@
             }
         });
     }
-        function renderDoThi(labels, values) {
-            var data = {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
-                }]
-            };
+        //function renderDoThi(labels, values) {
+        //    var data = {
+        //        labels: labels,
+        //        datasets: [{
+        //            data: values,
+        //            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+        //        }]
+        //    };
 
-            var options = {
-                responsive: true,
-                plugins: {
-                    datalabels: {
-                        formatter: (value, context) => {
-                            return value + '%';
-                        },
-                        color: '#fff'
-                    }
+        //    var options = {
+        //        responsive: true,
+        //        plugins: {
+        //            datalabels: {
+        //                formatter: (value, context) => {
+        //                    return value + '%';
+        //                },
+        //                color: '#fff'
+        //            }
+        //        }
+        //    };
+
+        //    var ctx = document.getElementById("myPieChart").getContext("2d");
+        //    _myChartTD = new Chart(ctx, {
+        //        type: 'pie',
+        //        data: data,
+        //        options: options
+        //    });
+        //}
+    function renderDoThi(labels, values) {
+        var data = {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+            }]
+        };
+
+        var options = {
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    formatter: (value, context) => {
+                        return value + '%';
+                    },
+                    color: '#fff',
+                    display: 'auto', // Hiển thị tự động các nhãn dữ liệu
                 }
-            };
+            }
+        };
 
-            var ctx = document.getElementById("myPieChart").getContext("2d");
-            _myChartTD = new Chart(ctx, {
-                type: 'pie',
-                data: data,
-                options: options
-            });
-        }
+        var ctx = document.getElementById("myPieChart").getContext("2d");
+        _myChartTD = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    }
     </script>

@@ -45,29 +45,29 @@ function buildBarChart(doanhThuData, giaVonData) {
   var doanhThuValues = doanhThuData.map(item => item.doanhthu);
   var giaVonValues = giaVonData.map(item => item.doanhthu);
   var loiNhuanValues = doanhThuValues.map((doanhThu, index) => doanhThu - giaVonValues[index]);
-
+  let formattedLabels = labels.map(label => moment(label).format('DD-MM-YYYY'));
 
   var data = {
-    labels: labels,
+    labels: formattedLabels,
     datasets: [
       {
         label: 'Doanh Thu',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: '#FF6384',
+        borderColor: 'rgba(154, 208, 194,, 1)',
         borderWidth: 1,
         data: doanhThuValues,
       },
       {
         label: 'Giá Vốn',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: '#36A2EB',
+        borderColor: 'rgba(255, 247, 138, 1)',
         borderWidth: 1,
         data: giaVonValues,
       },
       {
         label: 'Lợi Nhuận',
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
+        backgroundColor: '#FFCE56',
+        borderColor: 'rgba(76, 185, 231, 1)',
         borderWidth: 1,
         data: loiNhuanValues,
       },
