@@ -11,31 +11,13 @@
   }
 
 
-  var acc = User.FindFirst("VaiTro");
-  // int abc = (int)TempData["Menu"]; ViewBag.Menu;
-  int idmenu = (int)TempData.Peek("Menu");
-
-  // int idmenu = (int)TempData["Menu"];
-
-  // TempData.Keep("Menu");
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
-    }
-  }
+    var quyen = ViewBag.Quyen;
+    bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
+    nhap = (bool)quyen.Import;
+    sua = (bool)quyen.Update;
+    xoa = (bool)quyen.Delete;
+    print = (bool)quyen.Print;
+    xuat = (bool)quyen.Export;
 
 
 }

@@ -1,4 +1,6 @@
-﻿using MedicalShop.Models.Entities;
+﻿using DocumentFormat.OpenXml.InkML;
+using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +15,16 @@ namespace MedicalShop.Controllers
     public class NSXController : Controller
     {
         private MedicalShopContext _context = new MedicalShopContext();
+        private string _maChucNang = "NSX";
 
         //[Route("/NuocSanXuat")]
         public IActionResult Table()
         {
             ViewData["Title"] = "Danh mục nước sản xuất";
-            TempData["Menu"] = _context.Menu.Where(x => x.MaMenu == "NSX" && x.Active == true).FirstOrDefault().Id;
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = _context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             List<Nsx> listNSX = _context.Nsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
             return View("TableNSX", listNSX);
         }

@@ -20,7 +20,7 @@ namespace MedicalShop.Controllers
     {
         public IActionResult Table()
         {
-            ViewData["Title"] = "Thiết lập giá xuất";
+            ViewData["Title"] = "Áp đặt giá bán";
             MedicalShopContext context = new MedicalShopContext();
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);

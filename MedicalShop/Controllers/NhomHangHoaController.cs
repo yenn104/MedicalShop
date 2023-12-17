@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,11 +13,15 @@ namespace MedicalShop.Controllers
   public class NhomHangHoaController : Controller
   {
     private MedicalShopContext context = new MedicalShopContext();
+        private string _maChucNang = "NhomHangHoa";
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục nhóm hàng hóa";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NhomHangHoa" && x.Active == true).FirstOrDefault().Id;
-      return View("TableNHH");
+    int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+    int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+    var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+    ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
+            return View("TableNHH");
     }
 
     public IActionResult ViewCreate()
