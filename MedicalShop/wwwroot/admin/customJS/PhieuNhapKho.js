@@ -65,10 +65,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   formatFloat();
   formatFloatInput();
+
+
+ 
+
+
 });
 
 
-
+$(document).ready(function () {
+  $('#selectHH').selectize({
+    render: {
+      //option: function (data, escape) {
+      //  console.log(data);
+      //  return '<div><span>' + escape(data.text) + '<span><span >[' + escape(data.data) + ']<span></div>';
+      //}
+      option: function (item, escape) {
+        return '<div class="d-flex p-2 "><span style="width: 80%;">' + escape(item.text) + '</span><span style="width: 20%; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;text-align: end;" class="ms-auto text-muted">[' + escape(item.data) + ']</span></div>';
+      },
+      no_results: function (data, escape) {
+        return '<div class="no-results">Không tìm thấy dữ liệu </div>';
+      },
+    }
+  });
+});
 
 //ok
 function deleteRow(index) {
@@ -102,8 +122,6 @@ function onemoretime() {
 
 function onemoretime2(index) {
   editChiTietPhieuTam(index);
-  updateTable2();
-  changeOff();
 }
 
 
@@ -201,10 +219,11 @@ function editChiTietPhieuTam(index) {
     return;
   }
 
-  if (SoLo == null) {
-    showToast('Vui lòng nhập số lô!', 100);
-    return;
-  }
+  //if (SoLo == "" || SoLo == null) {
+  //  showToast('Vui lòng nhập số lô!', 100);
+  //  return;
+  //}
+
 
   if (SL == "" || SL <= 0) {
     if (SL < 0) {
@@ -243,6 +262,9 @@ function editChiTietPhieuTam(index) {
       + HanDung + '</td><td class="last-td-column"> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
 
     $("tr#" + index).replaceWith(ChitietRecord);
+
+    updateTable2();
+    changeOff();
   }
 }
 
@@ -285,6 +307,11 @@ function CreatePN() {
   if ($('#body_ctpn tr').length < 1) {
     showToast('Vui lòng nhập thông tin phiếu!', 500);
     return;
+  } else {
+    if (!checkHopLeTableNhapTam()) {
+      showToast('Vui lòng nhập đầy đủ thông tin hàng hoá!', 500);
+      return;
+    }
   }
   var NCC = Number($('#NCC').val());
   if (NCC == 0) {
@@ -369,7 +396,7 @@ function loadDVT() {
         //  $('#GiaBan').val(toDecimal(result.giaBan));
       },
       error: function () {
-        showToast('Thất bại!', 500);
+        console.log('Thất bại!');
       }
     });
   }
@@ -441,7 +468,7 @@ function ViewPhieuNhap(idPhieuNhap) {
       $('#tabXemPhieu').replaceWith(result);
     },
     error: function () {
-      showToast('Thất bại!', 500);
+      console.log('Thất bại!');
     }
   });
 }
@@ -476,7 +503,7 @@ function loadTableLichSuNhap() {
       $('#tableLichSuNhap').replaceWith(result);
     },
     error: function () {
-      showToast('Thất bại!', 500);
+      console.log('Thất bại!');
     }
   });
 }
@@ -508,4 +535,63 @@ function clearFormChon() {
   $('#ChietKhau').val(0);
   $('#HanDung').val(moment().format("DD-MM-YYYY"));
   $('#NgaySX').val(moment().format("DD-MM-YYYY"));
+}
+
+
+function loadDaTaFromTableCanhBaoTonKho(listHH) {
+  if (listHH.length > 0) {
+    //listHH.push({ idHangHoa: idHangHoa, tenHangHoa: tenHangHoa, idDvt: idDvt, tenDvt: tenDvt });
+    listHH.forEach(function (data) {
+      var idHH = data.idHangHoa;
+      var tenHH = data.tenHangHoa;
+      var dvt = data.tenDvt;
+    //  var tenHH = data.tenHangHoa;
+      var ChitietRecord = '<tr class="index" id="' + index + '">' + '<td class="text-left">' + '<input class="IDCT" type="hidden" value="' + idHH + '"/>' + tenHH + '</td><td class="text-left">'
+        + dvt + '</td><td class="text-left"></td><td class="text-right"></td><td class="text-right">' 
+        + '</td><td class="text-right"></td><td class="text-right"></td><td class="text-right"></td><td></td><td>'
+        + '</td><td class="last-td-column"> <button type="button" class="btn btn-table p-0 edit"><i class="far fa-edit lighter pr-2" ></i></button>' + '<button type="button" class="btn btn-table p-0" onclick="deleteRow(' + index + ')"><i class="fas fa-trash-alt lighter" ></i></button> </td></tr>'
+      //onclick="UpdateRow(' + index + ')"
+      $('#body_ctpn').prepend(ChitietRecord);
+      index++;
+    })
+  }
+}
+
+
+
+
+
+//function checkHopLeTableNhapTam() {
+//  if ($('#body_ctpn').length) {
+//    var hasEmptyHtml = true;
+//    $('#body_ctpn tr').each(function () {
+//      $(this).find('td').each(function () {
+//        if ($(this).html().trim() === '') {
+//          hasEmptyHtml = false;
+//          return false; // Dừng vòng lặp khi tìm thấy một td có html rỗng
+//        }
+//      })
+//    });
+
+//    return hasEmptyHtml;
+//  }
+//}
+
+function checkHopLeTableNhapTam() {
+  if ($('#body_ctpn').length) {
+    var hasEmptyValue = false;
+    $('#body_ctpn tr').each(function () {
+      var $soLuong = $(this).find('td:eq(3)'); // Cột "Số lượng" (index 3)
+      var $donGia = $(this).find('td:eq(4)');  // Cột "Đơn giá" (index 4)
+      var $thanhTien = $(this).find('td:eq(5)');  // Cột "Thành tiền" (index 5)
+
+      if ($soLuong.text().trim() === '' || $donGia.text().trim() === '' || $thanhTien.text().trim() === '') {
+        hasEmptyValue = true;
+        return false; // Dừng vòng lặp khi tìm thấy một td có giá trị rỗng
+      }
+    });
+
+    return !hasEmptyValue;
+  }
+  return false; // Trả về false nếu không có #body_ctpn
 }

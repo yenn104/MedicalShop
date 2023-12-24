@@ -24,11 +24,13 @@ namespace MedicalShop.Models.Entities
         public int? Idhsx { get; set; }
         public int? Idnsx { get; set; }
         public int? Iddvtc { get; set; }
+        public int? IdnoiLuuTru { get; set; }
         public string MaHh { get; set; }
         public string TenHh { get; set; }
         public string BarCode { get; set; }
         public string Image { get; set; }
         public string Detail { get; set; }
+        public double? SoLuongCanhBao { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
@@ -39,6 +41,7 @@ namespace MedicalShop.Models.Entities
         public virtual Dvt IddvtcNavigation { get; set; }
         public virtual Hsx IdhsxNavigation { get; set; }
         public virtual NhomHangHoa IdnhhNavigation { get; set; }
+        public virtual NoiLuuTru IdnoiLuuTruNavigation { get; set; }
         public virtual Nsx IdnsxNavigation { get; set; }
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhap { get; set; }
         public virtual ICollection<ChiTietPhieuXuat> ChiTietPhieuXuat { get; set; }

@@ -1,4 +1,5 @@
-﻿using MedicalShop.Models;
+﻿using DocumentFormat.OpenXml.InkML;
+using MedicalShop.Models;
 using MedicalShop.Models.Entities;
 using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,7 @@ namespace MedicalShop.Controllers
 
 
         [HttpPost("/listCTPNT")]
-        public JsonResult ListCTPNT([FromBody] /*IEnumerable<ChiTietPhieuNhapTam> list,  string NgayHd*/ PhieuNhapModel pn)
+        public JsonResult taoPhieuNhap([FromBody] /*IEnumerable<ChiTietPhieuNhapTam> list,  string NgayHd*/ PhieuNhapModel pn)
         {
             MedicalShopContext context = new MedicalShopContext();
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -94,7 +95,7 @@ namespace MedicalShop.Controllers
                 context.SaveChanges();
                 tran.Commit();
 
-                var soPhieuMoi = CommonServices.getSoPhieuNhap(idCN, context);
+                var soPhieuMoi = CommonServices.getSoPhieuNhapMoi(idCN, context);
 
                 var response = new
                 {
@@ -207,7 +208,7 @@ namespace MedicalShop.Controllers
         [AllowAnonymous]
 
         [HttpPost("/download/BaoCaoPhieuNhap")]
-        public IActionResult downloadBaoCaoPhieuNhap(string fromDay, string toDay, string soPhieuLS, string soHDLS, int nhaCC, int hhLS)
+        public IActionResult downloadBaoCaoPN(string fromDay, string toDay, string soPhieuLS, string soHDLS, int nhaCC, int hhLS)
         {
             var fullView = new HtmlToPdf();
             fullView.Options.WebPageWidth = 1280;
@@ -312,6 +313,16 @@ namespace MedicalShop.Controllers
             return SoPhieu;
         }
 
+
+
+        [HttpPost("/getListHHRender")]
+        public IActionResult getListHHRender()
+        {
+            MedicalShopContext context = new MedicalShopContext();
+            var listHH = context.HangHoa.Include(x => x.IdnoiLuuTruNavigation).Where(x => x.Active == true).OrderBy(x => x.TenHh).ToList();
+            return Ok(listHH);
+        }
+        
 
 
     }

@@ -347,7 +347,7 @@
                             <i class="fas fa-list-ul"></i>
                             <span>Danh Mục</span>
                         </a>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="z-index:6">
                             <div class="bg-xx py-2 collapse-inner rounded">
                                 @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 1).OrderBy(x => x.IdmenuNavigation.Stt))
                                 {
@@ -368,7 +368,7 @@
                             <i class="fas fa-book-reader"></i>
                             <span>Quản Lý</span>
                         </a>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="z-index:6">
                             <div class="bg-xx py-2 collapse-inner rounded">
                                 @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 2).OrderBy(x => x.IdmenuNavigation.Stt))
                                 {
@@ -386,8 +386,7 @@
                             <i class="fas fa-chart-bar"></i>
                             <span>Báo Cáo</span>
                         </a>
-                        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                             data-parent="#accordionSidebar">
+                        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" style="z-index:6">
                             <div class="bg-xx py-2 collapse-inner rounded">
                                 @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 3).OrderBy(x => x.IdmenuNavigation.Stt))
                                 {
@@ -405,11 +404,9 @@
                             <i class="fas fa-cog fa-pulse"></i>
                             <span>Hệ Thống</span>
                         </a>
-                        <div id="collapseSystem" class="collapse" aria-labelledby="headingSystem"
-                             data-parent="#accordionSidebar">
+                        <div id="collapseSystem" class="collapse" aria-labelledby="headingSystem" data-parent="#accordionSidebar" style="z-index:6">
                             <div class="bg-xx py-2 collapse-inner rounded">
                                 <a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>
-                                <a class="collapse-item disabled" style="color:red">Nhập - Xuất dữ liệu</a>
                                 @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 4).OrderBy(x => x.IdmenuNavigation.Stt))
                                 {
                                     <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
@@ -759,7 +756,8 @@
             if (hienthi) {
                 $('.dashboard').css('overflow', 'visible');
             } else {
-                $('.dashboard').css('overflow-y: auto', 'overflow-x: clip');
+                $('.dashboard').css('overflow', '');
+               // $('.dashboard').css('overflow-y: auto !important', 'overflow-x: clip !important');
             }
         });
         $('#sidebarToggleTop').on('click', function () {

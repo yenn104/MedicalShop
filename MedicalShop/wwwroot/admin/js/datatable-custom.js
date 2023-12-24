@@ -32,6 +32,7 @@
       paginate: false,
       info: false,
       order: [],
+      //ordering: false,
       language: {
         emptyTable: "Không có dữ liệu.",
         zeroRecords: "Không tìm thấy kết quả phù hợp"

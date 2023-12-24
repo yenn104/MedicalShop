@@ -43,6 +43,7 @@ namespace MedicalShop.Models.Entities
         public virtual DbSet<NhanVien> NhanVien { get; set; }
         public virtual DbSet<NhomHangHoa> NhomHangHoa { get; set; }
         public virtual DbSet<NhomNhanVien> NhomNhanVien { get; set; }
+        public virtual DbSet<NoiLuuTru> NoiLuuTru { get; set; }
         public virtual DbSet<Nsx> Nsx { get; set; }
         public virtual DbSet<NvImage> NvImage { get; set; }
         public virtual DbSet<PhanQuyen> PhanQuyen { get; set; }
@@ -378,6 +379,8 @@ namespace MedicalShop.Models.Entities
 
                 entity.Property(e => e.Idnhh).HasColumnName("IDNHH");
 
+                entity.Property(e => e.IdnoiLuuTru).HasColumnName("IDNoiLuuTru");
+
                 entity.Property(e => e.Idnsx).HasColumnName("IDNSX");
 
                 entity.Property(e => e.Image).HasMaxLength(250);
@@ -410,6 +413,11 @@ namespace MedicalShop.Models.Entities
                     .HasForeignKey(d => d.Idnhh)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_HangHoa_NhomHangHoa");
+
+                entity.HasOne(d => d.IdnoiLuuTruNavigation)
+                    .WithMany(p => p.HangHoa)
+                    .HasForeignKey(d => d.IdnoiLuuTru)
+                    .HasConstraintName("FK_HangHoa_NoiLuuTru");
 
                 entity.HasOne(d => d.IdnsxNavigation)
                     .WithMany(p => p.HangHoa)
@@ -894,6 +902,23 @@ namespace MedicalShop.Models.Entities
                 entity.Property(e => e.TenNnv)
                     .HasColumnName("TenNNV")
                     .HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<NoiLuuTru>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Ten).HasMaxLength(250);
             });
 
             modelBuilder.Entity<Nsx>(entity =>

@@ -38,11 +38,35 @@ namespace MedicalShop.Services
             }
         }
 
-        public static string formatDay(DateTime? date)
+        public static string formatDateTime(DateTime? date)
+        {
+            if (date != null)
+            {
+                return date.Value.ToString("dd-MM-yyyy HH:mm");
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static string formatDayShort(DateTime? date)
         {
             if (date != null)
             {
                 return date.Value.ToString("dd-MM-yy");
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static string formatDay(DateTime? date)
+        {
+            if (date != null)
+            {
+                return date.Value.ToString("dd-MM-yyyy");
             }
             else
             {
@@ -78,7 +102,7 @@ namespace MedicalShop.Services
 
         public static string getTenDonViTinh(int? id)
         {
-            return _context.NhomHangHoa.Where(x => x.Id == id).Select(x => x.TenNhh).FirstOrDefault();
+            return _context.Dvt.Where(x => x.Id == id).Select(x => x.TenDvt).FirstOrDefault();
         }
 
         public static string getTenHangSanXuat(int? id)
@@ -124,7 +148,7 @@ namespace MedicalShop.Services
         }
 
 
-        public static string getSoPhieuNhap(int? idChiNhanh, MedicalShopContext context)
+        public static string getSoPhieuNhapMoi(int? idChiNhanh, MedicalShopContext context)
         {
             QuyDinhMa qd = context.QuyDinhMa.Find(1);
             //ID chi nhánh
@@ -165,7 +189,7 @@ namespace MedicalShop.Services
             
         }
 
-        public static string getSoPhieuXuat(int? idChiNhanh, MedicalShopContext context)
+        public static string getSoPhieuXuatMoi(int? idChiNhanh, MedicalShopContext context)
         {
 
             QuyDinhMa qd = context.QuyDinhMa.Find(1);

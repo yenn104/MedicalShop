@@ -129,7 +129,7 @@ namespace MedicalShop.Controllers
 
 
         [HttpPost("/updatePrices")]
-        public IActionResult updateRoles([FromBody] IEnumerable<PriceModel> list) //JsonResult
+        public IActionResult updatePrices([FromBody] IEnumerable<PriceModel> list) //JsonResult
         {
             MedicalShopContext context = new MedicalShopContext();
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);

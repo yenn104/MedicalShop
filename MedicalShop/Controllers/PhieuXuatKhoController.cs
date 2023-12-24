@@ -195,7 +195,7 @@ namespace MedicalShop.Controllers
 
 
         [HttpPost("/listCTPXT")]
-        public JsonResult ListCTPXT([FromBody] /*IEnumerable<ChiTietPhieuNhapTam> list,  string NgayHd*/ PhieuXuatModel px)
+        public JsonResult taoPhieuXuat([FromBody] /*IEnumerable<ChiTietPhieuNhapTam> list,  string NgayHd*/ PhieuXuatModel px)
         {
             MedicalShopContext context = new MedicalShopContext();
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -309,7 +309,7 @@ namespace MedicalShop.Controllers
                 context.SaveChanges();
                 tran.Commit();
 
-                var soPhieuMoi = CommonServices.getSoPhieuXuat(idCN, context);
+                var soPhieuMoi = CommonServices.getSoPhieuXuatMoi(idCN, context);
 
                 var response = new
                 {
@@ -367,7 +367,7 @@ namespace MedicalShop.Controllers
 
 
 
-
+        [AllowAnonymous]
         [Route("/download/phieuxuat/{id:int}")]
         public IActionResult downloadPhieuXuat(int id)
         {
@@ -386,7 +386,7 @@ namespace MedicalShop.Controllers
             return File(pdfBytes, "application/pdf", "PhieuXuat.pdf");
         }
 
-
+        [AllowAnonymous]
         [Route("/PhieuXuatPDF/{id:int}")]
         public IActionResult viewPDF(int id)
         {
@@ -400,9 +400,9 @@ namespace MedicalShop.Controllers
 
 
 
-
+        [AllowAnonymous]
         [HttpPost("/download/BaoCaoPhieuXuat")]
-        public IActionResult downloadBaoCaoPhieuXuat(string fromDay, string toDay, string soPhieuLS, string soHDLS, int khLS, int hhLS)
+        public IActionResult downloadBaoCaoPX(string fromDay, string toDay, string soPhieuLS, string soHDLS, int khLS, int hhLS)
         {
             var fullView = new HtmlToPdf();
             fullView.Options.WebPageWidth = 1280;
@@ -421,7 +421,7 @@ namespace MedicalShop.Controllers
             return File(pdfBytes, "application/pdf", "BaoCaoPhieuXuat.pdf");
         }
 
-
+        [AllowAnonymous]
         public IActionResult viewBaoCaoPhieuXuatPDF(string fromDay, string toDay, string soPhieuLS, string soHDLS, int khLS, int hhLS)
         {
             DateTime FromDay = DateTime.ParseExact(fromDay, "dd-MM-yyyy", CultureInfo.InvariantCulture);

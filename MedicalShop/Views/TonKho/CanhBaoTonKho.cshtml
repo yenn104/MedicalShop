@@ -1,0 +1,66 @@
+﻿@using MedicalShop.Controllers;
+@using static MedicalShop.Controllers.TonKhoController;
+@{
+    MedicalShopContext context = new MedicalShopContext();
+    Layout = "~/Views/Shared/_LayoutNV.cshtml";
+    string toDecimal(double? d)
+    {
+        return d.Value.ToString("#,##0.00");
+    }
+}
+<div class="card p-3" style=" margin-bottom: 4rem !important ">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+            <div style="display: flex">
+                <button class="btn btn-secondary" onclick="chuyenDenNhapKho()">Chuyển đến nhập kho</button>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive" style="margin-bottom: 5rem; height: 50vh">
+        <table data-order="[]" class="table table-striped" id="table4">
+            <thead style="position: sticky; top: 0; ">
+                <tr style="background: #e9ecef;">
+                    <th class="text-center">
+                        <input type="checkbox" id="checkAll" style="width:20px; height:20px;" />
+                    </th>
+                    <th>
+                        Mã HH
+                    </th>
+                    <th>
+                        Tên HH
+                    </th>
+                    <th class="text-center">
+                        Số lượng tồn
+                    </th>
+                    <th class="text-center">
+                        ĐVT
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbodyCanhBaoTon">
+                @foreach (CanhBaoTonKho item in ViewBag.CanhBaoTonKho)
+                {
+                    <tr data-id-hanghoa="@item.Idhh" data-id-donvitinh="@item.Iddvtc">
+                        <td class="text-center ps-2">
+                            <input type="checkbox" class="checkHangHoa" style="width:20px; height:20px;" />
+                        </td>
+                        <td class="text-start">
+                            @item.MaHh
+                        </td>
+                        <td class="text-start tenHangHoa">
+                            <span>@item.TenHh</span>
+                        </td>
+                        <td class="text-center @(item.SoLuong == 0 ? "text-danger": "")">
+                            @toDecimal(item.SoLuong)
+                        </td>
+                        <td class="text-start tenDvt">
+                            <span>@CommonServices.getTenDonViTinh(item.Iddvtc)</span>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/admin/customjs/canhbaotonkho.js" asp-append-version="true"></script>

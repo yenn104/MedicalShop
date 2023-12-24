@@ -121,6 +121,7 @@ namespace MedicalShop.Controllers
             return View("BieuDoGiaNhap");
         }
         //viết đây nè nha
+
         [HttpPost("BieuDoGiaNhap")]
         public dynamic BieuDoGiaNhap(int idHH, string TuNgay, string DenNgay)
         {
@@ -129,19 +130,56 @@ namespace MedicalShop.Controllers
             var data = context.ChiTietPhieuNhap
             .Include(x => x.IdpnNavigation)
             .ThenInclude(x => x.IdnccNavigation)
-            .Where(x => x.IdpnNavigation.ModifiedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.ModifiedDate.Value.Date <= denNgay.Date && x.Idhh == idHH)
-            .GroupBy(x => x.IdpnNavigation.IdnccNavigation.TenNcc)
+            .Where(x => x.IdpnNavigation.ModifiedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.ModifiedDate.Value.Date <= denNgay.Date && x.Idhh == idHH).ToList();
+
+            var ncc = data.GroupBy(x => x.IdpnNavigation.Idncc)
             .Select(x => new
             {
                 label = x.Key,
                 value = x.Min(x => x.GiaVon)
             })
-            .ToList();
+            .ToList().Take(3);
 
-
-            return data.OrderBy(x => x.value).Take(3);
-
+            List<DateTime> dateTimes = new List<DateTime>();
+            foreach (ChiTietPhieuNhap ct in data)
+            {
+                if (ncc.Any(x => x.label == ct.IdpnNavigation.Idncc))
+                {
+                    dateTimes.Add((DateTime)ct.ModifiedDate.Value.Date);
+                }
+            }
+            dateTimes = dateTimes.Distinct().ToList();
+            var listData = new List<dynamic>();
+            foreach (var n in ncc)
+            {
+                List<dataNCC> dates = new List<dataNCC>();
+                foreach (var date in dateTimes)
+                {
+                    dataNCC dataNCC = new dataNCC();
+                    dataNCC.TenNCC = getTenNCC(n.label);
+                    var a = data.FirstOrDefault(x => x.IdpnNavigation.Idncc == n.label && x.IdpnNavigation.CreatedDate.Value.Date == date.Date);
+                    if (a != null)
+                    {
+                        dataNCC.Gia = (double)a.GiaVon;
+                    }
+                    dates.Add(dataNCC);
+                }
+                listData.Add(dates);
+            }
+            return new
+            {
+                labels = dateTimes,
+                value = listData
+            };
         }
+
+        private class dataNCC
+        {
+            public string? TenNCC { get; set; }
+            public double Gia { get; set; }
+        }
+
+
         public string getTenNCC(int? idNCC)
         {
             return context.NhaCungCap.Find(idNCC).TenNcc;
