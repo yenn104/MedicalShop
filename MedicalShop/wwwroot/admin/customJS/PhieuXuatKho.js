@@ -45,6 +45,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
+$(document).ready(function () {
+  $('#selectHHX').selectize({
+    render: {
+      option: function (item, escape) {
+        return '<div class="d-flex p-2 "><span style="width: 80%;">' + escape(item.text) + '</span><span style="width: 20%; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;text-align: end;" class="ms-auto text-muted">[' + escape(item.data) + ']</span></div>';
+      },
+      no_results: function (data, escape) {
+        return '<div class="no-results">Không tìm thấy dữ liệu </div>';
+      },
+    }
+  });
+});
+
+
+
 function deleteRow(index) {
   var row = document.getElementById(index);
   row.parentNode.removeChild(row);
