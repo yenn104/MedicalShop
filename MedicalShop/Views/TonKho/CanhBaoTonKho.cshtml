@@ -7,60 +7,153 @@
     {
         return d.Value.ToString("#,##0.00");
     }
+
+    List<TonKho> getListCanhBaoHSD()
+    {
+        var list = context.TonKho
+        .FromSqlRaw("SELECT tk.* FROM TonKho tk JOIN ChiTietPhieuNhap ct ON tk.Idctpn = ct.Id WHERE DATEDIFF(day, GETDATE(), ct.HSD) <= 90")
+        .Include(x => x.IdctpnNavigation)
+        .Include(x => x.IdhhNavigation)
+        .ThenInclude(x => x.IddvtcNavigation)
+        .OrderBy(x => x.IdctpnNavigation.Hsd)
+        .ToList();
+        return list;
+    }
+
+
 }
 <div class="card p-3" style=" margin-bottom: 4rem !important ">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-            <div style="display: flex">
-                <button class="btn btn-secondary" onclick="chuyenDenNhapKho()">Chuyển đến nhập kho</button>
+    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+        <li class="nav-item flex-fill" role="presentation">
+            <button class="nav-link w-100 active" id="home-tab" onclick="offTabNhap()" data-bs-toggle="tab" data-bs-target="#borderedTabJustifiedContent" type="button" role="tab" aria-controls="home" aria-selected="true">Cảnh báo số lượng</button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Cảnh báo hạn sử dụng</button>
+        </li>
+    </ul>
+
+
+    <div class="tab-content pt-2">
+        <div class="tab-pane fade active show" id="borderedTabJustifiedContent">
+            <div id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+                        <div style="display: flex">
+                            <button class="btn btn-secondary" onclick="chuyenDenNhapKho()">Chuyển đến nhập kho</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="margin-bottom: 5rem; height: 50vh">
+                    <table data-order="[]" class="table table-striped" id="table2">
+                        <thead style="position: sticky; top: 0; ">
+                            <tr style="background: #e9ecef;">
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkAll" style="width:20px; height:20px;" />
+                                </th>
+                                <th>
+                                    Mã HH
+                                </th>
+                                <th>
+                                    Tên HH
+                                </th>
+                                <th class="text-center">
+                                    Số lượng tồn
+                                </th>
+                                <th class="text-center">
+                                    ĐVT
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyCanhBaoTon">
+                            @foreach (CanhBaoTonKho item in ViewBag.CanhBaoTonKho)
+                            {
+                                <tr data-id-hanghoa="@item.Idhh" data-id-donvitinh="@item.Iddvtc">
+                                    <td class="text-center ps-2">
+                                        <input type="checkbox" class="checkHangHoa" style="width:20px; height:20px;" />
+                                    </td>
+                                    <td class="text-start">
+                                        @item.MaHh
+                                    </td>
+                                    <td class="text-start tenHangHoa">
+                                        <span>@item.TenHh</span>
+                                    </td>
+                                    <td class="text-end @(item.SoLuong == 0 ? "text-danger": "")">
+                                        @toDecimal(item.SoLuong)
+                                    </td>
+                                    <td class="text-start tenDvt">
+                                        <span>@CommonServices.getTenDonViTinh(item.Iddvtc)</span>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <div class="table-responsive" style="margin-bottom: 5rem; height: 50vh">
-        <table data-order="[]" class="table table-striped" id="table4">
-            <thead style="position: sticky; top: 0; ">
-                <tr style="background: #e9ecef;">
-                    <th class="text-center">
-                        <input type="checkbox" id="checkAll" style="width:20px; height:20px;" />
-                    </th>
-                    <th>
-                        Mã HH
-                    </th>
-                    <th>
-                        Tên HH
-                    </th>
-                    <th class="text-center">
-                        Số lượng tồn
-                    </th>
-                    <th class="text-center">
-                        ĐVT
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="tbodyCanhBaoTon">
-                @foreach (CanhBaoTonKho item in ViewBag.CanhBaoTonKho)
-                {
-                    <tr data-id-hanghoa="@item.Idhh" data-id-donvitinh="@item.Iddvtc">
-                        <td class="text-center ps-2">
-                            <input type="checkbox" class="checkHangHoa" style="width:20px; height:20px;" />
-                        </td>
-                        <td class="text-start">
-                            @item.MaHh
-                        </td>
-                        <td class="text-start tenHangHoa">
-                            <span>@item.TenHh</span>
-                        </td>
-                        <td class="text-center @(item.SoLuong == 0 ? "text-danger": "")">
-                            @toDecimal(item.SoLuong)
-                        </td>
-                        <td class="text-start tenDvt">
-                            <span>@CommonServices.getTenDonViTinh(item.Iddvtc)</span>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
+    <div class="tab-content">
+        <div class="tab-pane fade" id="bordered-justified-profile">
+            <div id="bordered-justified-home" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="table-responsive" style="margin-bottom: 5rem; height: 50vh">
+                    <table data-order="[]" class="table table-striped table-nowrap" id="table5" style="width:100%">
+                        <thead style="position: sticky; top: 0; ">
+                            <tr style="background: #e9ecef;">
+                                <th style="width:30%">
+                                    Tên HH
+                                </th>
+                                <th class="text-center">
+                                    Ngày nhập
+                                </th>
+                                <th class="text-center">
+                                    Ngày sản xuất
+                                </th>
+                                <th class="text-center">
+                                    Hạn sử dụng
+                                </th>
+                                <th class="text-center">
+                                    Số ngày còn lại
+                                </th>
+                                <th class="text-center">
+                                    Số lượng tồn
+                                </th>
+                                <th class="text-center">
+                                    ĐVT
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyCanhBaoHSD">
+                            @foreach (TonKho item in getListCanhBaoHSD())
+                            {
+                                <tr data-id-hanghoa="@item.Idhh" data-id-donvitinh="@item.IdhhNavigation.Iddvtc">
+                                    <td class="text-start tenHangHoa @(item.IdctpnNavigation.Hsd <= DateTime.Now ? "text-danger" : "")" style="width:30%">
+                                        <span>@item.IdhhNavigation.TenHh</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @CommonServices.formatDateTime(@item.NgayNhap)
+                                    </td>
+                                    <td class="text-center">
+                                        @CommonServices.formatDay(@item.IdctpnNavigation.Nsx)
+                                    </td>
+                                    <td class="text-center font-weight-bold @(item.IdctpnNavigation.Hsd <= DateTime.Now ? "text-danger" : "")">
+                                        @CommonServices.formatDay(@item.IdctpnNavigation.Hsd)
+                                    </td>
+                                    <td class="text-center font-weight-bold">
+                                        @((item.IdctpnNavigation.Hsd - DateTime.Now).Value.Days)
+                                    </td>
+                                    <td class="text-end font-weight-bold pe-5  @(item.IdctpnNavigation.Hsd <= DateTime.Now ? "text-danger" : "")">
+                                        @toDecimal(item.SoLuong)
+                                    </td>
+                                    <td class="text-start tenDvt">
+                                        <span>@CommonServices.getTenDonViTinh(item.IdhhNavigation.Iddvtc)</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<script src="~/admin/customjs/canhbaotonkho.js" asp-append-version="true"></script>
+    <script src="~/admin/customjs/canhbaotonkho.js" asp-append-version="true"></script>

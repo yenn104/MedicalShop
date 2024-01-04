@@ -748,4 +748,15 @@ namespace MedicalShop.Controllers
         public double? SoLuongCanhBao { get; set; }
         public int? Iddvtc { get; set; }
     };
+
+    public class CanhBaoTonKhoHSD
+    {
+        public int? Idhh { get; set; }
+        public string MaHh { get; set; }
+        public string TenHh { get; set; }
+        public DateTime NgayNhap { get; set; }
+        public DateTime HanSuDung { get; set; }
+        public double? SoLuong { get; set; }
+        public int? Iddvtc { get; set; }
+    };
 }

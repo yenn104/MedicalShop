@@ -1,110 +1,128 @@
 ﻿@model IList<MedicalShop.Models.Entities.ChucNang>
 
 @{
-  MedicalShopContext context = new MedicalShopContext();
-  List<Menu> listmenu()
-  {
-    return context.Menu.Where(x => x.Active == true && x.Index != 0).OrderBy(x=>x.TenMenu).ToList();
-  }
+    MedicalShopContext context = new MedicalShopContext();
+    List<Menu> listmenu()
+    {
+        return context.Menu.Where(x => x.Active == true && x.Index != 0 && x.Type == false).OrderBy(x => x.TenMenu).ToList();
+    }
 }
 
 
 <tbody id="chucnang">
 
-  @if (Enumerable.Count(ViewBag.ListCN) > 0)
-  {
-    @foreach (var menu in listmenu())
+    @if (Enumerable.Count(ViewBag.ListCN) > 0)
     {
-      int i = 0;
-      @foreach (var item in ViewBag.ListCN)
-      {
-        if (item.Idmenu == menu.Id)
+        @foreach (var menu in listmenu())
         {
-          <tr class="wh-input" onchange="addListCN(@menu.Id)">
-            <td class="text-left">
-              <span>@menu.TenMenu</span>
-              <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
-            </td>
-            <td>
-              @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
-              @Html.CheckBox("Import", item.Import == true ? true : false)
-            </td>
-            <td>
-              @Html.CheckBox("Update", item.Update == true ? true : false)
-            </td>
-            <td>
-              @Html.CheckBox("Delete", item.Delete == true ? true : false)
-            </td>
-            <td>
-              @Html.CheckBox("Print", item.Print == true ? true : false)
-            </td>
-            <td>
-              @Html.CheckBox("Export", item.Export == true ? true : false)
-            </td>
-          
-            @*<td>
-                <button value="@item.Id" class="edit btn btn-primary" style="margin-right: 5px" id="edit">Sửa</button>
-                <button value="@item.Id" class="remove btn btn-danger">Xóa</button>
-            </td>*@
-          </tr>
-          i++;
+            int i = 0;
+            @foreach (var item in ViewBag.ListCN)
+            {
+                if (item.Idmenu == menu.Id)
+                {
+                    <tr class="wh-input" onchange="addListCN(@menu.Id)">
+                        <td class="text-left">
+                            <span>@menu.TenMenu</span>
+                            <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
+                        </td>
+                        <td class="p-0 pt-2">
+                            @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
+                            @*@Html.CheckBox("Import", item.Import == true ? true : false)*@
+                            <input type="checkbox" name="Import" class="Import" @(item.Import == true ? "checked" : "")>
+                        </td>
+                        <td class="p-0 pt-2">
+                            @*@Html.CheckBox("Update", item.Update == true ? true : false)*@
+                            <input type="checkbox" name="Update" class="Update" @(item.Import == true ? "checked" : "")>
+                        </td>
+                        <td class="p-0 pt-2">
+                            @*@Html.CheckBox("Delete", item.Delete == true ? true : false)*@
+                            <input type="checkbox" name="Delete" class="Delete" @(item.Delete == true ? "checked" : "")>
+                        </td>
+                        <td class="p-0 pt-2">
+                            @*@Html.CheckBox("Print", item.Print == true ? true : false)*@
+                            <input type="checkbox" name="Print" class="Print" @(item.Print == true ? "checked" : "")>
+                        </td>
+                        <td class="p-0 pt-2">
+                            @*@Html.CheckBox("Export", item.Export == true ? true : false)*@
+                            <input type="checkbox" name="Export" class="Export" @(item.Export == true ? "checked" : "")>
+                        </td>
+                        <td style="text-align:center;" class="p-0 pt-2">
+                            <input type="checkbox" class="row-check" style="width: 20px; height: 20px">
+                            @*@Html.CheckBox("Canhan", itemm.CaNhan == true ? true : false)*@
+                        </td>
+
+                        @*<td>
+        <button value="@item.Id" class="edit btn btn-primary" style="margin-right: 5px" id="edit">Sửa</button>
+        <button value="@item.Id" class="remove btn btn-danger">Xóa</button>
+        </td>*@
+                    </tr>
+                    i++;
+                }
+            }
+            if (i == 0)
+            {
+                <tr class="wh-input" onchange="addListCN(@menu.Id)">
+                    <td class="text-left">
+                        <span>@menu.TenMenu</span>
+                        <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
+                        @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
+                    </td>
+                    <td class="p-0 pt-2">
+                        <input type="checkbox" name="Import" class="Import">
+                    </td>
+                    <td class="p-0 pt-2">
+                        <input type="checkbox" name="Update" class="Update">
+                    </td>
+                    <td class="p-0 pt-2">
+                        <input type="checkbox" name="Delete" class="Delete">
+                    </td>
+                    <td class="p-0 pt-2">
+                        <input type="checkbox" name="Print" class="Print">
+                    </td>
+                    <td class="p-0 pt-2">
+                        <input type="checkbox" name="Export" class="Export">
+                    </td>
+                    <td class="p-0 pt-2" style="text-align:center;">
+                        <input type="checkbox" class="row-check" style="width: 20px; height: 20px">
+                        @*@Html.CheckBox("Canhan", itemm.CaNhan == true ? true : false)*@
+                    </td>
+
+                </tr>
+            }
         }
-      }
-      if (i == 0)
-      {
-        <tr class="wh-input" onchange="addListCN(@menu.Id)">
-          <td class="text-left">
-            <span>@menu.TenMenu</span>
-            <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
-            @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
-          </td>
-          <td>
-            @Html.CheckBox("Import")
-          </td>
-          <td>
-            @Html.CheckBox("Update")
-          </td>
-          <td>
-            @Html.CheckBox("Delete")
-          </td>
-          <td>
-            @Html.CheckBox("Print")
-          </td>
-          <td>
-            @Html.CheckBox("Export")
-          </td>
-         
-        </tr>
-      }
     }
-  }
-  else
-  {
-    @foreach (var menu in listmenu())
+    else
     {
-      <tr class="wh-input" onchange="addListCN(@menu.Id)">
-        <td class="text-left">
-          <span>@menu.TenMenu</span>
-          <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
-          @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
-        </td>
-        <td>
-          @Html.CheckBox("Import")
-        </td>
-        <td>
-          @Html.CheckBox("Update")
-        </td>
-        <td>
-          @Html.CheckBox("Delete")
-        </td>
-        <td>
-          @Html.CheckBox("Print")
-        </td>
-        <td>
-          @Html.CheckBox("Export")
-        </td>
-        
-      </tr>
+        @foreach (var menu in listmenu())
+        {
+            <tr class="wh-input" onchange="addListCN(@menu.Id)">
+                <td class="text-left">
+                    <span>@menu.TenMenu</span>
+                    <input type="hidden" name="Idmenu" value="@menu.Id" id="idmenu" />
+                    @*<input type="hidden" name="Idvt" value="@ViewBag.IDVT" id="idvt" />*@
+                </td>
+                <td class="p-0 pt-2">
+                    <input type="checkbox" name="Import" class="Import">
+                </td>
+                <td class="p-0 pt-2">
+                    @*@Html.CheckBox("Update")*@
+                    <input type="checkbox" name="Update" class="Update">
+                </td>
+                <td class="p-0 pt-2">
+                    <input type="checkbox" name="Delete" class="Delete">
+                </td>
+                <td class="p-0 pt-2">
+                    <input type="checkbox" name="Print" class="Print">
+                </td>
+                <td class="p-0 pt-2">
+                    <input type="checkbox" name="Export" class="Export">
+                </td>
+                <td class="p-0 pt-2" style="text-align:center;">
+                    <input type="checkbox" class="row-check" style="width: 20px; height: 20px">
+                    @*@Html.CheckBox("Canhan", itemm.CaNhan == true ? true : false)*@
+                </td>
+
+            </tr>
+        }
     }
-  }
 </tbody>
