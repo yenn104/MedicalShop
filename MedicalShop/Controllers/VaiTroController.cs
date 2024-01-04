@@ -12,7 +12,6 @@ namespace MedicalShop.Controllers
 {
   //Đooir lại datetime.now
   [Authorize(Roles = "NV")]
-
   public class VaiTroController : Controller
   {
     public IActionResult Table()

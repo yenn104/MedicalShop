@@ -77,7 +77,7 @@ namespace MedicalShop.Controllers
     }
 
 
-    [Route("/QuanLy")]
+   // [Route("/QuanLy")]
     public IActionResult QuanLy()
     {   
       return View();

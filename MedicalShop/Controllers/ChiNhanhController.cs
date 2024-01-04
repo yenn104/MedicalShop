@@ -1,5 +1,6 @@
 ﻿using MedicalShop.Models.Entities;
 using MedicalShop.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
+    [Authorize(Roles = "NV")]
     public class ChiNhanhController : Controller
     {
         private MedicalShopContext context = new MedicalShopContext();

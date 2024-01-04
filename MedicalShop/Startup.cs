@@ -41,7 +41,7 @@ namespace MedicalShop
                     {
                         options.LoginPath = "/TaiKhoan/LogIn";
                         options.Cookie.Name = "medicalshop_cookie";
-                        options.AccessDeniedPath = "/Login";
+                        options.AccessDeniedPath = "/TaiKhoan/Login";
                     });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddHttpContextAccessor();
@@ -84,7 +84,11 @@ namespace MedicalShop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //    pattern: "/QuanLy");
+                // pattern: "{controller=QuanLy}/{action=QuanLy}/{id?}");
+               // pattern: "{controller=TaiKhoan}/{action=LogIn}/{id?}");
+                pattern: "{controller=QuanLy}/{action=QuanLy}/{id?}");
+                //pattern: "{controller=TaiKhoan}/{action=LogIn}/{id?}");
             });
         }
     }

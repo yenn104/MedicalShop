@@ -21,6 +21,7 @@ function BieuDoGiaNhap() {
     }
   });
 }
+
 function renderDoThi(data) {
   let formattedLabels = data.labels.map(label => moment(label).format('DD-MM-YYYY'));
   let datasets = data.value.map((item, index) => {
@@ -33,11 +34,33 @@ function renderDoThi(data) {
     };
   });
 
+
+
+  const defaultLabels = ['Nhà cung cấp 1', 'Nhà cung cấp 2', 'Nhà cung cấp 3'];
+
+
+  // If there is no data, create an empty dataset with default labels
+  if (datasets.length === 0) {
+    datasets.push({
+      label: 'No Data',
+      data: Array(defaultLabels.length).fill(0),
+      fill: false,
+      borderColor: 'rgba(0, 0, 0, 0)', // transparent color
+      tension: 0
+    });
+  }
+
+  // If there is no data, use default labels
+  const chartLabels = formattedLabels.length > 0 ? formattedLabels : defaultLabels;
+
+
+
+
   let ctx = document.getElementById('myChart').getContext('2d');
   _myChartTD = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: formattedLabels,
+      labels: chartLabels,
       datasets: datasets
     },
     options: {
@@ -45,7 +68,7 @@ function renderDoThi(data) {
       plugins: {
         title: {
           display: true,
-          text: 'Biểu đồ giá theo thời gian'
+          text: 'Biểu đồ giá theo nhà cung cấp'
         },
         tooltip: {
           mode: 'index',

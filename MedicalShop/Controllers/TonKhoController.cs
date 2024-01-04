@@ -17,8 +17,7 @@ using System.Linq;
 
 namespace MedicalShop.Controllers
 {
-
-
+    [Authorize(Roles = "NV")]
     public class TonKhoController : Controller
     {
         private readonly ILogger<TonKhoController> _logger;
@@ -651,7 +650,7 @@ namespace MedicalShop.Controllers
 
 
 
-        [Route("/canhbaoton")]
+        [Route("/canhbaotonkho")]
         public IActionResult CanhBaoTonKho()
         {
             MedicalShopContext context = new MedicalShopContext();

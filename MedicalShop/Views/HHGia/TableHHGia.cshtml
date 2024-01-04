@@ -4,6 +4,7 @@
 
     MedicalShopContext context = new MedicalShopContext();
     int idCN = int.Parse(User.Claims.ElementAt(4).Value);
+    string admin = User.Claims.ElementAt(3).ValueType;
 
     List<HangHoa> listHH()
     {
@@ -65,6 +66,10 @@
                 {
                     <option value="@itemm.Id" selected="@(itemm.Id == idCN)">@itemm.TenCn</option>
                 }
+               @* @if (admin == "1")
+                {
+                    <option value="-1" >Tất cả</option>
+                }*@
             </select>
         </div>
         @*flex-direction: row; flex-wrap: wrap; overflow-x: auto; align-items: flex-start; justify-content: space-between;*@
