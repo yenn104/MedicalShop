@@ -4,11 +4,6 @@
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
   MedicalShopContext context = new MedicalShopContext();
 
-  List<NhanVien> listNV()
-  {
-    return context.NhanVien.Where(a => a.Active == true).OrderBy(a => a.TenNv).ToList();
-  }
-
   List<NhomNhanVien> getListNNV()
   {
     return context.NhomNhanVien.ToList();
@@ -26,39 +21,14 @@
     }
   }
 
-  var acc = User.FindFirst("VaiTro");
-  int idmenu = (int)TempData.Peek("Menu");
-
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
-    }
-  }
+    var quyen = ViewBag.Quyen;
+    bool nhap = (bool)quyen.Import;
+    bool sua = (bool)quyen.Update;
+    bool xoa = (bool)quyen.Delete;
+    bool print = (bool)quyen.Print;
+    bool xuat = (bool)quyen.Export;
 
 }
-
-@if (TempData["ThongBao"] != null)
-{
-  <script type="text/javascript" charset="utf-8">
-                        window.onload = function () {
-                            alert("@Html.Raw(@TempData["ThongBao"])");
-                    };
-  </script>
-}
-
 
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
   <div style="margin-bottom: 20px">
@@ -125,7 +95,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach (var item in listNV())
+      @foreach (var item in Model)
       {
       <tr>
         <td>

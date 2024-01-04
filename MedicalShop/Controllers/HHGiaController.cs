@@ -26,7 +26,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             List<ChiNhanh> listChiNhanh = context.ChiNhanh
-            .Where(x => x.Active == true && (type == true ? true : x.Id == idcn))
+            .Where(x => x.Active == true && (type == 1 ? true : x.Id == idcn))
             .ToList();
             return View("TableHHGia", listChiNhanh);
         }
@@ -219,7 +219,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             List<ChiNhanh> listChiNhanh = context.ChiNhanh
-            .Where(x => x.Active == true && (type == true ? true : x.Id == idcn))
+            .Where(x => x.Active == true && (type == 1 ? true : x.Id == idcn))
             .ToList();
 
             ViewData["Title"] = "Cách tính giá";

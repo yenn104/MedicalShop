@@ -1,14 +1,8 @@
-﻿@model MedicalShop.Models.Entities.NhomNhanVien
+﻿@model IEnumerable<MedicalShop.Models.Entities.NhomNhanVien>
 
 @{
   Layout = "~/Views/Shared/_LayoutNV.cshtml";
   MedicalShopContext context = new MedicalShopContext();
-
-
-  List<NhomNhanVien> listNNV()
-  {
-    return context.NhomNhanVien.Where(a => a.Active == true).ToList();
-  }
 
   NhanVien getNV(int? id)
   {
@@ -29,27 +23,12 @@
     }
   }
 
-  var acc = User.FindFirst("VaiTro");
-  int idmenu = (int)TempData.Peek("Menu");
-
-  string vaitro = null;
-  bool nhap = false, sua = false, xoa = false, print = false, xuat = false;
-  if (acc != null)
-  {
-    vaitro = acc.Value;
-    if (vaitro != null && vaitro != "")
-    {
-      ChucNang cn = context.ChucNang.FirstOrDefault(c => c.Idvt.Equals(int.Parse(vaitro)) && c.Idmenu.Equals(idmenu));
-      if (cn != null)
-      {
-        nhap = (bool)cn.Import;
-        sua = (bool)cn.Update;
-        xoa = (bool)cn.Delete;
-        print = (bool)cn.Print;
-        xuat = (bool)cn.Export;
-      }
-    }
-  }
+    var quyen = ViewBag.Quyen;
+    bool nhap = (bool)quyen.Import;
+    bool sua = (bool)quyen.Update;
+    bool xoa = (bool)quyen.Delete;
+    bool print = (bool)quyen.Print;
+    bool xuat = (bool)quyen.Export;
 
 }
 
@@ -112,7 +91,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach (NhomNhanVien item in listNNV())
+      @foreach (NhomNhanVien item in Model)
       {
         <tr>
           <td>

@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,7 @@ namespace MedicalShop.Controllers
 
 
     private MedicalShopContext context = new MedicalShopContext();
+    private string _maChucNang = "NhanVien";
 
     private readonly IWebHostEnvironment webHostEnvironment;
 
@@ -33,8 +35,12 @@ namespace MedicalShop.Controllers
     public IActionResult Table()
     {
       ViewData["Title"] = "Danh mục nhân viên";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NhanVien" && x.Active == true).FirstOrDefault().Id;
-      return View("TableNhanVien");
+        int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+        int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+        var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+        ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
+        List<NhanVien> listNhanVien = context.NhanVien.Where(x => x.Active == true && (type == 1 ? true : x.Idcn == idcn) && x.MaNv.ToLower() != "admin").ToList();
+        return View("TableNhanVien", listNhanVien);
     }
 
 
@@ -187,7 +193,7 @@ namespace MedicalShop.Controllers
 
 
       ViewBag.ListNV = context.NhanVien
-        .Where(x => (active == false ? true : x.Active == true) && (nhomNV == 0 ? true : x.Idnnv == nhomNV) && (type == true ? true : x.Idcn == idcn))
+        .Where(x => (active == false ? true : x.Active == true) && (nhomNV == 0 ? true : x.Idnnv == nhomNV) && (type == 1 ? true : x.Idcn == idcn) && x.MaNv.ToLower() != "admin")
         .OrderBy(x => x.TenNv)
         .ToList();
       return PartialView("LoadTableNV");

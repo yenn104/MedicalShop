@@ -1,4 +1,5 @@
 ﻿using MedicalShop.Models.Entities;
+using MedicalShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,105 +9,111 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
-  [Authorize(Roles = "NV")]
-  public class NhomNhanVienController : Controller
-  {
-    private MedicalShopContext context = new MedicalShopContext();
-    public IActionResult Table()
+    [Authorize(Roles = "NV")]
+    public class NhomNhanVienController : Controller
     {
-      ViewData["Title"] = "Danh mục nhóm nhân viên";
-      TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NhomNhanVien" && x.Active == true).FirstOrDefault().Id;
-      return View("TableNNV");
+        private MedicalShopContext context = new MedicalShopContext();
+        private string _maChucNang = "NhomNhanVien";
+        public IActionResult Table()
+        {
+            ViewData["Title"] = "Danh mục nhóm nhân viên";
+            TempData["Menu"] = context.Menu.Where(x => x.MaMenu == "NhomNhanVien" && x.Active == true).FirstOrDefault().Id;
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+            var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+            ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
+            List<NhomNhanVien> listNhomNhanVien = context.NhomNhanVien.Where(x => x.Active == true).ToList();
+            return View("TableNNV", listNhomNhanVien);
+        }
+
+        public IActionResult ViewCreate()
+        {
+            ViewData["Title"] = "Thêm nhóm nhân viên";
+            return View();
+        }
+
+        [HttpPost("/loadTableNNV")]
+        public IActionResult loadTableNNV(bool active)
+        {
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+            int idvt = int.Parse(User.Claims.ElementAt(3).Value);
+
+            var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
+
+
+            ViewBag.NNV = context.NhomNhanVien
+              .Where(x => (active == false ? true : x.Active == true) && (type == 1 ? true : x.Idcn == idcn))
+              .OrderBy(x => x.TenNnv)
+              .ToList();
+            return PartialView();
+        }
+
+
+        public IActionResult ViewUpdate(int id)
+        {
+            ViewData["Title"] = "Sửa nhóm nhân viên";
+            NhomNhanVien nnv = context.NhomNhanVien.Find(id);
+            return View(nnv);
+        }
+
+        [HttpPost]
+        public IActionResult Insert(NhomNhanVien nnv)
+        {
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+            nnv.CreatedBy = idUser;
+            nnv.ModifiedBy = idUser;
+            nnv.Idcn = idcn;
+            nnv.Active = true;
+            nnv.CreatedDate = DateTime.Now;
+            nnv.ModifiedDate = DateTime.Now;
+            context.NhomNhanVien.Add(nnv);
+            context.SaveChanges();
+            TempData["ThongBao"] = "Thêm thành công!";
+            return RedirectToAction("Table");
+        }
+
+
+        [HttpPost]
+        public IActionResult Update(NhomNhanVien nnv)
+        {
+            NhomNhanVien nv = context.NhomNhanVien.Find(nnv.Id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            nv.ModifiedBy = idUser;
+            nv.ModifiedDate = DateTime.Now;
+            nv.TenNnv = nnv.TenNnv;
+            nv.MaNnv = nnv.MaNnv;
+
+            context.NhomNhanVien.Update(nv);
+            context.SaveChanges();
+            TempData["ThongBao"] = "Sửa thành công!";
+            return RedirectToAction("Table");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            NhomNhanVien nnv = context.NhomNhanVien.Find(id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            nnv.ModifiedBy = idUser;
+            nnv.ModifiedDate = DateTime.Now;
+            nnv.Active = false;
+            context.NhomNhanVien.Update(nnv);
+            context.SaveChanges();
+            return RedirectToAction("Table");
+        }
+
+        public IActionResult Restore(int id)
+        {
+            NhomNhanVien nnv = context.NhomNhanVien.Find(id);
+            int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+            nnv.ModifiedBy = idUser;
+            nnv.ModifiedDate = DateTime.Now;
+            nnv.Active = true;
+            context.NhomNhanVien.Update(nnv);
+            context.SaveChanges();
+            //TempData["ThongBao"] = "Khôi phục thành công!";
+            return RedirectToAction("Table");
+        }
     }
-
-    public IActionResult ViewCreate()
-    {
-      ViewData["Title"] = "Thêm nhóm nhân viên";
-      return View();
-    }
-
-    [HttpPost("/loadTableNNV")]
-    public IActionResult loadTableNNV(bool active)
-    {
-      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-
-      int idvt = int.Parse(User.Claims.ElementAt(3).Value);
-
-      var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
-
-
-      ViewBag.NNV = context.NhomNhanVien
-        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
-        .OrderBy(x => x.TenNnv)
-        .ToList();
-      return PartialView();
-    }
-
-
-    public IActionResult ViewUpdate(int id)
-    {
-      ViewData["Title"] = "Sửa nhóm nhân viên";
-      NhomNhanVien nnv = context.NhomNhanVien.Find(id);
-      return View(nnv);
-    }
-
-    [HttpPost]
-    public IActionResult Insert(NhomNhanVien nnv)
-    {
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      int idcn = int.Parse(User.Claims.ElementAt(4).Value);
-      nnv.CreatedBy = idUser;
-      nnv.ModifiedBy = idUser;
-      nnv.Idcn = idcn;
-      nnv.Active = true;
-      nnv.CreatedDate = DateTime.Now;
-      nnv.ModifiedDate = DateTime.Now;
-      context.NhomNhanVien.Add(nnv);
-      context.SaveChanges();
-      TempData["ThongBao"] = "Thêm thành công!";
-      return RedirectToAction("Table");
-    }
-
-
-    [HttpPost]
-    public IActionResult Update(NhomNhanVien nnv)
-    {
-      NhomNhanVien nv = context.NhomNhanVien.Find(nnv.Id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      nv.ModifiedBy = idUser;
-      nv.ModifiedDate = DateTime.Now;
-      nv.TenNnv = nnv.TenNnv;
-      nv.MaNnv = nnv.MaNnv;
-
-      context.NhomNhanVien.Update(nv);
-      context.SaveChanges();
-      TempData["ThongBao"] = "Sửa thành công!";
-      return RedirectToAction("Table");
-    }
-
-    public IActionResult Delete(int id)
-    {
-      NhomNhanVien nnv = context.NhomNhanVien.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      nnv.ModifiedBy = idUser;
-      nnv.ModifiedDate = DateTime.Now;
-      nnv.Active = false;
-      context.NhomNhanVien.Update(nnv);
-      context.SaveChanges();
-      return RedirectToAction("Table");
-    }
-
-    public IActionResult Restore(int id)
-    {
-      NhomNhanVien nnv = context.NhomNhanVien.Find(id);
-      int idUser = int.Parse(User.Claims.ElementAt(2).Type);
-      nnv.ModifiedBy = idUser;
-      nnv.ModifiedDate = DateTime.Now;
-      nnv.Active = true;
-      context.NhomNhanVien.Update(nnv);
-      context.SaveChanges();
-      //TempData["ThongBao"] = "Khôi phục thành công!";
-      return RedirectToAction("Table");
-    }
-  }
 }

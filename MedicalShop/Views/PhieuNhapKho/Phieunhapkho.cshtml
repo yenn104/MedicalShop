@@ -157,7 +157,7 @@
                                     <option selected disabled value=""></option>
                                     @foreach (HangHoa h in getListHH())
                                     {
-                                        <option class="font-size-09" value="@h.Id" data-extra="{'Ma':'@h.MaHh'}" data-data="@h.IdnoiLuuTruNavigation.Ten">
+                                        <option class="font-size-09" value="@h.Id" data-extra="{'Ma':'@h.MaHh'}" data-data="@h.IdnoiLuuTruNavigation?.Ten">
                                             @h.TenHh
                                         </option>
                                     }

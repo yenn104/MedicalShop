@@ -103,7 +103,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             ViewBag.DVVC = context.Dvvc
-              .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+              .Where(x => (active == false ? true : x.Active == true) && (type == 1 ? true : x.Idcn == idcn))
               .OrderBy(x => x.TenDvvc)
               .ToList();
             return PartialView();

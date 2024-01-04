@@ -111,7 +111,7 @@ namespace MedicalShop.Controllers
 
 
       ViewBag.NCC = context.NhaCungCap
-        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .Where(x => (active == false ? true : x.Active == true) && (type == 1 ? true : x.Idcn == idcn))
         .OrderBy(x => x.TenNcc)
         .ToList();
       return PartialView();

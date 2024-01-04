@@ -21,7 +21,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
-            List<Hsx> listHSX = context.Hsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+            List<Hsx> listHSX = context.Hsx.Where(x => x.Active == true && (type == 1 ? true : x.Idcn == idcn)).ToList();
             return View("TableHSX", listHSX);
         }
 
@@ -105,7 +105,7 @@ namespace MedicalShop.Controllers
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
 
             ViewBag.HSX = context.Hsx
-              .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+              .Where(x => (active == false ? true : x.Active == true) && (type == 1 ? true : x.Idcn == idcn))
               .OrderBy(x => x.TenHsx)
               .ToList();
 

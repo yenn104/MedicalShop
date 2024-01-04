@@ -32,7 +32,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
-            List<HangHoa> listHH = context.HangHoa.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+            List<HangHoa> listHH = context.HangHoa.Where(x => x.Active == true && (type == 1 ? true : x.Idcn == idcn)).ToList();
             return View("TableHangHoa", listHH);
         }
 
@@ -100,19 +100,39 @@ namespace MedicalShop.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult insertHangHoa(HangHoa hh, IFormFile Avt, List<IFormFile> imgList)
-        //public IActionResult insertHangHoa([FromForm] HangHoaModelMap modelMap)
-        {
-            //HangHoa hh = modelMap.HangHoa;
-            //IFormFile Avt = modelMap.ImgAvt;
-            //List<IFormFile> imgList = modelMap.ImgList;
+        //[HttpPost]
+        //public IActionResult insertHangHoa([FromForm] HangHoaModelMap hangHoaMap)
+        ////public IActionResult insertHangHoa([FromForm] HangHoaModelMap modelMap)
+        //{
+        //    //HangHoa hh = modelMap.HangHoa;
+        //    //IFormFile Avt = modelMap.ImgAvt;
+        //    //List<IFormFile> imgList = modelMap.ImgList;
 
+        //    //MedicalShopContext context = new MedicalShopContext();
+        //    int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+        //    int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+        //    //hh.Idcn = idcn;
+        //    //hh.Image = UploadedFile(hh, Avt);
+        //    //hh.CreatedBy = idUser;
+        //    //hh.Active = true;
+        //    //hh.CreatedDate = DateTime.Now;
+        //    //hh.ModifiedBy = idUser;
+        //    //hh.ModifiedDate = DateTime.Now;
+        //    //context.HangHoa.Add(hh);
+        //    //context.SaveChanges();
+        //    //UploadedListFile(hh.MaHh, imgListt);
+        //    TempData["ThongBao"] = "Thêm thành công!";
+        //    return RedirectToAction("ViewCreate");
+        //}
+
+        [HttpPost]
+        public IActionResult insertHangHoa(HangHoa hh, List<IFormFile> Avt, int stt)
+        {
             //MedicalShopContext context = new MedicalShopContext();
             int idUser = int.Parse(User.Claims.ElementAt(2).Type);
             int idcn = int.Parse(User.Claims.ElementAt(4).Value);
             hh.Idcn = idcn;
-            hh.Image = UploadedFile(hh, Avt);
+            hh.Image = UploadedFile(hh, Avt[stt]);
             hh.CreatedBy = idUser;
             hh.Active = true;
             hh.CreatedDate = DateTime.Now;
@@ -120,7 +140,11 @@ namespace MedicalShop.Controllers
             hh.ModifiedDate = DateTime.Now;
             context.HangHoa.Add(hh);
             context.SaveChanges();
-            UploadedListFile(hh.MaHh, imgList);
+
+            List<IFormFile> imgList = Avt;
+            imgList.RemoveAt(stt);
+
+            UploadedListFile(hh.Id, hh.MaHh, imgList);
             TempData["ThongBao"] = "Thêm thành công!";
             return RedirectToAction("ViewCreate");
         }
@@ -143,10 +167,14 @@ namespace MedicalShop.Controllers
         }
 
 
-        private void UploadedListFile(string maHH, List<IFormFile> imgList)
+        private void UploadedListFile(int idHH, string maHH, List<IFormFile> imgList)
         {
             if (imgList.Count > 0)
             {
+                int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+                int idcn = int.Parse(User.Claims.ElementAt(4).Value);
+
+                List<HhImage> hhImg = new List<HhImage>();
                 foreach (IFormFile img in imgList)
                 {
                     string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "lib/imagesHH");
@@ -156,7 +184,23 @@ namespace MedicalShop.Controllers
                     {
                         img.CopyTo(fileStream);
                     }
+
+                    HhImage hhImage = new HhImage();
+                    hhImage.Idhh = idHH;
+                    hhImage.Type = "png";
+                    hhImage.CreatedBy = idUser;
+                    hhImage.Active = true;
+                    hhImage.CreatedDate = DateTime.Now;
+                    hhImage.ModifiedBy = idUser;
+                    hhImage.ModifiedDate = DateTime.Now;
+                    hhImage.Idcn = idcn;
+                    hhImage.Name = uniqueFileName;
+
+                    hhImg.Add(hhImage);
                 }
+
+                context.HhImage.AddRange(hhImg);
+                context.SaveChanges();
             }
         }
 
@@ -186,6 +230,8 @@ namespace MedicalShop.Controllers
             dv.Iddvtc = hh.Iddvtc;
             dv.Idhsx = hh.Idhsx;
             dv.Idnsx = hh.Idnsx;
+            dv.IdnoiLuuTru = hh.IdnoiLuuTru;
+            dv.SoLuongCanhBao = hh.SoLuongCanhBao;
             if (avt != null)
             {
                 dv.Image = UploadedFile(hh, avt);
@@ -205,7 +251,7 @@ namespace MedicalShop.Controllers
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
             ViewBag.ListHH = context.HangHoa
-              .Where(x => x.Active == active && (nhomHH == 0 ? true : x.Idnhh == nhomHH) && (type == true ? true : x.Idcn == idcn))
+              .Where(x => x.Active == active && (nhomHH == 0 ? true : x.Idnhh == nhomHH) && (type == 1 ? true : x.Idcn == idcn))
               .OrderBy(x => x.TenHh)
               .ToList();
 
@@ -256,7 +302,7 @@ namespace MedicalShop.Controllers
         {
             public HangHoa? HangHoa { get; set; }
             public IFormFile? ImgAvt { get; set; }
-            public List<IFormFile>? ImgList { get; set; }
+            public IList<IFormFile>? ImgList { get; set; }
         }
 
     }

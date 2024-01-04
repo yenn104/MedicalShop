@@ -38,7 +38,7 @@ namespace MedicalShop.Controllers
       var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
 
       ViewBag.NHH = context.NhomHangHoa
-        .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+        .Where(x => (active == false ? true : x.Active == true) && (type == 1 ? true : x.Idcn == idcn))
         .OrderBy(x => x.TenNhh)
         .ToList();
       return PartialView();

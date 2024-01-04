@@ -66,7 +66,7 @@ namespace MedicalShop.Controllers
                     ct.Nsx = DateTime.ParseExact(t.Nsx, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                     ct.Hsd = DateTime.ParseExact(t.Hsd, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                     ct.SoLo = t.SoLo;
-                    ct.GiaVon = t.DonGia * (1 - t.Cktm / 100) * (1 + t.Thue / 100);
+                    ct.GiaVon = Math.Round((double)(t.DonGia * (1 - t.Cktm / 100) * (1 + t.Thue / 100)), 2);
                     ct.Active = true;
                     ct.CreatedBy = idUser;
                     ct.CreatedDate = DateTime.Now;

@@ -121,18 +121,33 @@ namespace MedicalShop.Services
             
             if (idVaiTro > 0 && idMenu > 0)
             {
-                return _context.ChucNang
-                    .Where(c => c.Idvt.Equals(idVaiTro) && c.Idmenu.Equals(idMenu))
-                    .AsEnumerable()
-                    .Select(x => new ChucNang
+                var type = _context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idVaiTro).Type;
+                if (type > 0)
+                {
+                    return new ChucNang
                     {
-                        Import = x.Import ?? false,
-                        Update = x.Update ?? false,
-                        Delete = x.Delete ?? false,
-                        Print = x.Print ?? false,
-                        Export = x.Export ?? false
-                    })
-                    .FirstOrDefault();
+                        Import = true,
+                        Update = true,
+                        Delete = true,
+                        Print = true,
+                        Export = true
+                    };
+                }
+                else
+                {
+                    return _context.ChucNang
+                   .Where(c => c.Idvt.Equals(idVaiTro) && c.Idmenu.Equals(idMenu))
+                   .AsEnumerable()
+                   .Select(x => new ChucNang
+                   {
+                       Import = x.Import ?? false,
+                       Update = x.Update ?? false,
+                       Delete = x.Delete ?? false,
+                       Print = x.Print ?? false,
+                       Export = x.Export ?? false
+                   })
+                   .FirstOrDefault();
+                }
             } 
             else
             {

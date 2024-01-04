@@ -389,3 +389,31 @@ function isNumber(e) {
     return false;
   return true;
 }
+
+
+
+function closeCapTaiKhoanModal() {
+  $('#capTaiKhoan').modal('hide');
+  $('#CapUserName').val('');
+  $('#CapPassword').val('');
+  $('#CapIdNhanVien').val(0);
+}
+
+
+function CheckUserName() {
+  var userName = $('#CapUserName').val();
+  $.ajax({
+    type: "post",
+    url: "/CheckUserName",
+    data: "userName=" + userName,
+    success: function (result) {
+      if (result.exists) {
+        showToast("Tên tài khoản đã tồn tại!", 100);
+        $('#CapUserName').val("");
+      }
+    },
+    error: function () {
+      console.log("Fail");
+    }
+  });
+}

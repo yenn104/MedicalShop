@@ -25,7 +25,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = _context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
-            List<Nsx> listNSX = _context.Nsx.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+            List<Nsx> listNSX = _context.Nsx.Where(x => x.Active == true && (type == 1 ? true : x.Idcn == idcn)).ToList();
             return View("TableNSX", listNSX);
         }
 

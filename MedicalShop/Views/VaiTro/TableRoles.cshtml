@@ -5,7 +5,7 @@
     MedicalShopContext context = new MedicalShopContext();
     List<VaiTro> listvt()
     {
-        return context.VaiTro.Where(x => x.Active == true && x.Type == false).OrderBy(x => x.TenVt).ToList();
+        return context.VaiTro.Where(x => x.Active == true && x.Type == 0).OrderBy(x => x.TenVt).ToList();
     }
 }
 
@@ -22,15 +22,6 @@
     }
 
 </style>
-
-@if (TempData["ThongBao"] != null)
-{
-    <script type="text/javascript" charset="utf-8">
-        window.onload = function () {
-            alert("@Html.Raw(@TempData["ThongBao"])");
-        };
-    </script>
-}
 
 <div class="card mb-0" style="height:525px;">
     <div class="" style="overflow-x:auto">
@@ -50,8 +41,8 @@
                 </div>
             </div>
         </div>
-        <div class="mc-13" style="display: flex; flex-direction: row; overflow-x: auto; align-items: baseline; align-items: flex-start;">
-            <div class="col-lg-4 border-dark" style="overflow: auto; max-height: 26rem; padding-left: unset; " id="table1">
+        <div class="col-12" style="display: flex; flex-direction: row; overflow-x: auto; align-items: baseline; align-items: flex-start;">
+            <div class="col-4 border-dark" style="overflow: auto; padding-left: unset; " id="table1">
                 <table class="table table-bordered table-hover  mb-0 text-center h-100" id="table2">
                     <thead style="position: sticky; top: 0; background: #e9ecef; margin-top: unset !important; ">
                         <tr style="background: #e9ecef;">
@@ -69,7 +60,7 @@
                                     <span>@vt.TenVt</span>
                                     <input type="hidden" value="@vt.Id" id="idvt" />
                                 </td>
-                                <td>
+                                <td class="ps-0 pe-0">
                                     <button value="@vt.Id" class="edit far fa-edit btn btn-primary" style="margin-right: 5px" id="edit"></button>
                                     <button value="@vt.Id" class="remove fas fa-trash-alt btn btn-danger"></button>
                                 </td>
@@ -79,7 +70,7 @@
                 </table>
             </div>
             @*<input type="hidden" id="idvt" />*@
-            <div class="col-lg-8 col-8 p-0 border-dark" style=" overflow: auto; max-height: 430px; min-width: 600px;">
+            <div class="col-8 p-0 border-dark" style=" overflow: auto; ">
                 <table class="table tablee table-bordered  mb-0  text-center bg-light" id="myTable">
                     <thead style="position: sticky; top: 0; background: #e9ecef;">
                         <tr>
@@ -113,57 +104,25 @@
 </div>
 <script>
 
-    $(function () {
+    document.addEventListener("DOMContentLoaded", function () {
         $("#checkAllNhap").click(function () {
-            $("input[name='Import']").attr("checked", this.checked);
-            //alert($("input[name='Import']").length);
-            //alert($("input[name='Import']:checked").length);
+            $("input[name='Import']").prop("checked", this.checked);
         });
-
-        $("input[name='Import']").click(function () {
-            if ($("input[name='Import']").length >= $("input[name='Import']:checked").length) {
-                $("#checkAllNhap").attr("checked", "checked");
-
-            }
-            else {
-                $("#checkAllNhap").removeAttr("checked");
-            }
-        });
-
-
 
         $("#checkAllSua").click(function () {
-            $("input[name='Update']").attr("checked", this.checked);
-            //alert($("input[name='Import']").length);
-            //alert($("input[name='Import']:checked").length);
-        });
-
-        $("input[name='Update']").click(function () {
-            if ($("input[name='Update']").length >= $("input[name='Update']:checked").length) {
-                $("#checkAllSua").attr("checked", "checked");
-
-            }
-            else {
-                $("#checkAllSua").removeAttr("checked");
-            }
+            $("input[name='Update']").prop("checked", this.checked);
         });
 
         $("#checkAllXoa").click(function () {
-            $("input[name='Delete']").attr("checked", this.checked);
-            //alert($("input[name='Import']").length);
-            //alert($("input[name='Import']:checked").length);
+            $("input[name='Delete']").prop("checked", this.checked);
         });
 
         $("#checkAllIn").click(function () {
-            $("input[name='Print']").attr("checked", this.checked);
-            //alert($("input[name='Import']").length);
-            //alert($("input[name='Import']:checked").length);
+            $("input[name='Print']").prop("checked", this.checked);
         });
 
         $("#checkAllXuat").click(function () {
-            $("input[name='Export']").attr("checked", this.checked);
-            //alert($("input[name='Import']").length);
-            //alert($("input[name='Import']:checked").length);
+            $("input[name='Export']").prop("checked", this.checked);
         });
 
 
@@ -256,7 +215,7 @@
                 updateRowCheckboxes();
             },
             error: function () {
-               console.log("Lỗi!");
+                console.log("Lỗi!");
             }
         });
     }
@@ -295,6 +254,8 @@
             listOfFunctionModel.push(FunctionModel);
         });
 
+        console.log(listOfFunctionModel);
+
         $.ajax({
             url: '/updateRoles',
             type: 'POST',
@@ -302,7 +263,8 @@
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(listOfFunctionModel),
             success: function (result) {
-                alert(result);
+                //alert(result);
+                showToast(result.message, result.statusCode);
             },
             error: function () {
                 console.log("Lỗi!");
@@ -323,7 +285,7 @@
                 $('#vaitro').replaceWith(result);
             },
             error: function () {
-                alert("Fail11");
+                console("Fail11");
             }
         });
     }
@@ -347,27 +309,32 @@
         //ok
         $("#table2").on("click", ".add", function () {
             var tenVT = $(this).parents('tr').find("td:eq(0) input[type='text']").val();
-            $.ajax({
-                type: "post",
-                url: "/addVT",
-                data: "tenVT=" + tenVT,
-                success: function (result) {
-                    $.ajax({
-                        type: "post",
-                        url: "/loadTableVT",
-                        success: function (result) {
-                            $('#vaitro').replaceWith(result);
-                        },
-                        error: function () {
-                            console.log("Lỗi!");
-                        }
-                    });
-                    alert(result);
-                },
-                error: function () {
-                    console.log("Lỗi!");
-                }
-            });
+            if (tenVT == '') {
+                showToast('Vui lòng nhập tên vai trò!', 100);
+            } else {
+               $.ajax({
+                    type: "post",
+                    url: "/addVT",
+                    data: "tenVT=" + tenVT,
+                    success: function (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "/loadTableVT",
+                            success: function (result) {
+                                $('#vaitro').replaceWith(result);
+                            },
+                            error: function () {
+                                console.log("Lỗi!");
+                            }
+                        });
+                        showToast(result.message, result.statusCode);
+                    },
+                    error: function () {
+                        console.log("Lỗi!");
+                    }
+                });
+            }
+            
         });
 
         //ok
@@ -406,7 +373,7 @@
                             console.log("Lỗi!");
                         }
                     });
-                    alert(result);
+                    showToast(result.message, result.statusCode);
                 },
                 error: function () {
                     console.log("Lỗi!");
@@ -433,7 +400,7 @@
                                 console.log("Lỗi!");
                             }
                         });
-                        alert(result);
+                        showToast(result.message, result.statusCode);
                     },
                     error: function () {
                         console.log("Lỗi!");

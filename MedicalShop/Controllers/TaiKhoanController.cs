@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.InkML;
+﻿using AspNetCore.ReportingServices.ReportProcessing.ReportObjectModel;
+using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Spreadsheet;
 using MedicalShop.Models.Entities;
 using Microsoft.AspNetCore.Authentication;
@@ -68,10 +69,16 @@ namespace MedicalShop.Controllers
                 identity.RemoveClaim(identity.FindFirst("ChiNhanh"));
             }
             
-            //MedicalShopContext context = new MedicalShopContext();
-            //bool admin = (bool)context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == pq.Idvt).Type;
-
-            identity.AddClaim(new Claim("VaiTro", pq.Idvt.ToString(), "0"));
+            MedicalShopContext context = new MedicalShopContext();
+            bool admin = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == pq.Idvt).Type == 2  ? true : false;
+            if (admin)
+            {
+                identity.AddClaim(new Claim("VaiTro", pq.Idvt.ToString(), "2"));
+            }
+            else
+            {
+                identity.AddClaim(new Claim("VaiTro", pq.Idvt.ToString(), "0"));
+            }
             identity.AddClaim(new Claim("ChiNhanh", pq.Idcn.ToString()));
 
 
@@ -145,7 +152,7 @@ namespace MedicalShop.Controllers
                         NhanVien nv = context.NhanVien.FirstOrDefault(n => n.UserName.Equals(acc.UserName));
                         PhanQuyen vaitro = context.PhanQuyen.FirstOrDefault(c => c.Idtk.Equals(acc.Id));
 
-                        bool admin = (bool)context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == vaitro.Idvt).Type;
+                        bool admin = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == vaitro.Idvt).Type == 1 ? true : false;
 
                         var claims = new List<Claim>();
 
@@ -299,6 +306,35 @@ namespace MedicalShop.Controllers
             }
         }
 
+
+
+
+
+        [HttpPost("/CheckUserName")]
+        public IActionResult Check(string userName)
+        {
+            // Kiểm tra mã nhân viên đã tồn tại hay chưa
+            bool exists = CheckIfUserNameExists(userName);
+
+            // Tạo một object JSON để trả về kết quả
+            var result = new { exists = exists };
+
+            return Json(result);
+        }
+
+
+        private bool CheckIfUserNameExists(string userName)
+        {
+            // Thực hiện kiểm tra mã nhân viên trong cơ sở dữ liệu
+            MedicalShopContext context = new MedicalShopContext();
+            TaiKhoan nv = context.TaiKhoan.FirstOrDefault(x => x.UserName.Equals(userName));
+
+            // Trả về kết quả kiểm tra
+            return (nv != null);
+        }
+
+
+   
 
 
 

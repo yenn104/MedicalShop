@@ -50,7 +50,7 @@ namespace MedicalShop.Controllers
     //0000 yy okk
     //Xóa (ẩn) phân quyền
     [HttpPost("/removePQ")]
-    public string removePQ(int id)
+    public IActionResult removePQ(int id)
     {
       MedicalShopContext context = new MedicalShopContext();
       PhanQuyen pq = context.PhanQuyen.Find(id);
@@ -60,8 +60,12 @@ namespace MedicalShop.Controllers
       pq.ModifiedDate = DateTime.Now;
       context.Update(pq);
       context.SaveChanges();
-      return "Xoá thành công!";
-    }
+            return Ok(new
+            {
+                message = "Thành công",
+                statusCode = 200,
+            });
+        }
 
 
     //ok yy
@@ -103,7 +107,7 @@ namespace MedicalShop.Controllers
 
     //yy
     [HttpPost("/AddPQ")]
-    public string AddPQ(int idtk, int idvt, int idcn)
+    public IActionResult AddPQ(int idtk, int idvt, int idcn)
     {
       MedicalShopContext context = new MedicalShopContext();
       PhanQuyen pq = new PhanQuyen();
@@ -112,14 +116,26 @@ namespace MedicalShop.Controllers
       {
         if (idcn == 0)
         {
-          return "Hãy chọn chi nhánh!";
+                    return Ok(new
+                    {
+                        message = "Vui lòng chọn chi nhánh!",
+                        statusCode = 100,
+                    });
         }
         if (idvt == 0)
         {
-          return "Hãy chọn vai trò!";
+                    return Ok(new
+                    {
+                        message = "Vui lòng chọn chi nhánh!",
+                        statusCode = 100,
+                    });
         }
-        return "Lỗi!";
-      }
+                return Ok(new
+                {
+                    message = "Thất bại",
+                    statusCode = 500,
+                });
+            }
       else
       {
         int idUser = int.Parse(User.Claims.ElementAt(2).Type);
@@ -133,8 +149,12 @@ namespace MedicalShop.Controllers
         pq.Active = true;
         context.PhanQuyen.Add(pq);
         context.SaveChanges();
-        return "Thêm thành công";
-      }
+                return Ok(new
+                {
+                    message = "Thành công",
+                    statusCode = 200,
+                });
+            }
     }
 
 
@@ -189,7 +209,7 @@ namespace MedicalShop.Controllers
 
     //cập nhật vai trò
     [HttpPost("/updatepq")]
-    public string updatepq(int idvt, int idpq, int idcn)
+    public IActionResult updatepq(int idvt, int idpq, int idcn)
     {
       MedicalShopContext context = new MedicalShopContext();
       PhanQuyen pq = context.PhanQuyen.Find(idpq);
@@ -201,8 +221,12 @@ namespace MedicalShop.Controllers
       pq.Active = true;
       context.PhanQuyen.Update(pq);
       context.SaveChanges();
-      return "Sửa thành công";
-    }
+            return Ok(new
+            {
+                message = "Thành công",
+                statusCode = 200,
+            });
+        }
 
 
 
@@ -240,6 +264,47 @@ namespace MedicalShop.Controllers
 
 
 
+        [HttpPost("/PhanQuyen/CapTaiKhoan")]
+        public IActionResult CapTaiKhoan(string UserName, string Password, int idNhanVien)
+        {
+            MedicalShopContext context = new MedicalShopContext();
+            //TaiKhoan tk = context.TaiKhoan.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+            using var tran = context.Database.BeginTransaction();
 
-  }
+            try
+            {
+                int idUser = int.Parse(User.Claims.ElementAt(2).Type);
+                TaiKhoan tk = new TaiKhoan();
+                tk.UserName = UserName;
+                tk.Staff = true;
+                tk.Password = Password;
+                tk.Active = true;
+                tk.CreatedBy = idUser;
+                tk.CreatedDate = DateTime.Now;
+                tk.ModifiedBy = idUser;
+                tk.ModifiedDate = DateTime.Now;
+
+                context.TaiKhoan.Add(tk);
+                context.SaveChanges();
+
+                NhanVien nv = context.NhanVien.Where(x => x.Id == idNhanVien).FirstOrDefault();
+                nv.UserName = UserName;
+                context.NhanVien.Update(nv);
+                context.SaveChanges();
+
+                tran.Commit();
+               
+                return View("TablePQ");
+            }
+            catch (Exception e)
+            {
+                tran.Rollback();
+                return View("TablePQ");
+            }
+        }
+
+
+
+
+    }
 }

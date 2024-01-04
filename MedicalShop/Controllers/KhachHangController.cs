@@ -23,7 +23,7 @@ namespace MedicalShop.Controllers
             int idvt = int.Parse(User.Claims.ElementAt(3).Value);
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
             ViewBag.Quyen = CommonServices.getVaiTroPhanQuyen(idvt, _maChucNang);
-            List<KhachHang> listKH = context.KhachHang.Where(x => x.Active == true && (type == true ? true : x.Idcn == idcn)).ToList();
+            List<KhachHang> listKH = context.KhachHang.Where(x => x.Active == true && (type == 1 ? true : x.Idcn == idcn)).ToList();
             //TempData["Menu"] = context.Menu.Where( menu => EF.Functions.Like( menu.TenMenu, "%Nhà cung cấp%") && menu.Active == true).Select(menu => menu.Id);
             // EF.Functions.Like(c.Name, "a%")     menu.TenMenu.Contains("/Nhà cung cấp/")
             return View("TableKH", listKH);
@@ -112,7 +112,7 @@ namespace MedicalShop.Controllers
             var type = context.VaiTro.FirstOrDefault(x => x.Active == true && x.Id == idvt).Type;
 
             ViewBag.KH = context.KhachHang
-              .Where(x => (active == false ? true : x.Active == true) && (type == true ? true : x.Idcn == idcn))
+              .Where(x => (active == false ? true : x.Active == true) && (type == 1 ? true : x.Idcn == idcn))
               .OrderBy(x => x.TenKh)
               .ToList();
             return PartialView();

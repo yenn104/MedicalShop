@@ -18,7 +18,7 @@
 
     List<ChucNang> getListMenu = new List<ChucNang>();
 
-    if (admin == "1")
+    if (admin == "1" || admin == "2")
     {
         getListMenu = context.Menu
                         //.Include(x => x.IdmenuNavigation)
@@ -445,7 +445,7 @@
                                 </a>
                                 <div id="collapseSystem" class="collapse" aria-labelledby="headingSystem" data-parent="#accordionSidebar" style="z-index:6">
                                     <div class="bg-xx py-2 collapse-inner rounded">
-                                        <a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>
+                                        @*<a class="collapse-item disabled" style="color:red">Cấp tài khoản</a>*@
                                         @foreach (ChucNang cn in getListMenu.Where(x => x.IdmenuNavigation.Index == 4).OrderBy(x => x.IdmenuNavigation.Stt))
                                         {
                                             <a class="collapse-item" href="/@cn.IdmenuNavigation.MaMenu/Table">@cn.IdmenuNavigation.TenMenu</a>
@@ -612,6 +612,43 @@
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
                     <a class="btn btn-primary" href="/TaiKhoan/ViewSelector">Thay đổi</a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="capTaiKhoan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cấp tài khoản</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="closeCapTaiKhoanModal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="/PhanQuyen/CapTaiKhoan" method="post" id="formCapTaiKhoan" data-toggle="validator">
+                    <div class="modal-body">
+                        <input type="hidden" name="idNhanVien"  id="CapIdNhanVien"/>
+                        <div class="col-12 d-flex mb-2">
+                            <lable class="col-4 required" for="txtUserName">Tên tài khoản</lable>
+                            <input class="col-8 form-control" type="text" name="UserName" id="CapUserName" onblur="CheckUserName()" required />
+                            <div class="invalid-feedback">
+                                Nhập tài khoản
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex">
+                            <lable class="col-4  required" for="txtUserName">Mật khẩu</lable>
+                            <input class="col-8 form-control" type="password" name="Password" id="CapPassword" required />
+                            <div class="invalid-feedback">
+                                Nhập mật khẩu
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="closeCapTaiKhoanModal()">Hủy</button>
+                        <button class="btn btn-primary" type="submit" data-dismiss="modal">Cập nhật</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
