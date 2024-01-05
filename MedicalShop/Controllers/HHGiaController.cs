@@ -73,22 +73,24 @@ namespace MedicalShop.Controllers
         {
             MedicalShopContext context = new MedicalShopContext();
 
-            var results = context.HhGia
+            if (check == 1)
+            {
+                var results = context.HhGia
                       .Where(x => (check == 1 ? x.Price == null : true) || (check == 1 ? x.TiLe == null : true))
                       .ToList();
 
-            //hàng hoá chưa set tỉ lệ/ giá bán
-            var hh1 = context.HangHoa
-                    .Where(hh => (check == 1 ? (!hh.HhGia.Any(x => x.Idcn == idCN)) : true) 
-                    && hh.Active == true) // && hh.Idcn == idCN
-                    .ToList();
+                //hàng hoá chưa set tỉ lệ/ giá bán
+                var hh1 = context.HangHoa
+                        .Where(hh => (check == 1 ? (!hh.HhGia.Any(x => x.Idcn == idCN)) : true)
+                        && hh.Active == true) // && hh.Idcn == idCN
+                        .ToList();
 
 
 
-            var cachTinhGia = context.CachTinhGia.Where(x => x.Idcn == idCN).FirstOrDefault();
-           // var danhSachHangHoa = new List<TonKho>();
-            var dsHHTon = new List<TonKho>();
-       
+                var cachTinhGia = context.CachTinhGia.Where(x => x.Idcn == idCN).FirstOrDefault();
+                // var danhSachHangHoa = new List<TonKho>();
+                var dsHHTon = new List<TonKho>();
+
                 var group = context.TonKho
                  .Where(x => x.Idcn == idCN)
                  .GroupBy(x => x.Idhh)
@@ -101,28 +103,36 @@ namespace MedicalShop.Controllers
                  })
                  .ToList();
 
-            List<dynamic> listReturn = new List<dynamic>();
-            var hhGiaList = context.HhGia.Include(x => x.IdhhNavigation).Where(x => x.Idcn == idCN).ToList();
+                List<dynamic> listReturn = new List<dynamic>();
+                var hhGiaList = context.HhGia.Include(x => x.IdhhNavigation).Where(x => x.Idcn == idCN).ToList();
 
-            foreach (var tonKho in group)
-            {
-                var hhgia = context.HhGia.Where(x => x.Idhh == tonKho.Idhh && tonKho.Idhh == idCN).FirstOrDefault();
-                var gia = cachTinhGia.Max == true ? tonKho.MaxGiaNhap : cachTinhGia.Min == true ? tonKho.MinGiaNhap : tonKho.MediumGiaNhap;
-                var giaLT = hhGiaList.Where(x => x.Idhh == tonKho.Idhh && (x.Price * 1.05) < gia).FirstOrDefault();
-                if (giaLT != null)
+                foreach (var tonKho in group)
                 {
-                    listReturn.Add(new HangHoa()
+                    var hhgia = context.HhGia.Where(x => x.Idhh == tonKho.Idhh && tonKho.Idhh == idCN).FirstOrDefault();
+                    var gia = cachTinhGia.Max == true ? tonKho.MaxGiaNhap : cachTinhGia.Min == true ? tonKho.MinGiaNhap : tonKho.MediumGiaNhap;
+                    var giaLT = hhGiaList.Where(x => x.Idhh == tonKho.Idhh && (x.Price * 1.05) < gia).FirstOrDefault();
+                    if (giaLT != null)
                     {
-                        Id = (int)giaLT.Idhh,
-                        TenHh = giaLT.IdhhNavigation.TenHh,
-                        Idcn = giaLT.Idcn,
-                    });
+                        listReturn.Add(new HangHoa()
+                        {
+                            Id = (int)giaLT.Idhh,
+                            TenHh = giaLT.IdhhNavigation.TenHh,
+                            Idcn = giaLT.Idcn,
+                        });
+                    }
                 }
+
+                ViewBag.Load = hh1.Union(listReturn).OrderBy(x => x.TenHh).ToList();
+                ViewBag.IdChiNhanh = idCN;
             }
-
-            ViewBag.Load = hh1.Union(listReturn).OrderBy(x => x.TenHh).ToList();
-            ViewBag.IdChiNhanh = idCN;
-
+            else
+            {
+                
+                ViewBag.Load = context.HangHoa
+                    .Where(x => x.Active == true) //&& x.Idcn == idCN
+                    .OrderBy(x => x.TenHh).ToList();
+                ViewBag.IdChiNhanh = idCN;
+            }
             return PartialView("LoadGiaLT");
         }
 

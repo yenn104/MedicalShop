@@ -22,10 +22,10 @@
     </select>
     </div>
   <div class="col-md-2 mb-2 col-lg-2">
-      <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" id="NgaySX" autocomplete="off">
+      <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.AddMonths(-3).ToString("dd-MM-yyyy")" id="NgaySX" autocomplete="off">
   </div>
     <div class="col-md-2 mb-2 col-lg-2">
-        <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" id="HanDung" autocomplete="off">
+        <input type="text" placeholder="dd-mm-yyyy" class="form-control" value="@DateTime.Now.AddMonths(3).ToString("dd-MM-yyyy")" id="HanDung" autocomplete="off">
     </div>
     <div class="col-auto">
         <button class="btn btn-outline-success" onclick="BieuDoGiaNhap()">Thống kê</button>

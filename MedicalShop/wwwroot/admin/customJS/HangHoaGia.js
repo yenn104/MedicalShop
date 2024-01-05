@@ -123,7 +123,7 @@ function loadTableLT() {
     url: "/loadGiaLT",
     data: "check=" + _isCheck + "&idCN=" + _idCN,
     success: function (result) {
-      // console.log(result);
+      console.log(result);
       $('#giaban').replaceWith(result);
       formatNumberFloat();
       //formatFloat();

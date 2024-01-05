@@ -18,9 +18,9 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
-    [Authorize(Roles = "NV")]
     public class PhieuNhapKhoController : Controller
     {
+        [Authorize(Roles = "NV")]
 
         [Route("/PhieuNhapKho")]
         public IActionResult Index()
@@ -82,7 +82,7 @@ namespace MedicalShop.Controllers
                     sl.SoLuong = Math.Round((double)ct.Quantity, 2);
                     sl.GiaNhap = t.DonGia;
                     //Giá vốn
-                    sl.GiaVon = t.DonGia * (1 - t.Cktm/100) * (1+ t.Thue/100);
+                    sl.GiaVon = Math.Round((double)(t.DonGia * (1 - t.Cktm/100) * (1+ t.Thue/100)), 2); ;
                         //xkct.DonGiaXuat = hangTon.DonGiaTon * (1 - hangTon.ChiecKhau / 100) * (1 + hangTon.Vat / 100);
                     sl.Idcn = int.Parse(User.Claims.ElementAt(4).Value);
                     sl.NgayNhap = phieuNhap.CreatedDate;

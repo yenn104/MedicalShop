@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
-    [Authorize(Roles = "NV")]
     public class PhieuXuatKhoController : Controller
     {
+        [Authorize(Roles = "NV")]
 
         [Route("/PhieuXuatKho")]
         public IActionResult Index()

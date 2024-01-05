@@ -132,7 +132,7 @@ namespace MedicalShop.Controllers
             var data = context.ChiTietPhieuNhap
             .Include(x => x.IdpnNavigation)
             .ThenInclude(x => x.IdnccNavigation)
-            .Where(x => x.IdpnNavigation.ModifiedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.ModifiedDate.Value.Date <= denNgay.Date && x.Idhh == idHH).ToList();
+            .Where(x => x.IdpnNavigation.CreatedDate.Value.Date >= tuNgay.Date && x.IdpnNavigation.CreatedDate.Value.Date <= denNgay.Date && x.Idhh == idHH).ToList();
 
             var ncc = data.GroupBy(x => x.IdpnNavigation.Idncc)
             .Select(x => new
@@ -147,7 +147,7 @@ namespace MedicalShop.Controllers
             {
                 if (ncc.Any(x => x.label == ct.IdpnNavigation.Idncc))
                 {
-                    dateTimes.Add((DateTime)ct.ModifiedDate.Value.Date);
+                    dateTimes.Add((DateTime)ct.CreatedDate.Value.Date);
                 }
             }
             dateTimes = dateTimes.Distinct().ToList();

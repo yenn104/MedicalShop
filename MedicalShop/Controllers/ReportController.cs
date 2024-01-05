@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace MedicalShop.Controllers
 {
-  [Authorize(Roles = "NV")]
   public class ReportController : Controller
   {
 
@@ -32,8 +31,9 @@ namespace MedicalShop.Controllers
       return View();
     }
 
+        [Authorize(Roles = "NV")]
 
-    public IActionResult ReportTon()
+        public IActionResult ReportTon()
     {
       var dt = new DataTable();
       //Report reportt = new Report();
@@ -56,9 +56,10 @@ namespace MedicalShop.Controllers
       return File(res.MainStream, "application/pdf");
     }
 
+        [Authorize(Roles = "NV")]
 
 
-    public IActionResult ReportHHN()
+        public IActionResult ReportHHN()
     {
       var dt = new DataTable();
       dt = report.getHangHoaNhap();
@@ -80,9 +81,10 @@ namespace MedicalShop.Controllers
       return File(res.MainStream, "application/pdf");
     }
 
+        [Authorize(Roles = "NV")]
 
 
-    public IActionResult ReportHHX()
+        public IActionResult ReportHHX()
     {
       var dt = new DataTable();
       dt = report.getHangHoaXuat();
